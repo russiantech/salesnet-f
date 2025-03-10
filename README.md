@@ -1,3 +1,4 @@
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -80,3 +81,6 @@ Okay, let me explain the difference between placing assets in the `public` folde
 
 The general guideline is to use the `public` folder for assets that should be accessible directly from the root of your application, and the `src` folder for assets that are part of your application's logic and need to be processed by webpack.
 */
+=======
+# salesnet-f
+Internet of sales
