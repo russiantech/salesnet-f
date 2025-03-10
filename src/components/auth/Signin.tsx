@@ -59,52 +59,96 @@ class Signin extends React.Component {
 
     render() {
         return (
-            <div className="container" style={{marginTop: "100px"}}>
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="row">
-                            <form className="form-horizontal">
-                                <fieldset>
-                                    <div id="legend">
-                                        <legend className="">Login</legend>
-                                    </div>
-                                    <div className="control-group">
-                                        <label className="control-label" htmlFor="username">Username</label>
-                                        <div className="controls">
-                                            <input type="text" id="username" name="username"
-                                                   value={this.state.username}
-                                                   onChange={(evt) => this.onInputChange('username', evt)}
-                                                   placeholder="your username"
-                                                   className="form-control"/>
-                                        </div>
-                                    </div>
-
-                                    <div className="control-group">
-                                        <label className="control-label" htmlFor="password">Password</label>
-                                        <div className="controls">
-                                            <input type="password" id="password"
-                                                   name="password" placeholder=""
-                                                   value={this.state.password}
-                                                   onChange={(evt) => this.onInputChange('password', evt)}
-                                                   className="form-control"/>
-                                            <p className="help-block">the password you will be using</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="control-group">
-                                        <div className="controls">
-                                            <button className="btn btn-success" type="button"
-                                                    onClick={this.onSubmitForm.bind(this)}>
-                                                Login
-                                            </button>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div className="d-lg-flex">
+  {/* Login form + Footer */}
+  <div className="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style={{maxWidth: '416px'}}>
+    {/* Logo */}
+    <header className="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
+      <a className="navbar-brand pt-0" href="./">
+        <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
+          <div className="flex-shrink-0 border rounded-circle" style={{width: '32px'}}>
+            <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+              <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
             </div>
+          </div>
+        </span>
+        Salesnet
+      </a>
+    </header>
+    <h1 className="h2 mt-auto">Welcome back</h1>
+    <div className="nav fs-sm mb-4">
+      Don't have an account?
+      <a className="nav-link text-decoration-underline p-0 ms-2" href="./signup">Create an account</a>
+    </div>
+    {/* Form */}
+    <form className="needs-validation" id="signin_form" action="/api/users/signin" method="post" noValidate>
+      <div className="position-relative mb-4">
+        <input type="username" name="username" className="form-control form-control-lg" placeholder="Email or Username or Phone" required />
+        <div className="invalid-tooltip bg-transparent py-0">Enter Your Logins any of email-or-username-or-phone!</div>
+      </div>
+      <div className="mb-4">
+        <div className="password-toggle">
+          <input type="password" name="password" className="form-control form-control-lg" placeholder="Password" required />
+          <div className="invalid-tooltip bg-transparent py-0">Password is incorrect!</div>
+          <label className="password-toggle-button fs-lg" aria-label="Show/hide password">
+            <input type="checkbox" className="btn-check" />
+          </label>
+        </div>
+      </div>
+      <div className="d-flex align-items-center justify-content-between mb-4">
+        <div className="form-check me-2">
+          <input type="checkbox" className="form-check-input" id="remember-30" />
+          <label htmlFor="remember-30" className="form-check-label">Remember for 30 days</label>
+        </div>
+        <div className="nav">
+          <a className="nav-link animate-underline p-0" href="./reset-password">
+            <span className="animate-target">Forgot password?</span>
+          </a>
+        </div>
+      </div>
+      <button type="submit" className="btn btn-lg bg-dark text-white w-100">Sign me into Salesnet.</button>
+    </form>
+    {/* Divider */}
+    <div className="d-flex align-items-center my-4">
+      <hr className="w-100 m-0" />
+      <span className="text-body-emphasis fw-medium text-nowrap mx-4">or continue with</span>
+      <hr className="w-100 m-0" />
+    </div>
+    {/* Social login */}
+    <div className="d-flex flex-column flex-sm-row gap-3 pb-4 mb-3 mb-lg-4">
+      <button id="google-signin-btn" type="button" className="btn btn-lg btn-outline-secondary w-100 px-2">
+        <i className="ci-google ms-1 me-1" />
+        Google
+      </button>
+      <button type="button" disabled className="btn btn-lg btn-outline-secondary w-100 px-2">
+        <i className="ci-facebook ms-1 me-1" />
+        Facebook
+      </button>
+      <button type="button" disabled className="btn btn-lg btn-outline-secondary w-100 px-2">
+        <i className="ci-apple ms-1 me-1" />
+        Apple
+      </button>
+    </div>
+    {/* Footer */}
+    <footer className="mt-auto">
+      <p className="fs-xs mb-0">
+        © All rights reserved. <span className="animate-underline">
+            <a className="animate-target text-dark-emphasis text-decoration-none" href="https://techa.tech" target="_blank" rel="noreferrer">Techa - Russian Developers.</a></span>
+      </p>
+    </footer>
+  </div>
+  {/* Cover image visible on screens > 992px wide (lg breakpoint) */}
+  <div className="d-none d-lg-block w-100 py-4 ms-auto" style={{maxWidth: '1034px'}}>
+    <div className="d-flex flex-column justify-content-end h-100 rounded-5 overflow-hidden">
+      <span className="position-absolute top-0 start-0 w-100 h-100 d-none-dark" style={{background: 'linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)'}} />
+      <span className="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark" style={{background: 'linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)'}} />
+      <div className="ratio position-relative z-2" style={{'--cz-aspect-ratio': 'calc(1030 / 1032 * 100%)'}}>
+        <img src="../assets/img/us/pages/cover.png" alt="Girl" />
+      </div>
+    </div>
+  </div>
+</div>
+
         );
     }
 }

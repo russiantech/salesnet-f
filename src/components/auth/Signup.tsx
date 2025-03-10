@@ -95,7 +95,7 @@ class Signup extends React.Component {
                             <div className="position-relative mb-4">
                                 <label htmlFor="email" className="form-label">Username</label>
                                 <input type="text" 
-                                name="username" value={this.state.username} 
+                                name="username" value={this.state.username}
                                 onChange={(evt) => this.onInputChange('username', evt)}
                                 placeholder="enter/choose your username" className="form-control form-control-lg" id="username" required />
                                 <div className="invalid-tooltip bg-transparent py-0">Must enter/choose your username!</div>
@@ -127,12 +127,9 @@ class Signup extends React.Component {
                                         <a className="text-dark-emphasis" href="#!">Privacy Policy</a></label>
                                 </div>
                             </div>
-                            <button type="submit" 
-                            className="btn btn-lg btn-success w-100 btn-rounded rounded-pill
-                             rounded-pill animate-pulse text-success bg-success-subtle ">
-                                Create an account
-                                <i className="fi-chevron-right fs-lg ms-1 me-n1" />
-                            </button>
+                            <button type="submit" className="btn btn-lg bg-dark text-white w-100">
+                                Sign up Now.
+                                </button>
                         </form>
                         {/* Divider */}
                         <div className="d-flex align-items-center my-4">

@@ -46,7 +46,7 @@ const TopNav = () => {
                             </span>
                         </button>
                         {/* Cart button */}
-                        <a href="./user/signin" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
+                        <a href="/auth/signin" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
                             <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                             <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                                 <i className="ci-user animate-target ms-n1" />
@@ -65,7 +65,7 @@ const TopNav = () => {
             </div>
             {/*  */}
             {/* Main navigation that turns into offcanvas on screens < 992px wide (lg breakpoint) */}
-            <div className="collapse d-none1 navbar-stuck-hide" id="stuckNav">
+            <div className="collapse d-none d-md-block navbar-stuck-hide" id="stuckNav">
                 <nav className="offcanvas offcanvas-start" id="navbarNav" tabIndex={-1} aria-labelledby="navbarNavLabel">
                     <div className="offcanvas-header py-3">
                         <h5 className="offcanvas-title" id="navbarNavLabel">Browse Salesnet</h5>
