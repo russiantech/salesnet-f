@@ -8,7 +8,8 @@ UsersService.subscribe((user) => {
 });
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    // baseURL: 'http://localhost:8080/api',
+    baseURL: 'https://salesnet.onrender.com/api',
     responseType: 'json',
     responseEncoding: 'utf8'
 });

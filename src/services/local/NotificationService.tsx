@@ -36,6 +36,7 @@ export const NotificationService = {
     showDialogSuccess(message) {
         notifyObservers({show_alert: true, alert: {message, type: 'success'}});
     },
+    
     showDialogError(message) {
         notifyObservers({show_alert: true, alert: {message, type: 'error'}});
     },
