@@ -15,7 +15,7 @@ export default Navigation
 const TopNav = () => {
     {/* Navigation bar (Page header) */ }
     return (
-        <header className="navbar navbar-expand-lg navbar-dark bg-dark d-block z-fixed p-0" data-sticky-navbar="{&quot;offset&quot;: 500}">
+        <header className="navbar navbar-expand-lg navbar-dark bg-dark d-block fixed p-0" data-sticky-navbar="{'offset': 500}">
             <div className="container d-block py-1 py-lg-3" data-bs-theme="dark">
                 <div className="navbar-stuck-hide pt-1" />
                 <div className="row flex-nowrap align-items-center g-0">
@@ -1296,8 +1296,8 @@ const BottomNav = () => {
     // Styles for the navigation
     const styles = {
         nav_div: {
-            paddingLeft: '15px',
-            paddingRight: '15px',
+            // paddingLeft: '15px',
+            // paddingRight: '15px',
             display: 'flex',
             maxWidth: '600px',
             marginRight: 'auto',
