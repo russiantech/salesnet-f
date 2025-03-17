@@ -23,11 +23,10 @@ const TopNav = () => {
                         {/* Mobile offcanvas menu toggler (Hamburger) */}
                         {/* Navbar brand (Logo) */}
                         <a href="!#" className="navbar-brand me-0">
-                            <span className="d-none d-sm-flex flex-shrink-0 text-primary me-2">
+                            <span className="d-sm-flex flex-shrink-0 text-primary me-2">
                                  <img width={36} height={36} src="/assets/img/us/logos/favicon.ico" alt="Logo" />
                             </span>
-
-                            Salesnet
+                             <span className='d-none d-md-block d-lg-block'> Salesnet </span>
                         </a>
                     </div>
                     <div className="col col-lg-9 d-flex align-items-center justify-content-end">
@@ -65,7 +64,7 @@ const TopNav = () => {
             </div>
             {/*  */}
             {/* Main navigation that turns into offcanvas on screens < 992px wide (lg breakpoint) */}
-            <div className="collapse d-none d-md-block navbar-stuck-hide" id="stuckNav">
+            <div className="collapse d-md-block navbar-stuck-hide" id="stuckNav">
                 <nav className="offcanvas offcanvas-start" id="navbarNav" tabIndex={-1} aria-labelledby="navbarNavLabel">
                     <div className="offcanvas-header py-3">
                         <h5 className="offcanvas-title" id="navbarNavLabel">Browse Salesnet</h5>
@@ -1232,46 +1231,123 @@ const TopNav = () => {
 
 // export default TopNav
 
+// const BottomNav = () => {
+//     {/* Navbar with simple navigation + Action buttons group */ }
+//     // const styles = {
+//         const styles = {
+//             nav_div: {
+//                 paddingLeft: '15px', // Use quotes for pixel values
+//                 paddingRight: '15px', // Use quotes for pixel values
+//                 display: 'flex', // Use quotes for CSS property values
+//                 maxWidth: '600px', // Use quotes for pixel values
+//                 marginRight: 'auto', // Use quotes for CSS property values
+//                 marginLeft: 'auto', // Use quotes for CSS property values
+//                 alignItems: 'center' // Use quotes for CSS property values
+//             }
+//         };
+        
+//     return (
+//         <header className="navbar navbar-expand-lg bg-body shadow px-0 fixed-bottom align-items-center">
+//     <div className="container-fluid">
+//         <div style={styles.nav_div} className="d-flex justify-content-between align-items-center flex-wrap py-lg-1">
+//             <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+//                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+//                     <i className="ci-grid-2 fs-xl" />
+//                 </span>
+//             </button>
+
+//             <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" href="!#">
+//                 <span className="position-absolute top-50 right-100 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
+//                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+//                     <i className="ci-chat fs-2 m-1" />
+//                 </span>
+//             </button>
+
+//             <Link to="/" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2">
+//                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+//                     <i className="ci-home fs-xl" />
+//                 </span>
+//             </Link>
+
+//             <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+//                 <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
+//                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+//                     <i className="ci-heart animate-target" />
+//                 </span>
+//             </button>
+
+//             <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+//                 <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
+//                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+//                     <i className="ci-shopping-cart animate-target ms-n1" />
+//                 </span>
+//             </button>
+//         </div>
+//     </div>
+// </header>
+
+//     )
+// }
+
+// export default BottomNav
+
+
 const BottomNav = () => {
-    {/* Navbar with simple navigation + Action buttons group */ }
+    // Styles for the navigation
+    const styles = {
+        nav_div: {
+            paddingLeft: '15px',
+            paddingRight: '15px',
+            display: 'flex',
+            maxWidth: '600px',
+            marginRight: 'auto',
+            marginLeft: 'auto',
+            alignItems: 'center',
+            justifyContent: 'space-between', // Space between buttons
+            overflow: 'hidden', // Prevent overflow
+            whiteSpace: 'nowrap', // Prevent wrapping
+            flexWrap: 'nowrap' // Prevent wrapping
+        }
+    };
+    
     return (
-        <header className="navbar navbar-expand-lg bg-body shadow px-0 fixed-bottom align-items-center" >
-            <div className="container-fluid max-width-100">
-                <div className="d-flex me-auto align-items-center order-lg-2 py-lg-1">
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2 me-4" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+        <header className="navbar navbar-expand-lg bg-body shadow px-0 fixed-bottom align-items-center">
+            <div className="container-fluid">
+                <div style={styles.nav_div} className="d-flex py-lg-1">
+                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-grid-2 fs-xl" />
                         </span>
                     </button>
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2 me-4" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" href="!#">
+
+                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" href="!#">
                         <span className="position-absolute top-50 right-100 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-chat fs-2 m-1" />
                         </span>
                     </button>
 
-                    <Link to="/" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2 me-4">
+                    <Link to="/" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2">
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-home fs-xl" />
                         </span>
                     </Link>
 
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2 me-4" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
                         <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-heart animate-target" />
                         </span>
                     </button>
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2 me-4" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+
+                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
                         <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-shopping-cart animate-target ms-n1" />
                         </span>
-                    </button >
-                </div >
-            </div >
-        </header >
-    )
-}
-
-// export default BottomNav
+                    </button>
+                </div>
+            </div>
+        </header>
+    );
+};

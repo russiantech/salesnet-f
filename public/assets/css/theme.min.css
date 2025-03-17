@@ -1,3 +1,107 @@
+/*  */
+
+/* // Normalization of HTML elements, manually forked from Normalize.css to remove
+// styles targeting irrelevant browsers while applying new styles.
+//
+// Normalize is licensed MIT. https://github.com/necolas/normalize.css
+
+
+// Document
+//
+// Change from `box-sizing: content-box` so that `width` is not affected by `padding` or `border`. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  @if $font-size-root != null {
+    @include font-size(var(--#{$prefix}root-font-size));
+  }
+
+  @if $enable-smooth-scroll {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+
+/* // Content grouping
+//
+. Reset Firefox's gray color */
+
+hr {
+  margin: $hr-margin-y 0;
+  color: $hr-color; 
+  border: 0;
+  border-top: $hr-border-width solid $hr-border-color;
+  opacity: $hr-opacity;
+}
+
+
+ol,
+ul {
+  padding-left: 2rem;
+}
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+ol ol,
+ul ul,
+ol ul,
+ul ol {
+  margin-bottom: 0;
+}
+
+/* // Correct element displays */
+
+output {
+  display: inline-block;
+}
+
+/* // Remove border from iframe */
+
+iframe {
+  border: 0;
+}
+/* 
+// Summary
+//
+. Add the correct display in all browsers */
+
+summary {
+  display: list-item; 
+  cursor: pointer;
+}
+
+
+/* // Progress
+//
+// Add the correct vertical alignment in Chrome, Firefox, and Opera. */
+
+progress {
+  vertical-align: baseline;
+}
+
+
+/* // Hidden attribute
+//
+// Always hide an element with the `hidden` HTML attribute. */
+
+[hidden] {
+  display: none !important;
+}
+
+/*  */
+
 @charset "UTF-8";
 
 @font-face {
