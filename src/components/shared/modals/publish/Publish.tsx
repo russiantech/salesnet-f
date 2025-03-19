@@ -19,15 +19,15 @@ export default Publish
 const PublishPage = () => {
   return (
     <div className="container pt-4 justify-content-center">
-      <div className="row pt-sm-2">
+      <div className="row pt-sm-2" style={{ marginLeft: "-15px", marginRight: "-15px" }}>
         {/* Tabs-like behavior */}
         <section id="pills-tabs" className="docs-section">
           <h4>Sales is real, works like charm..</h4>
-          <div className="card border-0 shadow">
-            <span className="d-none d-block-dark position-absolute top-0 start-0 w-100 h-100 bg-dark rounded opacity-50" />
-            <div className="card-body position-relative z-2">
+          <div className="card border-0 shadow - row g-0 overflow-x-auto pb-3 mb-2 mb-md-3 mb-lg-4">
+            {/* <span className="d-none d-block-dark position-absolute top-0 start-0 w-100 h-100 bg-dark rounded opacity-50" /> */}
+            <div className="card-body position-relative z-2 col-auto mx-auto">
               {/* Nav pills */}
-              <ul className="nav nav-pills mb-3" role="tablist">
+              <ul className="nav nav-pills mb-3 - flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
                 <li className="nav-item" role="presentation">
                   <button type="button" className="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
                     <i className="fi-home me-2 ms-n1" />
@@ -542,4 +542,5 @@ const PublishPage = () => {
   )
 }
 
-// export default PublishPage
+import './PublishPage.css'; // Ensure you have this CSS file
+

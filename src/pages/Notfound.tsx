@@ -198,7 +198,7 @@ const NotFoundPage = () => {
               <div className="nav flex-column position-relative h-100 border rounded-5 p-4 pt-3">
                 <a
                   className="nav-link animate-underline stretched-link text-body-emphasis fw-semibold px-0 mb-1"
-                  href="home-fashion-v2.html"
+                  href="/"
                 >
                   <span className="animate-target">Go to homepage</span>
                   <i className="ci-chevron-right fs-base ms-1" />
@@ -210,7 +210,7 @@ const NotFoundPage = () => {
               <div className="nav flex-column position-relative h-100 border rounded-5 p-4 pt-3">
                 <a
                   className="nav-link animate-underline stretched-link text-body-emphasis fw-semibold px-0 mb-1"
-                  href="shop-catalog-fashion.html"
+                  href="/products"
                 >
                   <span className="animate-target">Trending products</span>
                   <i className="ci-chevron-right fs-base ms-1" />
@@ -222,7 +222,7 @@ const NotFoundPage = () => {
               <div className="nav flex-column position-relative h-100 border rounded-5 p-4 pt-3">
                 <a
                   className="nav-link animate-underline stretched-link text-body-emphasis fw-semibold px-0 mb-1"
-                  href="#!"
+                  href="/support"
                 >
                   <span className="animate-target">Help and support</span>
                   <i className="ci-chevron-right fs-base ms-1" />

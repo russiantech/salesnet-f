@@ -1,0 +1,7 @@
+.nav-pills {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.nav-pills .nav-link {
+    display: inline-block;
+}

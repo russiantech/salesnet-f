@@ -64,7 +64,7 @@ class Signin extends React.Component {
   <div className="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style={{maxWidth: '416px'}}>
     {/* Logo */}
     <header className="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
-      <a className="navbar-brand pt-0" href="./">
+      <a className="navbar-brand pt-0" href="/">
         <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
           <div className="flex-shrink-0 border rounded-circle" style={{width: '32px'}}>
             <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
@@ -78,10 +78,10 @@ class Signin extends React.Component {
     <h1 className="h2 mt-auto">Welcome back</h1>
     <div className="nav fs-sm mb-4">
       Don't have an account?
-      <a className="nav-link text-decoration-underline p-0 ms-2" href="./signup">Create an account</a>
+      <a className="nav-link text-decoration-underline p-0 ms-2" href="/auth/signup">Create an account</a>
     </div>
     {/* Form */}
-    <form className="needs-validation" id="signin_form" action="/api/users/signin" method="post" noValidate>
+    <form className="needs-validation" id="signin_form" action="/auth/signin" method="post" noValidate>
       <div className="position-relative mb-4">
         <input type="username" name="username" className="form-control form-control-lg" placeholder="Email or Username or Phone" required />
         <div className="invalid-tooltip bg-transparent py-0">Enter Your Logins any of email-or-username-or-phone!</div>
@@ -101,7 +101,7 @@ class Signin extends React.Component {
           <label htmlFor="remember-30" className="form-check-label">Remember for 30 days</label>
         </div>
         <div className="nav">
-          <a className="nav-link animate-underline p-0" href="./reset-password">
+          <a className="nav-link animate-underline p-0" href="/recover-password">
             <span className="animate-target">Forgot password?</span>
           </a>
         </div>
@@ -143,7 +143,7 @@ class Signin extends React.Component {
       <span className="position-absolute top-0 start-0 w-100 h-100 d-none-dark" style={{background: 'linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)'}} />
       <span className="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark" style={{background: 'linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)'}} />
       <div className="ratio position-relative z-2" style={{'--cz-aspect-ratio': 'calc(1030 / 1032 * 100%)'}}>
-        <img src="../assets/img/us/pages/cover.png" alt="Girl" />
+        <img src="../assets/img/us/pages/7.jpg" alt="Girl" />
       </div>
     </div>
   </div>

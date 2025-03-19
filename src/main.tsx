@@ -5,12 +5,6 @@ import './index.css'
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 
-// createRoot(document.getElementById('app')!).render(
-//   <StrictMode>
-//     <App />
-//   </StrictMode>,
-// )
-  
 // // Rendering react component
 const app = createRoot(document.getElementById('app'));
 app.render( <App />);

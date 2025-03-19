@@ -1,49 +1,63 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import Home from "./pages/home/Home";
+// import { NotFoundPage, NotImplimentedPage } from "./pages/Notfound";
+// import Canvas from "./components/shared/modals/Canvas";
+// import Publish from "./components/shared/modals/publish/Publish";
+// import AuthRoutes from "./routes/AuthRoutes";
+// import ProductRoutes from "./routes/ProductRoutes";
+
+// const App = () => {
+//   return (
+//     <>
+//       <NotImplimentedPage />
+//       <Publish />
+//       <Canvas />
+      
+//       <ProductRoutes />
+//       <AuthRoutes />
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         {/* <Route path="*" element={<NotFoundPage />} /> */}
+//       </Routes>
+//     </>    
+//   );
+// };
+
+// const Root = () => (
+//   <Router>
+//     <App />
+//   </Router>
+// );
+
+// export default Root;
+
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/home/Home";
+import { NotFoundPage, NotImplimentedPage } from "./pages/Notfound";
 import Canvas from "./components/shared/modals/Canvas";
-import Navigation from "./components/shared/Navigation";
-import User from "./components/auth/User";
-import PrivateRoute from "./services/guards/PrivateRoute";
-import Footer from "./components/shared/Footer";
-import Signup from "./components/auth/Signup";
-import Signin from "./components/auth/Signin";
-import Basket from "./components/user/basket/Basket";
-import ProductDetails from "./components/pages/products/ProductDetails";
-import Home from "./components/pages/home/Home";
 import Publish from "./components/shared/modals/publish/Publish";
-import { NotFoundPage, NotImplimentedPage } from './components/pages/Notfound';
+import AuthRoutes from "./routes/AuthRoutes";
+import ProductRoutes from "./routes/ProductRoutes";
 
 const App = () => {
-  const location = useLocation();
-
-  // Paths where the header/footer should not appear
-  const noHeaderFooterPaths = ['/auth/signin', "*", '/auth/signup', '/notfound', '/products-slug']; // Add more paths as needed
-
-  const shouldHideHeaderFooter = noHeaderFooterPaths.includes(location.pathname);
-
   return (
     <>
       <NotImplimentedPage />
       <Publish />
       <Canvas />
-      {!shouldHideHeaderFooter && <Navigation />}
-      <main className="content-wrapper"> 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/products" element={<Products />} /> */}
-          <Route path="/products-slug" element={<ProductDetails />} />
-          {/* <Route path="/products/:slug" element={<ProductDetails />} /> */}
-
-          <Route path="/auth/signin" element={<Signin />} />
-          <Route path="/auth/signup" element={<Signup />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-      {!shouldHideHeaderFooter && <Footer />}
+      
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {/* Include ProductRoutes and AuthRoutes as nested routes */}
+        <Route path="/products/*" element={<ProductRoutes />} />
+        <Route path="/auth/*" element={<AuthRoutes />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </>
   );
 };
 
-// Wrap the App component with Router in the main entry point
+
 const Root = () => (
   <Router>
     <App />

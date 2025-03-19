@@ -68,7 +68,7 @@ const Signup = () => {
                             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
                                 <div className="flex-shrink-0 border rounded-circle" style={{ width: '32px' }}>
                                     <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
-                                        <img src="../assets/img/us/logos/favicon.svg" alt="Avatar" />
+                                        <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
                                     </div>
                                 </div>
                             </span>
@@ -78,7 +78,7 @@ const Signup = () => {
                     <h1 className="h2 mt-auto">Create an account</h1>
                     <div className="nav fs-sm mb-3 mb-lg-4">
                         I already have an account
-                        <a className="nav-link badge text-decoration-none rounded-pill p-1 ml-1 text-bg-info" href="./signin">Sign in</a>
+                        <a className="nav-link badge text-decoration-none rounded-pill p-1 ml-1 text-bg-info" href="/auth/signin">Sign in</a>
                     </div>
                     <div className="nav fs-sm mb-4 d-lg-none">
                         <span className="me-2">Uncertain about creating an account?</span>
@@ -143,8 +143,8 @@ const Signup = () => {
                         <div className="d-flex flex-column gap-2 mb-4">
                             <div className="form-check">
                                 <input type="checkbox" defaultChecked className="form-check-input" id="privacy" required />
-                                <label htmlFor="privacy" className="form-check-label">I have read and accept the
-                                    <a className="text-dark-emphasis" href="#!">Privacy Policy</a></label>
+                                <label htmlFor="privacy" className="form-check-label">
+                                    I have read and accept the <a className="text-dark-emphasis" href="#!"> Privacy Policy</a></label>
                             </div>
                         </div>
                         <button type="submit" className="btn btn-lg bg-dark text-white w-100">

@@ -3,8 +3,8 @@ import Layout from "../../partials/Layout";
 import NavigationMenu from "../../partials/NavigationMenu";
 import ProductSummary from "./ProductSummary";
 import NProgress from 'nprogress'
-import {ProductAxiosService} from '../../../services/net/ProductAxiosService'
-import {NotificationService} from "../../../services/local/NotificationService";
+import {ProductAxiosService} from '../../services/net/ProductAxiosService'
+import {NotificationService} from "../../services/local/NotificationService";
 import Pagination from "../../partials/Pagination";
 
 class ProductList extends React.Component {

@@ -33,9 +33,10 @@ const TopNav = () => {
                         {/* Button group */}
                         <a href="!#" data-bs-toggle="modal" data-bs-target="#PublishPage"
                             className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
-                            <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
+                            {/* <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span> */}
                             <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                                <i className="ci-send animate-target text-white" />
+                                <i className="ci-powerbank animate-target text-white" />
+                                {/* <i className="ci-send animate-target text-white" /> */}
                             </span>
                         </a>
                         <button type="button" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle animate-shake ms-2" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar">
@@ -45,12 +46,12 @@ const TopNav = () => {
                             </span>
                         </button>
                         {/* Cart button */}
-                        <a href="/auth/signin" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
+                        <Link to="/auth/signin" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
                             <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                             <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                                 <i className="ci-user animate-target ms-n1" />
                             </span>
-                        </a>
+                        </Link>
                     </div>
                 </div >
             </div >
@@ -187,9 +188,9 @@ const TopNav = () => {
                                                                         <div className="fs-sm text-light-emphasis mb-2">Starts from <del>$1,599.00</del> $1,399.00</div>
                                                                         <div className="h2 mb-4">Surface Laptop Studio</div>
                                                                     </div>
-                                                                    <img src="assets/img/mega-menu/electronics/01.png" width={252} alt="Surface Laptop Studio" />
+                                                                    <img src="/assets/img/mega-menu/electronics/01.png" width={252} alt="Surface Laptop Studio" />
                                                                     <div className="text-center mt-4">
-                                                                        <a className="btn btn-sm btn-primary stretched-link" href="shop-catalog-electronics.html">Shop now</a>
+                                                                        <a className="btn btn-sm btn-primary stretched-link" href="/products/1">Shop now</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1161,7 +1162,7 @@ const TopNav = () => {
                                                                         <div className="fs-sm text-light-emphasis mb-2">Starts from <del>$599.00</del> $499.00</div>
                                                                         <div className="h2 mb-4">Xbox Series X</div>
                                                                     </div>
-                                                                    <img src="assets/img/mega-menu/electronics/12.png" width={252} alt="Xbox" />
+                                                                    <img src="/assets/img/mega-menu/electronics/12.png" width={252} alt="Xbox" />
                                                                     <div className="text-center mt-4">
                                                                         <a className="btn btn-sm btn-primary stretched-link" href="shop-catalog-electronics.html">Shop now</a>
                                                                     </div>
@@ -1178,18 +1179,18 @@ const TopNav = () => {
                                 < div className="col-lg-9 d-lg-flex pt-3 pt-lg-0 ps-lg-0" >
                                     <ul className="navbar-nav position-relative">
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <a className="nav-link" href="./">
+                                            <a className="nav-link" href="/">
                                                 <i className="ci-home fs-2 m-1" />
                                                 Home</a>
                                         </li>
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <a className="nav-link" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" href="!#">
+                                            <a className="nav-link" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" href="/chatme">
                                                 <i className="ci-chat fs-2 m-1" />
                                                 Chat-me</a>
                                         </li>
 
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <a className="nav-link" href="!#">
+                                            <a className="nav-link" href="/saved">
                                                 <i className="ci-heart fs-2 m-1" />
                                                 Saved.</a>
                                         </li>
@@ -1200,7 +1201,7 @@ const TopNav = () => {
                                         </li>
                                     </ul>
                                     <hr className="d-lg-none my-3" />
-                                    <ul className="navbar-nav ms-auto">
+                                    <ul className="navbar-nav ms-auto d-flex">
                                         <li className="nav-item dropdown me-lg-n2 me-xl-n1">
                                             <a className="nav-link dropdown-toggle fs-sm px-3 badge rounded-pill text-bg-success" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Eng</a>
                                             <ul className="dropdown-menu fs-sm" style={{ czDropdownMinWidth: '7.5rem', CzDropdownSpacer: '.25rem' }}>

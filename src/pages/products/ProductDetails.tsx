@@ -8,10 +8,10 @@ const ProductDetails = () => {
                     <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
                         <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
                             <li className="breadcrumb-item">
-                                <a href="home-marketplace.html">Home</a>
+                                <a href="/">Home</a>
                             </li>
                             <li className="breadcrumb-item">
-                                <a href="shop-catalog-marketplace.html">Pages</a>
+                                <a href="/pages">Pages</a>
                             </li>
                             <li aria-current="page" className="breadcrumb-item active">
                                 products
@@ -33,7 +33,7 @@ const ProductDetails = () => {
                                                     width: "32px",
                                                 }}>
                                                 <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
-                                                    <img alt="Avatar" src="assets/img/us/logos/favicon.svg" />
+                                                    <img alt="Avatar" src="/assets/img/us/logos/favicon.svg" />
                                                 </div>
                                             </div>
                                             Salesnet
@@ -114,14 +114,14 @@ const ProductDetails = () => {
                                         className="hover-effect-scale hover-effect-opacity position-relative d-flex rounded-4 overflow-hidden"
                                         data-gallery="product-gallery"
                                         data-glightbox=""
-                                        href="assets/img/pages/products/01.jpg">
+                                        href="/assets/img/pages/products/01.jpg">
                                         <i className="ci-zoom-in hover-effect-target fs-3 text-white position-absolute top-50 start-50 translate-middle opacity-0 z-2" />
                                         <div
                                             className="ratio hover-effect-target bg-body-tertiary"
                                             style={{
                                                 "--cz-aspect-ratio": "calc(640 / 966 * 100%)",
                                             }}>
-                                            <img alt="Image" src="assets/img/pages/products/01.jpg" />
+                                            <img alt="Image" src="/assets/img/pages/products/01.jpg" />
                                         </div>
                                     </a>
                                     <div className="row row-cols-2 g-3">
@@ -130,10 +130,10 @@ const ProductDetails = () => {
                                                 className="hover-effect-scale hover-effect-opacity position-relative d-flex rounded-4 overflow-hidden"
                                                 data-gallery="product-gallery"
                                                 data-glightbox=""
-                                                href="assets/img/pages/products/02.jpg">
+                                                href="/assets/img/pages/products/02.jpg">
                                                 <i className="ci-zoom-in hover-effect-target fs-3 text-white position-absolute top-50 start-50 translate-middle opacity-0 z-2" />
                                                 <div className="ratio ratio-1x1 hover-effect-target bg-body-tertiary">
-                                                    <img alt="Image" src="assets/img/pages/products/th02.jpg" />
+                                                    <img alt="Image" src="/assets/img/pages/products/th02.jpg" />
                                                 </div>
                                             </a>
                                         </div>
@@ -142,10 +142,10 @@ const ProductDetails = () => {
                                                 className="hover-effect-scale hover-effect-opacity position-relative d-flex rounded-4 overflow-hidden"
                                                 data-gallery="product-gallery"
                                                 data-glightbox=""
-                                                href="assets/img/pages/products/03.jpg">
+                                                href="/assets/img/pages/products/03.jpg">
                                                 <i className="ci-zoom-in hover-effect-target fs-3 text-white position-absolute top-50 start-50 translate-middle opacity-0 z-2" />
                                                 <div className="ratio ratio-1x1 hover-effect-target bg-body-tertiary">
-                                                    <img alt="Image" src="assets/img/pages/products/th03.jpg" />
+                                                    <img alt="Image" src="/assets/img/pages/products/th03.jpg" />
                                                 </div>
                                             </a>
                                         </div>
@@ -154,14 +154,14 @@ const ProductDetails = () => {
                                         className="hover-effect-scale hover-effect-opacity position-relative d-flex rounded-4 overflow-hidden"
                                         data-gallery="product-gallery"
                                         data-glightbox=""
-                                        href="assets/img/pages/products/04.jpg">
+                                        href="/assets/img/pages/products/04.jpg">
                                         <i className="ci-zoom-in hover-effect-target fs-3 text-white position-absolute top-50 start-50 translate-middle opacity-0 z-2" />
                                         <div
                                             className="ratio hover-effect-target bg-body-tertiary"
                                             style={{
                                                 "--cz-aspect-ratio": "calc(640 / 966 * 100%)",
                                             }}>
-                                            <img alt="Image" src="assets/img/pages/products/04.jpg" />
+                                            <img alt="Image" src="/assets/img/pages/products/04.jpg" />
                                         </div>
                                     </a>
                                 </div>
@@ -358,7 +358,7 @@ const ProductDetails = () => {
                                                                     }}>
                                                                     <img
                                                                         alt="Avatar"
-                                                                        src="assets/img/pages/products/comments/01.jpg"
+                                                                        src="/assets/img/pages/products/comments/01.jpg"
                                                                     />
                                                                 </div>
                                                                 <div className="ps-2 ms-1">
@@ -404,7 +404,7 @@ const ProductDetails = () => {
                                                                     }}>
                                                                     <img
                                                                         alt="Avatar"
-                                                                        src="assets/img/pages/products/comments/02.jpg"
+                                                                        src="/assets/img/pages/products/comments/02.jpg"
                                                                     />
                                                                 </div>
                                                                 <div className="ps-2 ms-1">
@@ -450,7 +450,7 @@ const ProductDetails = () => {
                                                                     }}>
                                                                     <img
                                                                         alt="Avatar"
-                                                                        src="assets/img/pages/products/comments/03.jpg"
+                                                                        src="/assets/img/pages/products/comments/03.jpg"
                                                                     />
                                                                 </div>
                                                                 <div className="ps-2 ms-1">
@@ -666,7 +666,7 @@ const ProductDetails = () => {
                                                         }}>
                                                         <img
                                                             alt="Dualsense Edge"
-                                                            src="assets/img/shop/electronics/13.png"
+                                                            src="/assets/img/shop/electronics/13.png"
                                                         />
                                                     </div>
                                                 </a>
@@ -771,7 +771,7 @@ const ProductDetails = () => {
                                                         }}>
                                                         <img
                                                             alt="Nikon Camera"
-                                                            src="assets/img/shop/electronics/11.png"
+                                                            src="/assets/img/shop/electronics/11.png"
                                                         />
                                                     </div>
                                                 </a>
@@ -878,7 +878,7 @@ const ProductDetails = () => {
                                                         }}>
                                                         <img
                                                             alt="iPhone 14"
-                                                            src="assets/img/shop/electronics/10.png"
+                                                            src="/assets/img/shop/electronics/10.png"
                                                         />
                                                     </div>
                                                 </a>
@@ -980,7 +980,7 @@ const ProductDetails = () => {
                                                         }}>
                                                         <img
                                                             alt="iPad Pro"
-                                                            src="assets/img/shop/electronics/07.png"
+                                                            src="/assets/img/shop/electronics/07.png"
                                                         />
                                                     </div>
                                                 </a>
@@ -1082,7 +1082,7 @@ const ProductDetails = () => {
                                                         }}>
                                                         <img
                                                             alt="AirPods 2"
-                                                            src="assets/img/shop/electronics/06.png"
+                                                            src="/assets/img/shop/electronics/06.png"
                                                         />
                                                     </div>
                                                 </a>
@@ -1172,7 +1172,7 @@ const ProductDetails = () => {
                         </svg>
                     </a>
                 </div>
-            </div>;
+            </div>
 
         </>
     )
