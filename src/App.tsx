@@ -39,6 +39,7 @@ import Publish from "./components/shared/modals/publish/Publish";
 import AuthRoutes from "./routes/AuthRoutes";
 import ProductRoutes from "./routes/ProductRoutes";
 import UserRoutes from "./routes/UserRoutes";
+import ProductDetails from "./pages/products/ProductDetails";
 
 const App = () => {
   return (

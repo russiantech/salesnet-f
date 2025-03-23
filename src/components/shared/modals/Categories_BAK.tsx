@@ -1,3 +1,295 @@
+const Categories1 = () => {
+    return (
+        <>
+            <header className="navbar navbar-expand-lg navbar-dark bg-dark d-block z-fixed p-0" data-sticky-navbar="{&quot;offset&quot;: 500}">
+                <div className="collapse navbar-stuck-hide" id="SideCategory">
+                    <nav className="offcanvas offcanvas-start show" id="navbarNav" tabIndex="-1" aria-labelledby="navbarNavLabel" aria-modal="true" role="dialog">
+                        <div className="offcanvas-header py-3">
+                            <h5 className="offcanvas-title" id="navbarNavLabel">Browse Cartzilla</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div className="offcanvas-body py-3 py-lg-0">
+                            <div className="container px-0 px-lg-3">
+                                <div className="row">
+                                    {/* Categories mega menu */}
+                                    <div className="col-lg-3">
+                                        <div className="navbar-nav">
+                                            <div className="dropdown w-100">
+                                                {/* Mega menu */}
+                                                <ul className="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style={{ "-czDropdownSpacer": "0", "-czDropdownItemPaddingY": ".625rem", "-czDropdownItemSpacer": "0" }}>
+                                                    <li className="d-lg-none pt-2">
+                                                        <a className="dropdown-item fw-medium" href="shop-categories-electronics.html">
+                                                            <i className="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
+                                                            All Categories
+                                                            <i className="ci-chevron-right fs-base ms-auto me-n1"></i>
+                                                        </a>
+                                                    </li>
+                                                    {/* More list items... */}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Navbar nav */}
+                                    <div className="col-lg-9 d-lg-flex pt-3 pt-lg-0 ps-lg-0">
+                                        <ul className="navbar-nav position-relative">
+                                            <li className="nav-item dropdown me-lg-n1 me-xl-0">
+                                                <a className="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Home</a>
+                                                <ul className="dropdown-menu">
+                                                    <li className="hover-effect-opacity px-2 mx-n2">
+                                                        <a className="dropdown-item d-block mb-0" href="home-electronics.html">
+                                                            <span className="fw-medium">Electronics Store</span>
+                                                            <span className="d-block fs-xs text-body-secondary">Megamenu + Hero slider</span>
+                                                        </a>
+                                                    </li>
+                                                    {/* More items... */}
+                                                </ul>
+                                            </li>
+                                            {/* More nav items... */}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+        </>
+    );
+}
+
+const Categories2 = () => {
+    return (
+        <>
+            <div className="offcanvas offcanvas-start" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel">
+                <div className="offcanvas-header border-bottom">
+                    <h5 className="offcanvas-title" id="offcanvasLeftLabel">Browse Salessnet.</h5>
+                    <button className="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div className="offcanvas-body py-3 py-lg-0" style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column' }}>
+                <header className="navbar navbar-expand-lg d-block z-fixed p-0" data-sticky-navbar="{&quot;offset&quot;: 500}">
+                    <div className="container px-0 px-lg-1">
+                        <div className="row">
+                            {/* Categories mega menu */}
+                            <div className="col-lg-6 col-12">
+                                <div className="navbar-nav">
+                                    <div className="dropdown w-100">
+                                        {/* Button visible on screens < 992px wide (lg breakpoint) */}
+                                        {/* <button type="button"
+                                            className="btn btn-lg btn-secondary dropdown-toggle w-100 justify-content-start d-lg-none mb-2"
+                                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
+                                            <i className="ci-grid fs-lg"></i>
+                                            <span className="ms-2 me-auto">Categories</span>
+                                        </button> */}
+
+                                        {/* Mega menu */}
+                                        <ul className="dropdown-menu dropdown-menu-static w-100  py-1 p-lg-1 show"
+                                            style={{ minWidth: "18.9rem", zIndex: 1050 }}
+                                            data-bs-popper="static">
+
+                                            <li className="dropend position-static">
+                                                <div className="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown"
+                                                    data-bs-trigger="hover">
+                                                    <a className="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="shop-catalog-electronics.html">
+                                                        <i className="ci-computer fs-xl opacity-60 pe-1 me-2"></i>
+                                                        <span className="text-truncate">Computers &amp; Accessories</span>
+                                                        <i className="ci-chevron-right fs-base ms-auto me-n1"></i>
+                                                    </a>
+                                                    <div className="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
+                                                        <i className="ci-computer fs-xl opacity-60 pe-1 me-2"></i>
+                                                        Computers &amp; Accessories
+                                                        <i className="ci-chevron-down fs-base ms-auto me-n1"></i>
+                                                    </div>
+                                                </div>
+                                                <div className="dropdown-menu rounded-4 p-4"
+                                                    style={{ "top": "1rem", "height": "calc(100% - .1875rem)", "--cz-dropdownpacer": ".3125rem", "animation": "none" }}>
+                                                    <div className="d-flex flex-column flex-lg-row h-100 gap-4">
+                                                        <div style={{ "minWidth": "194px" }}>
+                                                            <div className="d-flex w-100">
+                                                                <a className="animate-underline animate-target d-inline h6 text-dark-emphasis text-decoration-none text-truncate"
+                                                                    href="shop-catalog-electronics.html">Computers</a>
+                                                            </div>
+                                                            <ul className="nav flex-column gap-2 mt-n2">
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Networking Products (NAS)</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Single Board Computers</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Desktop Barebones</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div style={{ "minWidth": "194px" }}>
+                                                            <div className="d-flex w-100">
+                                                                <a className="animate-underline animate-target d-inline h6 text-dark-emphasis text-decoration-none text-truncate"
+                                                                    href="shop-catalog-electronics.html">Accessories</a>
+                                                            </div>
+                                                            <ul className="nav flex-column gap-2 mt-n2">
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Monitors</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Security Locks</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Stands</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div className="d-none d-lg-block">
+                                                            <div className="d-none d-xl-block" style={{ "width": "284px" }}></div>
+                                                            <div className="d-xl-none" style={{ "width": "240px" }}></div>
+                                                            <div className="position-relative d-flex flex-column justify-content-center h-100 bg-body-secondary rounded-5 py-4 px-3">
+                                                                <div className="text-center px-2">
+                                                                    <span className="badge bg-danger bg-opacity-10 text-danger fs-sm rounded-pill mb-2">Save up to
+                                                                        $400</span>
+                                                                    <div className="fs-sm text-light-emphasis mb-2">Starts from <del>$1,599.00</del> $1,399.00</div>
+                                                                    <div className="h2 mb-4">Surface Laptop Studio</div>
+                                                                </div>
+                                                                <img src="/assets/img/mega-menu/electronics/01.png" width="252" alt="Surface Laptop Studio" />
+                                                                <div className="text-center mt-4">
+                                                                    <a className="btn btn-sm btn-primary stretched-link" href="shop-catalog-electronics.html">Shop now</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li className="dropend position-static">
+                                                <div className="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown"
+                                                    data-bs-trigger="hover">
+                                                    <a className="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="shop-catalog-electronics.html">
+                                                        <i className="ci-computer fs-xl opacity-60 pe-1 me-2"></i>
+                                                        <span className="text-truncate">Computers &amp; Accessories</span>
+                                                        <i className="ci-chevron-right fs-base ms-auto me-n1"></i>
+                                                    </a>
+                                                    <div className="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
+                                                        <i className="ci-computer fs-xl opacity-60 pe-1 me-2"></i>
+                                                        Computers &amp; Accessories
+                                                        <i className="ci-chevron-down fs-base ms-auto me-n1"></i>
+                                                    </div>
+                                                </div>
+                                                <div className="dropdown-menu rounded-4 p-4"
+                                                    style={{ "top": "1rem", "--cz-dropdownpacer": ".3125rem", "animation": "none" }}>
+                                                    <div className="d-flex flex-column flex-lg-row h-100 gap-4">
+                                                        <div style={{ "minWidth": "194px" }}>
+                                                            <div className="d-flex w-100">
+                                                                <a className="animate-underline animate-target d-inline h6 text-dark-emphasis text-decoration-none text-truncate"
+                                                                    href="shop-catalog-electronics.html">Computers</a>
+                                                            </div>
+                                                            <ul className="nav flex-column gap-2 mt-n2">
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Networking Products (NAS)</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Single Board Computers</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Desktop Barebones</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div style={{ "minWidth": "194px" }}>
+                                                            <div className="d-flex w-100">
+                                                                <a className="animate-underline animate-target d-inline h6 text-dark-emphasis text-decoration-none text-truncate"
+                                                                    href="shop-catalog-electronics.html">Accessories</a>
+                                                            </div>
+                                                            <ul className="nav flex-column gap-2 mt-n2">
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Monitors</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Security Locks</a>
+                                                                </li>
+                                                                <li className="d-flex w-100 pt-1">
+                                                                    <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0"
+                                                                        href="shop-catalog-electronics.html">Stands</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div className="d-none d-lg-block">
+                                                            <div className="d-none d-xl-block" style={{ "width": "284px" }}></div>
+                                                            <div className="d-xl-none" style={{ "width": "240px" }}></div>
+                                                            <div className="position-relative d-flex flex-column justify-content-center h-100 bg-body-secondary rounded-5 py-4 px-3">
+                                                                <div className="text-center px-2">
+                                                                    <span className="badge bg-danger bg-opacity-10 text-danger fs-sm rounded-pill mb-2">Save up to
+                                                                        $400</span>
+                                                                    <div className="fs-sm text-light-emphasis mb-2">Starts from <del>$1,599.00</del> $1,399.00</div>
+                                                                    <div className="h2 mb-4">Surface Laptop Studio</div>
+                                                                </div>
+                                                                <img src="/assets/img/mega-menu/electronics/01.png" width="252" alt="Surface Laptop Studio" />
+                                                                <div className="text-center mt-4">
+                                                                    <a className="btn btn-sm btn-primary stretched-link" href="shop-catalog-electronics.html">Shop now</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li className="dropend position-static">
+                      <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Account</a>
+                      <ul className="dropdown-menu">
+                        <li className="dropend">
+                          <a className="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Auth Pages</a>
+                          <ul className="dropdown-menu">
+                            <li><a className="dropdown-item" href="account-signin.html">Sign In</a></li>
+                            <li><a className="dropdown-item" href="account-signup.html">Sign Up</a></li>
+                            <li><a className="dropdown-item" href="account-password-recovery.html">Password Recovery</a></li>
+                          </ul>
+                        </li>
+                        <li className="dropend">
+                          <a className="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Shop User</a>
+                          <ul className="dropdown-menu">
+                            <li><a className="dropdown-item" href="account-orders.html">Orders History</a></li>
+                            <li><a className="dropdown-item" href="account-wishlist.html">Wishlist</a></li>
+                            <li><a className="dropdown-item" href="account-payment.html">Payment Methods</a></li>
+                            <li><a className="dropdown-item" href="account-reviews.html">My Reviews</a></li>
+                            <li><a className="dropdown-item" href="account-info.html">Personal Info</a></li>
+                            <li><a className="dropdown-item" href="account-addresses.html">Addresses</a></li>
+                            <li><a className="dropdown-item" href="account-notifications.html">Notifications</a></li>
+                          </ul>
+                        </li>
+                        <li className="dropend">
+                          <a className="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Marketplace User</a>
+                          <ul className="dropdown-menu">
+                            <li><a className="dropdown-item" href="account-marketplace-dashboard.html">Dashboard</a></li>
+                            <li><a className="dropdown-item" href="account-marketplace-products.html">Products</a></li>
+                            <li><a className="dropdown-item" href="account-marketplace-sales.html">Sales</a></li>
+                            <li><a className="dropdown-item" href="account-marketplace-payouts.html">Payouts</a></li>
+                            <li><a className="dropdown-item" href="account-marketplace-purchases.html">Purchases</a></li>
+                            <li><a className="dropdown-item" href="account-marketplace-favorites.html">Favorites</a></li>
+                            <li><a className="dropdown-item" href="account-marketplace-settings.html">Settings</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                                            {/* Additional dropdown items can be added here */}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                </div>
+            </div>
+        </>
+    );
+}
+
 
 const Categories = () => {
     return (
@@ -1297,6 +1589,89 @@ const Categories = () => {
         </>
     );
 }
+
+const Categories3 = () => {
+    return (
+        <>
+            <div className="offcanvas offcanvas-start" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+                 style={{ paddingLeft: 0, display: 'inline-flex', flexDirection: 'column', maxWidth: '75%', overflowX: 1 }}>
+                 
+                <div className="offcanvas-header border-bottom">
+                    <h5 className="offcanvas-title" id="offcanvasLeftLabel">Browse Salessnet.</h5>
+                    <button className="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                
+                <div className="offcanvas-body py-3 py-lg-0" style={{ paddingLeft: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                    <header className="navbar navbar-expand-lg d-block z-fixed p-0" data-sticky-navbar="{&quot;offset&quot;: 500}">
+                        <div className="container px-0 px-lg-1">
+                            <div className="row">
+                                <div className="col-lg-6 col-12">
+                                    <div className="navbar-nav">
+                                        <div className="dropdown w-100">
+                                            <ul className="dropdown-menu dropdown-menu-static w-100  rounded-bottom-4 py-1 p-lg-1 show" data-bs-popper="static">
+                                                {/* Your dropdown items here */}
+                                                <li className="dropend position-static">
+                                                    <div className="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown" data-bs-trigger="hover">
+                                                        <a className="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="shop-catalog-electronics.html">
+                                                            <i className="ci-computer fs-xl opacity-60 pe-1 me-2"></i>
+                                                            <span className="text-truncate">Computers &amp; Accessories</span>
+                                                            <i className="ci-chevron-right fs-base ms-auto me-n1"></i>
+                                                        </a>
+                                                        <div className="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
+                                                            <i className="ci-computer fs-xl opacity-60 pe-1 me-2"></i>
+                                                            Computers &amp; Accessories
+                                                            <i className="ci-chevron-down fs-base ms-auto me-n1"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div className="dropdown-menu rounded-4 p-4" style={{ "top": "1rem", "animation": "none" }}>
+                                                        <div className="d-flex flex-column flex-lg-row h-100 gap-4">
+                                                            <div style={{ "minWidth": "194px" }}>
+                                                                <div className="d-flex w-100">
+                                                                    <a className="animate-underline animate-target d-inline h6 text-dark-emphasis text-decoration-none text-truncate" href="shop-catalog-electronics.html">Computers</a>
+                                                                </div>
+                                                                <ul className="nav flex-column gap-2 mt-n2">
+                                                                    <li className="d-flex w-100 pt-1">
+                                                                        <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Networking Products (NAS)</a>
+                                                                    </li>
+                                                                    <li className="d-flex w-100 pt-1">
+                                                                        <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Single Board Computers</a>
+                                                                    </li>
+                                                                    <li className="d-flex w-100 pt-1">
+                                                                        <a className="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Desktop Barebones</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            {/* Additional content here */}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
+
+            <style jsx>{`
+                @media (max-width: 992px) { /* For medium and larger screens */
+                    .offcanvas {
+                        max-width: 75%;
+                    }
+                }
+                @media (max-width: 768px) { /* For smaller screens */
+                    .offcanvas {
+                        max-width: 100%; /* Use full width on smaller screens */
+                    }
+                }
+            `}</style>
+        </>
+    );
+}
+
+
 
 export default Categories;
 

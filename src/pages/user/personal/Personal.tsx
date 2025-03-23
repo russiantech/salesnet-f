@@ -1,13 +1,14 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Aside from './shared/Aside'
-import Navigation from '../../../components/shared/Navigation2'
-import Categories from '../../../components/shared/modals/Categories'
+// import Navigation from '../../../components/shared/Navigation2'
+// import Categories from '../../../components/shared/modals/Categories'
+import Navigation from '../../../components/shared/Navigation'
 
 const Personal = () => {
     return (
         <>
-            <Categories />
+            {/* <Categories /> */}
             <Navigation />
 
             <main className="content-wrapper">
