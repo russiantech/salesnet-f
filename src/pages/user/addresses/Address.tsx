@@ -1,7 +1,7 @@
 import React from "react";
 import { AxiosAddressesService } from "../../../services/net/AxiosAddressesService";
 
-class AddressList extends React.Component {
+class Addresses extends React.Component {
 
     constructor(props) {
         super(props);
@@ -42,4 +42,4 @@ class AddressList extends React.Component {
     }
 }
 
-export default AddressList;
+export default Addresses;

@@ -1,12 +1,12 @@
-import React, {Component} from 'react'
+import {Component} from 'react'
 
 import {NavLink} from 'react-router-dom'
 import {CartService} from '../../../services/local/CartService'
 
-import NProgress from 'nprogress'
-import './Cart.css'
+// import NProgress from 'nprogress'
+import './Basket.css'
 
-class Cart extends Component {
+class Basket extends Component {
 
     constructor(props) {
         super(props);
@@ -36,9 +36,9 @@ class Cart extends Component {
     }
 
     componentDidMount() {
-        NProgress.start(0.0);
+        // NProgress.start(0.0);
 
-        NProgress.done(1.0);
+        // NProgress.done(1.0);
     }
 
     componentWillUnmount() {
@@ -145,4 +145,4 @@ class Cart extends Component {
     }
 }
 
-export default Cart
+export default Basket

@@ -1,4 +1,3 @@
-import React from 'react';
 
 const Canvas = () => {
   return (
@@ -11,7 +10,6 @@ const Canvas = () => {
 }
 
 export default Canvas
-
 
 const Search = () => {
   return (

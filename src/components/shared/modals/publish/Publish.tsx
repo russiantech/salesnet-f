@@ -23,7 +23,7 @@ const PublishPage = () => {
         {/* Tabs-like behavior */}
         <section id="pills-tabs" className="docs-section">
           <h4>Sales is real, works like charm..</h4>
-          <div className="card border-0 shadow - row g-0 overflow-x-auto pb-3 mb-2 mb-md-3 mb-lg-4">
+          <div className="card border-0 shadow - row g-0 overflow-x-auto pb-3 mb-2 mb-md-3 mb-lg-4" data-simplebar data-simplebar-auto-hide="false">
             {/* <span className="d-none d-block-dark position-absolute top-0 start-0 w-100 h-100 bg-dark rounded opacity-50" /> */}
             <div className="card-body position-relative z-2 col-auto mx-auto">
               {/* Nav pills */}

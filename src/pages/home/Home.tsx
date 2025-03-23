@@ -15,7 +15,8 @@ const Home = () => {
       <>
         <Navigation />
         <main className="content-wrapper"> 
-          <HeroSlides />
+          <SalesBanner />
+          {/* <HeroSlides /> */}
           <Features />
           <NewArrivals />
           <TrendingProducts />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+import { NavLink, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import { UsersService } from "../../services/local/UsersService";
 import { AxiosUsersService } from "../../services/net/AxiosUsersService";
 import { NotificationService } from "../../services/local/NotificationService";
@@ -64,7 +64,7 @@ const Signup = () => {
                 <div className="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style={{ maxWidth: '416px' }}>
                     {/* Logo */}
                     <header className="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
-                        <a className="navbar-brand pt-0" href="/">
+                        <NavLink className="navbar-brand pt-0" to="/">
                             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
                                 <div className="flex-shrink-0 border rounded-circle" style={{ width: '32px' }}>
                                     <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
@@ -73,16 +73,16 @@ const Signup = () => {
                                 </div>
                             </span>
                             Salesnet
-                        </a>
+                        </NavLink>
                     </header>
                     <h1 className="h2 mt-auto">Create an account</h1>
                     <div className="nav fs-sm mb-3 mb-lg-4">
                         I already have an account
-                        <a className="nav-link badge text-decoration-none rounded-pill p-1 ml-1 text-bg-info" href="/auth/signin">Sign in</a>
+                        <NavLink className="nav-link badge text-decoration-none rounded-pill p-1 ml-1 text-bg-info" to="/auth/signin">Sign in</NavLink>
                     </div>
                     <div className="nav fs-sm mb-4 d-lg-none">
                         <span className="me-2">Uncertain about creating an account?</span>
-                        <a className="text-decoration-none rounded-pill p-1 text-bg-info" href="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Explore the Benefits</a>
+                        <NavLink className="text-decoration-none rounded-pill p-1 text-bg-info" to="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Explore the Benefits</NavLink>
                     </div>
                     {/* Form */}
                     <form className="needs-validation" id="signup_form" onSubmit={onSubmitForm} noValidate>
@@ -144,7 +144,7 @@ const Signup = () => {
                             <div className="form-check">
                                 <input type="checkbox" defaultChecked className="form-check-input" id="privacy" required />
                                 <label htmlFor="privacy" className="form-check-label">
-                                    I have read and accept the <a className="text-dark-emphasis" href="#!"> Privacy Policy</a></label>
+                                    I have read and accept the <NavLink className="text-dark-emphasis" to="#!"> Privacy Policy</NavLink></label>
                             </div>
                         </div>
                         <button type="submit" className="btn btn-lg bg-dark text-white w-100">

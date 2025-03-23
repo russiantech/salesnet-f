@@ -3,7 +3,7 @@ import {AxiosOrdersService} from "../../../services/net/AxiosOrdersService";
 import NavigationMenu from "../../partials/NavigationMenu";
 import Layout from "../../partials/Layout";
 
-class OrderList extends React.Component {
+class Orders extends React.Component {
 
     constructor(props) {
         super(props);
@@ -46,4 +46,4 @@ class OrderList extends React.Component {
     }
 }
 
-export default OrderList;
+export default Orders;

@@ -180,8 +180,7 @@ const BottomNav = () => {
         <header className="navbar navbar-expand-lg bg-body shadow px-0 fixed-bottom align-items-center">
             <div className="container-fluid">
                 <div style={styles.nav_div} className="d-flex py-lg-1">
-                    
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#SideCategory" aria-controls="SideCategory" aria-label="Toggle navigation">
+                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-grid-2 fs-xl" />
                         </span>

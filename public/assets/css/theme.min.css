@@ -4008,7 +4008,7 @@ fieldset:disabled .btn {
 
 .dropdown-menu {
     --cz-dropdown-zindex: 1000;
-    --cz-dropdown-min-width: 12.5rem;
+    --cz-dropdown-min-width: 18.5rem;
     --cz-dropdown-padding-x: 0.75rem;
     --cz-dropdown-padding-y: 0.75rem;
     --cz-dropdown-spacer: 0.25rem;
