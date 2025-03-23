@@ -249,7 +249,7 @@ const Basket = () => {
 
 const Installer = () => {
   return (
-    <div className="offcanvas offcanvas-bottom show" id="offcanvasBottom" tabIndex="-1" aria-labelledby="offcanvasBottomLabel">
+    <div className="offcanvas offcanvas-bottom" id="offcanvasBottom" tabIndex="-1" aria-labelledby="offcanvasBottomLabel">
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasBottomLabel">
           <a className="navbar-brand pt-0" href="./">
