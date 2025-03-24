@@ -12,7 +12,7 @@ import Footer from "../../components/shared/Footer"
 
 const Home = () => {
     return (
-      <>
+      <> 
         <Navigation />
         <main className="content-wrapper"> 
           <SalesBanner />

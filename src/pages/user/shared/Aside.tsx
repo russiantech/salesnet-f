@@ -1,8 +1,10 @@
-import React from 'react'
 import { NavLink } from 'react-router-dom'
+import Bonuses from './Bonuses'
 
 const Aside = () => {
   return (
+    <>
+    <Bonuses />
     <aside className="col-lg-3">
         <div
           className="offcanvas-lg offcanvas-start pe-lg-0 pe-xl-4"
@@ -11,14 +13,10 @@ const Aside = () => {
           {/* Header */}
           <div className="offcanvas-header d-lg-block py-3 p-lg-0">
             <div className="d-flex align-items-center">
-              <div
-                className="h5 d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle mb-0"
-                style={{ width: "3rem", height: "3rem" }}
-              >
-                S
-              </div>
+              <div className="h5 d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle mb-0"
+                style={{ width: "3rem", height: "3rem" }}> R </div>
               <div className="min-w-0 ps-3">
-                <h5 className="h6 mb-1">Susan Gardner</h5>
+                <h5 className="h6 mb-1">Russian developers</h5>
                 <div className="nav flex-nowrap text-nowrap min-w-0">
                   <NavLink
                     className="nav-link animate-underline text-body p-0"
@@ -57,7 +55,7 @@ const Aside = () => {
             <nav className="list-group list-group-borderless">
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="account-orders.html"
+                to="/user/orders"
               >
                 <i className="ci-shopping-bag fs-base opacity-75 me-2" />
                 Orders
@@ -65,21 +63,21 @@ const Aside = () => {
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="account-wishlist.html"
+                to="/user/favorites"
               >
                 <i className="ci-heart fs-base opacity-75 me-2" />
                 Wishlist
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="account-payment.html"
+                to="/user/payments"
               >
                 <i className="ci-credit-card fs-base opacity-75 me-2" />
                 Payment methods
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="account-reviews.html"
+                to="/user/reviews"
               >
                 <i className="ci-star fs-base opacity-75 me-2" />
                 My reviews
@@ -87,23 +85,21 @@ const Aside = () => {
             </nav>
             <h6 className="pt-4 ps-2 ms-1">Manage account</h6>
             <nav className="list-group list-group-borderless">
-              <NavLink
-                className="list-group-item list-group-item-action d-flex align-items-center pe-none active"
-                to="account-info.html"
-              >
+              <NavLink className="list-group-item list-group-item-action d-flex align-items-center active"
+                to="/user/personal">
                 <i className="ci-user fs-base opacity-75 me-2" />
                 Personal info
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="account-addresses.html"
+                to="/user/addresses"
               >
                 <i className="ci-map-pin fs-base opacity-75 me-2" />
                 Addresses
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="account-notifications.html"
+                to="/user/notifications"
               >
                 <i className="ci-bell fs-base opacity-75 mt-1 me-2" />
                 Notifications
@@ -113,14 +109,13 @@ const Aside = () => {
             <nav className="list-group list-group-borderless">
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="help-topics-v1.html"
-              >
+                to="/user/help" >
                 <i className="ci-help-circle fs-base opacity-75 me-2" />
                 Help center
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="/pages/terms"
+                to="/user/terms"
               >
                 <i className="ci-info fs-base opacity-75 me-2" />
                 Terms and conditions
@@ -137,7 +132,8 @@ const Aside = () => {
             </nav>
           </div>
         </div>
-      </aside>
+    </aside>
+    </>
   )
 }
 

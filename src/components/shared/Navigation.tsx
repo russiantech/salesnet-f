@@ -16,7 +16,8 @@ export default Navigation
 const TopNav = () => {
     {/* Navigation bar (Page header) */ }
     return (
-        <header className="navbar navbar-expand-lg navbar-dark bg-dark d-block z-fixed p-0" data-sticky-navbar="{'offset': 500}">
+        // <header className="navbar navbar-expand-lg navbar-dark bg-dark d-block z-fixed p-0 fixed-top navbar-stuck" data-sticky-navbar="{'offset': 500}">
+        <header className="navbar navbar-expand-lg navbar-dark bg-dark d-block z-fixed p-0 navbar-stuck" data-sticky-navbar="{'offset': 500}">
             <div className="container d-block py-1 py-lg-3 d-lg-none d-md-none1" data-bs-theme="dark">
                 <div className="navbar-stuck-hide pt-1" />
                 <div className="row flex-nowrap align-items-center g-0">
@@ -53,6 +54,14 @@ const TopNav = () => {
                                 <i className="ci-user animate-target ms-n1" />
                             </span>
                         </Link>
+                        <Link to="/user/personal" type="button" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle animate-shake ms-2" 
+                        data-bs-toggle="offcanvas" data-bs-target="#accountSidebar" aria-controls="accountSidebar" data-bs-theme="light" aria-label="Toggle search bar">
+                            <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" 
+                            style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}><i className="ci-chevron-left animate-target" /></span>
+                            <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+                                <i className="ci-user animate-target" />
+                            </span>
+                        </Link>
                     </div>
                 </div >
             </div >
@@ -83,8 +92,8 @@ const TopNav = () => {
                                             {/*  */}
                                             <button type="button" className="btn btn-icon btn-lg btn-outline-secondary position-relative rounded-circle text-white" 
                                             data-bs-toggle="offcanvas" data-bs-target="#SideCategory" aria-controls="SideCategory" aria-label="Toggle navigation">
-                                                <span class="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                                                    <i class="ci-grid-2 fs-xl"></i></span>
+                                                <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+                                                    <i className="ci-grid-2 fs-xl"></i></span>
                                                     </button>
                                             {/*  */}
                                         </div>
@@ -106,9 +115,9 @@ const TopNav = () => {
                                         </li>
 
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <NavLink className="nav-link" to="/saved">
+                                            <NavLink className="nav-link" to="/user/favorites">
                                                 <i className="ci-heart fs-2 m-1" />
-                                                Saved.</NavLink>
+                                                Favorites</NavLink>
                                         </li>
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
                                             <NavLink className="nav-link" to="!#" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">

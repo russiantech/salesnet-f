@@ -125,14 +125,14 @@ const Basket = () => {
         <div className="offcanvas-body d-flex flex-column gap-4 pt-2">
           {/* Item */}
           <div className="d-flex align-items-center">
-            <a className="flex-shrink-0" href="./single_product.html">
-              <img src="assets/img/shop/electronics/thumbs/08.png" width="110" alt="iPhone 14" />
+            <a className="flex-shrink-0" href="/products/techa-products-slug">
+              <img src="/assets/img/shop/electronics/thumbs/08.png" width="110" alt="iPhone 14" />
             </a>
             <div className="w-100 min-w-0 ps-2 ps-sm-3">
               <h5 className="d-flex animate-underline mb-2">
                 <a
                   className="d-block fs-sm fw-medium text-truncate animate-target"
-                  href="./single_product.html"
+                  href="/products/techa-products-slug"
                 >
                   Apple iPhone 14 128GB White
                 </a>
@@ -176,14 +176,14 @@ const Basket = () => {
           </div>
           {/* Item */}
           <div className="d-flex align-items-center">
-            <a className="flex-shrink-0" href="./single_product.html">
-              <img src="assets/img/shop/electronics/thumbs/08.png" width="110" alt="iPhone 14" />
+            <a className="flex-shrink-0" href="/products/techa-products-slug">
+              <img src="/assets/img/shop/electronics/thumbs/08.png" width="110" alt="iPhone 14" />
             </a>
             <div className="w-100 min-w-0 ps-2 ps-sm-3">
               <h5 className="d-flex animate-underline mb-2">
                 <a
                   className="d-block fs-sm fw-medium text-truncate animate-target"
-                  href="./single_product.html"
+                  href="/products/techa-products-slug"
                 >
                   Apple iPhone 14 128GB White
                 </a>

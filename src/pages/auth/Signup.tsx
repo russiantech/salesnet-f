@@ -58,7 +58,7 @@ const Signup = () => {
     console.log(formData);
 
     return (
-        <>
+        <>  <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{"maxWidth": "1920px"}}>
             <div className="d-lg-flex">
                 {/* Login form + Footer */}
                 <div className="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style={{ maxWidth: '416px' }}>
@@ -280,6 +280,7 @@ const Signup = () => {
                     </div>
                 </div>
             </div>
+            </main>
         </>
     );
 }
