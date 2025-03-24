@@ -39,7 +39,7 @@ import Publish from "./components/shared/modals/publish/Publish";
 import AuthRoutes from "./routes/AuthRoutes";
 import ProductRoutes from "./routes/ProductRoutes";
 import UserRoutes from "./routes/UserRoutes";
-import ProductDetails from "./pages/products/ProductDetails";
+import VendorRoutes from "./routes/VendorRoutes";
 
 const App = () => {
   return (
@@ -54,6 +54,7 @@ const App = () => {
         <Route path="/products/*" element={<ProductRoutes />} />
         <Route path="/auth/*" element={<AuthRoutes />} />
         <Route path="/user/*" element={<UserRoutes />} />
+        <Route path="/vendor/*" element={<VendorRoutes />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

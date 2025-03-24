@@ -85,7 +85,7 @@ const Aside = () => {
             </nav>
             <h6 className="pt-4 ps-2 ms-1">Manage account</h6>
             <nav className="list-group list-group-borderless">
-              <NavLink className="list-group-item list-group-item-action d-flex align-items-center active"
+              <NavLink className="list-group-item list-group-item-action d-flex align-items-center"
                 to="/user/personal">
                 <i className="ci-user fs-base opacity-75 me-2" />
                 Personal info
