@@ -7,12 +7,20 @@ UsersService.subscribe((user) => {
     cachedUser = user;
 });
 
+// const axiosInstance = axios.create({
+//     baseURL: 'http://localhost:8080/api',
+//     // baseURL: 'https://salesnet.onrender.com/api',
+//     responseType: 'json',
+//     responseEncoding: 'utf8'
+// });
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api',
-    // baseURL: 'https://salesnet.onrender.com/api',
+    baseURL: window.location.hostname === 'localhost' 
+        ? 'http://localhost:8080/api'
+        : 'https://salesnet.onrender.com/api',
     responseType: 'json',
     responseEncoding: 'utf8'
 });
+
 
 axiosInstance.interceptors.request.use((config) => {
     if (cachedUser.token)
