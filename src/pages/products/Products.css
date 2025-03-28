@@ -1,0 +1,140 @@
+.placeholder-wave {
+    background-color: #f0f0f0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.placeholder-img {
+    width: 100%;
+    height: 180px; /* Adjust as needed */
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    animation: wave 1.5s infinite;
+}
+
+.placeholder-text {
+    height: 20px;
+    background-color: #e0e0e0;
+    margin: 10px 0;
+    border-radius: 0.25rem;
+}
+
+.placeholder-price {
+    width: 60px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+}
+
+.placeholder-button {
+    width: 40px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+}
+
+@keyframes wave {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* load more animations */
+/* Products.css */
+
+/* Loading Spinner */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust as needed */
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3b82f6; /* Change to your desired color */
+    border-radius: 50%;
+    width: 40px; /* Size of the spinner */
+    height: 40px; /* Size of the spinner */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* product cards */
+
+/* Product Card Styles */
+.product-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+/* Placeholder Styles */
+.placeholder-wave {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.placeholder-img {
+    width: 100%;
+    height: 150px; 
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: wave 1.5s infinite;
+}
+
+.placeholder-text {
+    height: 20px;
+    background-color: #e0e0e0;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.placeholder-price {
+    height: 15px;
+    width: 60%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}
+
+.placeholder-button {
+    height: 25px;
+    width: 40%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+}
+
+@keyframes wave {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+} 
+
+
+/* round animation */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.25em;
+}
+

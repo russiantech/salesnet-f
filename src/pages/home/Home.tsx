@@ -8,7 +8,7 @@ import TrendingProducts from "./TrendingProducts"
 import Brands from "./Brands"
 import Navigation from "../../components/shared/Navigation"
 import Footer from "../../components/shared/Footer"
-
+import ProductsByCategories from "../products/ProductsByCategories"
 
 const Home = () => {
     return (
@@ -22,6 +22,7 @@ const Home = () => {
           <TrendingProducts />
           <SalesBanner />
           <Offers/>
+          <ProductsByCategories />
           <Brands/>
         </main>
         <Footer />

@@ -6,8 +6,8 @@ const NewArrivals = () => {
       <div className="row">
         {/* Banner */}
         <div className="col-lg-4" data-bs-theme="dark">
-          <div className="d-flex flex-column align-items-center justify-content-end h-100 text-center overflow-hidden rounded-5 px-4 px-lg-3 pt-4 pb-5" style={{background: '#1d2c41 url(assets/img/home/electronics/banner/background.jpg) center/cover no-repeat'}}>
-            <div className="ratio animate-up-down position-relative z-2 me-lg-4" style={{maxWidth: '320px', marginBottom: '-19%', czAspectRatio: 'calc(690 / 640 * 100%)'}}>
+          <div className="d-flex flex-column align-items-center justify-content-end h-100 text-center overflow-hidden rounded-5 px-4 px-lg-3 pt-4 pb-5" style={{background: '#1d2c41 url(/assets/img/home/electronics/banner/background.jpg) center/cover no-repeat'}}>
+            <div className="ratio animate-up-down position-relative z-2 me-lg-4" style={{maxWidth: '320px', marginBottom: '-19%', "cz-aspect-ratio": 'calc(690 / 640 * 100%)'}}>
               <img src="/assets/img/home/electronics/banner/laptop.png" alt="Laptop" />
             </div>
             <h3 className="display-2 mb-2">MacBook</h3>
