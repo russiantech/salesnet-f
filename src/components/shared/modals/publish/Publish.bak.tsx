@@ -112,8 +112,6 @@ const PublishPage = () => {
                 <div className="tab-pane fade" id="pills-listing-type" role="tabpanel" aria-labelledby="pills-listing-tab">
 
                   <section className="container pt-2 mt-1 mt-sm-3 mt-lg-4">
-
-                      {/* Model options made of .btn-outline-secondary */}
                       <div className="row">
                         {/* <label className="form-label pb-1 mb-2">Model</label> */}
                         <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
@@ -187,7 +185,6 @@ const PublishPage = () => {
                           </label>
                         </div>
                       </div>
-
                   </section>
                 </div>
 

@@ -44,7 +44,6 @@ const ListingDetails = ({ onChange }) => {
   }
 
   return (
-    <div className="tab-pane fade show active">
       <section className="position-relative bg-body rounded p-4 mt-4">
         <div className="position-relative z-1 pb-md-2 px-md-2">
           <h2 className="h4 mb-3 mb-sm-4">Listing Basic Details</h2>
@@ -53,7 +52,7 @@ const ListingDetails = ({ onChange }) => {
               <label htmlFor="name" className="form-label">Product Name</label>
               <input
                 type="text"
-                className="form-control form-control-lg"
+                className="form-control "
                 id="name"
                 name="name"
                 minLength={10}
@@ -65,7 +64,7 @@ const ListingDetails = ({ onChange }) => {
               <label htmlFor="price" className="form-label">Price</label>
               <input
                 type="number"
-                className="form-control form-control-lg"
+                className="form-control "
                 id="price"
                 name="price"
                 placeholder="Enter price"
@@ -78,7 +77,7 @@ const ListingDetails = ({ onChange }) => {
                 <i className="fi-info fs-base ms-2" data-bs-toggle="tooltip" aria-label="Select a category" />
               </label>
               <select
-                className="form-select form-select-lg"
+                className="form-select"
                 name="categories"
                 onChange={onChange}
               >
@@ -92,7 +91,7 @@ const ListingDetails = ({ onChange }) => {
             <div className="col">
               <label htmlFor="condition" className="form-label">Condition</label>
               <select
-                className="form-select form-select-lg"
+                className="form-select"
                 id="condition"
                 name="condition"
                 onChange={onChange}
@@ -106,7 +105,7 @@ const ListingDetails = ({ onChange }) => {
           <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
           <p className="fs-sm mb-2">Describe the product in detail (maximum 300 characters).</p>
           <textarea
-            className="form-control form-control-lg"
+            className="form-control "
             rows={4}
             id="description"
             name="description"
@@ -116,7 +115,6 @@ const ListingDetails = ({ onChange }) => {
           />
         </div>
       </section>
-    </div>
   );
 }
 

@@ -35,7 +35,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import { NotFoundPage, NotImplimentedPage } from "./pages/Notfound";
 import Canvas from "./components/shared/modals/Canvas";
-import Publish from "./components/shared/modals/publish/Publish.bak";
+import Publish from "./components/shared/modals/publish/Publish";
 import AuthRoutes from "./routes/AuthRoutes";
 import ProductRoutes from "./routes/ProductRoutes";
 import UserRoutes from "./routes/UserRoutes";
