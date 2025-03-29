@@ -5,3 +5,10 @@
 .nav-pills .nav-link {
     display: inline-block;
 }
+
+/*  */
+.fixed-height-card {
+    /* height: 400px; Adjust this value as needed */
+    /* overflow: auto; Allows scrolling if content overflows */
+  }
+  
