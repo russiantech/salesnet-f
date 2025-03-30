@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import ListingDetails from './ListingDetails';
-import ListingType from './ListingType';
+import Media from './Media';
 import Contact from './Contact';
 import Location from './Location';
 import Promote from './Promote';
-import Media from './Media';
 
 const PublishPage = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -28,16 +27,20 @@ const PublishPage = () => {
     // Handle the submission logic (e.g., API call)
   };
 
-  const handleNext = () => {
+  const handleNext = (event) => {
     const tabs = ['home', 'media', 'contact', 'location', 'promote'];
     const currentIndex = tabs.indexOf(activeTab);
-    if (currentIndex < tabs.length - 1) {
+    
+    if (activeTab === 'promote') {
+      handleSubmit(event); // Submit the form if on the promote tab
+    } else if (currentIndex < tabs.length - 1) {
       setActiveTab(tabs[currentIndex + 1]);
     }
+
   };
 
   const handleBack = () => {
-    const tabs = ['home','media', 'contact', 'location', 'promote'];
+    const tabs = ['home', 'media', 'contact', 'location', 'promote'];
     const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex > 0) {
       setActiveTab(tabs[currentIndex - 1]);
@@ -55,11 +58,8 @@ const PublishPage = () => {
                 <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
                   {['home', 'media', 'contact', 'location', 'promote'].map(tab => (
                     <li className="nav-item" role="presentation" key={tab}>
-                      <button
-                        type="button"
-                        className={`nav-link ${activeTab === tab ? 'active' : ''}`}
-                        onClick={() => handleTabChange(tab)}
-                      >
+                      <button type="button" className={`nav-link ${activeTab === tab ? 'active' : ''}`}
+                        onClick={() => handleTabChange(tab)}>
                         {tab.charAt(0).toUpperCase() + tab.slice(1).replace('-', ' ')}
                       </button>
                     </li>
@@ -89,11 +89,12 @@ const PublishPage = () => {
                   <button type="button" className="btn btn-outline-dark" onClick={handleBack} disabled={activeTab === 'home'}>
                     Back
                   </button>
-                  <button type="button" className="btn btn-dark ms-auto" onClick={handleNext} disabled={activeTab === 'promote'}>
-                    Next
-                  </button>
-                  <button type="submit" className="btn btn-success ms-auto" style={{ display: activeTab === 'promote' ? 'block' : 'none' }}>
-                    Submit
+                  <button 
+                    type="button" 
+                    className="btn btn-dark ms-auto" 
+                    onClick={handleNext}
+                  >
+                    {activeTab === 'promote' ? 'Submit' : 'Next'}
                   </button>
                 </div>
               </footer>

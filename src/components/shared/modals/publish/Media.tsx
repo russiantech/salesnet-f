@@ -86,11 +86,10 @@ const Media = ({ onChange }) => {
           <label htmlFor="link" className="form-label">Link to the video online.</label>
           <div className="position-relative">
             <i className="fi-link position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />
-            <input type="url" className="form-control form-control-lg form-icon-start" id="link" placeholder="www.youtube.com/..." />
+            <input type="url" className="form-control form-icon-start" id="link" placeholder="www.youtube.com/..." />
           </div>
         </div>
       </div>
-      <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark rounded d-none d-block-dark" />
     </section>
   );
 }
