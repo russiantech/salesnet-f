@@ -49,16 +49,16 @@ const TopNav = () => {
                         </button>
 
                         {/* Go to profile */}
-                        <NavLink to="/vendor/dashboard" className="btn btn-icon hover-effect-scale position-relative border rounded-circle overflow-hidden">
+                        {/* <NavLink to="/vendor/dashboard" className="btn btn-icon hover-effect-scale position-relative border rounded-circle overflow-hidden">
                             <img src="/assets/img/account/avatar-sm.png" className="hover-effect-target position-absolute top-0 start-0 w-100 h-100 object-fit-cover" alt="Avatar" />
-                        </NavLink>
+                        </NavLink> */}
 
-                        <NavLink to="/auth/signin" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
+                        {/* <NavLink to="/auth/signin" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2">
                             <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                             <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                                 <i className="ci-user animate-target ms-n1" />
                             </span>
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink to="/user/personal" type="button" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle animate-shake ms-2" 
                         data-bs-toggle="offcanvas" data-bs-target="#accountSidebar" aria-controls="accountSidebar" data-bs-theme="light" aria-label="Toggle search bar">
                             <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" 
@@ -154,12 +154,20 @@ const TopNav = () => {
 
                                         </li >
                                         <li className="nav-item me-lg-n1">
-                                            <NavLink to="/auth/signin" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle ms-2">
+                                            {/* <NavLink to="/auth/signin" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle ms-2">
                                                 <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                                                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                                                     <i className="ci-user animate-target ms-n1" />
                                                 </span>
-                                            </NavLink>
+                                            </NavLink> */}
+                                            <NavLink to="/user/personal" type="button" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle animate-shake ms-2" 
+                        data-bs-toggle="offcanvas" data-bs-target="#accountSidebar" aria-controls="accountSidebar" data-bs-theme="light" aria-label="Toggle search bar">
+                            <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" 
+                            style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}><i className="ci-chevron-left animate-target" /></span>
+                            <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+                                <i className="ci-user animate-target ms-n1" />
+                            </span>
+                        </NavLink>
                                         </li >
                                     </ul >
                                 </div >
@@ -214,12 +222,13 @@ const BottomNav = () => {
                         </span>
                     </NavLink>
 
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+                    <NavLink type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" 
+                    to="/user/favorites">
                         <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                             <i className="ci-heart animate-target" />
                         </span>
-                    </button>
+                    </NavLink>
 
                     <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
                         <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>

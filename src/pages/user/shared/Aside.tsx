@@ -4,8 +4,8 @@ import Bonuses from './Bonuses'
 const Aside = () => {
   return (
     <>
-    <Bonuses />
-    <aside className="col-lg-3">
+      <Bonuses />
+      <aside className="col-lg-3">
         <div
           className="offcanvas-lg offcanvas-start pe-lg-0 pe-xl-4"
           id="accountSidebar"
@@ -132,7 +132,7 @@ const Aside = () => {
             </nav>
           </div>
         </div>
-    </aside>
+      </aside>
     </>
   )
 }
