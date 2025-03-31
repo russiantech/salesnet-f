@@ -103,7 +103,7 @@ const TopNav = () => {
                                             {/*  */}
                                         </div>
                                     </div >
-                                </div >
+                                </div>
 
                                 < div className="col-lg-9 d-lg-flex pt-3 pt-lg-0 ps-lg-0" >
                                     <ul className="navbar-nav position-relative">

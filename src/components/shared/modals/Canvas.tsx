@@ -49,7 +49,16 @@ const Search = () => {
   );
 }
 
+// import React from 'react';
+// import { NavLink, Link } from 'react-router-dom';
+
 const Basket = () => {
+  const closeOffcanvas = () => {
+    const offcanvasElement = document.getElementById('shoppingCart');
+    const offcanvas = new window.bootstrap.Offcanvas(offcanvasElement);
+    offcanvas.hide();
+  };
+
   return (
     <>
       {/* Empty Basket Offcanvas */}
@@ -180,57 +189,6 @@ const Basket = () => {
               </div>
             </div>
           </div>
-          {/* Item */}
-          <div className="d-flex align-items-center">
-            <a className="flex-shrink-0" href="/products/techa-products-slug">
-              <img src="/assets/img/shop/electronics/thumbs/08.png" width="110" alt="iPhone 14" />
-            </a>
-            <div className="w-100 min-w-0 ps-2 ps-sm-3">
-              <h5 className="d-flex animate-underline mb-2">
-                <a
-                  className="d-block fs-sm fw-medium text-truncate animate-target"
-                  href="/products/techa-products-slug"
-                >
-                  Apple iPhone 14 128GB White
-                </a>
-              </h5>
-              <div className="h6 pb-1 mb-2">$899.00</div>
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="count-input rounded-2">
-                  <button
-                    type="button"
-                    className="btn btn-icon btn-sm"
-                    data-decrement=""
-                    aria-label="Decrement quantity"
-                  >
-                    <i className="ci-minus"></i>
-                  </button>
-                  <input
-                    type="number"
-                    className="form-control form-control-sm"
-                    value="1"
-                    readOnly
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-icon btn-sm"
-                    data-increment=""
-                    aria-label="Increment quantity"
-                  >
-                    <i className="ci-plus"></i>
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  className="btn-close fs-sm"
-                  data-bs-toggle="tooltip"
-                  data-bs-custom-className="tooltip-sm"
-                  data-bs-title="Remove"
-                  aria-label="Remove from cart"
-                ></button>
-              </div>
-            </div>
-          </div>
           {/* Additional items */}
         </div>
         {/* Footer */}
@@ -240,10 +198,10 @@ const Basket = () => {
             <span className="h6 mb-0">$2,317.00</span>
           </div>
           <div className="d-flex w-100 gap-3">
-            <NavLink className="btn btn-lg btn-secondary w-100" to='/user/basket'>
+            <NavLink className="btn btn-lg btn-secondary w-100" to='/user/basket' onClick={closeOffcanvas}>
               View cart
             </NavLink>
-            <Link className="btn btn-lg btn-primary w-100" to="/user/checkout">
+            <Link className="btn btn-lg btn-primary w-100" to="/user/checkout" onClick={closeOffcanvas}>
               Checkout
             </Link>
           </div>
@@ -251,7 +209,11 @@ const Basket = () => {
       </div>
     </>
   );
-}
+};
+
+// export default Basket;
+
+
 
 const Installer = () => {
   return (
