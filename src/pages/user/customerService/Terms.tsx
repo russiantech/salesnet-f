@@ -1,9 +1,9 @@
-import Navigation from "../../../components/shared/Navigation"
+// import Navigation from "../../../components/shared/Navigation"
 
 const Terms = () => {
   return (
     <>
-    <Navigation />
+    {/* <Navigation /> */}
 
       <main className="content-wrapper">
         <div className="container py-5 mb-2 mt-n2 mt-sm-1 my-md-3 my-lg-4 mb-xl-5">

@@ -49,10 +49,76 @@ const PublishPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+
+
+
+
+
+
+
+
+
+
+      
+          {/*  */}
+          
+          <div className=" align-items-center">
+                {/* Nav pills */}
+                <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
+                  {['home', 'media', 'contact', 'location', 'promote'].map(tab => (
+                    <li className="nav-item" role="presentation" key={tab}>
+                      <button type="button" className={`nav-link ${activeTab === tab ? 'active' : ''}`}
+                        onClick={() => handleTabChange(tab)}>
+                        {tab.charAt(0).toUpperCase() + tab.slice(1).replace('-', ' ')}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {/* Pills content */}
+                <div className="tab-content" id="pills-tabContent">
+                  <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`}>
+                    <ListingDetails onChange={handleInputChange} />
+                  </div>
+                  <div className={`tab-pane fade ${activeTab === 'media' ? 'show active' : ''}`}>
+                    <Media onChange={handleInputChange} />
+                  </div>
+                  <div className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`}>
+                    <Contact onChange={handleInputChange} />
+                  </div>
+                  <div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`}>
+                    <Location onChange={handleInputChange} />
+                  </div>
+                  <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`}>
+                    <Promote onChange={handleInputChange} />
+                  </div>
+                </div>
+              </div>
+          {/*  */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
       <div className="container pt-4 justify-content-center">
         <div className="row pt-sm-2" style={{ marginLeft: "-15px", marginRight: "-15px" }}>
           <section id="pills-tabs" className="docs-section">
             <div className="card border-0 shadow row g-0 overflow-x-auto pb-3 mb-2 mb-md-3 mb-lg-4">
+              
               <div className="card-body position-relative z-2 col-auto">
                 {/* Nav pills */}
                 <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
@@ -84,6 +150,7 @@ const PublishPage = () => {
                   </div>
                 </div>
               </div>
+
               <footer className="sticky-bottom bg-body pb-3">
                 <div className="container d-flex gap-3 pt-3">
                   <button type="button" className="btn btn-outline-dark" onClick={handleBack} disabled={activeTab === 'home'}>

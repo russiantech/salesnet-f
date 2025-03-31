@@ -9,7 +9,7 @@ import {AxiosOrdersService} from "../../../services/net/AxiosOrdersService";
 import {CartService} from "../../../services/local/CartService";
 import {NotificationService} from "../../../services/local/NotificationService";
 import {UsersService} from "../../../services/local/UsersService";
-import Cart from "../basket/Basket";
+import Cart from "../basket/Basket.BAK";
 
 class Checkout extends Component {
 

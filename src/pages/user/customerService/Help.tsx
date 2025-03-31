@@ -1,9 +1,9 @@
-import Navigation from "../../../components/shared/Navigation"
+// import Navigation from "../../../components/shared/Navigation"
 
 const Help = () => {
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       
       <main className="content-wrapper">
         {/* Hero */}

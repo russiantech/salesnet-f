@@ -1,10 +1,10 @@
-import Navigation from "../../../components/shared/Navigation"
+// import Navigation from "../../../components/shared/Navigation"
 import Aside from "../shared/Aside"
 
 const Notifications = () => {
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       
       {/* Page content */}
       <main className="content-wrapper">

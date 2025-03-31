@@ -48,7 +48,7 @@ const Publish = () => {
             <h5 className="modal-title">List Product - Sales Works Like Charm</h5>
             <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" />
           </div>
-          <div className="modal-body">
+          <div className="modal-body d-flex flex-column gap-4 pt-2">
             <PublishPage/>
           </div>
           <div className="modal-footer flex-column flex-sm-row align-items-stretch">

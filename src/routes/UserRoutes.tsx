@@ -10,8 +10,12 @@ import Reviews from '../pages/user/reviews/Reviews';
 import Terms from '../pages/user/customerService/Terms';
 import Help from '../pages/user/customerService/Help';
 import HelpSingle from '../pages/user/customerService/HelpSingle';
+import Basket from '../pages/user/basket/Basket';
+import Navigation from '../components/shared/Navigation';
 
 const UserRoutes = () => (
+  <>
+    <Navigation />
     <Routes>
       <Route path="/personal" element={<Personal />} />
       <Route path="/notifications" element={<Notifications />} />
@@ -21,11 +25,16 @@ const UserRoutes = () => (
       <Route path="/orders" element={<Orders />} />
       <Route path="/payments" element={<Payments />} />
       <Route path="/reviews" element={<Reviews />} />
+
+      {/* Shoppings */}
+      <Route path="/basket" element={<Basket />} />
+
       {/* others */}
       <Route path="/terms" element={<Terms />} />
       <Route path="/help" element={<Help />} />
       <Route path="/help/:slug" element={<HelpSingle />} />
     </Routes>
-  );
-  
+  </>
+);
+
 export default UserRoutes

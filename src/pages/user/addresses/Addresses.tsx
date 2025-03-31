@@ -1,7 +1,7 @@
 import React from 'react'
 import NewAddess from './NewAddess'
 import Aside from '../shared/Aside'
-import Navigation from '../../../components/shared/Navigation'
+// import Navigation from '../../../components/shared/Navigation'
 
 const Addresses = () => {
   return (
@@ -10,7 +10,7 @@ const Addresses = () => {
           {/* Add new address modal */}
           <NewAddess />
 
-            <Navigation />
+            {/* <Navigation /> */}
             
           {/* Page content */}
           <main className="content-wrapper">

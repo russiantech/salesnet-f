@@ -11,7 +11,7 @@ const ListingType = ({ onChange }) => {
                     <input
                         type="radio"
                         className="btn-check"
-                        name="model-options"
+                        name="product_type"
                         id="model-1"
                         defaultChecked=""
                     />
@@ -28,7 +28,7 @@ const ListingType = ({ onChange }) => {
                     <input
                         type="radio"
                         className="btn-check"
-                        name="model-options"
+                        name="product_type"
                         id="model-2"
                     />
                     <label htmlFor="model-2" className="btn btn-sm border-2  btn-outline-secondary">
@@ -45,7 +45,7 @@ const ListingType = ({ onChange }) => {
                     <input
                         type="radio"
                         className="btn-check"
-                        name="model-options"
+                        name="product_type"
                         id="model-3"
                     />
                     <label htmlFor="model-3" className="btn btn-sm border-2 btn-outline-secondary">
@@ -61,7 +61,7 @@ const ListingType = ({ onChange }) => {
                     <input
                         type="radio"
                         className="btn-check"
-                        name="model-options"
+                        name="product_type"
                         id="model-4"
                         disabled=""
                     />

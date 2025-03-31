@@ -9,7 +9,6 @@ const ProductRoutes = () => {
   return (
     <>
     <ProductReviewForm />
-
     <Routes>
       <Route path="/" element={<Products />} />
       <Route path="/:slug" element={<ProductDetails />} />

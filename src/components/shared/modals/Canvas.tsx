@@ -1,10 +1,11 @@
+import { Link, NavLink } from "react-router-dom";
 
 const Canvas = () => {
   return (
     <>
-      <Search/>
-      <Basket/>
-      <Installer/>
+      <Search />
+      <Basket />
+      <Installer />
     </>
   )
 }
@@ -52,8 +53,7 @@ const Basket = () => {
   return (
     <>
       {/* Empty Basket Offcanvas */}
-      <div
-        className="offcanvas offcanvas-end pb-sm-2 px-sm-2 d-none"
+      <div className="offcanvas offcanvas-end pb-sm-2 px-sm-2 d-none"
         id="shoppingCart_01"
         tabIndex="-1"
         aria-labelledby="shoppingCartLabel"
@@ -234,9 +234,9 @@ const Basket = () => {
             <span className="h6 mb-0">$2,317.00</span>
           </div>
           <div className="d-flex w-100 gap-3">
-            <a className="btn btn-lg btn-secondary w-100" href="checkout-v1-cart.html">
+            <NavLink className="btn btn-lg btn-secondary w-100" to='/user/basket'>
               View cart
-            </a>
+            </NavLink>
             <a className="btn btn-lg btn-primary w-100" href="checkout-v1-delivery-1.html">
               Checkout
             </a>
@@ -268,10 +268,10 @@ const Installer = () => {
       <div className="offcanvas-body d-flex flex-column align-items-center justify-content-center text-center">
         <p className='lead'>Install Salesnet - Internet of sales - Sell like crazy charm.</p>
         <div className="d-flex flex-column align-items-center gap-3 pb-4 mb-3 mb-lg-4">
-          <button 
-            id="install" 
-            type="button" 
-            className="btn btn-dark rounded w-100 px-3 py-2 btn-lg btn-info rounded-pill" 
+          <button
+            id="install"
+            type="button"
+            className="btn btn-dark rounded w-100 px-3 py-2 btn-lg btn-info rounded-pill"
             style={{ maxWidth: '250px', fontSize: '1rem' }}
           >
             {/* <i className="ci-arrow-down-circle ms-2 me-2"></i> Click to install. */}

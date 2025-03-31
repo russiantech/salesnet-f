@@ -125,9 +125,9 @@ const TopNav = () => {
                                                 Favorites</NavLink>
                                         </li>
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <NavLink className="nav-link" to="!#" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+                                            <NavLink className="nav-link" to="/user/basket" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
                                                 <i className="ci-shopping-cart fs-2 m-1" />
-                                                Basket.</NavLink>
+                                                Basket</NavLink>
                                         </li>
                                     </ul>
                                     <hr className="d-lg-none my-3" />

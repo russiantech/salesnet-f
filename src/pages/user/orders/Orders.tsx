@@ -1,4 +1,4 @@
-import Navigation from "../../../components/shared/Navigation"
+// import Navigation from "../../../components/shared/Navigation"
 import Aside from "../shared/Aside"
 import OrderItems from "./OrderItems"
 
@@ -7,7 +7,7 @@ const Orders = () => {
     return (
         <>
             <OrderItems />
-            <Navigation />
+            {/* <Navigation /> */}
             {/* Page content */}
             <main className="content-wrapper">
                 <div className="container py-5 mt-n2 mt-sm-0">

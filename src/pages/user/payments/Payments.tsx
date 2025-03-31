@@ -1,6 +1,6 @@
 import AddPaymentModal from './AddPaymentModal'
 import Aside from '../shared/Aside'
-import Navigation from '../../../components/shared/Navigation'
+// import Navigation from '../../../components/shared/Navigation'
 
 const Payments = () => {
   return (
@@ -10,7 +10,7 @@ const Payments = () => {
         {/* Add payment method modal */}
         <AddPaymentModal />
 
-        <Navigation />
+        {/* <Navigation /> */}
         
         {/* Page content */}
         <main className="content-wrapper">

@@ -2,11 +2,30 @@ import { AxiosService } from "./base/AxiosService";
 
 export const ProductAxiosService = {
 
+    // // Fetch a paginated list of products
+    // fetchPage(query = {}) {
+    //     const finalQuery = { location: '/products', page: 1, page_size: 5, ...query };
+    //     return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    // },
+
+    // // Fetch a paginated list of recommended products 
+    // getRecommended(query = {}) {
+    //     const finalQuery = { location: '/products', page: 1, page_size: 5, ...query };
+    //     return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    // },
+
     // Fetch a paginated list of products
-    fetchPage(query = {}) {
-        const finalQuery = { location: '/products', page: 1, page_size: 5, ...query };
+    fetchPage(query = {}, username) {
+        const finalQuery = { location: '/products', page: 1, page_size: 5, username, ...query };
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
+
+    // Fetch a paginated list of recommended products 
+    getRecommended(query = {}, username) {
+        const finalQuery = { location: '/products/recommendations', page: 1, page_size: 5, username, ...query };
+        return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    },
+
 
     // Fetch a product by its slug
     getBySlug(slug) {

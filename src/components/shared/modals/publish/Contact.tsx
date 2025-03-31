@@ -39,7 +39,6 @@ const Contact = ({ onChange }) => {
                   className="form-check-input"
                   id="ex-radio-7"
                   name="delivery_options"
-                  disabled=""
                 />
                 <label htmlFor="ex-radio-7" className="form-check-label h4">
                   Door drop-off
@@ -50,8 +49,7 @@ const Contact = ({ onChange }) => {
                   type="radio"
                   className="form-check-input"
                   id="contact-radio"
-                  name="contact"
-                  disabled=""
+                  name="use_current_contact"
                 />
                 <label htmlFor="contact-radio" className="form-check-label h4">
                   Use my current contact details instead.
@@ -63,45 +61,40 @@ const Contact = ({ onChange }) => {
 
         <div className="row">
           <div className="col-md-4 position-relative mb-4">
-            <label htmlFor="validationTooltipt01" className="form-label">
+            <label htmlFor="name" className="form-label">
               Name
             </label>
             <input
               type="text"
               className="form-control"
-              id="validationTooltipt01"
+              id="name"
               placeholder="Your Name"
-              required=""
+              name="name"
             />
-            <div className="invalid-tooltip">Please enter your first name.</div>
-            <div className="valid-tooltip">Looks good!</div>
           </div>
           <div className="col-md-4 position-relative mb-4">
-            <label htmlFor="validationTooltipt02" className="form-label">
+            <label htmlFor="phone" className="form-label">
               Phone
             </label>
             <input
               type="text"
               className="form-control"
-              id="validationTooltipt02"
+              id="phone"
+              name="phone"
               placeholder="Active phone number"
             />
-            <div className="invalid-tooltip">Please enter your last name.</div>
-            <div className="valid-tooltip">Looks good!</div>
           </div>
           <div className="col-md-4 position-relative mb-4">
-            <label htmlFor="validationTooltipt03" className="form-label">
+            <label htmlFor="email" className="form-label">
               Email
             </label>
             <input
               type="text"
               className="form-control"
-              id="validationTooltipt03"
+              id="email"
               placeholder="Valid email address"
-              required=""
+              name="email"
             />
-            <div className="invalid-tooltip">Please choose a username.</div>
-            <div className="valid-tooltip">Looks good!</div>
           </div>
         </div>
 

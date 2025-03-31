@@ -39,82 +39,80 @@ const ListingDetails = ({ onChange }) => {
 
   const flatCategories = flattenCategories(categories);
 
-  if (loading) {
-    return <div>Loading categories...</div>;
-  }
-
   return (
-      <section className="position-relative bg-body rounded p-4 mt-4">
-        <div className="position-relative z-1 pb-md-2 px-md-2">
-          <h2 className="h4 mb-3 mb-sm-4">Listing Basic Details</h2>
-          <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
-            <div className="col">
-              <label htmlFor="name" className="form-label">Product Name</label>
-              <input
-                type="text"
-                className="form-control "
-                id="name"
-                name="name"
-                minLength={10}
-                placeholder="Enter product name"
-                onChange={onChange}
-              />
-            </div>
-            <div className="col">
-              <label htmlFor="price" className="form-label">Price</label>
-              <input
-                type="number"
-                className="form-control "
-                id="price"
-                name="price"
-                placeholder="Enter price"
-                onChange={onChange}
-              />
-            </div>
-            <div className="col">
-              <label htmlFor="categories" className="form-label d-flex align-items-center">
-                Categories 
-                <i className="fi-info fs-base ms-2" data-bs-toggle="tooltip" aria-label="Select a category" />
-              </label>
-              <select
-                className="form-select"
-                name="categories"
-                onChange={onChange}
-              >
-                <option value="">Select option...</option>
-                {flatCategories.map(category => (
-                  <option key={category.id} value={category.id}>{category.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="col">
-              <label htmlFor="condition" className="form-label">Condition</label>
-              <select
-                className="form-select"
-                id="condition"
-                name="condition"
-                onChange={onChange}
-              >
-                <option value="">Select option...</option>
-                <option value={1}>Used Item</option>
-                <option value={2}>Brand New</option>
-              </select>
-            </div>
+    <section className="position-relative bg-body rounded p-4 mt-4">
+      <div className="position-relative z-1 pb-md-2 px-md-2">
+        <h2 className="h4 mb-3 mb-sm-4">Listing Basic Details</h2>
+        <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
+          <div className="col">
+            <label htmlFor="name" className="form-label">Product Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              name="name"
+              minLength={10}
+              placeholder="Enter product name"
+              onChange={onChange}
+            />
           </div>
-          <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
-          <p className="fs-sm mb-2">Describe the product in detail (maximum 300 characters).</p>
-          <textarea
-            className="form-control "
-            rows={4}
-            id="description"
-            name="description"
-            placeholder="Maximum 300 characters"
-            required
-            onChange={onChange}
-          />
+          <div className="col">
+            <label htmlFor="price" className="form-label">Price</label>
+            <input
+              type="number"
+              className="form-control"
+              id="price"
+              name="price"
+              placeholder="Enter price"
+              onChange={onChange}
+            />
+          </div>
+          <div className="col">
+            <label htmlFor="categories" className="form-label d-flex align-items-center">
+              Categories 
+              {loading && <span className="ms-2">Loading...</span>}
+              <i className="fi-info fs-base ms-2" data-bs-toggle="tooltip" aria-label="Select a category" />
+            </label>
+            <select
+              className="form-select"
+              name="categories"
+              onChange={onChange}
+              disabled={loading} // Disable the dropdown while loading
+            >
+              <option value="">Select option...</option>
+              {flatCategories.map(category => (
+                <option key={category.id} value={category.id}>{category.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="col">
+            <label htmlFor="condition" className="form-label">Condition</label>
+            <select
+              className="form-select"
+              id="condition"
+              name="condition"
+              onChange={onChange}
+            >
+              <option value="">Select option...</option>
+              <option value={1}>Used Item</option>
+              <option value={2}>Brand New</option>
+            </select>
+          </div>
         </div>
-      </section>
+        <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
+        <p className="fs-sm mb-2">Describe the product in detail (maximum 300 characters).</p>
+        <textarea
+          className="form-control"
+          rows={4}
+          id="description"
+          name="description"
+          placeholder="Maximum 300 characters"
+          required
+          onChange={onChange}
+        />
+      </div>
+    </section>
   );
 }
 

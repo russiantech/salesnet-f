@@ -1,4 +1,4 @@
-import Navigation from "../../../components/shared/Navigation"
+// import Navigation from "../../../components/shared/Navigation"
 import Aside from "../shared/Aside"
 import ReviewDetails from "./ReviewDetails"
 import ReviewForm from "./ReviewForm"
@@ -7,7 +7,7 @@ const Reviews = () => {
   return (
     <>
 
-      <Navigation />
+      {/* <Navigation /> */}
       
       <div>
         {/* Review details offcanvas */}

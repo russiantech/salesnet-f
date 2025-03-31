@@ -1,11 +1,11 @@
 import Aside from '../shared/Aside'
-import Navigation from '../../../components/shared/Navigation'
+// import Navigation from '../../../components/shared/Navigation'
 
 const Personal = () => {
     return (
         <>
             {/* <Categories /> */}
-            <Navigation />
+            {/* <Navigation /> */}
 
             {/* Page content */}
             <main className="content-wrapper">
