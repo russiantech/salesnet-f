@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NewAddress = () => {
+const PickUpSelector = () => {
   const existingAddresses = [
     { id: 1, address: '123 Main St, Austin, TX, 78701' },
     { id: 2, address: '456 Elm St, Chicago, IL, 60601' },
@@ -10,18 +10,19 @@ const NewAddress = () => {
   return (
     <>
       {/* Add new address modal */}
-      <div className="modal fade" id="newAddressModal" data-bs-backdrop="static" tabIndex={-1} aria-labelledby="newAddressModalLabel" aria-hidden="true">
+      <div className="modal fade" id="PickUpSelectorModal" data-bs-backdrop="static" tabIndex={-1} aria-labelledby="newAddressModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-lg modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="newAddressModalLabel">Add New Address</h5>
+              <h5 className="modal-title" id="newAddressModalLabel">Select your closest  store address</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
             </div>
             <div className="modal-body">
               <form className="row g-3 g-lg-4 needs-validation" noValidate>
+                
                 {/* Existing Address Selection */}
                 <div className="col-12">
-                  <label className="form-label">Choose Existing Address</label>
+                  <label className="form-label">Choose a pickup time convenient for you</label>
                   {existingAddresses.map((address) => (
                     <div className="form-check alert d-flex align-items-center alert-info mb-3" role='alert' key={address.id}>
                       <input
@@ -39,6 +40,7 @@ const NewAddress = () => {
                 </div>
 
                 {/* New Address Fields */}
+                <div className='d-none'>
                 <div className="col-lg-6">
                   <div className="position-relative">
                     <label htmlFor="name" className="form-label">Name</label>
@@ -117,6 +119,8 @@ const NewAddress = () => {
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   </div>
                 </div>
+                </div>
+
               </form>
             </div>
           </div>
@@ -126,4 +130,4 @@ const NewAddress = () => {
   );
 };
 
-export default NewAddress;
+export default PickUpSelector;

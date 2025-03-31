@@ -1,6 +1,7 @@
 import React from 'react'
 import NewAddess from './NewAddess'
 import Aside from '../shared/Aside'
+import { Link } from 'react-router-dom'
 // import Navigation from '../../../components/shared/Navigation'
 
 const Addresses = () => {
@@ -154,12 +155,14 @@ const Addresses = () => {
                         </div>
                         <a className="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#alternativeAddressEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="alternativeAddressPreview alternativeAddressEdit">Edit</a>
                       </div>
+
                       <div className="collapse alternative-address show" id="alternativeAddressPreview">
                         <ul className="list-unstyled fs-sm m-0">
                           <li>Florida 32806, USA</li>
                           <li>514 S. Magnolia St., Orlando</li>
                         </ul>
                       </div>
+
                       <div className="collapse alternative-address" id="alternativeAddressEdit">
                         <form className="row g-3 g-sm-4 needs-validation" noValidate>
                           <div className="col-sm-6">
@@ -268,13 +271,14 @@ const Addresses = () => {
                     </div>
                     {/* Add address button */}
                     <div className="nav pt-4">
-                      <a className="nav-link animate-underline fs-base px-0" href="#newAddressModal" data-bs-toggle="modal">
+                      <Link className="nav-link animate-underline fs-base px-0" to="#newAddressModal" data-bs-toggle="modal">
                         <i className="ci-plus fs-lg ms-n1 me-2" />
                         <span className="animate-target">Add address</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </main>

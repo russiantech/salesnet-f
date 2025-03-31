@@ -1,7 +1,10 @@
 import React from 'react'
 import ProductRecommendations from '../../products/ProductRecommendations'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Basket = () => {
+    const navigate = useNavigate()
+
     return (
         <>
             {/* Page content */}
@@ -9,15 +12,15 @@ const Basket = () => {
                 {/* Breadcrumb */}
                 <nav className="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
                     <ol className="breadcrumb">
-                        <li className="breadcrumb-item"><a href="home-electronics.html">Home</a></li>
-                        <li className="breadcrumb-item"><a href="shop-catalog-electronics.html">Shop</a></li>
-                        <li className="breadcrumb-item active" aria-current="page">Cart</li>
+                        <li className="breadcrumb-item"><Link to="home-electronics.html">Home</Link></li>
+                        <li className="breadcrumb-item"><Link to="shop-catalog-electronics.html">Products</Link></li>
+                        <li className="breadcrumb-item active" aria-current="page">Basket</li>
                     </ol>
                 </nav>
                 
                 {/* Items in the cart + Order summary */}
                 <section className="container pb-5 mb-2 mb-md-3 mb-lg-4 mb-xl-5">
-                    <h1 className="h3 mb-4">Shopping cart</h1>
+                    <h1 className="h3 mb-4">Shopping Basket</h1>
                     <div className="row">
                         {/* Items list */}
                         <div className="col-lg-8">
@@ -51,12 +54,12 @@ const Basket = () => {
                                         <tr>
                                             <td className="py-3 ps-0">
                                                 <div className="d-flex align-items-center">
-                                                    <a className="flex-shrink-0" href="shop-product-general-electronics.html">
+                                                   <Link className="flex-shrink-0" to="shop-product-general-electronics.html">
                                                         <img src="/assets/img/shop/electronics/thumbs/08.png" width={110} alt="iPhone 14" />
-                                                    </a>
+                                                    </Link>
                                                     <div className="w-100 min-w-0 ps-2 ps-xl-3">
                                                         <h5 className="d-flex animate-underline mb-2">
-                                                            <a className="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">Apple iPhone 14 128GB</a>
+                                                           <Link className="d-block fs-sm fw-medium text-truncate animate-target" to="shop-product-general-electronics.html">Apple iPhone 14 128GB</Link>
                                                         </h5>
                                                         <ul className="list-unstyled gap-1 fs-xs mb-0">
                                                             <li><span className="text-body-secondary">Color:</span> <span className="text-dark-emphasis fw-medium">White</span></li>
@@ -96,13 +99,13 @@ const Basket = () => {
                                         <tr>
                                             <td className="py-3 ps-0">
                                                 <div className="d-flex align-items-center">
-                                                    <a className="position-relative flex-shrink-0" href="shop-product-general-electronics.html">
+                                                   <Link className="position-relative flex-shrink-0" to="shop-product-general-electronics.html">
                                                         <span className="badge text-bg-danger position-absolute top-0 start-0">-10%</span>
                                                         <img src="/assets/img/shop/electronics/thumbs/09.png" width={110} alt="iPad Pro" />
-                                                    </a>
+                                                    </Link>
                                                     <div className="w-100 min-w-0 ps-2 ps-xl-3">
                                                         <h5 className="d-flex animate-underline mb-2">
-                                                            <a className="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">Tablet Apple iPad Pro M2</a>
+                                                           <Link className="d-block fs-sm fw-medium text-truncate animate-target" to="shop-product-general-electronics.html">Tablet Apple iPad Pro M2</Link>
                                                         </h5>
                                                         <ul className="list-unstyled gap-1 fs-xs mb-0">
                                                             <li><span className="text-body-secondary">Color:</span> <span className="text-dark-emphasis fw-medium">Black</span></li>
@@ -142,12 +145,12 @@ const Basket = () => {
                                         <tr>
                                             <td className="py-3 ps-0">
                                                 <div className="d-flex align-items-center">
-                                                    <a className="flex-shrink-0" href="shop-product-general-electronics.html">
+                                                   <Link className="flex-shrink-0" to="shop-product-general-electronics.html">
                                                         <img src="/assets/img/shop/electronics/thumbs/01.png" width={110} alt="Smart Watch" />
-                                                    </a>
+                                                    </Link>
                                                     <div className="w-100 min-w-0 ps-2 ps-xl-3">
                                                         <h5 className="d-flex animate-underline mb-2">
-                                                            <a className="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">Smart Watch Series 7</a>
+                                                           <Link className="d-block fs-sm fw-medium text-truncate animate-target" to="shop-product-general-electronics.html">Smart Watch Series 7</Link>
                                                         </h5>
                                                         <ul className="list-unstyled gap-1 fs-xs mb-0">
                                                             <li><span className="text-body-secondary">Color:</span> <span className="text-dark-emphasis fw-medium">White</span></li>
@@ -186,10 +189,10 @@ const Basket = () => {
                                     </tbody>
                                 </table>
                                 <div className="nav position-relative z-2 mb-4 mb-lg-0">
-                                    <a className="nav-link animate-underline px-0" href="shop-catalog-electronics.html">
+                                    <Link className="nav-link animate-underline px-0" onClick={() => navigate(-1)}>
                                         <i className="ci-chevron-left fs-lg me-1" />
                                         <span className="animate-target">Continue shopping</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -222,12 +225,12 @@ const Basket = () => {
                                                 <span className="fs-sm">Estimated total:</span>
                                                 <span className="h5 mb-0">$2,390.40</span>
                                             </div>
-                                            <a className="btn btn-lg btn-primary w-100" href="checkout-v1-delivery-1.html">
+                                           <Link className="btn btn-lg btn-primary w-100" to="/user/checkout">
                                                 Proceed to checkout
                                                 <i className="ci-chevron-right fs-lg ms-1 me-n1" />
-                                            </a>
+                                            </Link>
                                             <div className="nav justify-content-center fs-sm mt-3">
-                                                <a className="nav-link text-decoration-underline p-0 me-1" href="#authForm" data-bs-toggle="offcanvas" role="button">Create an account</a>
+                                               <Link className="nav-link text-decoration-underline p-0 me-1" to="/auth/signup">Create an account</Link>
                                                 and get
                                                 <span className="text-dark-emphasis fw-medium ms-1">239 bonuses</span>
                                             </div>

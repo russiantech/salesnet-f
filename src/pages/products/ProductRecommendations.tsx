@@ -4,6 +4,7 @@ import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
+import LoadingCard from '../../components/shared/LoadingCard';
 
 const ProductRecommendations = () => {
     const [products, setProducts] = useState([]);
@@ -50,17 +51,6 @@ const ProductRecommendations = () => {
         <>
             <main className="content-wrapper">
                 <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
-                    <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
-                        <li className="breadcrumb-item">
-                            <a href="/">Home</a>
-                        </li>
-                        <li className="breadcrumb-item">
-                            <a href="/pages">Pages</a>
-                        </li>
-                        <li aria-current="page" className="breadcrumb-item active">
-                            Product Recommendations
-                        </li>
-                    </ol>
 
                     <div className="row g-4 pt-4">
                         <div className="d-flex align-items-start justify-content-between border-bottom pb-3 pb-md-4">
@@ -91,20 +81,9 @@ const ProductRecommendations = () => {
                         {/* Loading Wave Placeholders */}
                         {loading && (
                             Array.from({ length: 8 }).map((_, index) => (
-                                <div className="col" key={index}>
-                                    <div className="product-card placeholder-wave">
-                                        <div className="position-relative">
-                                            <div className="placeholder-img"></div>
-                                        </div>
-                                        <div className="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                                            <div className="placeholder-text"></div>
-                                            <div className="d-flex align-items-center justify-content-between">
-                                                <div className="placeholder-price"></div>
-                                                <div className="placeholder-button"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                                <LoadingCard key={index} />
+
                             ))
                         )}
                     </div>

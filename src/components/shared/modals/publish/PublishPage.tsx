@@ -49,9 +49,9 @@ const PublishPage = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-
-            <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
-                <div className=" align-items-center">
+            
+            <div className="card">
+                <div className="card-body" style={{ padding: "2 2" }}>
                     {/* Nav pills */}
                     <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
                         {['home', 'media', 'contact', 'location', 'promote'].map(tab => (
@@ -80,10 +80,9 @@ const PublishPage = () => {
                         <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`}>
                             <Promote onChange={handleInputChange} />
                         </div>
-
-                        <footer className="sticky-bottom bg-body pb-3">
+                        <footer className="sticky-bottom bg-body pb-3 w-100">
                             <div className="container d-flex gap-3 pt-3">
-                                <button type="button" className="btn btn-outline-dark" onClick={handleBack} disabled={activeTab === 'home'}>
+                                <button type="button" className="btn btn-outline-dark border-1" onClick={handleBack} disabled={activeTab === 'home'}>
                                     Back
                                 </button>
                                 <button
@@ -97,56 +96,6 @@ const PublishPage = () => {
                         </footer>
                     </div>
                 </div>
-            </section>
-
-
-            {/*  */}
-            <div className="card">
-              <div className="card-body" style={{padding:"2 2"}}>
-                {/* Nav pills */}
-                <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
-                  {['home', 'media', 'contact', 'location', 'promote'].map(tab => (
-                    <li className="nav-item" role="presentation" key={tab}>
-                      <button type="button" className={`nav-link ${activeTab === tab ? 'active' : ''}`}
-                        onClick={() => handleTabChange(tab)}>
-                        {tab.charAt(0).toUpperCase() + tab.slice(1).replace('-', ' ')}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                {/* Pills content */}
-                <div className="tab-content" id="pills-tabContent">
-                  <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`}>
-                    <ListingDetails onChange={handleInputChange} />
-                  </div>
-                  <div className={`tab-pane fade ${activeTab === 'media' ? 'show active' : ''}`}>
-                    <Media onChange={handleInputChange} />
-                  </div>
-                  <div className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`}>
-                    <Contact onChange={handleInputChange} />
-                  </div>
-                  <div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`}>
-                    <Location onChange={handleInputChange} />
-                  </div>
-                  <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`}>
-                    <Promote onChange={handleInputChange} />
-                  </div>
-                  <footer className="sticky-bottom bg-body pb-3">
-                <div className="container d-flex gap-3 pt-3">
-                  <button type="button" className="btn btn-outline-dark" onClick={handleBack} disabled={activeTab === 'home'}>
-                    Back
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn btn-dark ms-auto" 
-                    onClick={handleNext}
-                  >
-                    {activeTab === 'promote' ? 'Submit' : 'Next'}
-                  </button>
-                </div>
-              </footer>
-                </div>
-              </div>
             </div>
             {/*  */}
 

@@ -12,6 +12,7 @@ import Help from '../pages/user/customerService/Help';
 import HelpSingle from '../pages/user/customerService/HelpSingle';
 import Basket from '../pages/user/basket/Basket';
 import Navigation from '../components/shared/Navigation';
+import Checkout from '../pages/user/checkout/Checkout';
 
 const UserRoutes = () => (
   <>
@@ -28,6 +29,7 @@ const UserRoutes = () => (
 
       {/* Shoppings */}
       <Route path="/basket" element={<Basket />} />
+      <Route path="/checkout" element={<Checkout />} />
 
       {/* others */}
       <Route path="/terms" element={<Terms />} />

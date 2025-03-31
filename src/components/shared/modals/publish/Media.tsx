@@ -32,7 +32,7 @@ const Media = ({ onChange }) => {
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
                 <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
-                  <img src="../assets/img/pages/products/upload_02.jpg" alt="Image" />
+                  <img src="/assets/img/pages/products/upload_02.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
                   <button type="button" className="btn btn-icon btn-sm btn-light position-relative z-2" aria-label="Remove">
@@ -46,7 +46,7 @@ const Media = ({ onChange }) => {
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
                 <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
-                  <img src="../assets/img/add-item/car/03.jpg" alt="Image" />
+                  <img src="/assets/img/add-item/car/03.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
                   <button type="button" className="btn btn-icon btn-sm btn-light position-relative z-2" aria-label="Remove">
@@ -60,7 +60,7 @@ const Media = ({ onChange }) => {
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
                 <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
-                  <img src="../assets/img/add-item/car/04.jpg" alt="Image" />
+                  <img src="/assets/img/add-item/car/04.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
                   <button type="button" className="btn btn-icon btn-sm btn-light position-relative z-2" aria-label="Remove">

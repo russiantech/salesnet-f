@@ -97,8 +97,8 @@ const TopNav = () => {
                                             {/*  */}
                                             <button type="button" className="btn btn-icon btn-lg btn-outline-secondary position-relative rounded-circle text-white" 
                                             data-bs-toggle="offcanvas" data-bs-target="#SideCategory" aria-controls="SideCategory" aria-label="Toggle navigation">
-                                                <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                                                    <i className="ci-grid-2 fs-xl"></i></span>
+                                                <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                                                    <i className="ci-grid-2 fs-xl animate-target"></i></span>
                                                     </button>
                                             {/*  */}
                                         </div>
@@ -109,24 +109,24 @@ const TopNav = () => {
                                     <ul className="navbar-nav position-relative">
 
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <NavLink className="nav-link" to="/">
-                                                <i className="ci-home fs-2 m-1" />
+                                            <NavLink className="nav-link animate-scale" to="/">
+                                                <i className="ci-home fs-2 m-1 animate-target" />
                                                 Home</NavLink>
                                         </li>
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <NavLink className="nav-link" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" to="/chatme">
-                                                <i className="ci-chat fs-2 m-1" />
+                                            <NavLink className="nav-link animate-scale" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" to="/chatme">
+                                                <i className="ci-chat fs-2 m-1 animate-target" />
                                                 Chat-me</NavLink>
                                         </li>
 
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <NavLink className="nav-link" to="/user/favorites">
-                                                <i className="ci-heart fs-2 m-1" />
+                                            <NavLink className="nav-link  animate-scale" to="/user/favorites">
+                                                <i className="ci-heart fs-2 m-1 animate-target" />
                                                 Favorites</NavLink>
                                         </li>
                                         <li className="nav-item me-lg-n2 me-xl-0 rounded-pill badge text-bg-orange ">
-                                            <NavLink className="nav-link" to="/user/basket" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
-                                                <i className="ci-shopping-cart fs-2 m-1" />
+                                            <NavLink className="nav-link animate-scale" to="/user/basket" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+                                                <i className="ci-shopping-cart fs-2 m-1 animate-target" />
                                                 Basket</NavLink>
                                         </li>
                                     </ul>

@@ -3,13 +3,13 @@ import React from 'react';
 const Contact = ({ onChange }) => {
   return (
     <>
-      <section className="container pt-2 mt-1 mt-sm-3 mt-lg-4">
-        <div className="row">
-          <h4 className="h4 mb-3 mb-sm-4">Delivery options and Contact</h4>
-          <div className="d-flex flex-wrap gap-2">
+      <section className="position-relative bg-body rounded p-4 mt-4">
+        <div className="position-relative z-1 pb-md-2 px-md-2">
+          <h2 className="h4 mb-3 mb-sm-4">Delivery-options and contact</h2>
+          
+          <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
+            <div className="d-flex flex-wrap gap-2">
 
-            <>
-              {/* Inline radio buttons */}
               <div className="form-check form-check-inline">
                 <input
                   type="radio"
@@ -55,48 +55,49 @@ const Contact = ({ onChange }) => {
                   Use my current contact details instead.
                 </label>
               </div>
-            </>
-          </div>
-        </div>
 
-        <div className="row">
-          <div className="col-md-4 position-relative mb-4">
-            <label htmlFor="name" className="form-label">
-              Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              placeholder="Your Name"
-              name="name"
-            />
+            </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-4 position-relative mb-4">
+                <label htmlFor="name" className="form-label">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  placeholder="Your Name"
+                  name="name"
+                />
+              </div>
+              <div className="col-md-4 position-relative mb-4">
+                <label htmlFor="phone" className="form-label">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="phone"
+                  name="phone"
+                  placeholder="Active phone number"
+                />
+              </div>
+              <div className="col-md-4 position-relative mb-4">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="email"
+                  placeholder="Valid email address"
+                  name="email"
+                />
+              </div>
+            </div>
           </div>
-          <div className="col-md-4 position-relative mb-4">
-            <label htmlFor="phone" className="form-label">
-              Phone
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="phone"
-              name="phone"
-              placeholder="Active phone number"
-            />
-          </div>
-          <div className="col-md-4 position-relative mb-4">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="email"
-              placeholder="Valid email address"
-              name="email"
-            />
-          </div>
-        </div>
 
       </section>
     </>

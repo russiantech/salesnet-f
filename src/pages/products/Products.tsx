@@ -4,6 +4,7 @@ import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
+import LoadingCard from '../../components/shared/LoadingCard';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -161,21 +162,8 @@ const Products = () => {
                         {/* Loading Wave Placeholders */}
                         {loading && (
                             Array.from({ length: 8 }).map((_, index) => (
-
-                                <div className="col" key={index}>
-                                    <div className="product-card placeholder-wave">
-                                        <div className="position-relative">
-                                            <div className="placeholder-img"></div>
-                                        </div>
-                                        <div className="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                                            <div className="placeholder-text"></div>
-                                            <div className="d-flex align-items-center justify-content-between">
-                                                <div className="placeholder-price"></div>
-                                                <div className="placeholder-button"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                                <LoadingCard key={index} />
 
                             ))
                         )}

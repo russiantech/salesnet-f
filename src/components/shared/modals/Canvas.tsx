@@ -105,6 +105,12 @@ const Basket = () => {
             </h4>
             <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
+
+          <div className="alert alert-success text-dark-emphasis fs-sm border-0 rounded-4 mb-0" role="alert">
+              Congratulations 🎉 You have added more than <span className="fw-semibold">$50</span> to your cart. 
+              <span className="fw-semibold">Delivery is free</span> for you!
+          </div>
+
           <p className="fs-sm">
             Buy <span className="text-dark-emphasis fw-semibold">$183</span> more to get{' '}
             <span className="text-dark-emphasis fw-semibold">Free Shipping</span>
@@ -237,9 +243,9 @@ const Basket = () => {
             <NavLink className="btn btn-lg btn-secondary w-100" to='/user/basket'>
               View cart
             </NavLink>
-            <a className="btn btn-lg btn-primary w-100" href="checkout-v1-delivery-1.html">
+            <Link className="btn btn-lg btn-primary w-100" to="/user/checkout">
               Checkout
-            </a>
+            </Link>
           </div>
         </div>
       </div>
