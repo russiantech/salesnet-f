@@ -61,7 +61,7 @@ const PublishPage = () => {
 
       
           {/*  */}
-          
+          <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
           <div className=" align-items-center">
                 {/* Nav pills */}
                 <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
@@ -93,6 +93,7 @@ const PublishPage = () => {
                   </div>
                 </div>
               </div>
+              </section>
           {/*  */}
 
 
@@ -113,7 +114,7 @@ const PublishPage = () => {
 
 
 
-          
+
       <div className="container pt-4 justify-content-center">
         <div className="row pt-sm-2" style={{ marginLeft: "-15px", marginRight: "-15px" }}>
           <section id="pills-tabs" className="docs-section">
