@@ -102,7 +102,7 @@ const PublishPage = () => {
 
             {/*  */}
             <div className="card">
-              <div className="card-body">
+              <div className="card-body" style={{padding:"2 2"}}>
                 {/* Nav pills */}
                 <ul className="nav nav-pills mb-3 flex-nowrap gap-2 text-nowrap pb-3" role="tablist">
                   {['home', 'media', 'contact', 'location', 'promote'].map(tab => (
@@ -131,8 +131,7 @@ const PublishPage = () => {
                   <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`}>
                     <Promote onChange={handleInputChange} />
                   </div>
-                </div>
-                <footer className="sticky-bottom bg-body pb-3">
+                  <footer className="sticky-bottom bg-body pb-3">
                 <div className="container d-flex gap-3 pt-3">
                   <button type="button" className="btn btn-outline-dark" onClick={handleBack} disabled={activeTab === 'home'}>
                     Back
@@ -146,7 +145,7 @@ const PublishPage = () => {
                   </button>
                 </div>
               </footer>
-              
+                </div>
               </div>
             </div>
             {/*  */}

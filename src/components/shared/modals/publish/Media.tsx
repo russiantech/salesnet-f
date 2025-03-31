@@ -8,18 +8,17 @@ const Media = ({ onChange }) => {
           <h2 className="h4 mb-2 mb-sm-0 me-3">Photos / videos</h2>
           <div className="position-relative d-flex">
             <i className="fi-info text-info mt-1 me-2" />
-            <a className="fs-sm fw-medium stretched-link text-bg-light rounded" href="#!">How tos</a>
           </div>
         </div>
-        <small className="fs-sm text-warning">The maximum photo size is 8 MB. Formats: jpeg, jpg, png. Put the main picture first.</small>
+        <small className="fs-sm text-warning">Max photo size is 8 MB. Formats: jpeg, jpg, png. Put the main picture first.</small>
         <div style={{ maxWidth: '852px' }}>
           <div className="row row-cols-2 row-cols-sm-3 g-2 g-md-4 g-lg-3 g-xl-4">
             {/* Item */}
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
                 <span className="badge text-bg-light position-absolute top-0 start-0 z-3 mt-2 ms-2">Cover</span>
-                <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
-                  <img src="../assets/img/pages/products/upload_01.jpg" alt="Image" />
+                <div className="ratio" style={{ '--fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
+                  <img src="/assets/img/pages/products/upload_01.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
                   <button type="button" className="btn btn-icon btn-sm btn-light position-relative z-2" aria-label="Remove">
