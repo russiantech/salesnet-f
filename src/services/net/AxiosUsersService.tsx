@@ -5,7 +5,7 @@ import {AxiosService} from "./base/AxiosService";
 export const AxiosUsersService = {
 
 
-    login(user) {
+    signin(user) {
         return AxiosService.post('/users/signin', user);
     },
 
@@ -14,7 +14,7 @@ export const AxiosUsersService = {
             UsersService.clearSession();
     },
 
-    create(user) {
+    signup(user) {
         // console.log(user);
         return AxiosService.post('/users/signup', user);
     },

@@ -2,6 +2,11 @@ let observers = [];
 
 const state = {
     is_loading: [],
+    modal: {
+        show: false,
+        message: '',
+        type: ''
+    }
 };
 
 function notifyObservers(message) {
@@ -23,24 +28,16 @@ export const NotificationService = {
     },
 
     setIsLoading(bool) {
-        if (bool)
-            state.is_loading = state.is_loading++;
-        else
-            state.is_loading = state.is_loading--;
+        state.is_loading = bool ? state.is_loading + 1 : state.is_loading - 1;
     },
 
-    showToastSuccess(message) {
-        notifyObservers({show_toast: true, toast: {message, class_name: 'alert alert-success'}});
+    showDialog(message, type = 'primary') {
+        state.modal = { show: true, message, type };
+        notifyObservers(state.modal);
     },
 
-    showDialogSuccess(message) {
-        notifyObservers({show_alert: true, alert: {message, type: 'success'}});
-    },
-    
-    showDialogError(message) {
-        notifyObservers({show_alert: true, alert: {message, type: 'error'}});
-    },
-
-
-
+    closeDialog() {
+        state.modal.show = false;
+        notifyObservers(state.modal);
+    }
 };

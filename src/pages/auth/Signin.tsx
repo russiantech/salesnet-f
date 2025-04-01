@@ -32,7 +32,7 @@ class Signin extends React.Component {
     }
 
     onSubmitForm(evt) {
-        AxiosUsersService.login(this.state).then(res => {
+        AxiosUsersService.signin(this.state).then(res => {
             if (res.data && res.data.success) {
                 this.setState({
                     show_message: true,
@@ -99,8 +99,8 @@ class Signin extends React.Component {
             </div>
             <div className="d-flex align-items-center justify-content-between mb-4">
               <div className="form-check me-2">
-                <input type="checkbox" className="form-check-input" id="remember-30" />
-                <label htmlFor="remember-30" className="form-check-label">Remember for 30 days</label>
+                <input type="checkbox" className="form-check-input" id="remember" />
+                <label htmlFor="remember" className="form-check-label">Remember for 30 days</label>
               </div>
               <div className="nav">
                 <NavLink className="nav-link animate-underline p-0" to="/auth/recover-password">
