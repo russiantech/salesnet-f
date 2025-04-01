@@ -258,7 +258,7 @@ const Installer = () => {
     <div className="offcanvas offcanvas-bottom" id="offcanvasBottom" tabIndex="-1" aria-labelledby="offcanvasBottomLabel">
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasBottomLabel">
-          <a className="navbar-brand pt-0" href="./">
+          <a className="navbar-brand pt-0" href="/">
             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
               <div className="flex-shrink-0 border rounded-circle" style={{ width: '40px' }}>
                 <div className="ratio ratio-1x1 rounded-circle overflow-hidden">

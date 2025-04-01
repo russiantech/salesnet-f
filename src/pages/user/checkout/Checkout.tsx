@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link, NavLink } from 'react-router-dom'
 
 const Checkout = () => {
   return (
@@ -188,7 +189,7 @@ const Checkout = () => {
             </label>
             <input
               type="text"
-              className="form-control form-control-lg rounded-pill"
+              className="form-control "
               id="my-postcode"
             />
           </div>
@@ -217,7 +218,7 @@ const Checkout = () => {
           </label>
           <input
             type="text"
-            className="form-control form-control-lg rounded-pill"
+            className="form-control "
             id="my-address"
           />
         </div>
@@ -769,13 +770,13 @@ const Checkout = () => {
     >
       <ol className="breadcrumb mb-0">
         <li className="breadcrumb-item">
-          <a href="home-grocery.html">Home</a>
+          <NavLink to="/">Home</NavLink>
         </li>
         <li className="breadcrumb-item">
-          <a href="shop-catalog-grocery.html">User</a>
+          <Link to="/user/personnal">User</Link>
         </li>
         <li className="breadcrumb-item">
-          <a href="checkout-v2-cart.html">Basket</a>
+          <NavLink to="/basket">Basket</NavLink>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
           Checkout
@@ -795,9 +796,9 @@ const Checkout = () => {
               <i className="ci-map-pin fs-base text-primary me-2" />
               567 Cherry Souse Lane Sacramento, 95829
             </div>
-            <div className="nav">
+            <div className="nav animate-scale">
               <a
-                className="nav-link text-decoration-underline text-nowrap p-0"
+                className="badge text-bg-info rounded-pill animate-target text-nowrap p-1"
                 href="#deliveryOptions"
                 data-bs-toggle="offcanvas"
                 aria-controls="deliveryOptions"
@@ -813,8 +814,9 @@ const Checkout = () => {
               </label>
               <input
                 type="text"
-                className="form-control form-control-lg rounded-pill"
+                className="form-control"
                 id="house"
+                name="house"
               />
             </div>
             <div className="col">
@@ -826,8 +828,9 @@ const Checkout = () => {
               </label>
               <input
                 type="text"
-                className="form-control form-control-lg rounded-pill"
+                className="form-control"
                 id="floor"
+                name="floor"
               />
             </div>
           </div>
@@ -839,10 +842,11 @@ const Checkout = () => {
           </label>
           <input
             type="tel"
-            className="form-control form-control-lg rounded-pill"
+            className="form-control"
             id="phone-number"
+            name="phone_number"
             data-input-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
-            placeholder="+1 ___ ___ __"
+            placeholder="+234 ___ ___ __"
           />
           {/* Delivery date and time section */}
           <h2 className="h5 mt-5 mb-4">Delivery date and time</h2>
@@ -1039,7 +1043,7 @@ const Checkout = () => {
                   >
                     <input
                       type="text"
-                      className="form-control form-control-lg form-icon-end rounded-pill"
+                      className="form-control form-icon-end"
                       placeholder="Card number"
                       required=""
                     />
@@ -1052,7 +1056,7 @@ const Checkout = () => {
                     <div className="col">
                       <input
                         type="text"
-                        className="form-control form-control-lg rounded-pill"
+                        className="form-control "
                         data-input-format='{"date": true, "datePattern": ["m", "y"]}'
                         placeholder="MM/YY"
                       />
@@ -1060,7 +1064,7 @@ const Checkout = () => {
                     <div className="col">
                       <input
                         type="text"
-                        className="form-control form-control-lg rounded-pill"
+                        className="form-control "
                         maxLength={4}
                         data-input-format='{"numeral": true, "numeralPositiveOnly": true, "numeralThousandsGroupStyle": "none"}'
                         placeholder="CVC"
@@ -1132,50 +1136,7 @@ const Checkout = () => {
                 data-bs-parent="#paymentMethod"
               />
             </div>
-            {/* Cash on delivery */}
-            <div className="mt-4">
-              <div
-                className="form-check mb-0"
-                role="listitem"
-                data-bs-toggle="collapse"
-                data-bs-target="#cash"
-                aria-expanded="false"
-                aria-controls="cash"
-              >
-                <label className="form-check-label w-100 text-dark-emphasis fw-semibold">
-                  <input
-                    type="radio"
-                    className="form-check-input fs-base me-2 me-sm-3"
-                    name="payment-method"
-                  />
-                  Cash on delivery
-                </label>
-              </div>
-              <div
-                className="collapse"
-                id="cash"
-                data-bs-parent="#paymentMethod"
-              >
-                <div className="d-sm-flex align-items-center pt-3 pt-sm-4 pb-2 ps-3 ms-2 ms-sm-3">
-                  <span className="fs-sm me-3">
-                    I would require a change from:
-                  </span>
-                  <div
-                    className="input-group mt-2 mt-sm-0"
-                    style={{ maxWidth: 150 }}
-                  >
-                    <span className="input-group-text rounded-pill rounded-end-0">
-                      <i className="ci-dollar-sign" />
-                    </span>
-                    <input
-                      type="number"
-                      className="form-control rounded-pill rounded-start-0"
-                      aria-label="Amount (to the nearest dollar)"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+
             {/* Card on delivery */}
             <div className="mt-4">
               <div
@@ -1192,7 +1153,7 @@ const Checkout = () => {
                     className="form-check-input fs-base me-2 me-sm-3"
                     name="payment-method"
                   />
-                  Card on delivery
+                  Payment on delivery
                 </label>
               </div>
               <div
@@ -1253,13 +1214,13 @@ const Checkout = () => {
           <div className="position-sticky top-0" style={{ paddingTop: 115 }}>
             <div className="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
               <h2 className="h5 mb-0 me-3">Order summary</h2>
-              <div className="nav">
-                <a
-                  className="nav-link text-decoration-underline p-0"
-                  href="checkout-v2-cart.html"
+              <div className="nav animate-scale">
+                <NavLink
+                  className="badge text-bg-info rounded-pill animate-target"
+                  to="/user/basket"
                 >
                   Edit
-                </a>
+                </NavLink>
               </div>
             </div>
             <ul className="list-unstyled fs-sm gap-3 mb-0">
