@@ -41,7 +41,7 @@ const ProductDetails = () => {
 
     return (
         <>
-        <main className="content-wrapper">/
+        <main className="content-wrapper">
         {/* <main className="content-wrapper px-3 ps-lg-5 pe-lg-4 mx-auto">     */}
         {/* <main className="content-wrapper mx-auto">     */}
         {/* <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{"maxWidth": "1920px"}}>  */}
