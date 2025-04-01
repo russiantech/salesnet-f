@@ -204,38 +204,38 @@ const BottomNav = () => {
                 <div style={styles.nav_div} className="d-flex py-lg-1">
                     
                     <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#SideCategory" aria-controls="SideCategory" aria-label="Toggle navigation">
-                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                            <i className="ci-grid-2 fs-xl" />
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                            <i className="ci-grid-2 fs-xl animate-target" />
                         </span>
                     </button>
 
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" to="!#">
-                        <span className="position-absolute top-50 right-100 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
-                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                            <i className="ci-chat fs-2 m-1" />
-                        </span>
-                    </button>
-
-                    <NavLink to="/" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2">
-                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                            <i className="ci-home fs-xl" />
+                    <NavLink type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="modal" data-bs-target="#NotImplimentedPage" to="#NotImplimentedPage">
+                        <span className="position-absolute top-50 right-100 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill animate-target">3</span>
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                            <i className="ci-chat fs-2 m-1 animate-target" />
                         </span>
                     </NavLink>
 
-                    <NavLink type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" 
+                    <NavLink to="/" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2">
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                            <i className="ci-home fs-xl animate-target" />
+                        </span>
+                    </NavLink>
+
+                    <NavLink className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" 
                     to="/user/favorites">
-                        <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
-                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+                        <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill">3</span>
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
                             <i className="ci-heart animate-target" />
                         </span>
                     </NavLink>
 
-                    <button type="button" className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
-                        <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill" style={{ '--czBadgePaddingY': '.25em', 'CzBadgePaddingX': '.42em' }}>3</span>
-                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+                    <NavLink className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" to="#shoppingCart" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+                        <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill">3</span>
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
                             <i className="ci-shopping-cart animate-target ms-n1" />
                         </span>
-                    </button>
+                    </NavLink>
                 </div>
             </div>
         </header>

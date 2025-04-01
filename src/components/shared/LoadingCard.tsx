@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LoadingCard = (props) => (
     <div className="card" aria-hidden="true" style={{ maxWidth: 300 }}>
@@ -18,12 +19,9 @@ const LoadingCard = (props) => (
                 <span className="placeholder placeholder-sm col-6" />
                 <span className="placeholder placeholder-sm col-8" />
             </p>
-            <a
-                className="btn btn-primary disabled placeholder col-6 placeholder-wave"
-                tabIndex={-1}
-            >
+            <Link to="!#" className="btn btn-primary disabled placeholder col-6 placeholder-wave" tabIndex={-1}>
                 &nbsp;
-            </a>
+            </Link>
         </div>
     </div>
 );
