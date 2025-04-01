@@ -41,8 +41,8 @@ const ProductDetails = () => {
 
     return (
         <>
-        <main className="content-wrapper">
-        {/* <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{"maxWidth": "1920px"}}>     */}
+        {/* <main className="content-wrapper">/ */}
+        <main className="content-wrapper px-3 ps-lg-5 pe-lg-4 mx-auto" style={{"maxWidth": "1920px"}}>    
             
             <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
                 <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
@@ -76,9 +76,9 @@ const ProductDetails = () => {
                                     Salesnet
                                 </a>
                                 <div className="text-body-secondary">in</div>
-                                <a className="nav-link text-body p-0" href="shop-catalog-marketplace.html">
+                                <Link className="nav-link text-body p-0" to="pages/salesnet">
                                     development
-                                </a>
+                                </Link>
                             </div>
                             <div className="d-flex justify-content-between flex-grow-1 gap-4">
                                 <span className="badge rounded-pill text-info bg-info-subtle d-inline-flex align-items-center fs-sm">
@@ -93,12 +93,13 @@ const ProductDetails = () => {
                                         <i className="ci-heart animate-target fs-sm ms-n1 me-1" />
                                         {product.comments_count}
                                     </button>
-                                    <a className="btn btn-sm btn-secondary rounded-pill animate-scale" href="#comments">
+                                    <Link className="btn btn-sm btn-secondary rounded-pill animate-scale" to="#comments">
                                         <i className="ci-message-circle animate-target fs-sm ms-n1 me-1" />
                                         {product.comments_count}
-                                    </a>
+                                    </Link>
                                     <div className="dropdown">
-                                        <button aria-expanded="false" aria-label="Share" className="btn btn-icon btn-sm btn-secondary animate-scale rounded-circle" data-bs-toggle="dropdown" type="button">
+                                        <button aria-expanded="false" aria-label="Share" className="btn btn-icon btn-sm btn-secondary animate-scale rounded-circle" 
+                                        data-bs-toggle="dropdown" type="button">
                                             <i className="ci-share-2 animate-target fs-sm" />
                                         </button>
                                         <ul className="dropdown-menu dropdown-menu-end" style={{ "--cz-dropdown-min-width": "8.5rem" }}>
