@@ -42,7 +42,7 @@ const ProductDetails = () => {
     return (
         <>
         {/* <main className="content-wrapper">/ */}
-        <main className="content-wrapper px-3 ps-lg-5 pe-lg-4 mx-auto" style={{"maxWidth": "1920px"}}>    
+        <main className="content-wrapper px-3 ps-lg-5 pe-lg-4 mx-auto">    
             
             <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
                 <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
