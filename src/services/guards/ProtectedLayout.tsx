@@ -4,33 +4,6 @@ import { UsersService } from "../local/UsersService";
 import { useState, useEffect } from "react";
 import { NotificationService } from "../local/NotificationService";
 
-interface PrivateRouteProps {
-  children: React.ReactElement;
-}
-
-export const PrivateRoute = ({ children }: PrivateRouteProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const location = useLocation();
-
-  useEffect(() => {
-    setIsAuthenticated(UsersService.isAuthenticated());
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <div className="flex justify-center items-center h-screen">
-      <span className="loading loading-spinner loading-lg"></span>
-    </div>;
-  }
-
-  return isAuthenticated ? (
-    children
-  ) : (
-    <Navigate to="/auth/signin" state={{ from: location }} replace />
-  );
-};
-
-// export default PrivateRoute;
-
 const ProtectedLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const location = useLocation();

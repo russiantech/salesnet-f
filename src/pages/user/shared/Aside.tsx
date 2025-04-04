@@ -1,7 +1,17 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import Bonuses from './Bonuses'
+import { NotificationService } from '../../../services/local/NotificationService';
+import { UsersService } from '../../../services/local/UsersService';
 
 const Aside = () => {
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+      UsersService.logout();
+      NotificationService.showDialog('You have been logged out', 'success');
+      navigate('/auth/signin');
+  };
+
   return (
     <>
       <Bonuses />
@@ -121,14 +131,12 @@ const Aside = () => {
                 Terms and conditions
               </NavLink>
             </nav>
-            <nav className="list-group list-group-borderless pt-3">
-              <NavLink
-                className="list-group-item list-group-item-action d-flex align-items-center"
-                to="/auth/signout"
-              >
+            <nav className="list-group list-group-borderless pt-3" onClick={handleLogout}>
+              <Link
+                className="list-group-item list-group-item-action d-flex align-items-center" >
                 <i className="ci-log-out fs-base opacity-75 me-2" />
                 Log out
-              </NavLink>
+              </Link>
             </nav>
           </div>
         </div>

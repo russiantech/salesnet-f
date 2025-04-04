@@ -173,7 +173,7 @@ const Basket = () => {
                   type="button"
                   className="btn-close fs-sm"
                   data-bs-toggle="tooltip"
-                  data-bs-custom-className="tooltip-sm"
+                  data-bs-custom-class="tooltip-sm"
                   data-bs-title="Remove"
                   aria-label="Remove from cart"
                 ></button>
@@ -224,7 +224,7 @@ const Basket = () => {
                   type="button"
                   className="btn-close fs-sm"
                   data-bs-toggle="tooltip"
-                  data-bs-custom-className="tooltip-sm"
+                  data-bs-custom-class="tooltip-sm"
                   data-bs-title="Remove"
                   aria-label="Remove from cart"
                 ></button>

@@ -6,7 +6,7 @@ export const AxiosUsersService = {
         return AxiosService.post('/users/signin', user);
     },
 
-    signout() {
+    logout() {
         UsersService.logout();
     },
 

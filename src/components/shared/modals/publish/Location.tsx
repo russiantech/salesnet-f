@@ -30,10 +30,10 @@ const Location = ({ onChange }) => {
             <div className="position-relative">
               <label className="form-label">Country</label>
               <select name="country" className="form-select" id="countrySelect0" required>
-                <option value>Select country...</option>
+                <option>Select country...</option>
                 {/* Options will be populated dynamically */}
-                <option value={3} selected="false">Afghanistan</option>
-                <option value={124} selected="false">South Korea</option>
+                <option defaultValue={3} selected={false}>Afghanistan</option>
+                <option defaultValue={124} selected={false}>South Korea</option>
               </select>
               <div className="invalid-feedback">Please select your country!</div>
             </div>

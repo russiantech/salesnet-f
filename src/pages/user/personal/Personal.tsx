@@ -1,11 +1,12 @@
+import { useNavigate } from 'react-router-dom';
+
 import Aside from '../shared/Aside'
 // import Navigation from '../../../components/shared/Navigation'
 
 const Personal = () => {
+
     return (
         <>
-            {/* <Categories /> */}
-            {/* <Navigation /> */}
 
             {/* Page content */}
             <main className="content-wrapper">
@@ -52,42 +53,18 @@ const Personal = () => {
                                             <div className="col-sm-6">
                                                 <label htmlFor="birthdate" className="form-label">Date of birth</label>
                                                 <div className="position-relative">
-                                                    <input type="text" className="form-control form-icon-end" id="birthdate" data-datepicker="{
-                          &quot;dateFormat&quot;: &quot;F j, Y&quot;,
-                          &quot;defaultDate&quot;: &quot;May 15, 1996&quot;
-                        }" placeholder="Choose date" />
+                                                    <input type="date" className="form-control form-icon-end" id="birthdate" 
+                                                     placeholder="Choose date" />
                                                     <i className="ci-calendar position-absolute top-50 end-0 translate-middle-y me-3" />
                                                 </div>
                                             </div>
                                             <div className="col-sm-6">
                                                 <label className="form-label">Language</label>
-                                                <select className="form-select" data-select="{
-                        &quot;placeholderValue&quot;: &quot;Select language&quot;,
-                        &quot;choices&quot;: [
-                          {
-                            &quot;value&quot;: &quot;&quot;,
-                            &quot;label&quot;: &quot;Select language&quot;,
-                            &quot;placeholder&quot;: true
-                          },
-                          {
-                            &quot;value&quot;: &quot;English&quot;,
-                            &quot;label&quot;: &quot;<div class=\&quot;d-flex align-items-center\&quot;><img src=\&quot;assets/img/flags/en-us.png\&quot; class=\&quot;flex-shrink-0 me-2\&quot; width=\&quot;20\&quot; alt=\&quot;English\&quot;> English</div>&quot;,
-                            &quot;selected&quot;: true
-                          },
-                          {
-                            &quot;value&quot;: &quot;Français&quot;,
-                            &quot;label&quot;: &quot;<div class=\&quot;d-flex align-items-center\&quot;><img src=\&quot;assets/img/flags/fr.png\&quot; class=\&quot;flex-shrink-0 me-2\&quot; width=\&quot;20\&quot; alt=\&quot;Français\&quot;> Français</div>&quot;
-                          },
-                          {
-                            &quot;value&quot;: &quot;Deutsch&quot;,
-                            &quot;label&quot;: &quot;<div class=\&quot;d-flex align-items-center\&quot;><img src=\&quot;assets/img/flags/de.png\&quot; class=\&quot;flex-shrink-0 me-2\&quot; width=\&quot;20\&quot; alt=\&quot;Deutsch\&quot;> Deutsch</div>&quot;
-                          },
-                          {
-                            &quot;value&quot;: &quot;Italiano&quot;,
-                            &quot;label&quot;: &quot;<div class=\&quot;d-flex align-items-center\&quot;><img src=\&quot;assets/img/flags/it.png\&quot; class=\&quot;flex-shrink-0 me-2\&quot; width=\&quot;20\&quot; alt=\&quot;Italiano\&quot;> Italiano</div>&quot;
-                          }
-                        ]
-                      }" data-select-template="true" />
+                                                <select className="form-select" data-select-template="true">
+                                                <option value="">Efik</option>
+                                                <option value="">Lagos</option>
+                                                <option value="">Igbo</option>
+                                                </select>
                                             </div>
                                             <div className="col-12">
                                                 <div className="d-flex gap-3 pt-2 pt-sm-0">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import { UsersService } from "../../services/local/UsersService";
 import { AxiosUsersService } from "../../services/net/AxiosUsersService";
@@ -20,6 +20,7 @@ const Signup = () => {
     const [isLoading, setIsLoading] = useState(false); // Loading state for the button
 
     useEffect(() => {
+
         const observer = (data) => {
             setModalState(data);
         };
@@ -33,34 +34,36 @@ const Signup = () => {
     const onSubmitForm = (evt) => {
         evt.preventDefault();
         setIsLoading(true); // Set loading state to true
-
+    
         // Show loading message
         NotificationService.showDialog("Submitting form...", "primary");
-
-        if (!formData.phone) {
-            NotificationService.showDialog("Phone number is required.", "error");
+    
+        if (!formData.username || !formData.phone || !formData.email || !formData.password) {
+            NotificationService.showDialog("Must provide ('username', 'phone', 'email', 'password')", "danger");
             setIsLoading(false); // Reset loading state
             return;
         }
-
+    
         AxiosUsersService.signup(formData).then(res => {
             const message = res.data.full_messages && res.data.full_messages.length > 0
                 ? res.data.full_messages[0]
                 : res.data.message || res.data.error;
-
+    
             if (res.data && res.data.success) {
                 NotificationService.showDialog(message || 'You registered successfully', 'success');
-                navigate('/'); 
+                navigate('/auth/signin'); 
+                // navigate('/user/personal'); 
             } else {
                 NotificationService.showDialog(message || 'Unknown error occurred', 'error');
             }
         }).catch(err => {
-            NotificationService.showDialog(err.message || err.error, 'error');
+            // Check if the error response exists
+            const errorMessage = err.response?.data?.error || err.message || 'An unknown error occurred';
+            NotificationService.showDialog(errorMessage, 'error');
         }).finally(() => {
             setIsLoading(false); // Reset loading state after completion
         });
     };
-
     
     const onInputChange = (key, evt) => {
         setFormData({ ...formData, [key]: evt.target.value });
@@ -69,7 +72,8 @@ const Signup = () => {
     // console.log(formData);
 
     return (
-        <>  <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{ "maxWidth": "1920px" }}>
+        <>  
+        <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{ "maxWidth": "1920px" }}>
 
             <div className="d-lg-flex">
                 {/* Login form + Footer */}
@@ -305,6 +309,7 @@ const Signup = () => {
                     </div>
                 </div>
             </div>
+
         </main>
         </>
     );

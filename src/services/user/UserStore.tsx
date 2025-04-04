@@ -11,44 +11,19 @@ function notifyObservers(user) {
     });
 }
 
-export const UsersService = {
-
-    // subscribe(observer, receiveFirstState = true) {
-    //     // no more than one subscription
-    //     if (!observers.includes(observer)) {
-    //         observers.push(observer);
-    //         if (receiveFirstState) {
-    //             const user = user? JSON.parse(LocalStorageService.get(USER_KEY)) : {};
-    //             // const user = LocalStorageService.get(USER_KEY) || {};
-    //             // const user = JSON.parse(LocalStorageService.get(USER_KEY)) || {};
-    //             observer(user);
-    //         }
-    //     }
-    // },
+export const UserStore = {
 
     subscribe(observer, receiveFirstState = true) {
-        // Ensure no more than one subscription
+        // no more than one subscription
         if (!observers.includes(observer)) {
             observers.push(observer);
             if (receiveFirstState) {
-
-                const userData = LocalStorageService.get(USER_KEY);
-                let user = {};
-    
-                // Check if userData is available and parse it
-                if (userData) {
-                    try {
-                        user = JSON.parse(userData);
-                    } catch (error) {
-                        console.error('Error parsing user data:', error);
-                        user = {}; // Fallback to empty object in case of error
-                    }
-                }
+                const user = JSON.parse(LocalStorageService.get(USER_KEY) || {} );
                 observer(user);
             }
         }
     },
-    
+
     unsubscribe(observer) {
         const index = observers.indexOf(observer);
         if (index > -1)

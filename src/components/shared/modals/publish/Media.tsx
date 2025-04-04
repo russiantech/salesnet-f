@@ -17,7 +17,7 @@ const Media = ({ onChange }) => {
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
                 <span className="badge text-bg-light position-absolute top-0 start-0 z-3 mt-2 ms-2">Cover</span>
-                <div className="ratio" style={{ '--fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
+                <div className="ratio" style={{ '-fnAspectRatio': 'calc(180 / 268 * 100%)' }}>
                   <img src="/assets/img/pages/products/upload_01.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
@@ -31,7 +31,7 @@ const Media = ({ onChange }) => {
             {/* Item */}
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
-                <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
+                <div className="ratio" style={{ 'fnAspectRatio': 'calc(180 / 268 * 100%)' }}>
                   <img src="/assets/img/pages/products/upload_02.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
@@ -45,7 +45,7 @@ const Media = ({ onChange }) => {
             {/* Item */}
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
-                <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
+                <div className="ratio" style={{ 'fnAspectRatio': 'calc(180 / 268 * 100%)' }}>
                   <img src="/assets/img/add-item/car/03.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
@@ -59,7 +59,7 @@ const Media = ({ onChange }) => {
             {/* Item */}
             <div className="col">
               <div className="hover-effect-opacity position-relative overflow-hidden rounded">
-                <div className="ratio" style={{ '-fn-aspect-ratio': 'calc(180 / 268 * 100%)' }}>
+                <div className="ratio" style={{ 'fnAspectRatio': 'calc(180 / 268 * 100%)' }}>
                   <img src="/assets/img/add-item/car/04.jpg" alt="Image" />
                 </div>
                 <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">

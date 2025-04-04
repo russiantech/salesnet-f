@@ -80,9 +80,16 @@ const ListingDetails = ({ onChange }) => {
               disabled={loading} // Disable the dropdown while loading
             >
               <option value="">Select option...</option>
-              {flatCategories.map(category => (
+              {/* {flatCategories.map(category => (
                 <option key={category.id} value={category.id}>{category.name}</option>
+              ))} */}
+
+              {flatCategories.map((category, index) => (
+                <option key={`${category.id}-${index}`} value={category.id}>
+                  {category.name}
+                </option>
               ))}
+
             </select>
           </div>
 
