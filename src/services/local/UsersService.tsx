@@ -69,9 +69,22 @@ export const UsersService = {
         notifyObservers(userObj);
     },
 
-    getToken() {
-        const user = LocalStorageService.get(USER_KEY);
-        return user ? user.token : null;
+    // Method to retrieve the specified token
+    getToken(tokenType = 'access' || null){
+        try {
+            // Get user from localStorage
+            const user = LocalStorageService.get(USER_KEY);
+            
+            // Determine token source priority: 1. User object 2. Direct localStorage
+            const token = tokenType === 'refresh' 
+                ? user?.refresh_token || LocalStorageService.get('refresh_token')
+                : user?.access_token || LocalStorageService.get('access_token');
+
+            return token || null;
+        } catch (error) {
+            console.error('Error retrieving token:', error);
+            return null;
+        }
     },
 
     saveUser(user) {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import PublishPage from './PublishPage';
+// import PublishPage from './PublishPage';
 import './PublishPage.css'; // Ensure you have this CSS file
+import PublishPage from './PublishPage';
 
 const Publish = () => {
   const [activeTab, setActiveTab] = useState('home');

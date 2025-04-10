@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const LoadingCard = (props) => (
-    <div className="card" aria-hidden="true" style={{ maxWidth: 300 }}>
+    <div className="col" aria-hidden="true">
         <div className="position-relative placeholder-wave">
             <div className="card-img-top placeholder ratio ratio-16x9" />
             <i className="ci-image position-absolute top-50 start-50 translate-middle fs-1 opacity-40" />

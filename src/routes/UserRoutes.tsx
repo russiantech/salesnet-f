@@ -3,7 +3,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Navigation from '../components/shared/Navigation';
-import PrivateRoute from '../services/guards/PrivateRoute';
+// import PrivateRoute from '../services/guards/PrivateRoute';
 import ProtectedLayout from '../services/guards/ProtectedLayout';
 
 // Lazy load user-related pages
@@ -23,7 +23,7 @@ const Checkout = lazy(() => import('../pages/user/checkout/Checkout'));
 const UserRoutes = () => (
     <>
     <Navigation />
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="loading-spinner"><div className="spinner"></div></div>}>
       <Routes>
         {/* Public routes */}
         <Route path="/terms" element={<Terms />} />

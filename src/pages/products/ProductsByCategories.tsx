@@ -5,6 +5,7 @@ import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
+import ResponseModal from '../../components/shared/modals/ResponseModal';
 
 const ProductsByCategories = () => {
     const [categories, setCategories] = useState([]);
@@ -24,9 +25,9 @@ const ProductsByCategories = () => {
         try {
             const res = await ProductAxiosService.fetchProductsByCategories(page, 1);
             console.log('API Response:', res); // Log the response
-
+            const data = res.data;
             // Map categories and their products
-            const newCategories = res.data.categories.map(category => ({
+            const newCategories = data.categories.map(category => ({
                 id: category.id,
                 name: category.name,
                 slug: category.slug,
@@ -35,11 +36,18 @@ const ProductsByCategories = () => {
             }));
 
             setCategories(prevCategories => [...prevCategories, ...newCategories]);
-            setPageMeta(res.data.page_meta);
-            setHasMore(res.data.page_meta.has_next_page);
+            setPageMeta(data.page_meta);
+            setHasMore(data.page_meta.has_next_page);
         } catch (err) {
             console.error('Failed to fetch categories:', err); // Log the error
-            NotificationService.showDialogError(err.message);
+            NotificationService.showDialog(err.message);
+            // <ResponseModal
+            //     show={true}
+            //     message={err.message}
+            //     success={false}
+            //     onClose={() => true}
+            //   />
+              
         } finally {
             setLoading(false);
         }
@@ -106,20 +114,21 @@ const ProductsByCategories = () => {
                     {loading && (
                         <div className="row">
                             {Array.from({ length: 5 }).map((_, index) => (
-
                                 <LoadingCard key={index} />
                             ))}
                         </div>
                     )}
                     {/* 
-                                        {hasMore && (
-                                            <div className="text-center mt-4">
-                                                <div className="spinner-border text-primary" role="status">
-                                                    <span className="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        )} */}
+                    {hasMore && (
+                        <div className="text-center mt-4">
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    )} */}
                 </section>
+
+
             </main>
         </>
     );

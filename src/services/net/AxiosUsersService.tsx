@@ -3,7 +3,7 @@ import { AxiosService } from "./base/AxiosService";
 
 export const AxiosUsersService = {
     signin(user) {
-        return AxiosService.post('/users/signin', user);
+        return AxiosService.json.post('/users/signin', user);
     },
 
     signout() {
@@ -11,29 +11,29 @@ export const AxiosUsersService = {
     },
 
     signup(user) {
-        return AxiosService.post('/users/signup', user);
+        return AxiosService.json.post('/users/signup', user);
     },
 
     getProfile() {
-        return AxiosService.get(`/users/current`);
+        return AxiosService.json.get(`/users/current`);
     },
 
     updateProfile(data) {
-        return AxiosService.put('/users', data);
+        return AxiosService.multipart.put('/users', data);
     },
 
     refreshToken() {
-        return AxiosService.post('/auth/refresh-token', {
+        return AxiosService.json.post('/auth/refresh-token', {
             refresh_token: UsersService.getCurrentUser()?.refresh_token
         });
     },
 
     changePassword(data) {
-        return AxiosService.put('/users/change-password', data);
+        return AxiosService.multipart.put('/users/change-password', data);
     },
 
     deleteAccount() {
-        return AxiosService.delete('/users/account');
+        return AxiosService.json.delete('/users/account');
     },
 
     fetchAll(pagination = { page: 1, page_size: 10 }) {

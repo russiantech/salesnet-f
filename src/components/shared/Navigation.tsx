@@ -24,7 +24,7 @@ const TopNav = () => {
                     <div className="col col-lg-3 d-flex align-items-center">
                         {/* Mobile offcanvas menu toggler (Hamburger) */}
                         {/* Navbar brand (Logo) */}
-                        <NavLink to="!#" className="navbar-brand me-0">
+                        <NavLink to="/" className="navbar-brand me-0">
                             <span className="d-sm-flex flex-shrink-0 text-primary me-2">
                                 <img width={36} height={36} src="/assets/img/us/logos/favicon.ico" alt="Logo" />
                             </span>

@@ -41,16 +41,16 @@ const Signin = () => {
 
     //     AxiosUsersService.signin(formData).then(res => {
 
-    //         const message = res.data.full_messages && res.data.full_messages.length > 0
-    //             ? res.data.full_messages[0]
-    //             : res.data.message || res.data.error;
+    //         const message = res.data.data.full_messages && res.data.data.full_messages.length > 0
+    //             ? res.data.data.full_messages[0]
+    //             : res.data.data.message || res.data.data.error;
 
-    //         if (res.data && res.data.success) {
+    //         if (res.data.data.&& res.data.data.success) {
               
-    //             // res.data.user.access_token = res.data.access_token;
-    //             // res.data.user.refresh_token = res.data.refresh_token;
+    //             // res.data.data.user.access_token = res.data.data.access_token;
+    //             // res.data.data.user.refresh_token = res.data.data.refresh_token;
 
-    //             UsersService.authenticate(res.data.user);
+    //             UsersService.authenticate(res.data.data.user);
 
     //             NotificationService.showDialog(message || 'Successfully logged in', 'success');
     //             // navigate('/user/personal'); 
@@ -69,7 +69,7 @@ const Signin = () => {
       evt.preventDefault();
       setIsLoading(true);
   
-      NotificationService.showDialog("Submitting form...", "primary");
+      NotificationService.showDialog("Sending...", "primary");
   
       if (!formData.username || !formData.password) {
           NotificationService.showDialog("Must provide both username and password.", "danger");
@@ -79,6 +79,7 @@ const Signin = () => {
   
       AxiosUsersService.signin(formData)
           .then(res => {
+            console.log(res);
               if (!res.data) {
                   throw new Error('No response data received');
               }
@@ -87,28 +88,27 @@ const Signin = () => {
               
               if (res.data.success) {
                   // Create user object with tokens
-                  // const userData = {
-                  //     ...res.data.user,  // If user data comes nested
-                  //     access_token: res.data.access_token,
-                  //     refresh_token: res.data.refresh_token
-                  // };
-                  
-                  UsersService.authenticate({
-                    ...res.data.user,
-                    access_token: res.data.access_token,
-                    refresh_token: res.data.refresh_token
-                });
+                  const user = res.data;
+                  console.log(`user is: ${user}`)
+                  const user_data = {
+                      ...user,  // If user data comes nested
+                      access_token: user.access_token,
+                      refresh_token: user.refresh_token
+                  };
 
-                  // UsersService.authenticate(userData);
+
+                  UsersService.authenticate(user_data);
                   
                   NotificationService.showDialog(message, 'success');
                   navigate('/user/personal');
+                  
               } else {
                   NotificationService.showDialog(message, 'error');
               }
           })
           .catch(err => {
               const errorMessage = err.response?.data?.error || err.message || 'An unknown error occurred';
+              console.log(err);
               NotificationService.showDialog(errorMessage, 'error');
           })
           .finally(() => {

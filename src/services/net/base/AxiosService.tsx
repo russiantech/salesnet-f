@@ -1,415 +1,165 @@
-// import axios from "axios";
-// import {UsersService} from "../../local/UsersService";
+// src/services/net/AxiosService.ts
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { UsersService } from '../../local/UsersService';
+import { NotificationService } from '../../local/NotificationService';
 
+interface AuthTokens {
+  accessToken: string | null;
+  refreshToken: string | null;
+}
 
-// let cachedUser = {};
-// UsersService.subscribe((user) => {
-//     cachedUser = user;
-// });
+interface RefreshTokenResponse {
+  access_token: string;
+  refresh_token?: string;
+}
 
-// // const axiosInstance = axios.create({
-// //     baseURL: 'http://localhost:8080/api',
-// //     // baseURL: 'https://salesnet.onrender.com/api',
-// //     responseType: 'json',
-// //     responseEncoding: 'utf8'
-// // });
-// const axiosInstance = axios.create({
-//     baseURL: window.location.hostname === 'localhost' 
-//         ? 'http://localhost:8080/api'
-//         : 'https://salesnet.onrender.com/api',
-//     responseType: 'json',
-//     responseEncoding: 'utf8'
-// });
+let navigationHandler: ((path: string) => void) | null = null;
 
-
-// axiosInstance.interceptors.request.use((config) => {
-//     if (cachedUser.access_token)
-//         config.headers.authorization = `Bearer ${cachedUser.access_token}`;
-//     return config;
-// }, function (error) {
-//     return Promise.reject(error);
-// });
-
-// function get(url) {
-//     return axiosInstance.get(url)
-// }
-
-// function post(url, data) {
-//     return axiosInstance.post(url, data);
-// }
-
-
-// function fetchPage(url, pagination = {page: 1, page_size: 5}) {
-//     return get(`${url}?page=${pagination.page || 1}&page_size=${pagination.page_size || 5}`)
-// }
-
-// function put() {
-
-// }
-
-// function destroy(url) {
-
-// }
-
-// export const AxiosService = {
-//     axiosInstance,
-//     get,
-//     post,
-//     put,
-//     destroy,
-//     fetchPage
-// };
-
-// 
-// 
-// import axios from "axios";
-// import { UsersService } from "../../local/UsersService";
-
-// let cachedUser = {
-//     token: null,
-//     refresh_token: null,
-// };
-
-// UsersService.subscribe((user) => {
-//     cachedUser.access_token = user.access_token;
-//     cachedUser.refresh_token = user.refresh_token;
-// });
-
-// const axiosInstance = axios.create({
-//     baseURL: window.location.hostname === 'localhost' 
-//         ? 'http://localhost:8080/api'
-//         : 'https://salesnet.onrender.com/api',
-//     responseType: 'json',
-//     responseEncoding: 'utf8'
-// });
-
-// // Request Interceptor
-// axiosInstance.interceptors.request.use((config) => {
-//     if (cachedUser.access_token) {
-//         config.headers.Authorization = `Bearer ${cachedUser.access_token}`;
-//     }
-//     return config;
-// }, function (error) {
-//     return Promise.reject(error);
-// });
-
-// // Response Interceptor
-// axiosInstance.interceptors.response.use(
-//     response => response,
-//     async (error) => {
-//         const originalRequest = error.config;
-
-//         if (error.response.status === 401 && !originalRequest._retry) {
-//             originalRequest._retry = true;
-
-//             const refreshed = await refresh_token();
-//             if (refreshed) {
-//                 originalRequest.headers.Authorization = `Bearer ${cachedUser.access_token}`;
-//                 return axiosInstance(originalRequest);
-//             }
-//         }
-
-//         console.error('API Request Error:', error.response?.data || error.message);
-//         return Promise.reject(error);
-//     }
-// );
-
-// // Function to refresh the token using Axios
-// async function refresh_token() {
-//     if (!cachedUser.refresh_token || !cachedUser.refresh_token.trim()) {
-//         console.warn('No refresh token available. Cannot refresh access token.');
-//         return false;
-//     }
-
-//     try {
-//         const response = await axiosInstance.post('/users/refresh-token', {
-//             refresh_token: cachedUser.refresh_token
-//         });
-
-//         if (response.data.access_token) {
-//             cachedUser.access_token = response.data.access_token;
-//             localStorage.setItem('access_token', response.data.access_token);
-//         }
-
-//         if (response.data.refresh_token) {
-//             cachedUser.refresh_token = response.data.refresh_token;
-//             localStorage.setItem('refresh_token', response.data.refresh_token);
-//         }
-
-//         return true; // Token refreshed successfully
-//     } catch (error) {
-//         console.error('Error refreshing token:', error.response?.data || error.message);
-//         return false; // Error during token refresh
-//     }
-// }
-
-// // API functions
-// function get(url) {
-//     return axiosInstance.get(url);
-// }
-
-// function post(url, data) {
-//     return axiosInstance.post(url, data);
-// }
-
-// function fetchPage(url, pagination = { page: 1, page_size: 5 }) {
-//     return get(`${url}?page=${pagination.page || 1}&page_size=${pagination.page_size || 5}`);
-// }
-
-// function put(url, data) {
-//     return axiosInstance.put(url, data);
-// }
-
-// function destroy(url) {
-//     return axiosInstance.delete(url);
-// }
-
-// export const AxiosService = {
-//     axiosInstance,
-//     get,
-//     post,
-//     put,
-//     destroy,
-//     fetchPage
-// };
-
-
-
-// 
-import axios from "axios";
-import { UsersService } from "../../local/UsersService";
-import { LocalStorageService } from "../../local/base/LocalStorageService";
-
-let cachedUser = {
-    access_token: null,
-    refresh_token: null,
+export const registerNavigation = (handler: (path: string) => void) => {
+  navigationHandler = handler;
 };
 
-// UsersService.subscribe((user: { access_token: null; refresh_token: null; }) => {
-//     cachedUser.access_token = user.access_token;
-//     cachedUser.refresh_token = user.refresh_token;
-// });
+const getBaseURL = (): string => {
+  return window.location.hostname === 'localhost' 
+    ? 'http://localhost:8080/api' 
+    : 'https://salesnet.onrender.com/api';
+};
 
-UsersService.subscribe((user) => {
-    try {
-        if (user) {
-            console.log('User received:', user);
-            cachedUser.access_token = user.access_token || null;
-            cachedUser.refresh_token = user.refresh_token || null;
-        } else {
-            throw new Error('Received undefined user');
-        }
-    } catch (error) {
-        console.error('Error in user subscription:', error.message);
-    }
-});
-
-const axiosInstance = axios.create({
-    baseURL: window.location.hostname === 'localhost' 
-        ? 'http://localhost:8080/api'
-        : 'https://salesnet.onrender.com/api',
+const createAxiosInstance = (contentType = 'application/json'): AxiosInstance => {
+  const instance = axios.create({
+    baseURL: getBaseURL(),
+    headers: {
+      'Content-Type': contentType,
+    },
     responseType: 'json',
-    responseEncoding: 'utf8'
-});
+  });
 
-// Request Interceptor
-axiosInstance.interceptors.request.use((config) => {
-    if (cachedUser.access_token) {
-        config.headers.Authorization = `Bearer ${cachedUser.access_token}`;
+  instance.interceptors.request.use((config) => {
+    const user = UsersService.getCurrentUser();
+    if (user?.access_token) {
+      config.headers.Authorization = `Bearer ${user.access_token}`;
     }
     return config;
-}, function (error) {
-    return Promise.reject(error);
-});
+  });
 
-// Response Interceptor
-axiosInstance.interceptors.response.use(
-    response => {
-        // Log successful responses
-        console.log('Response:', {
-            status: response.status,
-            data: response.data,
-            config: response.config
-        });
-        return response;
-    },
-    async (error) => {
-        // Log error responses
-        console.error('Error Response:', {
-            status: error.response?.status,
-            data: error.response?.data,
-            config: error.config
-        });
-
-        const originalRequest = error.config;
-
-        if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-
-            const refreshed = await refresh_token();
-            if (refreshed) {
-                originalRequest.headers.Authorization = `Bearer ${cachedUser.access_token}`;
-                return axiosInstance(originalRequest);
-            }
-        }
-
-        return Promise.reject(error);
-    }
-);
-
-// Function to refresh the token using Axios
-async function refresh_token() {
-    if (!cachedUser.refresh_token || !cachedUser.refresh_token.trim()) {
-        console.warn('No refresh token available. Cannot refresh access token.');
-        return false;
-    }
-
-    try {
-        const response = await axiosInstance.post('/users/refresh-token', {
-            refresh_token: cachedUser.refresh_token
-        });
-
-        if (response.data.access_token) {
-            cachedUser.access_token = response.data.access_token; // Update access token in cachedUser
-            LocalStorageService.set('access_token', response.data.access_token);
-        }
-
-        return true; // Token refreshed successfully
-    } catch (error) {
-        console.error('Error refreshing token:', error.response?.data || error.message);
-        return false; // Error during token refresh
-    }
-}
-
-// API functions
-function get(url) {
-    return axiosInstance.get(url);
-}
-
-function post(url, data) {
-    return axiosInstance.post(url, data);
-}
-
-function fetchPage(url, pagination = { page: 1, page_size: 5 }) {
-    return get(`${url}?page=${pagination.page || 1}&page_size=${pagination.page_size || 5}`);
-}
-
-function put(url, data) {
-    return axiosInstance.put(url, data);
-}
-
-function destroy(url) {
-    return axiosInstance.delete(url);
-}
-
-export const AxiosService = {
-    axiosInstance,
-    get,
-    post,
-    put,
-    destroy,
-    fetchPage
+  return instance;
 };
 
-// import axios from "axios";
-// import { UsersService } from "../../local/UsersService";
+// JSON instance for standard requests
+const jsonInstance = createAxiosInstance();
 
-// // Token management singleton
-// const tokenManager = {
-//     accessToken: null,
-//     refresh_token: null,
-    
-//     init() {
-//         const user = UsersService.getCurrentUser();
-//         this.accessToken = user?.access_token;
-//         this.refresh_token = user?.refresh_token;
-        
-//         UsersService.subscribe(user => {
-//             this.accessToken = user?.access_token;
-//             this.refresh_token = user?.refresh_token;
-//         });
-//     }
-// };
+// Multipart instance for file uploads
+const multipartInstance = createAxiosInstance('multipart/form-data');
 
-// tokenManager.init();
+const handleAuthError = async (_error: AxiosError): Promise<void> => {
+  const user = UsersService.getCurrentUser();
+  if (!user) return;
 
-// const axiosInstance = axios.create({
-//     baseURL: window.location.hostname === 'localhost' 
-//         ? 'http://localhost:8080/api'
-//         : 'https://salesnet.onrender.com/api',
-//     responseType: 'json',
-//     timeout: 10000,
-//     headers: {
-//         'Content-Type': 'application/json'
-//     }
-// });
+  UsersService.logout();
+  NotificationService.showDialog('Session expired. Please sign in again.', 'error');
+  
+  if (navigationHandler) {
+    navigationHandler('/auth/signin');
+  }
+};
 
-// // Request interceptor
-// axiosInstance.interceptors.request.use(config => {
-//     if (tokenManager.accessToken) {
-//         config.headers.Authorization = `Bearer ${tokenManager.accessToken}`;
-//     }
-//     return config;
-// }, error => Promise.reject(error));
+const setupResponseInterceptor = (instance: AxiosInstance): void => {
+  instance.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    async (error: AxiosError) => {
+      const originalRequest = error.config;
+      if (!originalRequest || !error.response) return Promise.reject(error);
 
-// // Response interceptor
-// axiosInstance.interceptors.response.use(
-//     response => {
-//         if (process.env.NODE_ENV === 'development') {
-//             console.debug('API Success:', response.config.url);
-//         }
-//         return response;
-//     },
-//     async error => {
-//         const originalRequest = error.config;
-        
-//         if (error.response?.status === 401 && !originalRequest._retry) {
-//             originalRequest._retry = true;
-            
-//             try {
-//                 const { data } = await axiosInstance.post('/auth/refresh', {
-//                     refresh_token: tokenManager.refresh_token
-//                 });
-                
-//                 if (data.access_token) {
-//                     const user = UsersService.getCurrentUser();
-//                     if (user) {
-//                         user.access_token = data.access_token;
-//                         user.refresh_token = data.refresh_token || user.refresh_token;
-//                         UsersService.authenticate(user);
-//                         originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
-//                         return axiosInstance(originalRequest);
-//                     }
-//                 }
-//             } catch (refreshError) {
-//                 console.error('Token refresh failed:', refreshError);
-//                 UsersService.logout();
-//                 window.location.href = '/auth/signin';
-//             }
-//         }
-        
-//         if (error.response) {
-//             console.error('API Error:', {
-//                 status: error.response.status,
-//                 message: error.response.data?.message,
-//                 path: error.config.url
-//             });
-//         }
-        
-//         return Promise.reject(error);
-//     }
-// );
+      // Handle 401 Unauthorized
+      if (error.response.status === 401) {
+        try {
+          const newToken = await handleTokenRefresh();
+          if (newToken && originalRequest.headers) {
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return instance(originalRequest);
+          }
+        } catch (refreshError) {
+          await handleAuthError(error);
+        }
+      }
+
+      // Handle other errors
+      if (error.response.status >= 500) {
+        NotificationService.showDialog('Server error. Please try again later.', 'error');
+      }
+
+      return Promise.reject(error);
+    }
+  );
+};
+
+const handleTokenRefresh = async (): Promise<string | null> => {
+  const user = UsersService.getCurrentUser();
+  if (!user?.refresh_token) return null;
+
+  try {
+    const response = await jsonInstance.post<RefreshTokenResponse>('/auth/refresh-token', {
+      refresh_token: user.refresh_token,
+    });
+
+    const newAccessToken = response.data.access_token;
+    const newRefreshToken = response.data.refresh_token || user.refresh_token;
+
+    UsersService.authenticate({
+      ...user,
+      access_token: newAccessToken,
+      refresh_token: newRefreshToken,
+    });
+
+    return newAccessToken;
+  } catch (error) {
+    await handleAuthError(error as AxiosError);
+    return null;
+  }
+};
+
+// Set up interceptors for both instances
+setupResponseInterceptor(jsonInstance);
+setupResponseInterceptor(multipartInstance);
+
+export const AxiosService = {
+  json: {
+    get: (url: string, config?: AxiosRequestConfig) => jsonInstance.get(url, config),
+    post: (url: string, data?: unknown, config?: AxiosRequestConfig) => 
+      jsonInstance.post(url, data, config),
+    put: (url: string, data?: unknown, config?: AxiosRequestConfig) => 
+      jsonInstance.put(url, data, config),
+    delete: (url: string, config?: AxiosRequestConfig) => 
+      jsonInstance.delete(url, config),
+  },
+
+  multipart: {
+    post: (url: string, data?: unknown, config?: AxiosRequestConfig) => 
+      multipartInstance.post(url, data, config),
+    put: (url: string, data?: unknown, config?: AxiosRequestConfig) => 
+      multipartInstance.put(url, data, config),
+  },
+
+  fetchPage: (url: string, pagination = { page: 1, page_size: 10 }) => 
+    jsonInstance.get(`${url}?page=${pagination.page}&page_size=${pagination.page_size}`),
+};
+
+// SEE USAGE BELOW:
+/*
+For JSON requests
+AxiosService.json.post('/products', { name: 'New Product' });
+
+For file uploads
+const formData = new FormData();
+formData.append('file', file);
+AxiosService.multipart.post('/upload', formData);
+*/
 
 // export const AxiosService = {
 //     axiosInstance,
-    
-//     get: (url) => axiosInstance.get(url),
-//     post: (url, data) => axiosInstance.post(url, data),
-//     put: (url, data) => axiosInstance.put(url, data),
-//     delete: (url) => axiosInstance.delete(url),
-    
-//     fetchPage: (url, pagination = { page: 1, page_size: 10 }) => 
-//         axiosInstance.get(`${url}?page=${pagination.page}&page_size=${pagination.page_size}`)
+//     get,
+//     post,
+//     put,
+//     destroy,
+//     fetchPage
 // };
-
-// 

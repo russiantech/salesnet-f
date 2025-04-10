@@ -29,7 +29,7 @@ const Products = () => {
             setHasMore(res.data.page_meta.has_next_page);
         } catch (err) {
             console.error('Failed to fetch products:', err); // Log the error
-            NotificationService.showDialogError(err.message);
+            NotificationService.showDialog(err.message);
         } finally {
             setLoading(false);
         }
