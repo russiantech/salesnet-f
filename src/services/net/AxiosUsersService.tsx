@@ -23,7 +23,7 @@ export const AxiosUsersService = {
     },
 
     refreshToken() {
-        return AxiosService.json.post('/auth/refresh-token', {
+        return AxiosService.json.post('/users/refresh-token', {
             refresh_token: UsersService.getCurrentUser()?.refresh_token
         });
     },

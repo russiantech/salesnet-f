@@ -60,13 +60,14 @@ const ProductDetails = () => {
                 </ol>
                 <div className="row">
                     <div className="col-lg-8 col-xl-9">
+                      
                         <h1 className="h3 mb-sm-4">
-                            <button onClick={() => navigate(-1)}
-                                className="btn btn-sm btn-secondary rounded-pill animate-pulse text-info bg-info-subtle mr-1" type="button">
-                                <i className="ci-arrow-up-left fs-sm ms-n1 me-1"></i> Back
-                            </button>
-                            {product.name}
-                        </h1>
+                            <span onClick={() => navigate(-1)} className="btn btn-sm btn-dark rounded-pill animate-pulse text-dark bg-info-subtle" type="button">
+                                <i className="ci-arrow-up-left fs-md"></i>
+                            </span> 
+                            {product.name} 
+                            </h1>
+
                         <div className="d-flex flex-column flex-md-row align-items-md-center gap-3 gap-md-4">
                             <div className="nav align-items-center gap-2 fs-sm">
                                 <a className="nav-link text-body gap-1 p-0" href="shop-catalog-marketplace.html">
@@ -87,10 +88,15 @@ const ProductDetails = () => {
                                     {product.comments_count} sales
                                 </span>
                                 <div className="d-flex gap-2">
+                                    <button className="btn btn-sm btn-dark bg-dark rounded-pill animate-pulse fw-bold">
+                                        ${product.price}
+                                    </button>
+
                                     <button className="btn btn-sm btn-info rounded-pill animate-pulse text-info bg-info-subtle " type="button">
                                         <i className="ci-shopping-cart animate-target fs-sm ms-n1 me-1" />
                                         Basket
                                     </button>
+                                    
                                     <button className="btn btn-sm btn-secondary rounded-pill animate-pulse" type="button">
                                         <i className="ci-heart animate-target fs-sm ms-n1 me-1" />
                                         {product.comments_count}
@@ -137,7 +143,7 @@ const ProductDetails = () => {
                             <a className="hover-effect-scale hover-effect-opacity position-relative d-flex rounded-4 overflow-hidden" data-gallery="product-gallery" data-glightbox="" href={product.image_urls[0]}>
                                 <i className="ci-zoom-in hover-effect-target fs-3 text-white position-absolute top-50 start-50 translate-middle opacity-0 z-2" />
                                 <div className="ratio hover-effect-target bg-body-tertiary" style={{ "--cz-aspect-ratio": "calc(640 / 966 * 100%)" }}>
-                                    <img alt="Image" src={product.image_urls[0]} />
+                                    <img alt="Image" src={product.image_urls && product.image_urls[0]} />
                                 </div>
                             </a>
                             <div className="row row-cols-2 g-3">

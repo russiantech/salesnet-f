@@ -82,13 +82,18 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                         phone: productData.contact_info?.phone || '',
                         // ... other contact fields
                     },
+                    // location: {
+                    //     country: productData.location?.country || '',
+                    //     state: productData.location?.state || '',
+                    //     city: productData.location?.address || '',
+                    //     zip_code: productData.location?.zip_code || '',
+                    //     address: productData.location?.address || '',
+                    //     // ... other contact fields
+                    // },
                     location: {
-                        country: productData.location?.country || '',
-                        state: productData.location?.state || '',
-                        city: productData.location?.address || '',
-                        zip_code: productData.location?.zip_code || '',
-                        address: productData.location?.address || '',
-                        // ... other contact fields
+                        address: '',
+                        latitude: null,
+                        longitude: null
                     },
 
                     promotion: productData.promotion?.promotion || initialFormData.promotion,
@@ -144,7 +149,100 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     const [previews, setPreviews] = useState([]);
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    // 
+    // Add state for location loading
+    const [isLocating, setIsLocating] = useState(false);
 
+    // Geolocation handler
+    const handleGetLocation = () => {
+    setIsLocating(true);
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser");
+        setIsLocating(false);
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+        try {
+            const { latitude, longitude } = position.coords;
+            // Update form with coordinates
+            setFormData(prev => ({
+            ...prev,
+            location: {
+                ...prev.location,
+                latitude,
+                longitude
+            }
+            }));
+            
+            // Optional: Reverse geocode to get address
+            const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+            );
+            const data = await response.json();
+            const address = data.display_name || "Current Location";
+            
+            setFormData(prev => ({
+            ...prev,
+            location: {
+                ...prev.location,
+                address
+            }
+            }));
+        } catch (error) {
+            console.error("Geocoding error:", error);
+        }
+        setIsLocating(false);
+        },
+        (error) => {
+        alert("Error getting location: " + error.message);
+        setIsLocating(false);
+        }
+    );
+    };
+
+    // Updated validation
+    // const validateCurrentTab = () => {
+
+    // const tabValidations = {
+    //     location: () => {
+    //     const hasAddress = !!formData.location.address?.trim();
+    //     const hasCoords = formData.location.latitude && formData.location.longitude;
+        
+    //     // Validate at least one exists
+    //     if (!hasAddress && !hasCoords) {
+    //         setErrors(prev => ({ ...prev, location: 'Address or location coordinates are required' }));
+    //         return false;
+    //     }
+
+    //     // Validate coordinate format if present
+    //     let valid = true;
+    //     if (formData.location.latitude) {
+    //         const lat = parseFloat(formData.location.latitude);
+    //         if (isNaN(lat) || lat < -90 || lat > 90) {
+    //         setErrors(prev => ({ ...prev, latitude: 'Invalid latitude (-90 to 90)' }));
+    //         valid = false;
+    //         }
+    //     }
+        
+    //     if (formData.location.longitude) {
+    //         const lng = parseFloat(formData.location.longitude);
+    //         if (isNaN(lng) || lng < -180 || lng > 180) {
+    //         setErrors(prev => ({ ...prev, longitude: 'Invalid longitude (-180 to 180)' }));
+    //         valid = false;
+    //         }
+    //     }
+        
+    //     return valid;
+    //     },
+    //     // ... other tabs
+    // };
+
+    // return tabValidations[activeTab]?.() || false;
+    // };
+
+    // 
     // Initial form state
     const initialFormData = {
         basic_info: {
@@ -152,26 +250,26 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
             // categories: [],
             // categories: new Set(), // Initialize as empty Set,
             categories: new Set<string>(),
-            price: '',
-            condition: '',
+            price: 0.1,
+            stock: 1,
+            condition: 'new',
             description: '',
-            listing_type: 'sell'
+            listing_type: 'product'
+            // listing_type: null
         },
         delivery_options: {
             delivery_type: 'delivery'
         },
         contact_info: {
             first_name: '',
-            last_name: '',
             email: '',
             phone: ''
         },
+
         location: {
-            country: '',
-            state: '',
-            city: '',
-            zip_code: '',
-            address: ''
+            address: '',
+            latitude: null,
+            longitude: null
         },
         media: {
             images: [],
@@ -215,7 +313,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     const validateRules = {
         name: {
             required: true,
-            minLength: 5,
+            minLength: 2,
             maxLength: 100
         },
         categories: {
@@ -230,36 +328,25 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         },
         description: {
             required: true,
-            minLength: 50,
+            minLength: 10,
             maxLength: 1000
         },
         first_name: {
-            required: true,
+            required: false,
             minLength: 2
         },
-        last_name: {
-            required: true,
-            minLength: 2
-        },
+
         email: {
-            required: true,
+            required: false,
             pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         },
         phone: {
-            required: true,
+            required: false,
             pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
         },
-        country: {
-            required: true
-        },
-        state: {
-            required: true
-        },
-        city: {
-            required: true
-        },
+
         address: {
-            required: true
+            required: false
         }
     };
 
@@ -269,6 +356,34 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         if (!rules) return true; // No validation rules for this field
 
         const newErrors = { ...errors };
+
+            // Location validation
+            if (name === 'address') {
+                if (!value.trim()) {
+                    newErrors.address = 'Address is required';
+                } else {
+                    delete newErrors.address;
+                }
+            }
+            
+            if (name === 'latitude' && value) {
+                if (isNaN(value) || value < -90 || value > 90) {
+                    newErrors.latitude = 'Invalid latitude (-90 to 90)';
+                }
+                //  else {
+                //     delete newErrors.latitude;
+                // }
+            }
+        
+            if (name === 'longitude' && value) {
+                if (isNaN(value) || value < -180 || value > 180) {
+                    newErrors.longitude = 'Invalid longitude (-180 to 180)';
+                } else {
+                    delete newErrors.longitude;
+                }
+            }
+        
+        // 
 
         if (name === 'categories') {
             if ((value as Set<string>).size === 0) {
@@ -300,26 +415,85 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     const validateCurrentTab = () => {
         const tabValidations = {
             home: () => {
-                const requiredFields = ['name', 'categories', 'price', 'condition', 'description'];
+                const requiredFields = ['name', 'categories', 'price', 'description'];
                 return requiredFields.every(field => {
                     const value = formData.basic_info[field];
                     return validateField(field, value) && value;
                 });
             },
             contact: () => {
-                const requiredFields = ['first_name', 'last_name', 'email', 'phone'];
+                const requiredFields = ['email', 'phone'];
                 return requiredFields.every(field => {
                     const value = formData.contact_info[field];
                     return validateField(field, value) && value;
                 });
             },
+            // location: () => {
+            //     // const requiredFields = ['country', 'state', 'city', 'address'];
+            //     const requiredFields = ['country', 'state', 'city', 'address'];
+            //     return requiredFields.every(field => {
+            //         const value = formData.location[field];
+            //         return validateField(field, value) && value;
+            //     });
+            // },
+            // 
+            // location: () => {
+            //     // Required fields based on new structure
+            //     const requiredFields = ['address'];
+            //     const validations = [
+            //         // Validate required address
+            //         requiredFields.every(field => {
+            //             const value = formData.location[field];
+            //             return validateField(field, value) && value;
+            //         }),
+                    
+            //         // Validate latitude format if present
+            //         formData.location.latitude ? 
+            //             !isNaN(formData.location.latitude) && 
+            //             formData.location.latitude >= -90 && 
+            //             formData.location.latitude <= 90 : true,
+                    
+            //         // Validate longitude format if present
+            //         formData.location.longitude ? 
+            //             !isNaN(formData.location.longitude) && 
+            //             formData.location.longitude >= -180 && 
+            //             formData.location.longitude <= 180 : true
+            //     ];
+    
+            //     return validations.every(v => v === true);
+            // },
+
             location: () => {
-                const requiredFields = ['country', 'state', 'city', 'address'];
-                return requiredFields.every(field => {
-                    const value = formData.location[field];
-                    return validateField(field, value) && value;
-                });
-            },
+                const hasAddress = !!formData.location.address?.trim();
+                const hasCoords = formData.location.latitude && formData.location.longitude;
+                
+                // Validate at least one exists
+                if (!hasAddress && !hasCoords) {
+                    setErrors(prev => ({ ...prev, location: 'Address or location coordinates are required' }));
+                    return false;
+                }
+        
+                // Validate coordinate format if present
+                let valid = true;
+                if (formData.location.latitude) {
+                    const lat = parseFloat(formData.location.latitude);
+                    if (isNaN(lat) || lat < -90 || lat > 90) {
+                    setErrors(prev => ({ ...prev, latitude: 'Invalid latitude (-90 to 90)' }));
+                    valid = false;
+                    }
+                }
+                
+                if (formData.location.longitude) {
+                    const lng = parseFloat(formData.location.longitude);
+                    if (isNaN(lng) || lng < -180 || lng > 180) {
+                    setErrors(prev => ({ ...prev, longitude: 'Invalid longitude (-180 to 180)' }));
+                    valid = false;
+                    }
+                }
+                
+                return valid;
+                },
+
             promote: () => true, // No validation required for promotion tab
             'listing-type': () => true, // No validation required for listing type
             images: () => mediaFiles.length > 0 // At least one media file required
@@ -329,7 +503,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         if (!isValid) {
             setResponseModal({
                 show: true,
-                message: 'Please fill in all required fields correctly',
+                message: 'Please fill in all required fields(*) correctly',
                 success: false
             });
         }
@@ -391,6 +565,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
         // Determine which section of the form this field belongs to
         if (name in formData.contact_info) formSection = 'contact_info';
+        // if (name in formData.listing_type) formSection = 'listing_type'; // cannot use the in operator here.
         if (name in formData.location) formSection = 'location';
         if (name in formData.media) formSection = 'media';
         if (name in formData.promotion) formSection = 'promotion';
@@ -544,12 +719,25 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
     // Revised media processing function
     const processMediaFiles = (submissionData: FormData) => {
+
+        // 
+        // Append valid removed media IDs
+        // removedMediaIds.forEach(id => {
+        //     if (typeof id === 'string' && id.startsWith('media_')) {
+        //         submissionData.append('removed_media_ids[]', id);
+        //     }
+        // });
+
         // Append new media files (excluding removed ones)
         mediaFiles
             .filter(file => !removedNewFiles.includes(file))
             .forEach((file, index) => {
                 submissionData.append('media[]', file);
                 submissionData.append(`media[${index}][isCover]`, index === 0 ? 'true' : 'false');
+
+                // submissionData.append('images[]', file)
+                // submissionData.append(`images[${index}][isCover]`, index === 0 ? 'true' : 'false');
+
             });
 
         // Append removed existing media IDs
@@ -593,74 +781,190 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
     // Handle form submission
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setIsSubmitting(true);
+
+    //     try {
+    //         // Final validation before submission
+    //         if (!validateCurrentTab()) {
+    //             setIsSubmitting(false);
+    //             return;
+    //         }
+
+    //         // Prepare structured data
+    //         const submissionData = prepareSubmissionData();
+
+    //         // Get auth token
+    //         // const token = await UsersService.getToken();
+
+    //         // console.log(`submissionData: ${JSON.stringify(submissionData)}`);
+    //         // Log FormData entries properly
+    //         console.log("--- Submission Data 02---");
+    //         for (const [key, value] of submissionData) {
+    //             console.log(key + ":", value);
+    //         }
+
+    //         // Submit data with progress tracking
+    //         // const response = await ProductAxiosService.createProduct(submissionData);
+    //         const response = isEditMode && productSlug
+    //             ? await ProductAxiosService.updateProduct(productSlug, submissionData)
+    //             : await ProductAxiosService.createProduct(submissionData);
+            
+    //         const message = response.data.full_messages && response.data.full_messages.length > 0
+    //                     ? response.data.full_messages[0]
+    //                     : response.data.message || response.data.error;
+
+    //         console.log(`response from publsih post -> ${response}`);
+
+    //         // Handle successful submission
+    //         if (response.data.success) {
+    //             setResponseModal({
+    //                 show: true,
+    //                 // message: response.data.message || 'Product published successfully! Redirecting...',
+    //                 message: message,
+    //                 success: true
+    //             });
+
+    //             // Reset form and redirect after delay
+    //             setTimeout(() => {
+    //                 setFormData(initialFormData);
+    //                 setMediaFiles([]);
+    //                 setPreviews([]);
+    //                 setActiveTab('home');
+    //                 setUploadProgress(0);
+    //                 navigate(`products/${response.data.slug}`);
+    //             }, 2000);
+
+
+    //         } else {
+    //             console.log(`At-Publishing 01: ${response}`);
+    //             throw new Error(message);
+    //         }
+    //     } catch (error) {
+    //         console.log(`At-Publishing: ${error}`);
+    //         // const errorMessage = error.response?.data?.error || error.data.message || 'Failed to publish product. Please try again.';
+    //         const errorMessage = error?.data?.full_messages && error?.data?.full_messages.length > 0
+    //         ? error.data?.full_messages[0]
+    //         : error?.data?.message || response.data.error;
+
+    //         // NotificationService.showDialog(errorMessage, 'error');
+    //         setResponseModal({
+    //             show: true,
+    //             message: errorMessage,
+    //             success: false
+    //         });
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    // };
+    const [showModal, setShowModal] = useState(false);
+    const closeButtonRef = useRef(null);
+    
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-
+      
         try {
-            // Final validation before submission
-            if (!validateCurrentTab()) {
-                setIsSubmitting(false);
-                return;
-            }
-
-            // Prepare structured data
-            const submissionData = prepareSubmissionData();
-
-            // Get auth token
-            // const token = await UsersService.getToken();
-
-            // console.log(`submissionData: ${JSON.stringify(submissionData)}`);
-            // Log FormData entries properly
-            console.log("--- Submission Data 02---");
-            for (const [key, value] of submissionData) {
-                console.log(key + ":", value);
-            }
-
-            // Submit data with progress tracking
-            // const response = await ProductAxiosService.createProduct(submissionData);
-            const response = isEditMode && productSlug
-                ? await ProductAxiosService.updateProduct(productSlug, submissionData)
-                : await ProductAxiosService.createProduct(submissionData);
-
-            // Handle successful submission
-            if (response.data.success) {
-                setResponseModal({
-                    show: true,
-                    message: response.data.message || 'Product published successfully! Redirecting...',
-                    success: true
-                });
-
-                // Reset form and redirect after delay
-                setTimeout(() => {
-                    setFormData(initialFormData);
-                    setMediaFiles([]);
-                    setPreviews([]);
-                    setActiveTab('home');
-                    setUploadProgress(0);
-                    navigate(`products/${response.data.slug}`);
-                }, 2000);
-
-
-            } else {
-                throw new Error(response.data.message || 'Submission failed');
-            }
-        } catch (error) {
-            console.log(`error-at-publishing: ${error}`);
-            // const errorMessage = error.response?.data?.message || error.error || 'Failed to publish product. Please try again.';
-            const errorMessage = error.response?.data?.error || error.message || error.error || 'Failed to publish product. Please try again.';
-            // NotificationService.showDialog(errorMessage, 'error');
-            setResponseModal({
-                show: true,
-                message: errorMessage,
-                success: false
-            });
-        } finally {
+          if (!validateCurrentTab()) {
             setIsSubmitting(false);
+            return;
+          }
+      
+          const submissionData = prepareSubmissionData();
+      
+          // Enhanced FormData logging
+          console.log("--- Submission Data Structure ---");
+          console.log("FormData Entries:");
+          for (const [key, value] of submissionData.entries()) {
+            console.log(`${key}:`, value);
+          }
+      
+          // Execute request
+          const response = isEditMode && productSlug
+            ? await ProductAxiosService.updateProduct(productSlug, submissionData)
+            : await ProductAxiosService.createProduct(submissionData);
+      
+          // Full response logging
+          console.log("--- API Response ---");
+          console.log("Full response object:", response);
+          console.log("Response status:", response.status);
+          console.log("Response headers:", response.headers);
+          console.log("Response data:", response.data);
+          console.log("Response data.error:", response.data.error);
+      
+          if (response.data.success) {
+            // Handle array messages
+            const successMessage = Array.isArray(response.data.message)
+              ? response.data.message[0]
+              : response.data.message;
+      
+            setResponseModal({
+              show: true,
+              message: successMessage || 'Product published successfully! Redirecting...',
+              success: true
+            });
+      
+            setTimeout(() => {
+              // Reset logic...
+            //   document.querySelector('.btn-close').click()
+            closeButtonRef.current.click();
+              navigate(`products/${response.data.slug}`);
+            // alert(true)
+            }, 2000);
+          } else {
+            // Log detailed error information
+            // console.error("API Error Response:", {
+            //   status: response.status,
+            //   headers: response.headers,
+            //   data: response.data
+            // });
+      
+            // Handle array errors
+            const errorMessage = Array.isArray(response.data.error)
+              ? response.data.error[0]
+              : response.data.error || response.data.message;
+      
+            throw new Error(errorMessage || 'Submission failed');
+          }
+        } catch (error) {
+          // Enhanced error logging
+        //   console.error("Submission Error:", {
+        //     name: error.name,
+        //     message: error.message,
+        //     stack: error.stack,
+        //     response: error.response ? {
+        //       status: error.response.status,
+        //       data: error.response.data
+        //     } : null
+        //   });
+      
+          // Extract error message from different error formats
+          const errorMessage = (
+            error?.response?.data?.error ||
+            error?.response?.data?.message ||
+            error?.message ||
+            'Failed to publish product. Please try again.'
+          );
+          
+          // Handle array error messages
+          const displayMessage = Array.isArray(errorMessage)
+            ? errorMessage[0]
+            : errorMessage;
+      
+          setResponseModal({
+            show: true,
+            message: displayMessage,
+            success: false
+          });
+        } finally {
+          setIsSubmitting(false);
         }
-    };
+      };
 
-    // 
     // 6. Update form reset
     const resetForm = () => {
         setFormData({
@@ -757,6 +1061,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
     // 
     // State initialization
+   
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<Set<string>>(new Set());
     const [categories, setCategories] = useState<Array<any>>([]);
     const [loading, setLoading] = useState(true);
@@ -803,7 +1108,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
         return (
             <div className={`category-selector ${error ? 'is-invalid' : ''}`}>
-                <div className="form-control form-control-sm" onClick={toggleExpansion}>
+                <div className="form-control form-control-lg" onClick={toggleExpansion}>
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="d-flex flex-wrap gap-1">
                             {selectedIds.size === 0 ? (
@@ -825,7 +1130,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                         <div className="p-2 border rounded bg-white">
                             <input
                                 type="text"
-                                className="form-control form-control-sm mb-2"
+                                className="form-control form-control-lg mb-2"
                                 placeholder="Search categories..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -921,13 +1226,18 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         );
     };
 
+    // handle closing of publish modal here
+    
+
     return (
 
-        <section id="pills-tabs" className="container pt-5 mt-sm-2 mt-md-3 mt-lg-4">
+        <section id="PublishPage" className="modal fade">
 
-            <div className="card">
+            <div className="modal-dialog modal-fullscreen" role="document">
+            <div className="modal-content">
                 {/* Nav pills */}
-                <ul className="nav nav-pills mb-3 - flex-nowrap gap-2 text-nowrap pb-3 card-header" role="tablist">
+                <div className="modal-header">
+                <ul className="nav nav-pills - flex-nowrap gap-2 text-nowrap card-header modal-title" role="tablist">
                     {['home', 'listing-type', 'images', 'contact', 'location', 'promote'].map((tab) => (
                         <li className="nav-item" role="presentation" key={tab}>
                             <button
@@ -945,20 +1255,24 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                         </li>
                     ))}
                 </ul>
+                <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"
+                 onClick={handleClose} ref={closeButtonRef} />
+                </div>
 
                 {/* Pills content */}
-                <div className="tab-content card-body" id="pills-tabContent">
+                <div className=" modal-body p-0">
+                <div className="tab-content" id="pills-tabContent">
                     {/* Home/Listing Details Tab */}
                     <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <section className="position-relative bg-body rounded p-4 mt-4">
-                            <div className="position-relative z-1 pb-md-2 px-md-2">
+                        <section className="position-relative bg-body rounded p-2 m-2">
+                            <div className="position-relative z-1 p-2 m-2">
                                 <h2 className="h4 mb-3 mb-sm-4">Basic Information</h2>
                                 <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
                                     <div className="col">
                                         <label htmlFor="name" className="form-label">Product name *</label>
                                         <input
                                             type="text"
-                                            className={`form-control form-control-sm ${errors.name ? 'is-invalid' : ''}`}
+                                            className={`form-control form-control-lg ${errors.name ? 'is-invalid' : ''}`}
                                             id="name"
                                             name="name"
                                             minLength={5}
@@ -1069,7 +1383,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                         <div className="input-group">
                                             <input
                                                 type="number"
-                                                className={`form-control form-control-sm ${errors.price ? 'is-invalid' : ''}`}
+                                                className={`form-control form-control-lg ${errors.price ? 'is-invalid' : ''}`}
                                                 id="price"
                                                 name="price"
                                                 value={formData.basic_info.price}
@@ -1087,7 +1401,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                     <div className="col">
                                         <label htmlFor="condition" className="form-label">Condition *</label>
                                         <select
-                                            className={`form-select form-select-sm ${errors.condition ? 'is-invalid' : ''}`}
+                                            className={`form-select form-select-lg ${errors.condition ? 'is-invalid' : ''}`}
                                             id="condition"
                                             name="condition"
                                             value={formData.basic_info.condition}
@@ -1109,12 +1423,12 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                 <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
                                 <p className="fs-sm mb-2">Describe your product in detail to attract buyers</p>
                                 <textarea
-                                    className={`form-control form-control-sm ${errors.description ? 'is-invalid' : ''}`}
+                                    className={`form-control form-control-lg ${errors.description ? 'is-invalid' : ''}`}
                                     rows={4}
                                     id="description"
                                     name="description"
-                                    placeholder="Describe your product (minimum 50 characters)"
-                                    minLength={20}
+                                    placeholder="Describe your product (minimum 10 characters)"
+                                    minLength={10}
                                     maxLength={1000}
                                     value={formData.basic_info.description}
                                     onChange={handleInputChange}
@@ -1135,11 +1449,12 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
                     {/* Listing Type Tab */}
                     <div className={`tab-pane fade ${activeTab === 'listing-type' ? 'show active' : ''}`} id="pills-listing-type" role="tabpanel" aria-labelledby="pills-listing-tab">
-                        <section className="container pt-2 mt-1 mt-sm-3 mt-lg-4">
-                            <div className="row">
+                        <section className="position-relative bg-body rounded p-2 m-2">
+                            <div className="position-relative z-1 p-2 m-2">
                                 <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
-                                <div className="d-flex flex-wrap gap-2">
-                                    {['sell', 'service', 'property', 'vehicle'].map((type) => (
+                                {/* <div className="d-flex flex-wrap gap-2"> */}
+                                <div className="nav - flex-nowrap gap-2 text-nowrap">
+                                    {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
                                         <React.Fragment key={type}>
                                             <input
                                                 type="radio"
@@ -1150,18 +1465,20 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                                 checked={formData.basic_info.listing_type === type}
                                                 onChange={handleInputChange}
                                             />
-                                            <label htmlFor={`listing-${type}`} className="btn btn-sm border-2 btn-outline-secondary">
-                                                <div className="d-flex flex-column flex-xxl-row align-items-center">
-                                                    <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
-                                                        <i className={`fi-${type === 'sell' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
+                                            <label htmlFor={`listing-${type}`} className="btn btn-outline-dark rounded-pill">
+                                                <div className="d-flex flex-column flex-xxl-row align-items-center m-1">
+                                                {/* <div className="nav-item"> */}
+                                                    <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle">
+                                                        <i className={`fi-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
                                                     </div>
-                                                    <div className="text-center text-xxl-start ps-xxl-3">
-                                                        <h3 className="h6 mb-1">
-                                                            {type === 'sell' && 'Sell an item'}
-                                                            {type === 'service' && 'Offer a service'}
+                                                    <div className="text-center">
+                                                        {/* <h3 className="h6 mb-1"> */}
+                                                            {type === 'product' && 'Sell item'}
+                                                            {type === 'rental' && 'Rent'}
+                                                            {type === 'service' && 'Offer service'}
                                                             {type === 'property' && 'Sell property'}
                                                             {type === 'vehicle' && 'Sell a vehicle'}
-                                                        </h3>
+                                                        {/* </h3> */}
                                                     </div>
                                                 </div>
                                             </label>
@@ -1174,16 +1491,15 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
                     {/* Media Tab */}
                     <div className={`tab-pane fade ${activeTab === 'images' ? 'show active' : ''}`} id="pills-images" role="tabpanel" aria-labelledby="pills-images-tab">
-                        <section className="position-relative bg-body rounded p-4 mt-4">
-                            <div className="position-relative z-1 pb-md-2 px-md-2">
+                        <section className="position-relative bg-body rounded p-2 m-2">
+                            <div className="position-relative z-1 p-2 m-2">
                                 <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
                                     <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
                                     <div className="position-relative d-flex">
                                         <i className="fi-info text-info mt-1 me-2" />
-                                        <a className="fs-sm fw-medium stretched-link text-bg-light rounded" href="#!">Photo guidelines</a>
                                     </div>
                                 </div>
-                                <small className="fs-sm text-warning">
+                                <small className="fs-sm text-warning mb-3">
                                     The maximum file size is 8 MB. Formats: jpeg, jpg, png, mp4, mov. Put the main picture first.
                                     {mediaFiles.length === 0 && (<>At least one image is required for your listing</>)}
                                 </small>
@@ -1254,7 +1570,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                         <i className="fi-link position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />
                                         {/* <input
                 type="url"
-                className="form-control form-control-sm form-icon-start"
+                className="form-control form-control-lg form-icon-start"
                 id="video_link"
                 name="video_link"
                 placeholder="www.youtube.com/..."
@@ -1284,10 +1600,10 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
                     {/* Contact Tab */}
                     <div className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`} id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                        <section className="position-relative bg-body rounded p-4 mt-4">
-                            <div className="position-relative z-1 pb-md-2 px-md-2">
+                        <section className="position-relative bg-body rounded p-2 m-2">
+                            <div className="position-relative z-1 p-2 m-2">
                                 <h2 className="h4 mb-3 mb-sm-4">Contact Information</h2>
-                                <div className="nav nav-pills flex-wrap gap-3 mb-3 mb-sm-4">
+                                <div className="nav nav-pills flex-wrap gap-3">
                                     <div>
                                         <input
                                             type="radio"
@@ -1319,44 +1635,13 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                         </label>
                                     </div>
                                 </div>
-                                <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4">
-                                    <div className="col">
-                                        <label htmlFor="first_name" className="form-label">First name *</label>
-                                        <input
-                                            type="text"
-                                            className={`form-control form-control-sm ${errors.first_name ? 'is-invalid' : ''}`}
-                                            id="first_name"
-                                            name="first_name"
-                                            value={formData.contact_info.first_name}
-                                            onChange={handleInputChange}
-                                            onBlur={(e) => validateField('first_name', e.target.value)}
-                                            required
-                                        />
-                                        {errors.first_name && (
-                                            <div className="invalid-feedback">{errors.first_name}</div>
-                                        )}
-                                    </div>
-                                    <div className="col">
-                                        <label htmlFor="last_name" className="form-label">Last name *</label>
-                                        <input
-                                            type="text"
-                                            className={`form-control form-control-sm ${errors.last_name ? 'is-invalid' : ''}`}
-                                            id="last_name"
-                                            name="last_name"
-                                            value={formData.contact_info.last_name}
-                                            onChange={handleInputChange}
-                                            onBlur={(e) => validateField('last_name', e.target.value)}
-                                            required
-                                        />
-                                        {errors.last_name && (
-                                            <div className="invalid-feedback">{errors.last_name}</div>
-                                        )}
-                                    </div>
+                                <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-2">
+                                    
                                     <div className="col">
                                         <label htmlFor="email" className="form-label">Email *</label>
                                         <input
                                             type="email"
-                                            className={`form-control form-control-sm ${errors.email ? 'is-invalid' : ''}`}
+                                            className={`form-control form-control-lg ${errors.email ? 'is-invalid' : ''}`}
                                             id="email"
                                             name="email"
                                             value={formData.contact_info.email}
@@ -1372,7 +1657,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                         <label htmlFor="phone" className="form-label">Phone number *</label>
                                         <input
                                             type="tel"
-                                            className={`form-control form-control-sm ${errors.phone ? 'is-invalid' : ''}`}
+                                            className={`form-control form-control-lg ${errors.phone ? 'is-invalid' : ''}`}
                                             id="phone"
                                             name="phone"
                                             value={formData.contact_info.phone}
@@ -1385,17 +1670,34 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                             <div className="invalid-feedback">{errors.phone}</div>
                                         )}
                                     </div>
+                                    <div className="col">
+                                        <label htmlFor="first_name" className="form-label">Your name *</label>
+                                        <input
+                                            type="text"
+                                            className={`form-control form-control-lg ${errors.first_name ? 'is-invalid' : ''}`}
+                                            id="first_name"
+                                            name="first_name"
+                                            value={formData.contact_info.first_name}
+                                            onChange={handleInputChange}
+                                            onBlur={(e) => validateField('first_name', e.target.value)}
+                                            required
+                                        />
+                                        {errors.first_name && (
+                                            <div className="invalid-feedback">{errors.first_name}</div>
+                                        )}
+                                    </div>
+
                                 </div>
                             </div>
                         </section>
                     </div>
 
                     {/* Location Tab */}
-                    <div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`} id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
-                        <section className="position-relative bg-body rounded p-4 mt-4">
-                            <div className="position-relative z-1 pb-md-2 px-md-2">
+                    {/* <div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`} id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
+                        <section className="position-relative bg-body rounded p-2 m-2">
+                            <div className="position-relative z-1 p-2 m-2">
                                 <h2 className="h4 mb-3 mb-sm-4">Location Details</h2>
-                                <div className="row g-3 g-md-4">
+                                <div className="row g-4">
                                     <div className="col-sm-4">
                                         <div className="position-relative">
                                             <label className="form-label">Country *</label>
@@ -1487,18 +1789,96 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                 </div>
                             </div>
                         </section>
+                    </div> */}
+                    {/*  */}
+                    {/* Location Tab */}
+<div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`} id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
+    <section className="position-relative bg-body rounded p-2 m-2">
+        <div className="position-relative z-1 p-2 m-2">
+            <h2 className="h4 mb-3 mb-sm-4">Location Details</h2>
+            <small className="fs-sm text-warning mb-3">Leave blank to use your current location details.</small>
+
+            <div className="row g-4">
+                {/* Address Field */}
+                <div className="col">
+                    <div className="position-relative">
+                        <label htmlFor="address" className="form-label">Address *</label>
+                        <input
+                            type="text"
+                            name="address"
+                            className={`form-control form-control-lg ${errors.address ? 'is-invalid' : ''}`}
+                            id="address"
+                            value={formData.location.address}
+                            onChange={handleInputChange}
+                            onBlur={(e) => validateField('address', e.target.value)}
+                            required
+                        />
+                        {errors.address && (
+                            <div className="invalid-feedback">{errors.address}</div>
+                        )}
                     </div>
+                </div>
+
+                {/* Latitude Field */}
+                <div className="col-sm-3">
+                    <div className="position-relative">
+                        <label htmlFor="latitude" className="form-label">Latitude</label>
+                        <input
+                            type="number"
+                            name="latitude"
+                            className="form-control form-control-lg"
+                            id="latitude"
+                            step="any"
+                            value={formData.location.latitude || null}
+                            onChange={handleInputChange}
+                            placeholder="40.7128"
+                        />
+                         {errors.latitude && (
+                        <div className="invalid-feedback">{errors.latitude}</div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Longitude Field */}
+                <div className="col-sm-3">
+                    <div className="position-relative">
+                        <label htmlFor="longitude" className="form-label">Longitude</label>
+                        <input
+                            type="number"
+                            name="longitude"
+                            className="form-control form-control-lg"
+                            id="longitude"
+                            step="any"
+                            value={formData.location.longitude || null}
+                            onChange={handleInputChange}
+                            placeholder="-74.0060"
+                        />
+                        {errors.longitude && (
+                        <div className="invalid-feedback">{errors.longitude}</div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Map Picker (Optional) */}
+                <div className="col-12">
+                    <div className="map-container" style={{ height: '300px', borderRadius: '8px' }}>
+                        {/* Integrate your map component here */}
+                        <p className="text-muted">Map picker component would go here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
                     {/* Promote Tab */}
                     <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`} id="pills-promote" role="tabpanel" aria-labelledby="pills-promote-tab">
-                        <section className="position-relative bg-body rounded p-4 mt-4">
-                            <div className="position-relative z-1 pb-md-2 px-md-2">
+                        <section className="position-relative bg-body rounded p-2 m-2">
+                            <div className="position-relative z-1 p-2 m-2">
                                 <h2 className="h4 mb-3 mb-sm-4">Promotion Options</h2>
-                                <p className="mb-4">Boost your listing's visibility with our promotion plans</p>
-
                                 <div className="alert alert-info">
-                                    <i className="fi-info-circle me-2"></i>
-                                    Promotion plans help your listing stand out and reach more potential buyers
+                                    <i className="ci-circle me-2"></i>
+                                    Boost your listing's visibility with our promotion plans / Promotion plans help your listing stand out and reach more potential buyers
                                 </div>
 
                                 <div className="row g-4">
@@ -1582,30 +1962,33 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                         </div>
                                     ))}
                                 </div>
+                                
                             </div>
                         </section>
                     </div>
 
-                
-                {/* Response Modal - Placed just above the buttons */}
-                <ResponseModal
+                </div>
+                 {/* Response Modal - Placed just above the buttons */}
+                 <div className="position-relative z-1 p-2 m-2">
+                    <ResponseModal
                     show={responseModal.show}
                     message={responseModal.message}
                     success={responseModal.success}
                     onClose={() => setResponseModal({ ...responseModal, show: false })}
-                />
-
+                /></div>
                 </div>
 
-                {/* Progress bar and navigation buttons */}
-                <footer className="sticky-bottom11 card-footer text-muted3">
-                    <div className="progress rounded-0" role="progressbar" style={{ height: '4px' }}>
+                <div className="progress rounded-0" role="progressbar" style={{ height: '4px' }}>
                         <div
                             className={`progress-bar ${uploadProgress > 0 ? 'bg-info' : 'bg-dark'}`}
                             style={{ width: `${uploadProgress > 0 ? uploadProgress : progressPercentage()}%` }}
                         />
                     </div>
-                    <div className="container d-flex gap-3 pt-3">
+
+                {/* Progress bar and navigation buttons */}
+                <footer className="sticky-bottom1 modal-footer text-muted">
+                   
+                    {/* <div className="container1 d-flex "> */}
                         <button
                             type="button"
                             className="btn btn-outline-dark animate-slide-start"
@@ -1633,8 +2016,9 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                 </>
                             )}
                         </button>
-                    </div>
+                    {/* </div> */}
                 </footer>
+            </div>
             </div>
         </section>
 
@@ -1642,3 +2026,4 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 };
 
 export default PublishPage;
+
