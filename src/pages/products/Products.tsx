@@ -79,14 +79,10 @@ const Products = () => {
                                         </div>
                                         Salesnet
                                     </a>
-                                    <div className="text-body-secondary">in</div>
-                                    <a className="nav-link text-body p-0" href="shop-catalog-marketplace.html">
-                                        development
-                                    </a>
                                 </div>
                                 <div className="d-flex justify-content-between flex-grow-1 gap-4">
                                     <span className="badge rounded-pill text-info bg-info-subtle d-inline-flex align-items-center fs-sm">
-                                        65 sales
+                                        /
                                     </span>
                                     <div className="d-flex gap-2">
                                         <button className="btn btn-sm btn-info rounded-pill animate-pulse text-info bg-info-subtle" type="button">
