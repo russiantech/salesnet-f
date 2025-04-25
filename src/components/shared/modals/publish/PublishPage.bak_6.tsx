@@ -7,7 +7,7 @@ import { NotificationService } from '../../../../services/local/NotificationServ
 import CategoryList from './CategoryList';
 
 import PropTypes from 'prop-types';
-import Spinners from '../../Spinners';
+import Spinners from '../../LoadingSpinner';
 
 // Add this at the top of your PublishPage component
 interface PublishPageProps {

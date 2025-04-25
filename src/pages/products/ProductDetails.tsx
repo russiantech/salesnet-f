@@ -1,31 +1,99 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
-// import { ProductAxiosService } from '../../services/ProductAxiosService';
 import './Products.css';
 import ProductRecommendations from './ProductRecommendations';
+import { formatDate } from '../../utils/dateUtils';
+import ProductReviewForm from './ProductReviewForm';
+
+interface ProductOwner {
+    id: number;
+    name: string;
+    slug: string;
+    avatar?: string;
+    type: 'user' | 'page';
+  }
+  
+  interface ProductDetails {
+    id: number;
+    name: string;
+    price: string;
+    description: string;
+    image_urls: string[];
+    comments_count: number;
+    categories: Array<{ id: number; name: string }>;
+    users: any[];
+    pages: any[];
+    created_at: string;
+    tags: string[];
+  }
 
 const ProductDetails = () => {
-    const { slug } = useParams(); // Get product slug from URL parameters
-    const navigate = useNavigate();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState<ProductDetails | null>(null);
+  const [owner, setOwner] = useState<ProductOwner | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
-            try {
-                const response = await ProductAxiosService.getBySlug(slug);
-                setProduct(response.data); // Set product data
-            } catch (err) {
-                setError('Failed to load product details');
-            } finally {
-                setLoading(false);
-            }
+          try {
+            const response = await ProductAxiosService.getBySlug(slug!);
+            const data = response.data;
+            setProduct(data);
+            
+            // Determine owner (page or user)
+            const ownerData = data.pages?.length > 0 
+              ? { ...data.pages[0], type: 'page' }
+              : data.users?.length > 0 
+                ? { ...data.users[0], type: 'user' }
+                : null;
+                
+            setOwner(ownerData ? {
+              id: ownerData.id,
+              name: ownerData.name || ownerData.username,
+              slug: ownerData.slug || ownerData.username,
+              avatar: ownerData.avatar,
+              type: ownerData.type
+            } : null);
+    
+          } catch (err) {
+            setError('Failed to load product details');
+          } finally {
+            setLoading(false);
+          }
         };
-
+    
         fetchProductDetails();
-    }, [slug]);
+      }, [slug]);
+
+
+    const handleSocialShare = (platform: string) => {
+        const shareUrl = window.location.href;
+        const text = `Check out ${product?.name} on our platform - ${product?.description}`;
+
+        switch(platform) {
+            
+        case 'facebook':
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+            break;
+        case 'instagram':
+            alert("Instagram sharing is not supported directly. Please copy the link.");
+            break;
+        case 'twitter':
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+            break;
+        case 'linkedin':
+            window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(product?.name || '')}`, '_blank');
+            break;
+        case 'copy':
+            navigator.clipboard.writeText(shareUrl);
+            alert('Link copied to clipboard!');
+            break;
+        }
+    };
 
     if (loading) {
         return (
@@ -69,24 +137,34 @@ const ProductDetails = () => {
                             </h1>
 
                         <div className="d-flex flex-column flex-md-row align-items-md-center gap-3 gap-md-4">
-                            <div className="nav align-items-center gap-2 fs-sm">
-                                <a className="nav-link text-body gap-1 p-0" href="shop-catalog-marketplace.html">
+
+                              {owner && (
+                                <div className="nav align-items-center gap-2 fs-sm">
+                                <Link 
+                                    to={`/${owner.type === 'page' ? 'pages' : 'users'}/${owner.slug}`}
+                                    className="nav-link text-body gap-1 p-0"
+                                >
                                     <div className="flex-shrink-0 border rounded-circle" style={{ width: "32px" }}>
-                                        <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
-                                            <img alt="Avatar" src="/assets/img/us/logos/favicon.svg" />
-                                        </div>
+                                    <img 
+                                        alt={owner.name}
+                                        src={owner.avatar || '/assets/img/us/logos/avatar.png'}
+                                        className="ratio ratio-1x1 rounded-circle"
+                                    />
                                     </div>
-                                    Salesnet
-                                </a>
-                                <div className="text-body-secondary">in</div>
-                                <Link className="nav-link text-body p-0" to="pages/salesnet">
-                                    development
+                                    {owner.name}
                                 </Link>
-                            </div>
+                                <span className="text-body-secondary">
+                                    Listed {formatDate(product!.created_at)}
+                                </span>
+                                </div>
+                            )}
+
                             <div className="d-flex justify-content-between flex-grow-1 gap-4">
+                            {product.comments_count > 0 && (
                                 <span className="badge rounded-pill text-info bg-info-subtle d-inline-flex align-items-center fs-sm">
                                     {product.comments_count} sales
                                 </span>
+                            )}
                                 <div className="d-flex gap-2">
                                     <button className="btn btn-sm btn-dark bg-dark rounded-pill animate-pulse fw-bold">
                                         ${product.price}
@@ -112,25 +190,40 @@ const ProductDetails = () => {
                                         </button>
                                         <ul className="dropdown-menu dropdown-menu-end" style={{ "--cz-dropdown-min-width": "8.5rem" }}>
                                             <li>
-                                                <a className="dropdown-item" href="#!">
-                                                    <i className="ci-facebook fs-base me-2" />
-                                                    Facebook
-                                                </a>
+                                                <button className="dropdown-item" onClick={() => handleSocialShare('facebook')}>
+                                                <i className="ci-facebook fs-base me-2 text-info" />
+                                                Facebook
+                                                </button>
                                             </li>
                                             <li>
-                                                <a className="dropdown-item" href="#!">
-                                                    <i className="ci-instagram fs-base me-2" />
+                                                <a className="dropdown-item" href="#!" onClick={() => handleSocialShare('instagram')}>
+                                                    <i className="ci-instagram fs-base me-2 text-primary" />
                                                     Instagram
                                                 </a>
+                                                </li>
+
+                                            <li>
+                                                <button className="dropdown-item" onClick={() => handleSocialShare('twitter')}>
+                                                <i className="ci-twitter fs-base me-2" />
+                                                Twitter
+                                                </button>
                                             </li>
                                             <li>
-                                                <a className="dropdown-item" href="#">
-                                                    <i className="ci-linkedin fs-base me-2" />
-                                                    LinkedIn
-                                                </a>
+                                                <button className="dropdown-item" onClick={() => handleSocialShare('linkedin')}>
+                                                <i className="ci-linkedin fs-base me-2 text-info" />
+                                                LinkedIn
+                                                </button>
                                             </li>
-                                        </ul>
+                                            <li>
+                                                <button className="dropdown-item" onClick={() => handleSocialShare('copy')}>
+                                                <i className="ci-copy fs-base me-2" />
+                                                Copy Link
+                                                </button>
+                                            </li>
+                                            </ul>
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -183,7 +276,8 @@ const ProductDetails = () => {
                                 <div aria-labelledby="description-tab" className="tab-pane fade active show" id="description-tab-pane" role="tabpanel">
                                     <div className="row">
                                         <h2 className="h4 pt-2 mt-md-2 mb-lg-2">Overview</h2>
-                                        <p>{product.description}</p>
+                                        {/* <p>{JSON.stringify(product)}</p> */}
+                                        <p>{product?.description}</p>
                                         <h2 className="h4 pt-5 mt-md-2 mb-lg-4">Highlights</h2>
                                         <ul className="mb-0">
                                             <li>If you need more details regarding this {product.name}</li>
@@ -232,17 +326,23 @@ const ProductDetails = () => {
                                         <button className="btn btn-outline-dark mb-3" data-bs-target="#reviewForm" data-bs-toggle="modal" type="button">
                                             Leave a review
                                         </button>
+                                         {/* Modal for the review form */}
+                                         {product && (
+                                            <ProductReviewForm 
+                                                productSlug={product.slug} // Use product.slug instead
+                                                onReviewSubmitted={() => {
+                                                    console.log('Review submitted, refresh reviews.');
+                                                }}
+                                            />
+                                        )}
+
                                     </div>
                                     {/* Review List */}
                                     <div className="bg-body-tertiary rounded-4 p-4 p-sm-5">
                                         {/* Reviews would be dynamically generated here */}
-                                        <ul className="list-unstyled">
-                                            <li>We'd love to hear your thoughts, regarding {product.name}.</li>
-                                            <li>However, we're currently working on this feature.</li>
-                                            <li>We'll get it sorted-out as soon as possible because of you. Happy Shopping.</li>
-                                        </ul>
-                                        {/*  */}
+                                       
                                         <div className="vstack gap-3 gap-md-4 mt-n3">
+
                                             {product.comments && product.comments.length > 0 ? (
                                                 product.comments.map((comment) => (
                                                     <div key={comment.id} className="mt-3">
@@ -257,10 +357,11 @@ const ProductDetails = () => {
                                                                 <div className="ps-2 ms-1">
                                                                     <div className="fs-sm fw-semibold text-dark-emphasis mb-1">
                                                                         {/* Assuming user names are mapped from user IDs */}
-                                                                        {comment.name}
+                                                                        {comment.name || comment.username}
                                                                     </div>
                                                                     <div className="fs-xs text-body-secondary">
-                                                                        {new Date(comment.created_at).toLocaleDateString()}
+                                                                        {/* {new Date(comment.created_at).toLocaleDateString()} */}
+                                                                        {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric',  month: 'long',  day: 'numeric' })}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -279,11 +380,11 @@ const ProductDetails = () => {
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                        <p className="fs-sm mb-0">{comment.content}</p>
+                                                        <p className="fs-sm mb-0 text-break">{comment.content}</p>
                                                     </div>
                                                 ))
                                             ) : (
-                                                <p className="fs-sm text-body-secondary">No comments available for this product.</p>
+                                                <p className="fs-sm text-body-secondary">No comments available for this product just yet.</p>
                                             )}
                                         </div>
 

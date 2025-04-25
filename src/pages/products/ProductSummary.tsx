@@ -127,7 +127,7 @@ const ProductSummary2 = ({ image, name, slug, price, id, discount, originalPrice
 // 
 // import { Link } from 'react-router-dom';
 
-const ProductSummary = ({ image, name, slug, price, id, discount, originalPrice }) => {
+const ProductSummary = ({ image = '/static/images/products/0.webp', name, slug, price, id, discount, originalPrice }) => {
     return (
         <div className="col">
             <div className="product-card animate-underline hover-effect-opacity bg-body rounded">
@@ -166,6 +166,7 @@ const ProductSummary = ({ image, name, slug, price, id, discount, originalPrice 
                             <span className="badge bg-danger position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">-{discount}%</span>
                         )}
                         <div className="ratio" style={{ '--cz-aspect-ratio': 'calc(240 / 258 * 100%)' }}>
+                            {/* <img src={image} alt={name} className='img img-fluid rounded-2' /> */}
                             <img src={image} alt={name} className='img img-fluid rounded-2' />
                         </div>
                     </Link>

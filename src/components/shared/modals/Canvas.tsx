@@ -1,9 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
+import SearchItems from "./Search/SearchItems";
+// import NewArrivals from "../../../pages/home/NewArrivals";
 
 const Canvas = () => {
   return (
     <>
-      <Search />
+      {/* <Search /> */}
       <Basket />
       <Installer />
     </>
@@ -12,42 +14,6 @@ const Canvas = () => {
 
 export default Canvas
 
-const Search = () => {
-  return (
-    <>
-      {/* Search Off Canvas */}
-      <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex="-1">
-        <div className="offcanvas-header border-bottom p-0 py-lg-1">
-          <form className="container d-flex align-items-center">
-            <input
-              type="search"
-              className="form-control form-control-lg fs-lg border-0 rounded-0 py-3 ps-0"
-              placeholder="Search the products"
-              data-autofocus="offcanvas"
-              data-listener-added_49ba725d="true"
-            />
-            <button type="reset" className="btn-close fs-lg" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </form>
-        </div>
-        <div className="offcanvas-body px-0">
-          <div className="container text-center">
-            <svg
-              className="text-body-tertiary opacity-60 mb-4"
-              xmlns="http://www.w3.org/2000/svg"
-              width="60"
-              viewBox="0 0 512 512"
-              fill="currentColor"
-            >
-              {/* SVG path */}
-            </svg>
-            <h6 className="mb-2">Your search results will appear here</h6>
-            <p className="fs-sm mb-0">Start typing in the search field above to see instant search results.</p>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
 
 const Basket = () => {
   return (

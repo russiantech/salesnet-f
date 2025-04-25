@@ -31,6 +31,13 @@ const createAxiosInstance = (contentType = 'application/json'): AxiosInstance =>
     headers: {
       'Content-Type': contentType,
     },
+    // 
+    // withCredentials: true, // If you need to send cookies
+    // headers: {
+    //   'Content-Type': contentType,
+    //   'Accept': 'application/json'
+    // },
+    // 
     responseType: 'json',
   });
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import Categories from './modals/Categories'
+// import { useModal } from '../../context/ModalProvider'
 
 const Navigation = () => {
     return (
@@ -18,6 +19,7 @@ export default Navigation
 const TopNav = () => {
     const location = useLocation();
     const { pathname } = location;
+    // const { showModal } = useModal();
     const [userRole, setUserRole] = useState<'user' | 'vendor' | null>(null);
 
     // Determine if we're on a user/vendor profile page
@@ -73,9 +75,19 @@ const TopNav = () => {
                             {/* <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill">3</span> */}
                             <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
                                 <i className="ci-powerbank animate-target text-white" />
-                                {/* <i className="ci-send animate-target text-white" /> */}
                             </span>
                         </NavLink>
+
+                        {/* <li className="nav-item">
+                        <button
+                        onClick={() => showModal('publish')}
+                        className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2"
+                        >
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                            <i className="ci-send animate-target fs-4 m-1" />
+                        </span>
+                        </button>
+                    </li> */}
 
                         <NavLink to="!#" className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle animate-shake ms-2" data-bs-toggle="offcanvas" data-bs-target="#searchBox" aria-controls="searchBox" aria-label="Toggle search bar">
                             <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill">3</span>

@@ -24,7 +24,7 @@ const Signup = lazy(() => import("../pages/auth/Signup"));
 const RecoverPassword = lazy(() => import("../pages/auth/RecoverPassword"));
 
 const AuthRoutes = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={null}>
     <Routes>
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<Signup />} />

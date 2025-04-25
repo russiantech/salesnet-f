@@ -23,7 +23,8 @@ const Checkout = lazy(() => import('../pages/user/checkout/Checkout'));
 const UserRoutes = () => (
     <>
     <Navigation />
-    <Suspense fallback={<div className="loading-spinner"><div className="spinner"></div></div>}>
+    {/* <Suspense fallback={<div className="loading-spinner"><div className="spinner"></div></div>}> */}
+    <Suspense fallback={null}>
       <Routes>
         {/* Public routes */}
         <Route path="/terms" element={<Terms />} />

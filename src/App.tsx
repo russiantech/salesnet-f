@@ -1,82 +1,54 @@
-// import { lazy, Suspense } from 'react';
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import Home from "./pages/home/Home";
-// import { NotFoundPage, NotImplimentedPage } from "./pages/Notfound";
-// import Canvas from "./components/shared/modals/Canvas";
-// import Publish from "./components/shared/modals/publish/Publish";
-// import AuthRoutes from "./routes/AuthRoutes";
-// import ProductRoutes from "./routes/ProductRoutes";
-// import UserRoutes from "./routes/UserRoutes";
-// import VendorRoutes from "./routes/VendorRoutes";
-
-// const App = () => {
-//   return (
-//     <>
-//       <NotImplimentedPage />
-//       <Publish />
-//       <Canvas />
-      
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         {/* Include ProductRoutes and AuthRoutes as nested routes */}
-//         <Route path="/products/*" element={<ProductRoutes />} />
-//         <Route path="/auth/*" element={<AuthRoutes />} />
-//         <Route path="/user/*" element={<UserRoutes />} />
-//         <Route path="/vendor/*" element={<VendorRoutes />} />
-//         <Route path="*" element={<NotFoundPage />} />
-//       </Routes>
-//     </>
-//   );
-// };
-
-
-// const Root = () => (
-//   <Router>
-//     <App />
-//   </Router>
-// );
-
-// export default Root;
-
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import { NotFoundPage, NotImplimentedPage } from "./pages/Notfound";
-import Canvas from "./components/shared/modals/Canvas";
-import Publish from "./components/shared/modals/publish/Publish";
+import CategoriesPage from './pages/categories/CategoriesPage';
+
+const ProductsInCategory = lazy(() => import("./pages/products/ProductsInCategory"));
 
 // Lazy load routes
 const AuthRoutes = lazy(() => import("./routes/AuthRoutes"));
 const ProductRoutes = lazy(() => import("./routes/ProductRoutes"));
 const UserRoutes = lazy(() => import("./routes/UserRoutes"));
 const VendorRoutes = lazy(() => import("./routes/VendorRoutes"));
+// 
+// const NotImplimentedPage = lazy(() => import("./pages/Notfound"));
+const Canvas = lazy(() => import("./components/shared/modals/Canvas"));
+const Publish = lazy(() => import("./components/shared/modals/publish/Publish"));
+const Search = lazy(() => import("./components/shared/modals/Search/Search"));
+const SearchPage = lazy(() => import("./components/shared/SearchPage"));
 
-const App = () => {
+const AppComponent = () => {
   return (
     <>
+      {/* Static content that’s always rendered */}
       <NotImplimentedPage />
       <Publish />
       <Canvas />
-
-      <Suspense fallback={<div>Loading...</div>}>
+      <Search />
+      
+      {/* Suspense handles all lazy components */}
+      <Suspense fallback={<div className="loading-spinner"><div className="spinner"></div></div>}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          {/* Include ProductRoutes and AuthRoutes as nested routes */}
-          <Route path="/products/*" element={<ProductRoutes />} />
-          <Route path="/auth/*" element={<AuthRoutes />} />
-          <Route path="/user/*" element={<UserRoutes />} />
-          <Route path="/vendor/*" element={<VendorRoutes />} />
-          <Route path="*" element={<NotFoundPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/categories/:slug" element={<ProductsInCategory />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/products/*" element={<ProductRoutes />} />
+            <Route path="/auth/*" element={<AuthRoutes />} />
+            <Route path="/user/*" element={<UserRoutes />} />
+            <Route path="/vendor/*" element={<VendorRoutes />} />
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </>
   );
 };
 
-const Root = () => (
-  <Router>
-    <App />
-  </Router>
+const App = () => (
+    <Router>
+      <AppComponent />
+    </Router>
 );
-
-export default Root;
+  
+export default App;

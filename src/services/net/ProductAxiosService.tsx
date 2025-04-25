@@ -19,21 +19,83 @@ export const ProductAxiosService = {
         if (typeof slug !== "string") {
             throw new Error("Slug must be a string");
         }
-        return AxiosService.json.get(`/products/${slug}`);
+        return AxiosService.json.get(`/products/${slug}?include_user=1`);
     },
 
     // Fetch all categories
-    fetchCategories: () => AxiosService.json.get('/categories?page_size=200'),
+    fetchCategories: () => AxiosService.json.get('/categories?page_size=100'),
 
     // fetchProductsByCategories: () => AxiosService.json.get('/by-categories'),
-    fetchProductsByCategories: () => AxiosService.fetchPage('/by-categories'),
+    fetchProductsByCategories: () => AxiosService.fetchPage('/by-categories-all'),
 
     // Fetch products by category ID with pagination
-    fetchProductsByCategory: (categoryId: any, query = {}) => {
-        const finalQuery = { page: 1, page_size: 5, ...query };
-        return AxiosService.json.get(`/categories/${categoryId}/products`, finalQuery);
-    },
+    // fetchProductsByCategory: (categoryId: any, query = {}) => {
+    //     const finalQuery = { page: 1, page_size: 5, ...query };
+    //     return AxiosService.json.get(`/categories/${categoryId}/products`, finalQuery);
+    // },
 
+    // byCategorySlug: (slug: string, query = {}) => { 
+    //     const finalQuery = { page: 1, page_size: 5, ...query };
+    //     return AxiosService.json.get(`/products/${encodeURIComponent(slug)}/category`, {
+    //         params: finalQuery
+    //     });
+    // },
+
+    // byCategorySlug: async (
+    // // getProductsByCategorySlug: async (
+    //     slug: string,
+    //     page: number,
+    //     pageSize: number
+    // ) => {
+    //     const response = await AxiosService.json.get(`/products/${slug}/category`,
+    //     {
+    //         params: {
+    //         page,
+    //         page_size: pageSize
+    //         }
+    //     }
+    //     );
+    //     return response.data;
+    // },
+
+    // getProductsByCategorySlug: async (
+    //     slug: string,
+    //     page: number,
+    //     pageSize: number
+    // ) =>  AxiosService.json.get(`/products/${slug}/category`,
+    //     {
+    //         params: {
+    //         page,
+    //         page_size: pageSize
+    //         }
+    //     }
+    //     ),
+
+    getProductsByCategorySlug: async (
+        slug: string,
+        page: number,
+        pageSize: number
+        ) => {
+        return await AxiosService.json.get(`/products/${slug}/category`, {
+            params: {
+            page,
+            page_size: pageSize,
+            },
+        });
+        },
+
+        bySlug: (
+            slug: string,
+            page: number,
+            pageSize: number
+          ) => AxiosService.json.get(`/products/${slug}/category`, {
+            params: {
+              page,
+              page_size: pageSize,
+            },
+          }),
+          
+        
     createProduct: (data: FormData) =>  AxiosService.multipart.post('/products', data),
     
     updateProduct: (id: string, data: FormData) => AxiosService.multipart.put(`/products/${id}`, data),

@@ -24,7 +24,7 @@ const ProductsByCategories = () => {
         setLoading(true);
         try {
             const res = await ProductAxiosService.fetchProductsByCategories(page, 1);
-            console.log('API Response:', res); // Log the response
+            // console.log('API Response:', res); // Log the response
             const data = res.data;
             // Map categories and their products
             const newCategories = data.categories.map(category => ({
@@ -35,7 +35,15 @@ const ProductsByCategories = () => {
                 subcategories: category.subcategories || []
             }));
 
-            setCategories(prevCategories => [...prevCategories, ...newCategories]);
+            // setCategories(prevCategories => [...prevCategories, ...newCategories]);
+            // use set() toremove duplicates
+            setCategories(prev => {
+                const existingIds = new Set(prev.map(cat => cat.id));
+                const filteredCategories = newCategories.filter(cat => !existingIds.has(cat.id));
+                return [...prev, ...filteredCategories];
+              });
+              
+            // 
             setPageMeta(data.page_meta);
             setHasMore(data.page_meta.has_next_page);
         } catch (err) {
@@ -112,8 +120,8 @@ const ProductsByCategories = () => {
 
                     {/* Loading Wave Placeholders */}
                     {loading && (
-                        <div className="row">
-                            {Array.from({ length: 5 }).map((_, index) => (
+                        <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+                            {Array.from({ length: 4 }).map((_, index) => (
                                 <LoadingCard key={index} />
                             ))}
                         </div>
