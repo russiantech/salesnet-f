@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -236,8 +237,12 @@ const Footer = () => {
                   <img src="assets/img/payment-methods/apple-pay-dark-mode.svg" alt="Apple Pay" />
                 </div>
               </div>
-              <p className="text-body fs-xs text-center text-md-start mb-0 me-4 order-md-1">© All rights reserved. Made by <span className="animate-underline">
-                  <a className="animate-target text-dark-emphasis fw-medium text-decoration-none" href="!#" target="_blank" rel="noreferrer">Techa - Russian Developers.</a></span></p>
+              <p className="text-body fs-xs text-center text-md-start mb-0 me-4 order-md-1">© <span className="animate-underline">
+                  <Link className="animate-target text-dark-emphasis fw-medium text-decoration-none" to="!#" target="_blank" rel="noreferrer">
+                    Techa - Russian Developers.
+                  </Link>
+                    </span>
+              </p>
             </div>
           </div>
         </footer>

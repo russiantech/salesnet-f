@@ -57,7 +57,7 @@ const ProductRecommendations = () => {
                             <div className="d-flex align-items-center">
                                 <h2 className="h3 pe-3 me-3 mb-0">Recommended Products</h2>
                                 <div className="d-flex align-items-center" data-countdown-date="demoDate">
-                                    <Link to="/categories/slug" className="product-card-button btn btn-icon btn-dark animate-slide-end ms-2 border-2">
+                                    <Link to="/products" className="product-card-button btn btn-icon btn-dark animate-slide-end ms-2 border-2">
                                         <i className="ci-arrow-up-right fs-base animate-target" />
                                     </Link>
                                 </div>

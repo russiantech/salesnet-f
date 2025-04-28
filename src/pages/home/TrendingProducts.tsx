@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const TrendingProducts = () => {
     
     {/* Trending products (Grid) */}
@@ -6,11 +8,11 @@ const TrendingProducts = () => {
               {/* Heading */}
               <div className="d-flex align-items-center justify-content-between border-bottom pb-3 pb-md-4">
               <h2 className="h3 mb-0">Trending products</h2>
-              <div className="nav ms-3">
-                  <a className="nav-link animate-underline px-0 py-2" href="shop-catalog-electronics.html">
-                  <span className="animate-target">View all</span>
-                  <i className="ci-chevron-right fs-base ms-1" />
-                  </a>
+              <div className="nav">
+                   <Link to="/trend" className="nav-link badge text-bg-success rounded-pill animate-scale" >
+                        <span className="text-nowrap animate-target">View all </span>
+                        <i className="ci-chevron-right fs-base ms-1 animate-target"></i>
+                    </Link>
               </div>
               </div>
               {/* Product grid */}

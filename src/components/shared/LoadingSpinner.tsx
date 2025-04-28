@@ -10,10 +10,14 @@ import React from 'react'
 //     )
 // }
 
-const LoadingSpinner = ({ size = 'md' }) => (
+const LoadingSpinner_0 = ({ size = 'md' }) => (
     <div className={`spinner-border text-primary spinner-border-${size}`} role="status">
       <span className="visually-hidden">Loading...</span>
     </div>
   );
+
+const LoadingSpinner = ({ size = 'md' }) => (
+  <div className="loading-spinner"><div className="spinner"></div></div>
+);
 
 export default LoadingSpinner
