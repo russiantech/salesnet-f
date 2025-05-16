@@ -1,0 +1,2408 @@
+// import React, { useState, useEffect, useRef } from 'react';
+// import { OffersAxiosService } from '../../../services/net/OffersAxiosService';
+// import { ProductAxiosService } from '../../../services/net/ProductAxiosService';
+// import ResponseModal from '../../../components/shared/modals/ResponseModal';
+
+// const OfferForm = ({ offer, onSuccess }) => {
+//   const [products, setProducts] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const [filteredProducts, setFilteredProducts] = useState([]);
+//   const [filteredCategories, setFilteredCategories] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     description: '',
+//     discount_type: 'percentage',
+//     discount_value: 10,
+//     promo_code: '',
+//     start_date: new Date(),
+//     end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+//     is_featured: false,
+//     banner_image: '',
+//     background_gradient: '',
+//     text_color: '#ffffff',
+//     selectedProducts: [],
+//     selectedCategories: [],
+//     media: {
+//       files: [],
+//       video_link: ''
+//     },
+//   });
+//   const [previews, setPreviews] = useState([]);
+//   const fileInputRef = useRef(null);
+
+//   // Fetch products and categories on mount
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const [productsRes, categoriesRes] = await Promise.all([
+//           ProductAxiosService.fetchPage(),
+//           ProductAxiosService.fetchCategories()
+//         ]);
+
+//         setProducts(productsRes.data.products);
+//         setFilteredProducts(productsRes.data.products);
+//         setCategories(categoriesRes.data.categories);
+//         setFilteredCategories(categoriesRes.data.categories);
+
+//         if (offer) {
+//           setFormData(prevData => ({
+//             ...prevData,
+//             name: offer.title,
+//             description: offer.description,
+//             discount_type: offer.discount_type,
+//             discount_value: offer.discount_value,
+//             promo_code: offer.promo_code,
+//             start_date: new Date(offer.start_date),
+//             end_date: new Date(offer.end_date),
+//             is_featured: offer.is_featured,
+//             banner_image: offer.banner_image,
+//             background_gradient: offer.background_gradient,
+//             text_color: offer.text_color,
+//             selectedProducts: offer.products.map(p => p.id),
+//             selectedCategories: offer.categories.map(c => c.id),
+//             media: {
+//               files: offer.media_files || [],
+//               video_link: offer.video_link || ''
+//             }
+//           }));
+
+//           // Set previews for existing media
+//           if (offer.media_files && offer.media_files.length > 0) {
+//             setPreviews(offer.media_files.map(file => ({
+//               url: file.url,
+//               name: file.name,
+//               size: file.size,
+//               type: file.type.startsWith('image') ? 'image' : 'video'
+//             })));
+//           }
+//         }
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [offer]);
+
+//   const handleChange = (e) => {
+//     const { name, value, type, checked } = e.target;
+//     setFormData(prevData => ({
+//       ...prevData,
+//       [name]: type === 'checkbox' ? checked : value,
+//     }));
+//   };
+
+//   const handleMediaInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData(prevData => ({
+//       ...prevData,
+//       media: {
+//         ...prevData.media,
+//         [name]: value
+//       }
+//     }));
+//   };
+
+//   const handleProductToggle = (productId) => {
+//     setFormData(prevData => {
+//       const newSelected = prevData.selectedProducts.includes(productId)
+//         ? prevData.selectedProducts.filter(id => id !== productId)
+//         : [...prevData.selectedProducts, productId];
+//       return {
+//         ...prevData,
+//         selectedProducts: newSelected
+//       };
+//     });
+//   };
+
+//   const handleCategoryToggle = (categoryId) => {
+//     setFormData(prevData => {
+//       const newSelected = prevData.selectedCategories.includes(categoryId)
+//         ? prevData.selectedCategories.filter(id => id !== categoryId)
+//         : [...prevData.selectedCategories, categoryId];
+//       return {
+//         ...prevData,
+//         selectedCategories: newSelected
+//       };
+//     });
+//   };
+
+//   const handleSearch = (e, type) => {
+//     const query = e.target.value.toLowerCase();
+//     if (type === 'products') {
+//       setFilteredProducts(products.filter(product => 
+//         product.name.toLowerCase().includes(query)
+//       ));
+//     } else if (type === 'categories') {
+//       setFilteredCategories(categories.filter(category => 
+//         category.name.toLowerCase().includes(query)
+//       ));
+//     }
+//   };
+
+//   const handleFileChange = async (e) => {
+//     const files = Array.from(e.target.files);
+//     if (files.length === 0) return;
+
+//     const newPreviews = await Promise.all(files.map(file => {
+//       return new Promise((resolve) => {
+//         const reader = new FileReader();
+//         reader.onload = (e) => {
+//           resolve({
+//             url: e.target.result,
+//             name: file.name,
+//             size: file.size,
+//             type: file.type.startsWith('image') ? 'image' : 'video'
+//           });
+//         };
+//         reader.readAsDataURL(file);
+//       });
+//     }));
+
+//     setPreviews(prev => [...prev, ...newPreviews]);
+//     setFormData(prev => ({
+//       ...prev,
+//       media: {
+//         ...prev.media,
+//         files: [...prev.media.files, ...files]
+//       }
+//     }));
+//   };
+
+//   const removeMedia = (index) => {
+//     setPreviews(prev => prev.filter((_, i) => i !== index));
+//     setFormData(prev => ({
+//       ...prev,
+//       media: {
+//         ...prev.media,
+//         files: prev.media.files.filter((_, i) => i !== index)
+//       }
+//     }));
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const offerData = {
+//       ...formData,
+//       product_ids: formData.selectedProducts,
+//       category_ids: formData.selectedCategories,
+//       start_date: formData.start_date.toISOString(),
+//       end_date: formData.end_date.toISOString(),
+//     };
+
+//     const formDataToSend = new FormData();
+//     Object.keys(offerData).forEach(key => {
+//       if (key !== 'media') {
+//         formDataToSend.append(key, offerData[key]);
+//       }
+//     });
+
+//     // Append media files
+//     formData.media.files.forEach(file => {
+//       formDataToSend.append('media_files[]', file);
+//     });
+
+//     // Append video link if exists
+//     if (formData.media.video_link) {
+//       formDataToSend.append('video_link', formData.media.video_link);
+//     }
+
+//     try {
+//       const response = offer 
+//         ? await OffersAxiosService.updateOffer(offer.id, formDataToSend)
+//         : await OffersAxiosService.createOffer(formDataToSend);
+
+//       onSuccess(response.data);
+//     } catch (error) {
+//       console.error('Error saving offer:', error);
+//     }
+//   };
+
+//   if (isLoading) return <div className="text-center my-5">Loading...</div>;
+
+//   return (
+//     <div id="OfferForm" className="modal fade container mt-4">
+//       <div className="modal-dialog modal-xl w-100 card shadow" role="document">
+//         <div className="modal-header card-header bg-tertiary text-white">
+//           <h3>{offer ? 'Edit Offer' : 'Create New Offer'}</h3>
+//         </div>
+
+//         <div className="modal-body card-body">
+//           <form onSubmit={handleSubmit}>
+//             <div className="row">
+//               <div className="col-md-8">
+//                 {/* Basic Info */}
+//                 <div className="mb-3">
+//                   <label className="form-label">Offer Title*</label>
+//                   <input 
+//                     name="title" 
+//                     type="text" 
+//                     className="form-control" 
+//                     value={formData.title} 
+//                     onChange={handleChange} 
+//                     placeholder="Summer Sale 2023"
+//                     required
+//                   />
+//                 </div>
+
+//                 <div className="mb-3">
+//                   <label className="form-label">Description</label>
+//                   <textarea 
+//                     name="description" 
+//                     className="form-control" 
+//                     rows="3" 
+//                     value={formData.description} 
+//                     onChange={handleChange}
+//                   />
+//                 </div>
+
+//                 {/* Products Selection */}
+//                 <div className="mb-3">
+//                   <label className="form-label">Select Products*</label>
+//                   <div className="dropdown">
+//                     <input 
+//                       type="text" 
+//                       className="form-control mb-2" 
+//                       placeholder="Search products..."
+//                       data-bs-toggle="dropdown"
+//                       aria-expanded="false"
+//                       onChange={(e) => handleSearch(e, 'products')}
+//                     />
+//                     <div className="dropdown-menu w-100">
+//                       <ul className="list-unstyled" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+//                         {filteredProducts.map(product => (
+//                           <li key={product.id} className="dropdown-item">
+//                             <div className="form-check">
+//                               <input 
+//                                 className="form-check-input" 
+//                                 id={`prod-${product.id}`} 
+//                                 type="checkbox" 
+//                                 checked={formData.selectedProducts.includes(product.id)} 
+//                                 onChange={() => handleProductToggle(product.id)}
+//                               />
+//                               <label className="form-check-label" htmlFor={`prod-${product.id}`}>
+//                                 {`${product.name} ($${product.price})`}
+//                               </label>
+//                             </div>
+//                           </li>
+//                         ))}
+//                       </ul>
+//                     </div>
+//                   </div>
+//                   {formData.selectedProducts.length > 0 && (
+//                     <div className="mt-2">
+//                       <h6>Selected Products:</h6>
+//                       <div className="d-flex flex-wrap gap-2">
+//                         {formData.selectedProducts.map(prodId => {
+//                           const product = products.find(p => p.id === prodId);
+//                           return product ? (
+//                             <span key={prodId} className="badge bg-primary">
+//                               {product.name}
+//                             </span>
+//                           ) : null;
+//                         })}
+//                       </div>
+//                     </div>
+//                   )}
+//                 </div>
+
+//                 {/* Categories Selection */}
+//                 <div className="mb-3">
+//                   <label className="form-label">Select Categories*</label>
+//                   <div className="dropdown">
+//                     <input 
+//                       type="text" 
+//                       className="form-control mb-2" 
+//                       placeholder="Search categories..."
+//                       data-bs-toggle="dropdown"
+//                       aria-expanded="false"
+//                       onChange={(e) => handleSearch(e, 'categories')}
+//                     />
+//                     <div className="dropdown-menu w-100">
+//                       <ul className="list-unstyled" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+//                         {filteredCategories.map(category => (
+//                           <li key={category.id} className="dropdown-item">
+//                             <div className="form-check">
+//                               <input 
+//                                 className="form-check-input" 
+//                                 id={`cat-${category.id}`} 
+//                                 type="checkbox" 
+//                                 checked={formData.selectedCategories.includes(category.id)} 
+//                                 onChange={() => handleCategoryToggle(category.id)}
+//                               />
+//                               <label className="form-check-label" htmlFor={`cat-${category.id}`}>
+//                                 {category.name}
+//                               </label>
+//                             </div>
+//                           </li>
+//                         ))}
+//                       </ul>
+//                     </div>
+//                   </div>
+//                   {formData.selectedCategories.length > 0 && (
+//                     <div className="mt-2">
+//                       <h6>Selected Categories:</h6>
+//                       <div className="d-flex flex-wrap gap-2">
+//                         {formData.selectedCategories.map(catId => {
+//                           const category = categories.find(c => c.id === catId);
+//                           return category ? (
+//                             <span key={catId} className="badge bg-secondary">
+//                               {category.name}
+//                             </span>
+//                           ) : null;
+//                         })}
+//                       </div>
+//                     </div>
+//                   )}
+//                 </div>
+
+//                 {/* Media Upload Section */}
+//                 <section className="position-relative bg-body rounded p-2 m-2">
+//                   <div className="position-relative z-1 p-2 m-2">
+//                     <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
+//                       <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
+//                       <div className="position-relative d-flex">
+//                         <i className="fi-info text-info mt-1 me-2" />
+//                       </div>
+//                     </div>
+//                     <small className="fs-sm text-warning mb-3">
+//                       The maximum file size is 8 MB. Formats: jpeg, jpg, png, mp4, mov. Put the main picture first.
+//                       {previews.length === 0 && (<>At least one image is required for your listing</>)}
+//                     </small>
+//                     <div style={{ maxWidth: '852px' }}>
+//                       <div className="row row-cols-2 row-cols-sm-3 g-2 g-md-4 g-lg-3 g-xl-4">
+//                         {/* Media previews */}
+//                         {previews.map((preview, index) => (
+//                           <div className="col" key={index}>
+//                             <div className="hover-effect-opacity position-relative overflow-hidden rounded">
+//                               {index === 0 && (
+//                                 <span className="badge text-bg-light position-absolute top-0 start-0 z-3 mt-2 ms-2">Cover</span>
+//                               )}
+//                               <div className="ratio" style={{ aspectRatio: '4/3' }}>
+//                                 {preview.type === 'image' ? (
+//                                   <img src={preview.url} alt={`Preview ${index + 1}`} className="img-fluid object-fit-cover" />
+//                                 ) : (
+//                                   <video controls className="w-100 h-100 object-fit-cover">
+//                                     <source src={preview.url} type={formData.media.files[index].type} />
+//                                   </video>
+//                                 )}
+//                               </div>
+//                               <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
+//                                 <button
+//                                   type="button"
+//                                   className="btn btn-icon btn-sm btn-light position-relative z-2"
+//                                   aria-label="Remove"
+//                                   onClick={() => removeMedia(index)}
+//                                 >
+//                                   <i className="ci-trash-empty"></i>
+//                                 </button>
+//                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-25 z-1" />
+//                               </div>
+//                             </div>
+//                             <small className="text-muted d-block text-truncate mt-1">
+//                               {preview.name} ({Math.round(preview.size / 1024)} KB)
+//                             </small>
+//                           </div>
+//                         ))}
+
+//                         {/* Upload button */}
+//                         <div className="col">
+//                           <div
+//                             className="d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3"
+//                             onClick={() => fileInputRef.current.click()}
+//                             style={{ minHeight: '150px' }}
+//                           >
+//                             <div className="text-center">
+//                               <i className="fi-plus-circle fs-4 text-secondary-emphasis mb-2" />
+//                               <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+//                                 Upload photos/videos
+//                               </div>
+//                               <input
+//                                 type="file"
+//                                 ref={fileInputRef}
+//                                 onChange={handleFileChange}
+//                                 className="d-none"
+//                                 multiple
+//                                 accept="image/*,video/*"
+//                               />
+//                             </div>
+//                           </div>
+//                         </div>
+//                       </div>
+//                     </div>
+//                     <div className="pt-3 mt-2 mt-md-3">
+//                       <label htmlFor="video_link" className="form-label">Link to YouTube/Vimeo video (optional)</label>
+//                       <div className="position-relative">
+//                         <i className="fi-link position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />
+//                         <input
+//                           type="url"
+//                           className="form-control form-control-lg form-icon-start"
+//                           id="video_link"
+//                           name="video_link"
+//                           placeholder="www.youtube.com/..."
+//                           value={formData.media.video_link}
+//                           onChange={handleMediaInputChange}
+//                         />
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </section>
+//               </div>
+
+//               <div className="col-md-4">
+//                 {/* Discount Settings */}
+//                 <div className="card mb-3">
+//                   <div className="card-header bg-light">
+//                     <h5>Discount Settings</h5>
+//                   </div>
+//                   <div className="card-body">
+//                     <div className="mb-3">
+//                       <label className="form-label">Discount Type*</label>
+//                       <select 
+//                         name="discount_type" 
+//                         className="form-select" 
+//                         value={formData.discount_type} 
+//                         onChange={handleChange}
+//                       >
+//                         <option value="percentage">Percentage</option>
+//                         <option value="fixed_amount">Fixed Amount</option>
+//                       </select>
+//                     </div>
+
+//                     <div className="mb-3">
+//                       <label className="form-label">
+//                         {formData.discount_type === 'percentage' ? 'Discount Percentage*' : 'Discount Amount*'}
+//                       </label>
+//                       <div className="input-group">
+//                         <input 
+//                           name="discount_value" 
+//                           type="number" 
+//                           className="form-control" 
+//                           value={formData.discount_value} 
+//                           onChange={handleChange} 
+//                           min="0"
+//                           step={formData.discount_type === 'percentage' ? '1' : '0.01'}
+//                           required
+//                         />
+//                         <span className="input-group-text">
+//                           {formData.discount_type === 'percentage' ? '%' : '$'}
+//                         </span>
+//                       </div>
+//                     </div>
+
+//                     <div className="mb-3">
+//                       <label className="form-label">Promo Code (Optional)</label>
+//                       <input 
+//                         name="promo_code" 
+//                         type="text" 
+//                         className="form-control" 
+//                         value={formData.promo_code} 
+//                         onChange={handleChange} 
+//                         placeholder="SUMMER2023"
+//                       />
+//                     </div>
+//                   </div>
+//                 </div>
+
+//                 {/* Date Settings */}
+//                 <div className="card mb-3">
+//                   <div className="card-header bg-light">
+//                     <h5>Schedule</h5>
+//                   </div>
+//                   <div className="card-body">
+//                     <div className="mb-3">
+//                       <label className="form-label">Start Date*</label>
+//                       <input 
+//                         type="datetime-local" 
+//                         name="start_date" 
+//                         className="form-control" 
+//                         value={formData.start_date.toISOString().slice(0, 16)} 
+//                         onChange={handleChange} 
+//                         required
+//                       />
+//                     </div>
+
+//                     <div className="mb-3">
+//                       <label className="form-label">End Date*</label>
+//                       <input 
+//                         type="datetime-local" 
+//                         name="end_date" 
+//                         className="form-control" 
+//                         value={formData.end_date.toISOString().slice(0, 16)} 
+//                         onChange={handleChange} 
+//                         required
+//                       />
+//                     </div>
+
+//                     <div className="form-check form-switch mb-3">
+//                       <input 
+//                         type="checkbox" 
+//                         name="is_featured" 
+//                         className="form-check-input" 
+//                         checked={formData.is_featured} 
+//                         onChange={handleChange} 
+//                       />
+//                       <label className="form-check-label">
+//                         Featured Offer
+//                       </label>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Visual Settings */}
+//             <div className="card mb-3">
+//               <div className="card-header bg-light">
+//                 <h5>Visual Presentation</h5>
+//               </div>
+//               <div className="card-body">
+//                 <div className="row">
+//                   <div className="col-md-6 mb-3">
+//                     <label className="form-label">Banner Image URL</label>
+//                     <input 
+//                       name="banner_image" 
+//                       type="text" 
+//                       className="form-control" 
+//                       value={formData.banner_image} 
+//                       onChange={handleChange} 
+//                       placeholder="https://example.com/banner.jpg"
+//                     />
+//                   </div>
+//                   <div className="col-md-6 mb-3">
+//                     <label className="form-label">Background Gradient</label>
+//                     <input 
+//                       name="background_gradient" 
+//                       type="text" 
+//                       className="form-control" 
+//                       value={formData.background_gradient} 
+//                       onChange={handleChange} 
+//                       placeholder="linear-gradient(90deg, #ff9966, #ff5e62)"
+//                     />
+//                   </div>
+//                 </div>
+//                 <div className="row">
+//                   <div className="col-md-6">
+//                     <label className="form-label">Text Color</label>
+//                     <div className="input-group">
+//                       <span className="input-group-text">#</span>
+//                       <input 
+//                         name="text_color" 
+//                         type="text" 
+//                         className="form-control" 
+//                         value={formData.text_color.replace('#', '')} 
+//                         onChange={handleChange} 
+//                         maxLength="6"
+//                       />
+//                       <span 
+//                         className="input-group-text color-preview" 
+//                         style={{ 
+//                           backgroundColor: formData.text_color,
+//                           width: '40px'
+//                         }}
+//                       ></span>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="d-flex justify-content-end">
+//               <button 
+//                 type="submit" 
+//                 className="btn btn-primary"
+//               >
+//                 {offer ? 'Update Offer' : 'Create Offer'}
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+
+//         <ResponseModal
+//             show={responseModal.show}
+//             message={responseModal.message}
+//             success={responseModal.success}
+//             onClose={() => setResponseModal({ ...responseModal, show: false })}
+//         />
+
+//         <footer className="modal-footer text-muted">
+
+//         {/* <div className="container1 d-flex "> */}
+//         <button
+//             type="button"
+//             className="btn btn-outline-dark animate-slide-start"
+//             onClick={handleBack}
+//             disabled={activeTab === 'home' || isSubmitting}
+//         >
+//             <i className="fi-arrow-left animate-target fs-base ms-n1 me-2" />
+//             Back
+//         </button>
+//         <button
+//             type="button"
+//             className="btn btn-dark animate-slide-end ms-auto"
+//             onClick={handleNext}
+//             disabled={isSubmitting}
+//         >
+//             {isSubmitting ? (
+//                 <div className="spinner-grow spinner-grow-sm" role="status">
+//                     <span className="visually-hidden">{uploadProgress > 0 ? 'Uploading...' : 'Processing...'}</span>
+//                 </div>
+
+//             ) : (
+//                 <>
+//                     {activeTab === 'promote' ? 'Publish Listing' : 'Next'}
+//                     <i className="fi-arrow-right animate-target fs-base ms-2 me-n1" />
+//                 </>
+//             )}
+//         </button>
+//         {/* </div> */}
+//         </footer>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default OfferForm;
+
+// return (
+
+//     <section id="PublishPage" className="modal fade">
+
+//         <div className="modal-dialog modal-xl w-100" role="document">
+//             <div className="modal-content">
+//                 {/* Nav pills */}
+//                 <div className="modal-header">
+//                     <ul className="nav nav-pills - flex-nowrap gap-2 text-nowrap card-header modal-title" role="tablist">
+//                         {['home', 'listing-type', 'images', 'contact', 'location', 'promote'].map((tab) => (
+//                             <li className="nav-item" role="presentation" key={tab}>
+//                                 <button
+//                                     type="button"
+//                                     className={`nav-link ${activeTab === tab ? 'active' : ''}`}
+//                                     onClick={() => setActiveTab(tab)}
+//                                 >
+//                                     {tab === 'home' && <><i className="fi-home me-2 ms-n1" />Basic Info</>}
+//                                     {tab === 'listing-type' && <><i className="fi-list me-2 ms-n1" />Type</>}
+//                                     {tab === 'images' && <><i className="fi-image me-2 ms-n1" />Media</>}
+//                                     {tab === 'contact' && <><i className="fi-user me-2 ms-n1" />Contact</>}
+//                                     {tab === 'location' && <><i className="fi-map-pin me-2 ms-n1" />Location</>}
+//                                     {tab === 'promote' && <><i className="fi-award me-2 ms-n1" />Promote</>}
+//                                 </button>
+//                             </li>
+//                         ))}
+//                     </ul>
+//                     <button className="btn-close fs-4" type="button" data-bs-dismiss="modal" aria-label="Close"
+//                         onClick={handleClose} ref={closeButtonRef} />
+//                 </div>
+
+//                 {/* Pills content */}
+//                 <div className=" modal-body p-0" style={{ maxHeight: "800px", overflowY: "auto" }}>
+//                     <div className="tab-content" id="pills-tabContent">
+//                         {/* Home/Listing Details Tab */}
+//                         <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`} id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" style={{ height: "100%", overflowY: "auto" }}>
+//                             <section className="position-relative bg-body rounded p-2 m-2">
+//                                 <div className="position-relative z-1">
+//                                     <h2 className="h4 mb-3 mb-sm-4">Basic Information</h2>
+//                                     <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
+//                                         <div className="col">
+//                                             <label htmlFor="name" className="form-label">Product name *</label>
+//                                             <input
+//                                                 type="text"
+//                                                 className={`form-control form-control-lg ${errors.name ? 'is-invalid' : ''}`}
+//                                                 id="name"
+//                                                 name="name"
+//                                                 minLength={5}
+//                                                 placeholder="Product name"
+//                                                 value={formData.basic_info.name}
+//                                                 onChange={handleInputChange}
+//                                                 onBlur={(e) => validateField('name', e.target.value)}
+//                                                 required
+//                                             />
+//                                             {errors.name && (
+//                                                 <div className="invalid-feedback">{errors.name}</div>
+//                                             )}
+//                                         </div>
+
+//                                         <div className="col">
+//                                             <label className="form-label">Categories *</label>
+//                                             {Array.isArray(categories) && categories.length > 0 ? (
+//                                                 <CategorySelector
+//                                                     categories={categories}
+//                                                     selectedIds={formData.basic_info.categories}
+//                                                     onChange={handleCategoryChange}
+//                                                     error={errors.categories}
+//                                                 />
+//                                             ) : (
+//                                                 <div className="text-muted">
+//                                                     <LoadingSpinner />
+//                                                     {categories === null ? '...' : 'Fetching categories...'}
+//                                                 </div>
+//                                             )}
+//                                         </div>
+
+//                                         <div className="col">
+//                                             <label htmlFor="price" className="form-label">Price *</label>
+//                                             <div className="input-group">
+//                                                 <input
+//                                                     type="number"
+//                                                     className={`form-control form-control-lg ${errors.price ? 'is-invalid' : ''}`}
+//                                                     id="price"
+//                                                     name="price"
+//                                                     value={formData.basic_info.price}
+//                                                     onChange={handleInputChange}
+//                                                     onBlur={(e) => validateField('price', e.target.value)}
+//                                                     min="0.01"
+//                                                     step="0.01"
+//                                                     required
+//                                                 />
+//                                                 {errors.price && (
+//                                                     <div className="invalid-feedback">{errors.price}</div>
+//                                                 )}
+//                                             </div>
+//                                         </div>
+//                                         <div className="col">
+//                                             <label htmlFor="condition" className="form-label">Condition *</label>
+//                                             <select
+//                                                 className={`form-select form-select-lg ${errors.condition ? 'is-invalid' : ''}`}
+//                                                 id="condition"
+//                                                 name="condition"
+//                                                 value={formData.basic_info.condition}
+//                                                 onChange={handleInputChange}
+//                                                 onBlur={(e) => validateField('condition', e.target.value)}
+//                                                 required
+//                                             >
+//                                                 <option value="">Select condition...</option>
+//                                                 <option value="new">Brand New</option>
+//                                                 <option value="used">Used - Like New</option>
+//                                                 <option value="good">Used - Good</option>
+//                                                 <option value="fair">Used - Fair</option>
+//                                             </select>
+//                                             {errors.condition && (
+//                                                 <div className="invalid-feedback">{errors.condition}</div>
+//                                             )}
+//                                         </div>
+//                                     </div>
+//                                     <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
+//                                     <p className="fs-sm mb-2">Describe your product in detail to attract buyers</p>
+//                                     <textarea
+//                                         className={`form-control form-control-lg ${errors.description ? 'is-invalid' : ''}`}
+//                                         rows={4}
+//                                         id="description"
+//                                         name="description"
+//                                         placeholder="Describe your product (minimum 10 characters)"
+//                                         minLength={10}
+//                                         maxLength={1000}
+//                                         value={formData.basic_info.description}
+//                                         onChange={handleInputChange}
+//                                         onBlur={(e) => validateField('description', e.target.value)}
+//                                         required
+//                                     />
+//                                     {errors.description && (
+//                                         <div className="invalid-feedback">{errors.description}</div>
+//                                     )}
+//                                     <div className="text-end mt-1">
+//                                         <small className="text-muted">
+//                                             {formData.basic_info.description.length}/1000 characters
+//                                         </small>
+//                                     </div>
+//                                 </div>
+//                             </section>
+//                         </div>
+
+//                         {/* Listing Type Tab */}
+//                         <div className={`tab-pane fade ${activeTab === 'listing-type' ? 'show active' : ''}`} id="pills-listing-type" role="tabpanel" aria-labelledby="pills-listing-tab">
+//                             <section className="position-relative bg-body rounded p-2 m-2">
+//                                 <div className="position-relative z-1 p-2 m-2">
+//                                     <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
+//                                     {/* <div className="d-flex flex-wrap gap-2"> */}
+//                                     <div className="nav - flex-nowrap gap-2 text-nowrap">
+//                                         {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
+//                                             <React.Fragment key={type}>
+//                                                 <input
+//                                                     type="radio"
+//                                                     className="btn-check"
+//                                                     name="listing_type"
+//                                                     id={`listing-${type}`}
+//                                                     value={type}
+//                                                     checked={formData.basic_info.listing_type === type}
+//                                                     onChange={handleInputChange}
+//                                                 />
+//                                                 <label htmlFor={`listing-${type}`} className="btn btn-outline-dark rounded-pill">
+//                                                     <div className="d-flex flex-column flex-xxl-row align-items-center m-1">
+//                                                         {/* <div className="nav-item"> */}
+//                                                         <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle">
+//                                                             <i className={`fi-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
+//                                                         </div>
+//                                                         <div className="text-center">
+//                                                             {/* <h3 className="h6 mb-1"> */}
+//                                                             {type === 'product' && 'Sell item'}
+//                                                             {type === 'rental' && 'Rent'}
+//                                                             {type === 'service' && 'Offer service'}
+//                                                             {type === 'property' && 'Sell property'}
+//                                                             {type === 'vehicle' && 'Sell a vehicle'}
+//                                                             {/* </h3> */}
+//                                                         </div>
+//                                                     </div>
+//                                                 </label>
+//                                             </React.Fragment>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </section>
+//                         </div>
+
+//                         {/* Media Tab */}
+//                         <div className={`tab-pane fade ${activeTab === 'images' ? 'show active' : ''}`} id="pills-images" role="tabpanel" aria-labelledby="pills-images-tab">
+//                             <section className="position-relative bg-body rounded p-2 m-2">
+//                                 <div className="position-relative z-1 p-2 m-2">
+//                                     <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
+//                                         <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
+//                                         <div className="position-relative d-flex">
+//                                             <i className="fi-info text-info mt-1 me-2" />
+//                                         </div>
+//                                     </div>
+//                                     <small className="fs-sm text-warning mb-3">
+//                                         The maximum file size is 8 MB. Formats: jpeg, jpg, png, mp4, mov. Put the main picture first.
+//                                         {mediaFiles.length === 0 && (<>At least one image is required for your listing</>)}
+//                                     </small>
+//                                     <div style={{ maxWidth: '852px' }}>
+//                                         <div className="row row-cols-2 row-cols-sm-3 g-2 g-md-4 g-lg-3 g-xl-4">
+//                                             {/* Media previews */}
+//                                             {previews.map((preview, index) => (
+//                                                 <div className="col" key={index}>
+//                                                     <div className="hover-effect-opacity position-relative overflow-hidden rounded">
+//                                                         {index === 0 && (
+//                                                             <span className="badge text-bg-light position-absolute top-0 start-0 z-3 mt-2 ms-2">Cover</span>
+//                                                         )}
+//                                                         <div className="ratio" style={{ aspectRatio: '4/3' }}>
+//                                                             {preview.type === 'image' ? (
+//                                                                 <img src={preview.url} alt={`Preview ${index + 1}`} className="img-fluid object-fit-cover" />
+//                                                             ) : (
+//                                                                 <video controls className="w-100 h-100 object-fit-cover">
+//                                                                     <source src={preview.url} type={mediaFiles[index].type} />
+//                                                                 </video>
+//                                                             )}
+//                                                         </div>
+//                                                         <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
+//                                                             <button
+//                                                                 type="button"
+//                                                                 className="btn btn-icon btn-sm btn-light position-relative z-2"
+//                                                                 aria-label="Remove"
+//                                                                 onClick={() => removeMedia(index)}
+//                                                             >
+//                                                                 <i className="ci-trash-empty"></i>
+//                                                             </button>
+//                                                             <span className="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-25 z-1" />
+//                                                         </div>
+//                                                     </div>
+//                                                     <small className="text-muted d-block text-truncate mt-1">
+//                                                         {preview.name} ({Math.round(preview.size / 1024)} KB)
+//                                                     </small>
+//                                                 </div>
+//                                             ))}
+
+//                                             {/* Upload button */}
+//                                             <div className="col">
+//                                                 <div
+//                                                     className="d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3"
+//                                                     onClick={() => fileInputRef.current.click()}
+//                                                     style={{ minHeight: '150px' }}
+//                                                 >
+//                                                     <div className="text-center">
+//                                                         <i className="fi-plus-circle fs-4 text-secondary-emphasis mb-2" />
+//                                                         <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+//                                                             Upload photos/videos
+//                                                         </div>
+//                                                         <input
+//                                                             type="file"
+//                                                             ref={fileInputRef}
+//                                                             onChange={handleFileChange}
+//                                                             className="d-none"
+//                                                             multiple
+//                                                             accept="image/*,video/*"
+//                                                         />
+//                                                     </div>
+//                                                 </div>
+//                                             </div>
+//                                         </div>
+//                                     </div>
+//                                     <div className="pt-3 mt-2 mt-md-3">
+//                                         <label htmlFor="video_link" className="form-label">Link to YouTube/Vimeo video (optional)</label>
+//                                         <div className="position-relative">
+//                                             <i className="fi-link position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />
+//                                             <input
+//                                                 type="url"
+//                                                 className="form-control form-control-lg form-icon-start"
+//                                                 id="video_link"
+//                                                 name="video_link"
+//                                                 placeholder="www.youtube.com/..."
+//                                                 value={formData.media.video_link}
+//                                                 onChange={handleInputChange}
+//                                             />
+//                                             {/* <input
+//                                         type="url"
+//                                         className="form-control"
+//                                         // value={formData.media.video_link || ''}
+//                                         value={formData.media?.video_link || ''}
+//                                         onChange={(e) => setFormData(prev => ({
+//                                             ...prev,
+//                                             media: {
+//                                                 ...prev.media,
+//                                                 video_link: e.target.value
+//                                             }
+//                                         }))}
+//                                         placeholder="YouTube/Vimeo link"
+//                                     /> */}
+
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             </section>
+//                         </div>
+
+//                         {/* Contact Tab */}
+//                         <div className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`} id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+//                             <section className="position-relative bg-body rounded p-2 m-2">
+//                                 <div className="position-relative z-1 p-2 m-2">
+//                                     <h2 className="h4 mb-3 mb-sm-4">Contact Information</h2>
+//                                     <div className="nav nav-pills flex-wrap gap-3">
+//                                         <div>
+//                                             <input
+//                                                 type="radio"
+//                                                 className="btn-check"
+//                                                 id="delivery"
+//                                                 name="delivery_type"
+//                                                 value="delivery"
+//                                                 checked={formData.delivery_options.delivery_type === 'delivery'}
+//                                                 onChange={handleInputChange}
+//                                             />
+//                                             <label className="nav-link" htmlFor="delivery">
+//                                                 <i className="fi-truck fs-base ms-n1 me-2" />
+//                                                 Delivery Available
+//                                             </label>
+//                                         </div>
+//                                         <div>
+//                                             <input
+//                                                 type="radio"
+//                                                 className="btn-check"
+//                                                 id="pickup"
+//                                                 name="delivery_type"
+//                                                 value="pickup"
+//                                                 checked={formData.delivery_options.delivery_type === 'pickup'}
+//                                                 onChange={handleInputChange}
+//                                             />
+//                                             <label className="nav-link" htmlFor="pickup">
+//                                                 <i className="fi-map-pin fs-base ms-n1 me-2" />
+//                                                 Pick-up Only
+//                                             </label>
+//                                         </div>
+//                                     </div>
+//                                     <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-2">
+
+//                                         <div className="col">
+//                                             <label htmlFor="email" className="form-label">Email *</label>
+//                                             <input
+//                                                 type="email"
+//                                                 className={`form-control form-control-lg ${errors.email ? 'is-invalid' : ''}`}
+//                                                 id="email"
+//                                                 name="email"
+//                                                 value={formData.contact_info.email || ''}
+//                                                 onChange={handleInputChange}
+//                                                 onBlur={(e) => validateField('email', e.target.value)}
+//                                                 required
+//                                             />
+
+//                                             {errors.email && (
+//                                                 <div className="invalid-feedback">{errors.email}</div>
+//                                             )}
+//                                         </div>
+//                                         <div className="col">
+//                                             <label htmlFor="phone" className="form-label">Phone number *</label>
+//                                             <input
+//                                                 type="tel"
+//                                                 className={`form-control form-control-lg ${errors.phone ? 'is-invalid' : ''}`}
+//                                                 id="phone"
+//                                                 name="phone"
+//                                                 value={formData.contact_info.phone}
+//                                                 onChange={handleInputChange}
+//                                                 onBlur={(e) => validateField('phone', e.target.value || '')}
+//                                                 placeholder="(___) ___-____"
+//                                                 required
+//                                             />
+//                                             {errors.phone && (
+//                                                 <div className="invalid-feedback">{errors.phone}</div>
+//                                             )}
+//                                         </div>
+//                                         <div className="col">
+//                                             <label htmlFor="first_name" className="form-label">Your name *</label>
+//                                             <input
+//                                                 type="text"
+//                                                 className={`form-control form-control-lg ${errors.first_name ? 'is-invalid' : ''}`}
+//                                                 id="first_name"
+//                                                 name="first_name"
+//                                                 value={formData.contact_info.first_name}
+//                                                 onChange={handleInputChange}
+//                                                 onBlur={(e) => validateField('first_name', e.target.value)}
+//                                                 required
+//                                             />
+//                                             {errors.first_name && (
+//                                                 <div className="invalid-feedback">{errors.first_name}</div>
+//                                             )}
+//                                         </div>
+
+//                                     </div>
+//                                 </div>
+//                             </section>
+//                         </div>
+
+//                         {/* Location Tab */}
+//                         <div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`} id="pills-location" role="tabpanel" aria-labelledby="pills-location-tab">
+//                             <section className="position-relative bg-body rounded p-2 m-2">
+//                                 <div className="position-relative z-1 p-2 m-2">
+//                                     <h2 className="h4 mb-3 mb-sm-4">Location Details</h2>
+//                                     <small className="fs-sm text-warning mb-3">Leave blank to use your current location details.</small>
+
+//                                     <div className="row g-4">
+//                                         {/* Address Field */}
+//                                         <div className="col">
+//                                             <div className="position-relative">
+//                                                 <label htmlFor="address" className="form-label">Address *</label>
+//                                                 <input
+//                                                     type="text"
+//                                                     name="address"
+//                                                     className={`form-control form-control-lg ${errors.address ? 'is-invalid' : ''}`}
+//                                                     id="address"
+//                                                     value={formData.location.address}
+//                                                     onChange={handleInputChange}
+//                                                     onBlur={(e) => validateField('address', e.target.value)}
+//                                                     required
+//                                                 />
+//                                                 {errors.address && (
+//                                                     <div className="invalid-feedback">{errors.address}</div>
+//                                                 )}
+//                                             </div>
+//                                         </div>
+
+//                                         {/* Latitude Field */}
+//                                         <div className="col-sm-3">
+//                                             <div className="position-relative">
+//                                                 <label htmlFor="latitude" className="form-label">Latitude</label>
+//                                                 <input
+//                                                     type="number"
+//                                                     name="latitude"
+//                                                     className="form-control form-control-lg"
+//                                                     id="latitude"
+//                                                     step="any"
+//                                                     value={formData.location.latitude || null}
+//                                                     onChange={handleInputChange}
+//                                                     placeholder="40.7128"
+//                                                 />
+//                                                 {/* <input
+//                         type="number"
+//                         name="longitude"
+//                         className="form-control form-control-lg"
+//                         id="latitude"
+//                         value={formData.location.longitude?.toString() || ''}
+//                         onChange={e => setFormData(prev => ({
+//                             ...prev,
+//                             location: {
+//                             ...prev.location,
+//                             longitude: Number(e.target.value) || null
+//                             }
+//                         }))}
+//                         /> */}
+//                                                 {errors.latitude && (
+//                                                     <div className="invalid-feedback">{errors.latitude}</div>
+//                                                 )}
+//                                             </div>
+//                                         </div>
+
+//                                         {/* Longitude Field */}
+//                                         <div className="col-sm-3">
+//                                             <div className="position-relative">
+//                                                 <label htmlFor="longitude" className="form-label">Longitude</label>
+//                                                 <input
+//                                                     type="number"
+//                                                     name="longitude"
+//                                                     className="form-control form-control-lg"
+//                                                     id="longitude"
+//                                                     step="any"
+//                                                     value={formData.location.longitude || null}
+//                                                     onChange={handleInputChange}
+//                                                     placeholder="-74.0060"
+//                                                 />
+//                                                 {/* <input
+//                         type="number"
+//                         name="latitude"
+//                         value={formData.location.latitude?.toString() || ''} // Convert to string or empty
+//                         onChange={e => setFormData(prev => ({
+//                             ...prev,
+//                             location: {
+//                             ...prev.location,
+//                             latitude: Number(e.target.value) || null
+//                             }
+//                         }))}
+//                         /> */}
+//                                                 {errors.longitude && (
+//                                                     <div className="invalid-feedback">{errors.longitude}</div>
+//                                                 )}
+//                                             </div>
+//                                         </div>
+
+//                                         {/* Map Picker (Optional) */}
+//                                         <div className="col-12">
+//                                             <div className="map-container" style={{ height: '300px', borderRadius: '8px' }}>
+//                                                 {/* Integrate your map component here */}
+//                                                 <p className="text-muted">Map picker component would go here</p>
+//                                             </div>
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             </section>
+//                         </div>
+
+//                         {/* Promote Tab */}
+//                         <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`} id="pills-promote" role="tabpanel" aria-labelledby="pills-promote-tab">
+//                             <section className="position-relative bg-body rounded p-2 m-2">
+//                                 <div className="position-relative z-1 p-2 m-2">
+//                                     <h2 className="h4 mb-3 mb-sm-4">Promotion Options</h2>
+//                                     <div className="alert alert-info">
+//                                         <i className="ci-circle me-2"></i>
+//                                         Boost your listing's visibility with our promotion plans / Promotion plans help your listing stand out and reach more potential buyers
+//                                     </div>
+
+//                                     <div className="row g-4">
+//                                         {[
+//                                             {
+//                                                 id: 'easy-start',
+//                                                 name: 'Easy Start',
+//                                                 price: 25,
+//                                                 duration: '7 days',
+//                                                 features: [
+//                                                     'Basic exposure for your listing',
+//                                                     'Standard placement in search results',
+//                                                     'Email support'
+//                                                 ]
+//                                             },
+//                                             {
+//                                                 id: 'fast-sale',
+//                                                 name: 'Fast Sale',
+//                                                 price: 49,
+//                                                 duration: '14 days',
+//                                                 features: [
+//                                                     'Enhanced visibility in search results',
+//                                                     'Featured placement in category pages',
+//                                                     'Priority email support',
+//                                                     'Basic performance analytics'
+//                                                 ],
+//                                                 recommended: true
+//                                             },
+//                                             {
+//                                                 id: 'turbo-boost',
+//                                                 name: 'Turbo Boost',
+//                                                 price: 99,
+//                                                 duration: '30 days',
+//                                                 features: [
+//                                                     'Premium placement on homepage',
+//                                                     'Maximum visibility in all listings',
+//                                                     '24/7 priority support',
+//                                                     'Advanced analytics dashboard',
+//                                                     'Social media promotion'
+//                                                 ]
+//                                             }
+//                                         ].map((plan) => (
+//                                             <div className="col-md-4" key={plan.id}>
+//                                                 <div className={`card h-100 ${plan.recommended ? 'border-primary border-2' : ''}`}>
+//                                                     <div className="card-body">
+//                                                         {plan.recommended && (
+//                                                             <div className="badge bg-primary text-white position-absolute top-0 start-50 translate-middle mt-2">
+//                                                                 Recommended
+//                                                             </div>
+//                                                         )}
+//                                                         <h3 className="h5 text-center">{plan.name}</h3>
+//                                                         <div className="text-center my-3">
+//                                                             <span className="display-5 fw-bold">${plan.price}</span>
+//                                                             <span className="text-muted"> / {plan.duration}</span>
+//                                                         </div>
+//                                                         <ul className="list-unstyled">
+//                                                             {plan.features.map((feature, index) => (
+//                                                                 <li key={index} className="mb-2">
+//                                                                     <i className="fi-check-circle text-success me-2"></i>
+//                                                                     {feature}
+//                                                                 </li>
+//                                                             ))}
+//                                                         </ul>
+//                                                         <div className="text-center mt-3">
+//                                                             <input
+//                                                                 type="radio"
+//                                                                 className="btn-check"
+//                                                                 name="promotion_plan"
+//                                                                 id={plan.id}
+//                                                                 value={plan.id}
+//                                                                 checked={formData.promotion.promotion_plan === plan.id}
+//                                                                 onChange={handleInputChange}
+//                                                             />
+//                                                             <label className={`btn btn-outline-${plan.recommended ? 'primary' : 'secondary'} w-100`}
+//                                                                 htmlFor={plan.id} >
+//                                                                 Select {plan.name}
+//                                                             </label>
+//                                                         </div>
+//                                                     </div>
+//                                                 </div>
+//                                             </div>
+//                                         ))}
+//                                     </div>
+
+//                                 </div>
+//                             </section>
+//                         </div>
+
+//                     </div>
+//                     {/* Response Modal - Placed just above the buttons */}
+//                     <div className="position-relative z-1 p-2 m-2">
+//                         <ResponseModal
+//                             show={responseModal.show}
+//                             message={responseModal.message}
+//                             success={responseModal.success}
+//                             onClose={() => setResponseModal({ ...responseModal, show: false })}
+//                         /></div>
+//                 </div>
+
+//                 <div className="progress rounded-0" role="progressbar" style={{ height: '4px' }}>
+//                     <div
+//                         className={`progress-bar ${uploadProgress > 0 ? 'bg-info' : 'bg-dark'}`}
+//                         style={{ width: `${uploadProgress > 0 ? uploadProgress : progressPercentage()}%` }}
+//                     />
+//                 </div>
+
+//                 {/* Progress bar and navigation buttons */}
+//                 <footer className="sticky-bottom1 modal-footer text-muted">
+
+//                     {/* <div className="container1 d-flex "> */}
+//                     <button
+//                         type="button"
+//                         className="btn btn-outline-dark animate-slide-start"
+//                         onClick={handleBack}
+//                         disabled={activeTab === 'home' || isSubmitting}
+//                     >
+//                         <i className="fi-arrow-left animate-target fs-base ms-n1 me-2" />
+//                         Back
+//                     </button>
+//                     <button
+//                         type="button"
+//                         className="btn btn-dark animate-slide-end ms-auto"
+//                         onClick={handleNext}
+//                         disabled={isSubmitting}
+//                     >
+//                         {isSubmitting ? (
+//                             <div className="spinner-grow spinner-grow-sm" role="status">
+//                                 <span className="visually-hidden">{uploadProgress > 0 ? 'Uploading...' : 'Processing...'}</span>
+//                             </div>
+
+//                         ) : (
+//                             <>
+//                                 {activeTab === 'promote' ? 'Publish Listing' : 'Next'}
+//                                 <i className="fi-arrow-right animate-target fs-base ms-2 me-n1" />
+//                             </>
+//                         )}
+//                     </button>
+//                     {/* </div> */}
+//                 </footer>
+//             </div>
+//         </div>
+//     </section>
+
+// );
+
+// 
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { OffersAxiosService } from '../../../services/net/OffersAxiosService';
+import { ProductAxiosService } from '../../../services/net/ProductAxiosService';
+import ResponseModal from '../../../components/shared/modals/ResponseModal';
+import PropTypes from 'prop-types';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
+
+const initialFormData = {
+    name: '',
+    description: '',
+    discount_type: 'percentage',
+    discount_value: 10,
+    promo_code: '',
+    start_date: new Date(),
+    end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    is_featured: false,
+    banner_image: '',
+    background_gradient: '',
+    text_color: '#ffffff',
+    product_ids: [],  // Changed from selectedProducts to match backend
+    category_ids: [], // Changed from selectedCategories to match backend
+    media: {
+      files: [],
+      video_link: ''
+    },
+  };
+
+const OfferForm = ({ offer, onSuccess }) => {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredCategories, setFilteredCategories] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [formData, setFormData] = useState(initialFormData);
+    const [previews, setPreviews] = useState([]);
+    const [responseModal, setResponseModal] = useState({
+        show: false,
+        message: '',
+        success: false
+    });
+    const fileInputRef = useRef(null);
+
+    // Fetch products and categories on mount
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [productsRes, categoriesRes] = await Promise.all([
+                    ProductAxiosService.fetchPage(),
+                    ProductAxiosService.fetchCategories()
+                ]);
+
+                setProducts(productsRes.data.products);
+                setFilteredProducts(productsRes.data.products);
+                setCategories(categoriesRes.data.categories);
+                setFilteredCategories(categoriesRes.data.categories);
+
+                if (offer) {
+                    populateFormWithOfferData(offer);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setResponseModal({
+                    show: true,
+                    message: 'Failed to load required data. Please try again later.',
+                    success: false
+                });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [offer]);
+
+    const populateFormWithOfferData = useCallback((offerData) => {
+        setFormData(prevData => ({
+          ...prevData,
+          name: offerData.name || offerData.title || '', // Handle both name and title
+          description: offerData.description,
+          discount_type: offerData.discount_type,
+          discount_value: offerData.discount_value,
+          promo_code: offerData.promo_code,
+          start_date: new Date(offerData.start_date),
+          end_date: new Date(offerData.end_date),
+          is_featured: offerData.is_featured,
+          banner_image: offerData.banner_image,
+          background_gradient: offerData.background_gradient,
+          text_color: offerData.text_color,
+          product_ids: offerData.products?.map(p => p.id) || [], // Changed to product_ids
+          category_ids: offerData.categories?.map(c => c.id) || [], // Changed to category_ids
+          media: {
+            files: offerData.media_files || [],
+            video_link: offerData.video_link || ''
+          }
+        }));
+      
+        // Set previews for existing media
+        if (offerData.media_files?.length > 0) {
+          setPreviews(offerData.media_files.map(file => ({
+            url: file.url,
+            name: file.name,
+            size: file.size,
+            type: file.type.startsWith('image') ? 'image' : 'video'
+          })));
+        }
+      }, []);
+
+
+    const handleChange = (e) => {
+        // const { name, value, type, checked } = e.target;
+
+        console.log('Checkbox toggled:', e.target.checked); // Debugging line
+        const { name, value, type, checked } = e.target;
+ 
+        // Special handling for date inputs
+        if (name === 'start_date' || name === 'end_date') {
+            setFormData(prevData => ({
+                ...prevData,
+                [name]: value ? new Date(value) : new Date() // Fallback to current date if empty
+            }));
+        } else {
+            setFormData(prevData => ({
+                ...prevData,
+                // is_featured: e.target.checked,
+                [name]: type === 'checkbox' ? checked : value,
+            }));
+        }
+
+        console.log(`name:-${name}, value:-${value}, type:-${type}, checked:-${checked}`)
+    };
+
+    // Log formData whenever it changes
+    useEffect(() => {
+        console.log('Updated Form Data:', formData);
+    }, [formData]);
+    
+    const handleMediaInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({
+            ...prevData,
+            media: {
+                ...prevData.media,
+                [name]: value
+            }
+        }));
+    };
+
+    // 
+    const handleProductToggle = (productId) => {
+        setFormData(prevData => {
+          const newSelected = prevData.product_ids.includes(productId)
+            ? prevData.product_ids.filter(id => id !== productId)
+            : [...prevData.product_ids, productId];
+          return {
+            ...prevData,
+            product_ids: newSelected
+          };
+        });
+      };
+      
+    const handleCategoryToggle = (categoryId) => {
+        setFormData(prevData => {
+            const newSelected = prevData.category_ids.includes(categoryId)
+            ? prevData.category_ids.filter(id => id !== categoryId)
+            : [...prevData.category_ids, categoryId];
+            return {
+            ...prevData,
+            category_ids: newSelected
+            };
+        });
+        };
+
+    const handleSearch = (e, type) => {
+        const query = e.target.value.toLowerCase();
+        if (type === 'products') {
+            setFilteredProducts(products.filter(product =>
+                product.name.toLowerCase().includes(query)
+            ));
+        } else if (type === 'categories') {
+            setFilteredCategories(categories.filter(category =>
+                category.name.toLowerCase().includes(query)
+            ));
+        }
+    };
+
+    const handleFileChange = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        // Validate file sizes and types
+        const validFiles = files.filter(file => {
+            const isValidSize = file.size <= 8 * 1024 * 1024; // 8MB
+            const isValidType = /\.(jpe?g|png|mp4|mov)$/i.test(file.name);
+
+            if (!isValidSize) {
+                setResponseModal({
+                    show: true,
+                    message: `File ${file.name} exceeds 8MB limit`,
+                    success: false
+                });
+            }
+
+            if (!isValidType) {
+                setResponseModal({
+                    show: true,
+                    message: `File ${file.name} has unsupported format`,
+                    success: false
+                });
+            }
+
+            return isValidSize && isValidType;
+        });
+
+        if (validFiles.length === 0) return;
+
+        const newPreviews = await Promise.all(validFiles.map(file => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    resolve({
+                        url: e.target.result,
+                        name: file.name,
+                        size: file.size,
+                        type: file.type.startsWith('image') ? 'image' : 'video'
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+        }));
+
+        setPreviews(prev => [...prev, ...newPreviews]);
+        setFormData(prev => ({
+            ...prev,
+            media: {
+                ...prev.media,
+                files: [...prev.media.files, ...validFiles]
+            }
+        }));
+    };
+
+    const removeMedia = (index) => {
+        setPreviews(prev => prev.filter((_, i) => i !== index));
+        setFormData(prev => ({
+            ...prev,
+            media: {
+                ...prev.media,
+                files: prev.media.files.filter((_, i) => i !== index)
+            }
+        }));
+    };
+
+ const validateForm = () => {
+        if (!formData.name.trim()) {
+          setResponseModal({
+            show: true,
+            message: 'Offer name is required',
+            success: false
+          });
+          return false;
+        }
+      
+        if (formData.product_ids.length === 0) {
+          setResponseModal({
+            show: true,
+            message: 'Please select at least one product',
+            success: false
+          });
+          return false;
+        }
+      
+        const startDate = formData.start_date instanceof Date ? 
+          formData.start_date : new Date(formData.start_date);
+        const endDate = formData.end_date instanceof Date ? 
+          formData.end_date : new Date(formData.end_date);
+      
+        if (startDate >= endDate) {
+          setResponseModal({
+            show: true,
+            message: 'End date must be after start date',
+            success: false
+          });
+          return false;
+        }
+      
+        if (previews.length === 0 && !formData.media.video_link) {
+          setResponseModal({
+            show: true,
+            message: 'Please upload at least one image or provide a video link',
+            success: false
+          });
+          return false;
+        }
+      
+        return true;
+      };
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+        
+    //     if (!validateForm()) return;
+    
+    //     const offerData = {
+    //         name: formData.name,
+    //         description: formData.description,
+    //         discount_type: formData.discount_type,
+    //         discount_value: parseInt(formData.discount_value, 10), // Ensure this is an integer
+    //         product_ids: formData.product_ids.map(id => parseInt(id, 10)), // Convert to integers
+    //         category_ids: formData.category_ids.map(id => parseInt(id, 10)), // Convert to integers
+    //         is_featured: formData.is_featured === 'true', // Convert to boolean
+    //         promo_code: formData.promo_code,
+    //         start_date: new Date(formData.start_date).toISOString(),
+    //         end_date: new Date(formData.end_date).toISOString(),
+    //         banner_image: formData.banner_image,
+    //         background_gradient: formData.background_gradient,
+    //         text_color: formData.text_color,
+    //         media_files: formData.media_files.filter(file => file && file.name) // Ensure valid media files
+    //     };
+    
+    //     console.log('Offer Data to be sent:', offerData); // Debugging line
+    
+    //     const formDataToSend = new FormData();
+        
+    //     // Object.entries(offerData).forEach(([key, value]) => {
+    //     //     if (Array.isArray(value)) {
+    //     //         value.forEach(item => formDataToSend.append(`${key}[]`, item));
+    //     //     } else if (value !== undefined && value !== null) {
+    //     //         formDataToSend.append(key, value);
+    //     //     }
+    //     // });
+
+
+    //     Object.entries(offerData).forEach(([key, value]) => {
+    //         if (Array.isArray(value)) {
+    //             value.forEach(item => formDataToSend.append(key, item)); // Append each item
+    //         } else if (value !== undefined && value !== null) {
+    //             formDataToSend.append(key, value);
+    //         }
+    //     });
+    //     // 
+    //     // 
+
+    //     // Append media files
+    //     formData.media.files.forEach(file => {
+    //         formDataToSend.append('media_files[]', file);
+    //     });
+        
+    
+    //     // Append video link if exists
+    //     if (formData.media.video_link) {
+    //         formDataToSend.append('video_link', formData.media.video_link);
+    //     }
+    
+    //     try {
+    //         const response = offer 
+    //             ? await OffersAxiosService.updateOffer(offer.id, formDataToSend)
+    //             : await OffersAxiosService.createOffer(formDataToSend);
+            
+    //         onSuccess(response.data);
+    //         setResponseModal({
+    //             show: true,
+    //             message: offer ? 'Offer updated successfully' : 'Offer created successfully',
+    //             success: true
+    //         });
+    //     } catch (error) {
+    //         console.error('Error saving offer:', error);
+    //         setResponseModal({
+    //             show: true,
+    //             message: error.response?.data?.error || 'Failed to save offer. Please try again.',
+    //             success: false
+    //         });
+    //     }
+    // };
+    
+// 
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate the form before proceeding
+    if (!validateForm()) return;
+
+    // Prepare the offer data object
+    const offerData = {
+        name: formData.name,
+        description: formData.description,
+        discount_type: formData.discount_type,
+        discount_value: parseInt(formData.discount_value, 10), // Ensure this is an integer
+        product_ids: formData.product_ids.map(id => parseInt(id, 10)), // Convert to integers
+        category_ids: formData.category_ids.map(id => parseInt(id, 10)), // Convert to integers
+        is_featured2: formData.is_featured === 'true',
+        is_featured: formData.is_featured, // Convert to boolean 
+        promo_code: formData.promo_code,
+        start_date: new Date(formData.start_date).toISOString(),
+        end_date: new Date(formData.end_date).toISOString(),
+        banner_image: formData.banner_image,
+        background_gradient: formData.background_gradient,
+        text_color: formData.text_color,
+        media_files: formData.media.files.filter(file => file && file.name) // Ensure valid media files
+    };
+
+    console.log('Offer Data to be sent:', offerData); // Debugging line
+
+    // Create a FormData object to send the offer data
+    const formDataToSend = new FormData();
+
+    // Append offer data to FormData
+    // Object.entries(offerData).forEach(([key, value]) => {
+    //     if (Array.isArray(value)) {
+    //         value.forEach(item => formDataToSend.append(key, item)); // Append each item
+    //     } else if (value !== undefined && value !== null) {
+    //         formDataToSend.append(key, value);
+    //     }
+    // });
+    Object.entries(offerData).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+            value.forEach(item => formDataToSend.append(`${key}[]`, item));
+        } else if (value !== undefined && value !== null) {
+            formDataToSend.append(key, value);
+        }
+    });
+
+    // Append media files to FormData
+    if (formData.media?.files) {
+        formData.media.files.forEach(file => {
+            formDataToSend.append('media_files[]', file);
+        });
+    }
+
+    // Append video link if it exists
+    if (formData.media?.video_link) {
+        formDataToSend.append('video_link', formData.media.video_link);
+    }
+
+    try {
+        // Determine whether to update or create an offer
+        const response = offer 
+            ? await OffersAxiosService.updateOffer(offer.id, formDataToSend)
+            : await OffersAxiosService.createOffer(formDataToSend);
+        
+        // Handle success response
+        onSuccess(response.data);
+        setResponseModal({
+            show: true,
+            message: offer ? 'Offer updated successfully' : 'Offer created successfully',
+            success: true
+        });
+    } catch (error) {
+        console.error('Error saving offer:', error);
+        setResponseModal({
+            show: true,
+            message: error.response?.data?.error || 'Failed to save offer. Please try again.',
+            success: false
+        });
+    }
+};
+
+    if (isLoading) {
+        return (
+            <LoadingSpinner />
+        );
+    }
+
+    return (
+        // <div id="OfferForm" className="modal fade container mt-4">
+        <>
+            <div className="modal fade" id="OfferForm" tabIndex={-1} aria-modal="true" role="dialog">
+                <div className="modal-dialog modal-xl" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">{offer ? 'Edit Offer' : 'Create New Offer'}</h5>
+                            <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" />
+                        </div>
+                        <div className="modal-body d-flex flex-column gap-4 pt-2">
+                            <form onSubmit={handleSubmit}>
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        {/* Basic Info */}
+                                        <div className="mb-3">
+                                            <label className="form-label">Offer Title*</label>
+                                            <input
+                                                name="name"
+                                                type="text"
+                                                className="form-control"
+                                                value={formData.name}
+                                                onChange={handleChange}
+                                                placeholder="Summer Sale 2023"
+                                                required
+                                            />
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <label className="form-label">Description</label>
+                                            <textarea
+                                                name="description"
+                                                className="form-control"
+                                                rows="3"
+                                                value={formData.description}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
+                                        {/* Products Selection
+                                        <div className="mb-3">
+                                            <label className="form-label">Select Products*</label>
+                                            <div className="dropdown">
+                                                <input
+                                                    type="text"
+                                                    className="form-control mb-2"
+                                                    placeholder="Search products..."
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    onChange={(e) => handleSearch(e, 'products')}
+                                                />
+                                                <div className="dropdown-menu w-100">
+                                                    <ul className="list-unstyled" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                                        {filteredProducts.map(product => (
+                                                            <li key={product.id} className="dropdown-item">
+                                                                <div className="form-check">
+                                                                    <input
+                                                                        className="form-check-input"
+                                                                        id={`prod-${product.id}`}
+                                                                        type="checkbox"
+                                                                        checked={formData.selectedProducts.includes(product.id)}
+                                                                        onChange={() => handleProductToggle(product.id)}
+                                                                        // 
+                                                                    />
+                                                                    <label className="form-check-label" htmlFor={`prod-${product.id}`}>
+                                                                        {`${product.name} ($${product.price})`}
+                                                                    </label>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        {formData.product_ids.length > 0 && (
+                                        <div className="mt-2">
+                                            <h6>Selected Products:</h6>
+                                            <div className="d-flex flex-wrap gap-2">
+                                            {formData.product_ids.map(prodId => {
+                                                const product = products.find(p => p.id === prodId);
+                                                return product ? (
+                                                <span key={prodId} className="badge bg-primary">
+                                                    {product.name}
+                                                </span>
+                                                ) : null;
+                                            })}
+                                            </div>
+                                        </div>
+                                        )}
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <label className="form-label">Select Categories*</label>
+                                            <div className="dropdown">
+                                                <input
+                                                    type="text"
+                                                    className="form-control mb-2"
+                                                    placeholder="Search categories..."
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                    onChange={(e) => handleSearch(e, 'categories')}
+                                                />
+                                                <div className="dropdown-menu w-100">
+                                                    <ul className="list-unstyled" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                                        {filteredCategories.map(category => (
+                                                            <li key={category.id} className="dropdown-item">
+                                                                <div className="form-check">
+                                                                    <input
+                                                                        className="form-check-input"
+                                                                        id={`cat-${category.id}`}
+                                                                        type="checkbox"
+                                                                        checked={formData.category_ids.includes(category.id)}
+                                                                        onChange={() => handleCategoryToggle(category.id)}
+                                                                    />
+                                                                    <label className="form-check-label" htmlFor={`cat-${category.id}`}>
+                                                                        {category.name}
+                                                                    </label>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            {formData.selectedCategories.length > 0 && (
+                                                <div className="mt-2">
+                                                    <h6>Selected Categories:</h6>
+                                                    <div className="d-flex flex-wrap gap-2">
+                                                        {formData.selectedCategories.map(catId => {
+                                                            const category = categories.find(c => c.id === catId);
+                                                            return category ? (
+                                                                <span key={catId} className="badge bg-secondary">
+                                                                    {category.name}
+                                                                </span>
+                                                            ) : null;
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div> */}
+
+                                        {/* Products Selection */}
+<div className="mb-3">
+  <label className="form-label">Select Products*</label>
+  <div className="dropdown">
+    <input
+      type="text"
+      className="form-control mb-2"
+      placeholder="Search products..."
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+      onChange={(e) => handleSearch(e, 'products')}
+    />
+    <div className="dropdown-menu w-100">
+      <ul className="list-unstyled" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+        {filteredProducts.map(product => (
+          <li key={product.id} className="dropdown-item">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                id={`prod-${product.id}`}
+                type="checkbox"
+                checked={formData.product_ids.includes(product.id)}
+                onChange={() => handleProductToggle(product.id)}
+              />
+              <label className="form-check-label" htmlFor={`prod-${product.id}`}>
+                {`${product.name} ($${product.price})`}
+              </label>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  {formData.product_ids.length > 0 && (
+    <div className="mt-2">
+      <h6>Selected Products:</h6>
+      <div className="d-flex flex-wrap gap-2">
+        {formData.product_ids.map(prodId => {
+          const product = products.find(p => p.id === prodId);
+          return product ? (
+            <span key={prodId} className="badge bg-primary">
+              {product.name}
+            </span>
+          ) : null;
+        })}
+      </div>
+    </div>
+  )}
+</div>
+
+{/* Categories Selection */}
+<div className="mb-3">
+  <label className="form-label">Select Categories*</label>
+  <div className="dropdown">
+    <input
+      type="text"
+      className="form-control mb-2"
+      placeholder="Search categories..."
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+      onChange={(e) => handleSearch(e, 'categories')}
+    />
+    <div className="dropdown-menu w-100">
+      <ul className="list-unstyled" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+        {filteredCategories.map(category => (
+          <li key={category.id} className="dropdown-item">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                id={`cat-${category.id}`}
+                type="checkbox"
+                checked={formData.category_ids.includes(category.id)}
+                onChange={() => handleCategoryToggle(category.id)}
+              />
+              <label className="form-check-label" htmlFor={`cat-${category.id}`}>
+                {category.name}
+              </label>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  {formData.category_ids.length > 0 && (
+    <div className="mt-2">
+      <h6>Selected Categories:</h6>
+      <div className="d-flex flex-wrap gap-2">
+        {formData.category_ids.map(catId => {
+          const category = categories.find(c => c.id === catId);
+          return category ? (
+            <span key={catId} className="badge bg-secondary">
+              {category.name}
+            </span>
+          ) : null;
+        })}
+      </div>
+    </div>
+  )}
+</div>
+
+                                        {/* Media Upload Section */}
+                                        <section className="position-relative bg-body rounded p-2 m-2">
+                                            <div className="position-relative z-1 p-2 m-2">
+                                                <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
+                                                    <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
+                                                    <div className="position-relative d-flex">
+                                                        <i className="fi-info text-info mt-1 me-2" />
+                                                    </div>
+                                                </div>
+                                                <small className="fs-sm text-warning mb-3">
+                                                    The maximum file size is 8 MB. Formats: jpeg, jpg, png, mp4, mov. Put the main picture first.
+                                                    {previews.length === 0 && (<>At least one image is required for your listing</>)}
+                                                </small>
+                                                <div style={{ maxWidth: '852px' }}>
+                                                    <div className="row row-cols-2 row-cols-sm-3 g-2 g-md-4 g-lg-3 g-xl-4">
+                                                        {/* Media previews */}
+                                                        {previews.map((preview, index) => (
+                                                            <div className="col" key={index}>
+                                                                <div className="hover-effect-opacity position-relative overflow-hidden rounded">
+                                                                    {index === 0 && (
+                                                                        <span className="badge text-bg-light position-absolute top-0 start-0 z-3 mt-2 ms-2">Cover</span>
+                                                                    )}
+                                                                    <div className="ratio" style={{ aspectRatio: '4/3' }}>
+                                                                        {preview.type === 'image' ? (
+                                                                            <img src={preview.url} alt={`Preview ${index + 1}`} className="img-fluid object-fit-cover" />
+                                                                        ) : (
+                                                                            <video controls className="w-100 h-100 object-fit-cover">
+                                                                                <source src={preview.url} type={formData.media.files[index].type} />
+                                                                            </video>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
+                                                                        <button
+                                                                            type="button"
+                                                                            className="btn btn-icon btn-sm btn-light position-relative z-2"
+                                                                            aria-label="Remove"
+                                                                            onClick={() => removeMedia(index)}
+                                                                        >
+                                                                            <i className="ci-trash-empty"></i>
+                                                                        </button>
+                                                                        <span className="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-25 z-1" />
+                                                                    </div>
+                                                                </div>
+                                                                <small className="text-muted d-block text-truncate mt-1">
+                                                                    {preview.name} ({Math.round(preview.size / 1024)} KB)
+                                                                </small>
+                                                            </div>
+                                                        ))}
+
+                                                        {/* Upload button */}
+                                                        <div className="col">
+                                                            <div
+                                                                className="d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3"
+                                                                onClick={() => fileInputRef.current.click()}
+                                                                style={{ minHeight: '150px' }}
+                                                            >
+                                                                <div className="text-center">
+                                                                    <i className="fi-plus-circle fs-4 text-secondary-emphasis mb-2" />
+                                                                    <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+                                                                        Upload photos/videos
+                                                                    </div>
+                                                                    <input
+                                                                        type="file"
+                                                                        ref={fileInputRef}
+                                                                        onChange={handleFileChange}
+                                                                        className="d-none"
+                                                                        multiple
+                                                                        accept="image/*,video/*"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="pt-3 mt-2 mt-md-3">
+                                                    <label htmlFor="video_link" className="form-label">Link to YouTube/Vimeo video (optional)</label>
+                                                    <div className="position-relative">
+                                                        <i className="fi-link position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />
+                                                        <input
+                                                            type="url"
+                                                            className="form-control form-control-lg form-icon-start"
+                                                            id="video_link"
+                                                            name="video_link"
+                                                            placeholder="www.youtube.com/..."
+                                                            value={formData.media.video_link}
+                                                            onChange={handleMediaInputChange}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        {/* Discount Settings */}
+                                        <div className="card mb-3">
+                                            <div className="card-header bg-light">
+                                                <h5>Discount Settings</h5>
+                                            </div>
+                                            <div className="card-body">
+                                                <div className="mb-3">
+                                                    <label className="form-label">Discount Type*</label>
+                                                    <select
+                                                        name="discount_type"
+                                                        className="form-select"
+                                                        value={formData.discount_type}
+                                                        onChange={handleChange}
+                                                    >
+                                                        <option value="percentage">Percentage</option>
+                                                        <option value="fixed_amount">Fixed Amount</option>
+                                                    </select>
+                                                </div>
+
+                                                <div className="mb-3">
+                                                    <label className="form-label">
+                                                        {formData.discount_type === 'percentage' ? 'Discount Percentage*' : 'Discount Amount*'}
+                                                    </label>
+                                                    <div className="input-group">
+                                                        <input
+                                                            name="discount_value"
+                                                            type="number"
+                                                            className="form-control"
+                                                            value={formData.discount_value}
+                                                            onChange={handleChange}
+                                                            min="0"
+                                                            step={formData.discount_type === 'percentage' ? '1' : '0.01'}
+                                                            required
+                                                        />
+                                                        <span className="input-group-text">
+                                                            {formData.discount_type === 'percentage' ? '%' : '$'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="mb-3">
+                                                    <label className="form-label">Promo Code (Optional)</label>
+                                                    <input
+                                                        name="promo_code"
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={formData.promo_code}
+                                                        onChange={handleChange}
+                                                        placeholder="SUMMER2023"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Date Settings */}
+                                        <div className="card mb-3">
+                                            <div className="card-header bg-light">
+                                                <h5>Schedule</h5>
+                                            </div>
+                                            <div className="card-body">
+
+                                                {/* <div className="mb-3">
+                      <label className="form-label">Start Date*</label>
+                      <input 
+                        type="datetime-local" 
+                        name="start_date" 
+                        className="form-control" 
+                        value={formData.start_date.toISOString().slice(0, 16)} 
+                        onChange={handleChange} 
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label">End Date*</label>
+                      <input 
+                        type="datetime-local" 
+                        name="end_date" 
+                        className="form-control" 
+                        value={formData.end_date.toISOString().slice(0, 16)} 
+                        onChange={handleChange} 
+                        required
+                      />
+                    </div> */}
+
+                                                <div className="mb-3">
+                                                    <label className="form-label">Start Date*</label>
+                                                    <input
+                                                        type="datetime-local"
+                                                        name="start_date"
+                                                        className="form-control"
+                                                        value={formData.start_date instanceof Date ?
+                                                            formData.start_date.toISOString().slice(0, 16) :
+                                                            new Date(formData.start_date).toISOString().slice(0, 16)}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+
+                                                <div className="mb-3">
+                                                    <label className="form-label">End Date*</label>
+                                                    <input
+                                                        type="datetime-local"
+                                                        name="end_date"
+                                                        className="form-control"
+                                                        value={formData.end_date instanceof Date ?
+                                                            formData.end_date.toISOString().slice(0, 16) :
+                                                            new Date(formData.end_date).toISOString().slice(0, 16)}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+
+                                                <div className="form-check form-switch mb-3">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="is_featured"
+                                                        className="form-check-input"
+                                                        checked={formData.is_featured}
+                                                        onChange={handleChange}
+                                                    />
+                                                    <label className="form-check-label">
+                                                        Featured Offer
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Visual Settings */}
+
+                                <div className="card mb-3">
+                                <div className="card-header bg-light">
+                                    <h5>Visual Presentation</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <label className="form-label">Banner Image URL</label>
+                                        <input 
+                                        name="banner_image" 
+                                        type="text" 
+                                        className="form-control" 
+                                        value={formData.banner_image} 
+                                        onChange={handleChange} 
+                                        placeholder="https://example.com/banner.jpg"
+                                        />
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <label className="form-label">Background Gradient</label>
+                                        <input 
+                                        name="background_gradient" 
+                                        type="text" 
+                                        className="form-control" 
+                                        value={formData.background_gradient} 
+                                        onChange={handleChange} 
+                                        placeholder="linear-gradient(90deg, #ff9966, #ff5e62)"
+                                        />
+                                        <small className="text-muted">Example: linear-gradient(90deg, #ff9966, #ff5e62)</small>
+                                    </div>
+                                    </div>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                        <label htmlFor="text_color" className="form-label">Text Color</label>
+                                        <div className="input-group">
+                                        <input
+                                            type="color"
+                                            id="text_color"
+                                            name="text_color"
+                                            className="form-control form-control-color"
+                                            value={formData.text_color}
+                                            onChange={handleChange}
+                                            title="Choose text color"
+                                        />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData.text_color}
+                                            onChange={(e) => {
+                                            // Ensure the value starts with #
+                                            const value = e.target.value.startsWith('#') ? e.target.value : `#${e.target.value}`;
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                text_color: value
+                                            }));
+                                            }}
+                                            maxLength={7}
+                                        />
+                                        </div>
+                                        <div className="mt-2">
+                                        <div 
+                                            className="p-2 rounded"
+                                            style={{
+                                            backgroundColor: formData.background_gradient || '#f8f9fa',
+                                            color: formData.text_color,
+                                            border: '1px solid #dee2e6'
+                                            }}
+                                        >
+                                            Preview text with selected color
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label">Gradient Preview</label>
+                                        <div 
+                                        className="p-4 rounded"
+                                        style={{
+                                            background: formData.background_gradient || 'linear-gradient(90deg, #f8f9fa, #e9ecef)',
+                                            border: '1px solid #dee2e6',
+                                            height: '100px'
+                                        }}
+                                        >
+                                        <p 
+                                            className="m-0"
+                                            style={{ color: formData.text_color }}
+                                        >
+                                            {formData.title || 'Your offer title will appear here'}
+                                        </p>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div className="d-flex justify-content-end gap-2">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={() => setFormData(initialFormData)}
+                                    >
+                                        Reset
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                    >
+                                        {offer ? 'Update Offer' : 'Create Offer'}
+                                    </button>
+                                </div>
+                            </form>
+
+                            {/*  */}
+                            <ResponseModal
+                                show={responseModal.show}
+                                message={responseModal.message}
+                                success={responseModal.success}
+                                onClose={() => setResponseModal({ ...responseModal, show: false })}
+                            />
+                        </div>
+
+                        <div className="modal-footer flex-column flex-sm-row align-items-stretch">
+                            <button className="btn btn-primary" type="button" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </>
+    );
+};
+
+
+OfferForm.propTypes = {
+    offer: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      description: PropTypes.string,
+      discount_type: PropTypes.string,
+      discount_value: PropTypes.number,
+      promo_code: PropTypes.string,
+      start_date: PropTypes.string,
+      end_date: PropTypes.string,
+      is_featured: PropTypes.bool,
+      banner_image: PropTypes.string,
+      background_gradient: PropTypes.string,
+      text_color: PropTypes.string,
+      products: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number
+      })),
+      categories: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number
+      })),
+      media_files: PropTypes.array,
+      video_link: PropTypes.string
+    }),
+    onSuccess: PropTypes.func.isRequired
+  };
+
+export default OfferForm;

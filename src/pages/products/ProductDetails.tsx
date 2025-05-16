@@ -5,6 +5,8 @@ import './Products.css';
 import ProductRecommendations from './ProductRecommendations';
 import { formatDate } from '../../utils/dateUtils';
 import ProductReviewForm from './ProductReviewForm';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import Breadcrumb from '../../components/shared/Breadcrumb';
 
 interface ProductOwner {
     id: number;
@@ -20,7 +22,7 @@ interface ProductOwner {
     price: string;
     description: string;
     image_urls: string[];
-    comments_count: number;
+    reviews_count: number;
     categories: Array<{ id: number; name: string }>;
     users: any[];
     pages: any[];
@@ -97,9 +99,7 @@ const ProductDetails = () => {
 
     if (loading) {
         return (
-            <div className="loading-spinner">
-                <div className="spinner"></div>
-            </div>
+           <LoadingSpinner />
         )
     }
 
@@ -115,7 +115,8 @@ const ProductDetails = () => {
         {/* <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{"maxWidth": "1920px"}}>  */}
             
             <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
-                <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
+                
+                {/* <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
                     <li className="breadcrumb-item">
                         <a href="/">Home</a>
                     </li>
@@ -125,7 +126,17 @@ const ProductDetails = () => {
                     <li aria-current="page" className="breadcrumb-item active">
                         products
                     </li>
-                </ol>
+                </ol> */}
+                
+                <Breadcrumb 
+                    items={[
+                    { label: 'Home', path: '/' },
+                    { label: 'Products', path: '/products' },
+                    { label: product?.name || slug, path: `/products/${slug}` }
+                    ]} 
+                />
+                
+
                 <div className="row">
                     <div className="col-lg-8 col-xl-9">
                       
@@ -140,16 +151,9 @@ const ProductDetails = () => {
 
                               {owner && (
                                 <div className="nav align-items-center gap-2 fs-sm">
-                                <Link 
-                                    to={`/${owner.type === 'page' ? 'pages' : 'users'}/${owner.slug}`}
-                                    className="nav-link text-body gap-1 p-0"
-                                >
+                                <Link  to={`/${owner.type === 'page' ? 'pages' : 'users'}/${owner.slug}`} className="nav-link text-body gap-1 p-0" >
                                     <div className="flex-shrink-0 border rounded-circle" style={{ width: "32px" }}>
-                                    <img 
-                                        alt={owner.name}
-                                        src={owner.avatar || '/assets/img/us/logos/avatar.png'}
-                                        className="ratio ratio-1x1 rounded-circle"
-                                    />
+                                    <img alt={owner.name} src={owner.avatar || '/assets/img/us/logos/avatar.png'} className="ratio ratio-1x1 rounded-circle" />
                                     </div>
                                     {owner.name}
                                 </Link>
@@ -160,9 +164,9 @@ const ProductDetails = () => {
                             )}
 
                             <div className="d-flex justify-content-between flex-grow-1 gap-4">
-                            {product.comments_count > 0 && (
+                            {product.reviews_count > 0 && (
                                 <span className="badge rounded-pill text-info bg-info-subtle d-inline-flex align-items-center fs-sm">
-                                    {product.comments_count} sales
+                                    {product.reviews_count} sales
                                 </span>
                             )}
                                 <div className="d-flex gap-2">
@@ -177,11 +181,11 @@ const ProductDetails = () => {
                                     
                                     <button className="btn btn-sm btn-secondary rounded-pill animate-pulse" type="button">
                                         <i className="ci-heart animate-target fs-sm ms-n1 me-1" />
-                                        {product.comments_count}
+                                        {product.reviews_count}
                                     </button>
                                     <Link className="btn btn-sm btn-secondary rounded-pill animate-scale" to="#comments">
                                         <i className="ci-message-circle animate-target fs-sm ms-n1 me-1" />
-                                        {product.comments_count}
+                                        {product.reviews_count}
                                     </Link>
                                     <div className="dropdown">
                                         <button aria-expanded="false" aria-label="Share" className="btn btn-icon btn-sm btn-secondary animate-scale rounded-circle" 
@@ -268,7 +272,7 @@ const ProductDetails = () => {
                                 <li className="nav-item" role="presentation">
                                     <button aria-controls="reviews-tab-pane" aria-selected="false" className="nav-link badge rounded-pill text-info bg-info-subtle p-2" data-bs-target="#reviews-tab-pane" data-bs-toggle="tab" id="reviews-tab" role="tab" tabIndex="-1" type="button">
                                         Reviews
-                                        <span className="d-none d-md-inline"> ({product.comments_count})</span>
+                                        <span className="d-none d-md-inline"> ({product.reviews_count})</span>
                                     </button>
                                 </li>
                             </ul>
@@ -320,7 +324,7 @@ const ProductDetails = () => {
                                                     <i className="ci-star-filled text-warning" />
                                                     <i className="ci-star text-body-tertiary opacity-75" />
                                                 </div>
-                                                Based on {product.comments_count} reviews
+                                                Based on {product.reviews_count} reviews
                                             </div>
                                         </div>
                                         <button className="btn btn-outline-dark mb-3" data-bs-target="#reviewForm" data-bs-toggle="modal" type="button">
@@ -343,25 +347,25 @@ const ProductDetails = () => {
                                        
                                         <div className="vstack gap-3 gap-md-4 mt-n3">
 
-                                            {product.comments && product.comments.length > 0 ? (
-                                                product.comments.map((comment) => (
-                                                    <div key={comment.id} className="mt-3">
+                                            {product.reviews && product.reviews.length > 0 ? (
+                                                product.reviews.map((review) => (
+                                                    <div key={review.id} className="mt-3">
                                                         <div className="d-flex align-items-center justify-content-between gap-3 mb-3">
                                                             <div className="d-flex align-items-center">
                                                                 <div
                                                                     className="ratio ratio-1x1 flex-shrink-0 bg-body-secondary rounded-circle overflow-hidden"
                                                                     style={{ width: "40px" }}>
-                                                                    {/* <img alt="Avatar" src={`/assets/img/pages/products/comments/${comment.user_id}.jpg`} /> */}
-                                                                    <img alt={comment.username} src={comment.avatar || '/assets/img/us/logos/avatar.png'} />
+                                                                    {/* <img alt="Avatar" src={`/assets/img/pages/products/comments/${review.user_id}.jpg`} /> */}
+                                                                    <img alt={review.username} src={review.avatar || '/assets/img/us/logos/avatar.png'} />
                                                                 </div>
                                                                 <div className="ps-2 ms-1">
                                                                     <div className="fs-sm fw-semibold text-dark-emphasis mb-1">
                                                                         {/* Assuming user names are mapped from user IDs */}
-                                                                        {comment.name || comment.username}
+                                                                        {review.name || review.username}
                                                                     </div>
                                                                     <div className="fs-xs text-body-secondary">
-                                                                        {/* {new Date(comment.created_at).toLocaleDateString()} */}
-                                                                        {new Date(comment.created_at).toLocaleDateString('en-US', { year: 'numeric',  month: 'long',  day: 'numeric' })}
+                                                                        {/* {new Date(review.created_at).toLocaleDateString()} */}
+                                                                        {new Date(review.created_at).toLocaleDateString('en-US', { year: 'numeric',  month: 'long',  day: 'numeric' })}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -370,7 +374,7 @@ const ProductDetails = () => {
                                                                     className="btn btn-sm btn-secondary bg-body border-0 animate-pulse rounded-pill"
                                                                     type="button">
                                                                     <i className="ci-heart animate-target fs-sm ms-n1 me-1" />
-                                                                    {comment.rating}
+                                                                    {review.rating}
                                                                 </button>
                                                                 <button
                                                                     aria-label="Reply"
@@ -380,7 +384,7 @@ const ProductDetails = () => {
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                        <p className="fs-sm mb-0 text-break">{comment.content}</p>
+                                                        <p className="fs-sm mb-0 text-break">{review.comment}</p>
                                                     </div>
                                                 ))
                                             ) : (

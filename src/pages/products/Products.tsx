@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
-import ProductSummary from "./ProductSummary";
+// import ProductSummary from "./ProductSummary_0";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
 import Breadcrumb from '../../components/shared/Breadcrumb';
+import { ProductSummary } from './ProductSummary';
+// import ProductSummary from './ProductSummary';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -218,15 +220,18 @@ const Products = () => {
                     {/* <div className="row g-4 pt-2"> */}
                     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
                         {products.map((product) => (
-                            <ProductSummary
-                                key={product.id}
-                                image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
-                                name={product.name}
-                                slug={product.slug}
-                                price={product.price}
-                                id={product.id}
-                                url={`/products/${product.slug}`}
-                            />
+                            // <ProductSummary
+                            //     key={product.id}
+                            //     image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
+                            //     name={product.name}
+                            //     slug={product.slug}
+                            //     price={product.price}
+                            //     id={product.id}
+                            //     url={`/products/${product.slug}`}
+                            // />
+
+                            <ProductSummary product={product} />
+
                         ))}
 
                         {/* Loading Wave Placeholders */}

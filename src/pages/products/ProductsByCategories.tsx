@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
-import ProductSummary from "./ProductSummary";
+// import ProductSummary from "./ProductSummary_0";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
 import ResponseModal from '../../components/shared/modals/ResponseModal';
+import ProductSummary from './ProductSummary';
 
 const ProductsByCategories = () => {
     const [categories, setCategories] = useState([]);
@@ -41,8 +42,8 @@ const ProductsByCategories = () => {
                 const existingIds = new Set(prev.map(cat => cat.id));
                 const filteredCategories = newCategories.filter(cat => !existingIds.has(cat.id));
                 return [...prev, ...filteredCategories];
-              });
-              
+            });
+
             // 
             setPageMeta(data.page_meta);
             setHasMore(data.page_meta.has_next_page);
@@ -55,7 +56,7 @@ const ProductsByCategories = () => {
             //     success={false}
             //     onClose={() => true}
             //   />
-              
+
         } finally {
             setLoading(false);
         }
@@ -76,69 +77,44 @@ const ProductsByCategories = () => {
     }, [handleScroll]);
 
     return (
-        <>
-            <main className="content-wrapper">
-                <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
-                    {/* <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
-                        <li className="breadcrumb-item">
-                            <a href="/">Home</a>
-                        </li>
-                        <li className="breadcrumb-item">
-                            <a href="/pages">Pages</a>
-                        </li>
-                        <li aria-current="page" className="breadcrumb-item active">
-                            Products by Category
-                        </li>
-                    </ol> */}
 
-                    {categories.map((category, index) => (
-                        <div key={category.slug} className="mb-5">
-                            <div className="d-flex align-items-start justify-content-between border-bottom pb-3 pb-md-4">
-                                <div className="d-flex align-items-center">
-                                    <h2 className="h3 pe-3 me-3 mb-0">{category.name}</h2>
-                                    <Link to={`/categories/${category.slug}`} className="product-card-button btn btn-icon btn-dark animate-slide-end ms-2 border-2">
-                                        <i className="ci-arrow-up-right fs-base animate-target" />
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
-                                {category.products.map((product) => (
-                                    <ProductSummary
-                                        key={product.id}
-                                        image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
-                                        name={product.name}
-                                        slug={product.slug}
-                                        price={product.price}
-                                        id={product.id}
-                                        url={`/products/${product.slug}`}
-                                    />
-                                ))}
-                            </div>
+        <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
+            {/* Categories List */}
+            {categories.map((category) => (
+                <div key={category.slug} className="mb-5">
+                    {/* Category Header */}
+                    <div className="d-flex align-items-start justify-content-between border-bottom pb-3 pb-md-4">
+                        <div className="d-flex align-items-center">
+                            <h2 className="h3 pe-3 me-3 mb-0">{category.name}</h2>
+                            <Link
+                                to={`/categories/${category.slug}`}
+                                className="product-card-button btn btn-icon btn-dark animate-slide-end ms-2 border-2"
+                                aria-label={`View all ${category.name} products`}
+                            >
+                                <i className="ci-arrow-up-right fs-base animate-target" />
+                            </Link>
                         </div>
-                    ))}
+                    </div>
 
-                    {/* Loading Wave Placeholders */}
-                    {loading && (
-                        <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
-                            {Array.from({ length: 4 }).map((_, index) => (
-                                <LoadingCard key={index} />
-                            ))}
-                        </div>
-                    )}
-                    {/* 
-                    {hasMore && (
-                        <div className="text-center mt-4">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    )} */}
-                </section>
+                    {/* Products Grid */}
+                    <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+                        {/* Products List */}
+                        {category.products.map((product) => (
+                            <ProductSummary
+                                key={product.id}
+                                product={product}
+                                showDetails={true}
+                            />
+                        ))}
 
-
-            </main>
-        </>
+                        {/* Loading State */}
+                        {loading && Array.from({ length: 4 }).map((_, index) => (
+                            <LoadingCard key={`loading-${index}`} />
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </section>
     );
 };
 

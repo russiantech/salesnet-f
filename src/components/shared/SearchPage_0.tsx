@@ -662,7 +662,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { SearchAxiosService } from '../../services/net/SearchAxiosService';
 import LoadingSpinner from './LoadingSpinner';
-import ProductSummary from '../../pages/products/ProductSummary';
+import ProductSummary from '../../pages/products/ProductSummary_0';
 import LoadingCard from './LoadingCard';
 
 const SearchPage = () => {

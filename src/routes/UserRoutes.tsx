@@ -32,6 +32,7 @@ const UserRoutes = () => (
         <Route path="/help/:slug" element={<HelpSingle />} />
         
         {/* Protected routes */}
+        {/* <Route element={()=> ProtectedLayout()}> */}
         <Route element={<ProtectedLayout />}>
           <Route path="/personal" element={<Personal />} />
           <Route path="/notifications" element={<Notifications />} />

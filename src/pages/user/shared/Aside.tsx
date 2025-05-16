@@ -7,7 +7,7 @@ const Aside = () => {
 
   const navigate = useNavigate();
   const handleLogout = () => {
-      UsersService.logout();
+      UsersService.signout();
       NotificationService.showDialog('You have been logged out', 'success');
       navigate('/auth/signin');
   };

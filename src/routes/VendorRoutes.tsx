@@ -26,6 +26,8 @@
 // 
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import LoadingSpinner from "../components/shared/LoadingSpinner";
+import OfferForm from "../pages/vendor/offers/OfferForm";
 
 // Lazy load vendor-related pages
 const Dashboard = lazy(() => import("../pages/vendor/dashboard/Dashboard"));
@@ -37,7 +39,10 @@ const Purchases = lazy(() => import("../pages/vendor/purchases/Purchases"));
 const Favorites = lazy(() => import("../pages/vendor/favorites/Favorites"));
 
 const VendorRoutes = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <>
+  <OfferForm offer={undefined} onSuccess={undefined} />
+  
+  <Suspense fallback={<LoadingSpinner />}>
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/products" element={<Products />} />
@@ -48,6 +53,7 @@ const VendorRoutes = () => (
       <Route path="/favorites" element={<Favorites />} />
     </Routes>
   </Suspense>
+  </>
 );
 
 export default VendorRoutes;

@@ -1,6 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import SearchItems from "./Search/SearchItems";
-// import NewArrivals from "../../../pages/home/NewArrivals";
 
 const Canvas = () => {
   return (
@@ -13,7 +11,6 @@ const Canvas = () => {
 }
 
 export default Canvas
-
 
 const Basket = () => {
   return (
@@ -240,12 +237,7 @@ const Installer = () => {
       <div className="offcanvas-body d-flex flex-column align-items-center justify-content-center text-center">
         <p className='lead'>Install Salesnet - Internet of sales - Sell like crazy charm.</p>
         <div className="d-flex flex-column align-items-center gap-3 pb-4 mb-3 mb-lg-4">
-          <button
-            id="install"
-            type="button"
-            className="btn btn-dark rounded w-100 px-3 py-2 btn-lg btn-info rounded-pill"
-            style={{ maxWidth: '250px', fontSize: '1rem' }}
-          >
+          <button id="install" type="button" className="btn btn-dark rounded w-100 px-3 py-2 btn-lg btn-info rounded-pill" style={{ maxWidth: '250px', fontSize: '1rem' }} >
             {/* <i className="ci-arrow-down-circle ms-2 me-2"></i> Click to install. */}
             <i className="ci-download ms-2 me-2"></i>Add to Home Screen
           </button>

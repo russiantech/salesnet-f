@@ -6,8 +6,8 @@ type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
   user: any | null;
-  login: (userData: any) => void;
-  logout: () => void;
+  signin: (userData: any) => void;
+  signout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,13 +25,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     initializeAuth();
   }, []);
 
-  const login = (userData: any) => {
+  const signin = (userData: any) => {
     UsersService.authenticate(userData);
     setUser(userData);
   };
 
-  const logout = () => {
-    UsersService.logout();
+  const signout = () => {
+    UsersService.signout();
     setUser(null);
   };
 
@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticated: !!user?.access_token,
     isLoading,
     user,
-    login,
-    logout
+    signin,
+    signout
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

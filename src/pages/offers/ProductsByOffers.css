@@ -1,0 +1,25 @@
+.zindex-sticky {
+  z-index: 1020;
+}
+
+.sticky-header {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85);
+  transition: all 0.3s ease;
+}
+
+.countdown-segment {
+  min-width: 40px;
+  padding: 0.25rem 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .sticky-header {
+    padding: 0.5rem 0;
+  }
+  
+  .countdown-segment {
+    min-width: 35px;
+    font-size: 0.8rem;
+  }
+}

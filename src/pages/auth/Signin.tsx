@@ -1,13 +1,15 @@
 import { AxiosUsersService } from "../../services/net/AxiosUsersService";
 import { NotificationService } from "../../services/local/NotificationService";
 import ResponseModal from "../../components/shared/modals/ResponseModal";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useHref, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UsersService } from "../../services/local/UsersService";
 
 const Signin = () => {
     const navigate = useNavigate();
-    
+    const location = useLocation();
+    const from = location.state?.from || '/user/personal'; // Default redirect path
+
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -79,7 +81,7 @@ const Signin = () => {
   
       AxiosUsersService.signin(formData)
           .then(res => {
-            console.log(res);
+            // console.log(res);
               if (!res.data) {
                   throw new Error('No response data received');
               }
@@ -100,7 +102,10 @@ const Signin = () => {
                   UsersService.authenticate(user_data);
                   
                   NotificationService.showDialog(message, 'success');
-                  navigate('/user/personal');
+                  // navigate('/user/personal');
+                  // Redirect to referrer or default to '/user/personal'
+                  // const referrer = document.referrer || '/user/personal';
+                  navigate(from, { replace: true });
                   
               } else {
                   NotificationService.showDialog(message, 'error');

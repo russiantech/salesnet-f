@@ -74,8 +74,8 @@ const Products = () => {
                                     </Link>
                                 </div>
                                 <div className="d-flex justify-content-between flex-grow-1 gap-4">
-                                    <span className="badge rounded-pill text-info bg-info-subtle d-inline-flex align-items-center fs-sm">
-                                        ..
+                                    <span className="badge rounded-pill text-info bg-info-subtle1 d-inline-flex align-items-center fs-sm">
+                                        .
                                     </span>
 
                                     <div className="d-flex gap-2">

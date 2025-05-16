@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import ProductSummary from "./ProductSummary";
+// import ProductSummary from "./ProductSummary_0";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
+import ProductSummary from './ProductSummary';
 
 const ProductRecommendations = () => {
     const [products, setProducts] = useState([]);
@@ -27,7 +28,7 @@ const ProductRecommendations = () => {
             setHasMore(res.data.page_meta.has_next_page);
         } catch (err) {
             console.error('Failed to fetch products:', err); // Log the error
-            NotificationService.showDialogError(err.message);
+            NotificationService.showDialog(err.message);
         } finally {
             setLoading(false);
         }
@@ -67,15 +68,18 @@ const ProductRecommendations = () => {
 
                     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
                         {products.map((product) => (
-                            <ProductSummary
-                                key={product.id}
-                                image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
-                                name={product.name}
-                                slug={product.slug}
-                                price={product.price}
-                                id={product.id}
-                                url={`/products/${product.slug}`}
-                            />
+                            // <ProductSummary
+                            //     key={product.id}
+                            //     image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
+                            //     name={product.name}
+                            //     slug={product.slug}
+                            //     price={product.price}
+                            //     id={product.id}
+                            //     url={`/products/${product.slug}`}
+                            // />
+                            
+                            <ProductSummary product={product} />
+                            
                         ))}
 
                         {/* Loading Wave Placeholders */}

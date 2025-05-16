@@ -41,6 +41,22 @@ const Aside = () => {
                                 <i className="ci-pie-chart fs-base opacity-75 me-2" />
                                 Sales
                             </NavLink>
+                            {/* <button className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" 
+                            to="/vendor/sales">
+                                <i className="ci-pie-chart fs-base opacity-75 me-2" />
+                                Create-offer
+                            </button> */}
+
+                            <NavLink data-bs-toggle="modal" data-bs-target="#OfferForm" 
+                            className="list-group-item list-group-item-action d-flex align-items-center rounded-pill animate-scale " 
+                            to="/vendor/offers/!" data-discover="true">
+                              {/* <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center 
+                              w-100 h-100 rounded-circle animate-scale fs-lg">
+                                <i className="ci-powerbank animate-target fs-4 m-1"></i>Create Offer</span> */}
+                                 <i className="ci-powerbank animate-target fs-base opacity-75 me-2" />
+                                 Create-offer
+                            </NavLink>
+
                             <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/payouts">
                                 <i className="ci-dollar-sign fs-base opacity-75 me-2" />
                                 Payouts
@@ -62,7 +78,7 @@ const Aside = () => {
                             </NavLink>
                             <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/user/signout">
                                 <i className="ci-log-out fs-base opacity-75 me-2" />
-                                Log out
+                                Signout
                             </NavLink>
                         </nav>
                     </div>

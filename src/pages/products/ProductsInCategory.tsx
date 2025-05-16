@@ -860,6 +860,7 @@ import { NotificationService } from "../../services/local/NotificationService";
 import LoadingCard from '../../components/shared/LoadingCard';
 import Breadcrumb from '../../components/shared/Breadcrumb';
 import './Products.css';
+import SocialShare from '../../components/shared/SocialShare';
 
 interface Category {
   id: number;
@@ -1141,11 +1142,45 @@ if (!category && !loading && products.length === 0) {
                         12
                     </button>
 
-                    <div className="dropdown">
+                    {/* <div className="dropdown">
                         <button aria-expanded="false" aria-label="Share" className="btn btn-icon btn-sm btn-secondary animate-scale rounded-circle" data-bs-toggle="dropdown" type="button">
                             <i className="ci-share-2 animate-target fs-sm" />
                         </button>
                         <ul className="dropdown-menu dropdown-menu-end" style={{ "--cz-dropdown-min-width": "8.5rem" }}>
+                            <li>
+                                <button className="dropdown-item" onClick={() => handleSocialShare('facebook')}>
+                                <i className="ci-facebook fs-base me-2 text-info" />
+                                Facebook
+                                </button>
+                            </li>
+                            <li>
+                                <a className="dropdown-item" href="#!" onClick={() => handleSocialShare('instagram')}>
+                                    <i className="ci-instagram fs-base me-2 text-primary" />
+                                    Instagram
+                                </a>
+                                </li>
+
+                            <li>
+                                <button className="dropdown-item" onClick={() => handleSocialShare('twitter')}>
+                                <i className="ci-twitter fs-base me-2" />
+                                Twitter
+                                </button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item" onClick={() => handleSocialShare('linkedin')}>
+                                <i className="ci-linkedin fs-base me-2 text-info" />
+                                LinkedIn
+                                </button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item" onClick={() => handleSocialShare('copy')}>
+                                <i className="ci-copy fs-base me-2" />
+                                Copy Link
+                                </button>
+                            </li>
+                          </ul>
+                          
+                        {/* <ul className="dropdown-menu dropdown-menu-end" style={{ "--cz-dropdown-min-width": "8.5rem" }}>
                             <li>
                                 <a className="dropdown-item" href="#!">
                                     <i className="ci-facebook fs-base me-2" />
@@ -1164,8 +1199,14 @@ if (!category && !loading && products.length === 0) {
                                     LinkedIn
                                 </a>
                             </li>
-                        </ul>
-                    </div>
+                        </ul> *
+                    </div> */}
+                    <SocialShare 
+                      url={window.location.href}  // Full current page URL
+                      title={category?.name}
+                      description={category?.description || `Quality products in ${category?.name} Salesnet.`}
+                    />
+                    
                 </div>
 
             </div>
@@ -1194,14 +1235,20 @@ if (!category && !loading && products.length === 0) {
             <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
               {products.map(product => (
                 <div key={product.id} className="col">
-                  <ProductSummary
+                  {/* <ProductSummary
                     image={product.image_urls?.[0]}
                     name={product.name}
                     slug={product.slug}
                     price={product.price}
                     id={product.id}
                     url={`/products/${product.slug}`}
+                  /> */}
+                  <ProductSummary
+                      key={product.id}
+                      product={product}
+                      showDetails={true}
                   />
+
                 </div>
               ))}
             </div>

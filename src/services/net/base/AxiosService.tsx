@@ -62,7 +62,7 @@ const handleAuthError = async (_error: AxiosError): Promise<void> => {
   const user = UsersService.getCurrentUser();
   if (!user) return;
 
-  UsersService.logout();
+  UsersService.signout();
   NotificationService.showDialog('Session expired. Please sign in again.', 'error');
   
   if (navigationHandler) {
@@ -100,30 +100,62 @@ const setupResponseInterceptor = (instance: AxiosInstance): void => {
   );
 };
 
+// const handleTokenRefresh = async (): Promise<string | null> => {
+//   const user = UsersService.getCurrentUser();
+//   if (!user?.refresh_token) return null;
+
+//   try {
+//     const response = await jsonInstance.post<RefreshTokenResponse>('/users/refresh-token', {
+//       refresh_token: user.refresh_token,
+//     });
+
+//     const newAccessToken = response.data.access_token;
+//     const newRefreshToken = response.data.refresh_token || user.refresh_token;
+
+//     UsersService.authenticate({
+//       ...user,
+//       access_token: newAccessToken,
+//       refresh_token: newRefreshToken,
+//     });
+
+//     return newAccessToken;
+//   } catch (error) {
+//     await handleAuthError(error as AxiosError);
+//     return null;
+//   }
+// };
+
+// 
+let isRefreshing = false;
 const handleTokenRefresh = async (): Promise<string | null> => {
   const user = UsersService.getCurrentUser();
   if (!user?.refresh_token) return null;
 
+  if (isRefreshing) return null; // Prevent multiple refresh attempts
+  isRefreshing = true;
+
   try {
-    const response = await jsonInstance.post<RefreshTokenResponse>('/auth/refresh-token', {
+    const response = await jsonInstance.post<RefreshTokenResponse>('/users/refresh-token', {
       refresh_token: user.refresh_token,
     });
 
     const newAccessToken = response.data.access_token;
-    const newRefreshToken = response.data.refresh_token || user.refresh_token;
-
+    // Update tokens in the user service
     UsersService.authenticate({
       ...user,
       access_token: newAccessToken,
-      refresh_token: newRefreshToken,
+      refresh_token: user.refresh_token, // Assuming refresh token doesn't change
     });
 
     return newAccessToken;
   } catch (error) {
     await handleAuthError(error as AxiosError);
     return null;
+  } finally {
+    isRefreshing = false; // Reset the flag
   }
 };
+
 
 // Set up interceptors for both instances
 setupResponseInterceptor(jsonInstance);

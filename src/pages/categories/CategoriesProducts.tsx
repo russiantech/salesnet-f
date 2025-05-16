@@ -132,15 +132,21 @@ const CategoriesProducts = () => {
 
                             <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
                                 {category.products.map((product) => (
+                                    // <ProductSummary
+                                    //     key={product.id}
+                                    //     image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
+                                    //     name={product.name}
+                                    //     slug={product.slug}
+                                    //     price={product.price}
+                                    //     id={product.id}
+                                    //     url={`/products/${product.slug}`}
+                                    // />
                                     <ProductSummary
-                                        key={product.id}
-                                        image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
-                                        name={product.name}
-                                        slug={product.slug}
-                                        price={product.price}
-                                        id={product.id}
-                                        url={`/products/${product.slug}`}
-                                    />
+                                    key={product.id}
+                                    product={product}
+                                    showDetails={true}
+                                />
+                                
                                 ))}
 
                                 {/* Loading State - only shown when loading */}

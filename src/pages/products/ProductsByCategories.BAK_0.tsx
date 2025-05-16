@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import ProductSummary from "./ProductSummary";
+import ProductSummary from "./ProductSummary_0";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';

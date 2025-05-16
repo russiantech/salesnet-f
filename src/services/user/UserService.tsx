@@ -6,7 +6,7 @@ export const AxiosUsersService = {
         return AxiosService.post('/users/signin', user);
     },
 
-    logout() {
+    signout() {
         UsersService.logout();
     },
 
@@ -38,5 +38,6 @@ export const AxiosUsersService = {
 
     fetchAll(pagination = { page: 1, page_size: 10 }) {
         return AxiosService.fetchPage('/users', pagination);
-    }
+    },
+
 };

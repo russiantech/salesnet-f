@@ -70,7 +70,7 @@
 
 // src/components/products/ProductReviewForm.tsx
 // import React, { useState } from 'react';
-// import { CommentAxiosService } from '../../services/net/CommentAxiosService';
+// import { ReviewAxiosService } from '../../services/net/ReviewAxiosService';
 // // import { useNotification } from '../common/NotificationContext';
 
 // interface ProductReviewFormProps {
@@ -81,7 +81,7 @@
 // const ProductReviewForm: React.FC<ProductReviewFormProps> = ({ productSlug, onSuccess }) => {
 //   const [formState, setFormState] = useState({
 //     rating: 0,
-//     content: '',
+//     .comment: '',
 //     recommend: true,
 //     isSubmitting: false
 //   });
@@ -94,8 +94,8 @@
 //     setFormState(prev => ({ ...prev, isSubmitting: true }));
 
 //     try {
-//       await CommentAxiosService.createComment(productSlug, {
-//         content: formState.content,
+//       await ReviewAxiosService.createComment(productSlug, {
+//         .comment: formState.comment,
 //         rating: formState.rating,
 //         recommend: formState.recommend
 //       });
@@ -190,7 +190,7 @@
 
 
 import React, { useState } from 'react';
-import CommentAxiosService from '../../services/net/CommentAxiosService';
+import ReviewAxiosService from '../../services/net/ReviewsAxiosService';
 import ResponseModal from '../../components/shared/modals/ResponseModal';
 
 interface ProductReviewFormProps {
@@ -200,7 +200,7 @@ interface ProductReviewFormProps {
 
 interface FormData {
   rating: string;
-  content: string;
+  comment: string;
   recommend: string;
 }
 
@@ -208,7 +208,7 @@ const ProductReviewForm: React.FC<ProductReviewFormProps> = ({ productSlug, onRe
 
     const [formData, setFormData] = useState<FormData>({
     rating: '',
-    content: '',
+    comment: '',
     recommend: 'true'
   });
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -225,9 +225,9 @@ const ProductReviewForm: React.FC<ProductReviewFormProps> = ({ productSlug, onRe
 //     setValidationErrors({});
 
 //     try {
-//       const response = await CommentAxiosService.createComment(
+//       const response = await ReviewAxiosService.createComment(
 //         productSlug, {
-//         content: formData.content,
+//         .comment: formData.comment,
 //         rating: parseInt(formData.rating),
 //         recommend: formData.recommend === 'true'
 //       });
@@ -267,8 +267,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
     try {
         // Prepare the comment data
-        const response = await CommentAxiosService.createComment(productSlug, {
-            content: formData.content,
+        const response = await ReviewAxiosService.createReview(productSlug, {
+            comment: formData.comment,
             rating: parseInt(formData.rating),
             recommend: formData.recommend === 'true'
         });
@@ -384,16 +384,16 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="mb-3">
               <label className="form-label">Review <span className="text-danger">*</span></label>
               <textarea
-                className={`form-control ${validationErrors.content ? 'is-invalid' : ''}`}
+                className={`form-control ${validationErrors.comment ? 'is-invalid' : ''}`}
                 rows={4}
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                value={formData.comment}
+                onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                 minLength={50}
                 maxLength={1000}
                 required
               ></textarea>
-              {validationErrors.content && (
-                <div className="invalid-feedback">{validationErrors.content}</div>
+              {validationErrors.comment && (
+                <div className="invalid-feedback">{validationErrors.comment}</div>
               )}
               <small className="form-text">Your review must be at least 50 characters</small>
             </div>

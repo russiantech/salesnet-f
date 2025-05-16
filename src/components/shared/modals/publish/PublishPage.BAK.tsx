@@ -49,16 +49,6 @@ const PublishPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-
-
-
-
-
-
-
-
-
-
       
           {/*  */}
           <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">

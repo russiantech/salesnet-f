@@ -1,0 +1,24 @@
+/* Add these styles to your CSS */
+.banner-image.placeholder-image {
+  opacity: 0.8;
+  filter: grayscale(20%);
+}
+
+.banner-link:hover {
+  text-decoration: none;
+}
+
+.banner-container {
+  transition: transform 0.3s ease;
+}
+
+.banner-container:hover {
+  transform: translateY(-2px);
+}
+
+.banner-image {
+  border-radius: 0.5rem;
+  object-fit: cover;
+  height: 100%;
+  max-height: 300px;
+}

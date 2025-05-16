@@ -111,7 +111,7 @@ export const UsersService = {
         return user ? JSON.parse(user) : null;
     },
     
-    logout: () => {
+    signout: () => {
         LocalStorageService.remove(USER_KEY);
     },
     

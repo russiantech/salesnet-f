@@ -1,40 +1,23 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-// import App from './App.BAK.tsx'
-import * as serviceWorker from './serviceWorker';
+// src/main.tsx (your entry file)
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import {BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import App from './App';
+import './index.css';
 
-// // Rendering react component
-const app = createRoot(document.getElementById('app'));
-app.render( <App />);
+const container = document.getElementById('app');
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
-
-
-// 
-// main.tsx
-// import { StrictMode } from 'react';
-// import { createRoot } from 'react-dom/client';
-// import { BrowserRouter } from 'react-router-dom'; // ✅ Add this
-// import './index.css';
-// import * as serviceWorker from './serviceWorker';
-// import App from './App';
-
-// const rootElement = document.getElementById('app');
-
-// if (rootElement) {
-//   const root = createRoot(rootElement);
-//   root.render(
-//     <StrictMode>
-//       <BrowserRouter> {/* ✅ Wrap App with Router */}
-//         <App />
-//       </BrowserRouter>
-//     </StrictMode>
-//   );
-// }
-
-// serviceWorker.unregister();
+if (container) {
+  const root = createRoot(container);
+  
+  root.render(
+    <StrictMode>
+      <Router> {/* Only one router at root level */}
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </Router>
+    </StrictMode>
+  );
+}
