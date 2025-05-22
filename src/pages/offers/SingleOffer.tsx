@@ -189,6 +189,7 @@ import ProductSummary from '../products/ProductSummary';
 import { OffersAxiosService } from '../../services/net/OffersAxiosService';
 import Breadcrumb from '../../components/shared/Breadcrumb';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import SeoConfig from '../../utils/SeoManager';
 
 const SingleOffer = () => {
     const { slug } = useParams();
@@ -282,6 +283,15 @@ const SingleOffer = () => {
 
     return (
         <main className="content-wrapper position-relative">
+
+            <SeoConfig 
+                title={offer ? `${offer.name} | Special Offer` : 'Special Offer'}
+                description={offer?.description || 'Discover this exclusive offer with amazing discounts'}
+                keywords={`offer, discount, ${offer?.name}, deals`}
+                image={offer?.banner_image}
+                canonical={`/offers/${offer?.slug}`}
+            />
+                
             {/* Multiple Wave Animation Backgrounds */}
             {[0, 1, 2, 3].map((i) => (
                 <motion.div

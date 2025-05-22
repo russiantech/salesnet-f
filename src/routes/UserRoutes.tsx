@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import Navigation from '../components/shared/Navigation';
 // import PrivateRoute from '../services/guards/PrivateRoute';
 import ProtectedLayout from '../services/guards/ProtectedLayout';
+import SeoConfig from '../utils/SeoManager';
 
 // Lazy load user-related pages
 const Personal = lazy(() => import('../pages/user/personal/Personal'));
@@ -24,6 +25,14 @@ const UserRoutes = () => (
     <>
     <Navigation />
     {/* <Suspense fallback={<div className="loading-spinner"><div className="spinner"></div></div>}> */}
+    <SeoConfig 
+        title={'User - welcome to internet of sales.'}
+        description={ 'Discover this exclusive offer with amazing discounts'}
+        keywords={`user, account, discount, deals`}
+        // image={offer?.banner_image}
+        canonical={`/users`}
+    />
+
     <Suspense fallback={null}>
       <Routes>
         {/* Public routes */}

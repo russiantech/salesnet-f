@@ -104,6 +104,7 @@ const App = () => {
       {/* Suspense handles all lazy components */}
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
+          
             <Route path="/" element={<Home />} /> 
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/categories/:slug" element={<ProductsInCategory />} />

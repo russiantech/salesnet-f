@@ -1103,12 +1103,722 @@
 // export default SearchPage;
 
 
-import { useEffect, useState, useCallback } from 'react';
+// VERSION 02
+
+// import { useEffect, useState, useCallback } from 'react';
+// import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+// import { SearchAxiosService } from '../../services/net/SearchAxiosService';
+// import LoadingSpinner from './LoadingSpinner';
+// import ProductSummary from '../../pages/products/ProductSummary_0';
+// import LoadingCard from './LoadingCard';
+
+// const SearchPage_FORMER = () => {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState<any[]>([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+//   const [page, setPage] = useState(1);
+//   const [hasMore, setHasMore] = useState(true);
+
+//   // Get initial search term from URL
+//   useEffect(() => {
+//     const query = searchParams.get('q') || '';
+//     setSearchTerm(query);
+//     setSearchResults([]);
+//     setPage(1);
+//     setHasMore(true);
+//     if (query) {
+//       performSearch(query, 1, true);
+//     }
+//   }, [searchParams]);
+
+//   const performSearch = async (query: string, pageNum: number, reset: boolean = false) => {
+//     if (isLoading) return;
+    
+//     setIsLoading(true);
+//     setError(null);
+    
+//     try {
+//       const response = await SearchAxiosService.searchProducts({
+//         q: query,
+//         page: pageNum,
+//         page_size: 12
+//       });
+      
+//       if (response?.data?.items) {
+//         if (reset) {
+//           setSearchResults(response.data.items);
+//         } else {
+//           setSearchResults(prev => [...prev, ...response.data.items]);
+//         }
+//         setHasMore(response.data.items.length >= 12);
+//       } else {
+//         setHasMore(false);
+//         if (reset) setSearchResults([]);
+//       }
+//     } catch (err) {
+//       setError('Failed to fetch search results');
+//       console.error('Search error:', err);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   const handleSearchSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     if (searchTerm.trim()) {
+//       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+//     }
+//   };
+
+//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setSearchTerm(e.target.value);
+//   };
+
+//   const handleCloseSearch = () => {
+//     navigate(-1);
+//   };
+
+//   const loadMore = useCallback(() => {
+//     if (!isLoading && hasMore) {
+//       const nextPage = page + 1;
+//       setPage(nextPage);
+//       performSearch(searchTerm, nextPage);
+//     }
+//   }, [isLoading, hasMore, page, searchTerm]);
+
+//   // Infinite scroll handler with debounce
+//   useEffect(() => {
+//     let timeoutId: NodeJS.Timeout;
+    
+//     const handleScroll = () => {
+//       // Clear any pending execution
+//       if (timeoutId) {
+//         clearTimeout(timeoutId);
+//       }
+      
+//       // Debounce the scroll handler
+//       timeoutId = setTimeout(() => {
+//         const scrollThreshold = 200; // pixels from bottom
+//         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        
+//         // Check if we're near the bottom (within threshold)
+//         if (scrollHeight - (scrollTop + clientHeight) < scrollThreshold) {
+//           loadMore();
+//         }
+//       }, 100);
+//     };
+
+//     window.addEventListener('scroll', handleScroll);
+//     return () => {
+//       window.removeEventListener('scroll', handleScroll);
+//       if (timeoutId) clearTimeout(timeoutId);
+//     };
+//   }, [loadMore]);
+
+//   return (
+//     <div className="modal fade show" id="SearchPage" tabIndex={-1} role="dialog" 
+//          style={{ display: "block" }} aria-modal="true">
+//       <div className="modal-dialog modal-fullscreen" role="document">
+//         <div className="modal-content">
+//           {/* ... [keep your existing header code exactly as is] ... */}
+//           <div className="modal-header flex-wrap">
+//   {/* Brand Logo and Navigation */}
+//   <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap card-header modal-title" role="tablist">
+//     <li className="nav-item" role="presentation">
+//       <Link className="navbar-brand pt-0" to="/" data-discover="true">
+//         <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
+//           <div className="flex-shrink-0 border rounded-circle" style={{width: '40px'}}>
+//             <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+//               <img alt="Avatar" src="/assets/img/us/logos/favicon.svg" />
+//             </div>
+//           </div>
+//         </span>
+//       </Link>
+//     </li>
+//     <li className="nav-item" role="presentation">
+//       <button type="button" className="nav-link" onClick={() => navigate(-1)}>
+//         <i className="fi-list me-2 ms-n1" />Salesnet
+//       </button>
+//     </li>
+//   </ul>
+
+//   {/* Search Form */}
+//       <form className="container d-flex align-items-center" onSubmit={handleSearchSubmit}>
+//         <div className="position-relative w-100">
+//           <input
+//                   className="form-control form-control-lg fs-lg border-0 rounded-0 py-3 ps-0"
+//                   placeholder="Search for products..."
+//                   autoComplete="off"
+//                   aria-label="Search products"
+//                   type="search"
+//                   value={searchTerm}
+//                   onChange={handleInputChange}
+//                 />
+//                 {isLoading && (
+//                   <div className="position-absolute top-50 end-0 translate-middle-y pe-3">
+//                     <LoadingSpinner size="sm" />
+//                   </div>
+//                 )}
+//               </div>
+//               <button
+//                 type="button"
+//                 className="btn-close fs-lg ms-2"
+//                 onClick={handleCloseSearch}
+//                 aria-label="Close"
+//               ></button>
+//             </form>
+//           </div>
+
+//           {/* Search Results Area */}
+//           <div className="modal-body p-3">
+//             {error ? (
+//               <div className="alert alert-danger">{error}</div>
+//             ) : isLoading && searchResults.length === 0 ? (
+//               <div className="text-center py-5">
+//                 <LoadingSpinner />
+//                 <p className="mt-3">Searching for products...</p>
+//               </div>
+//             ) : searchResults.length > 0 ? (
+//               <>
+//                 <div className="mb-3">
+//                   <h5>Found {searchResults.length} results for "{searchTerm}"</h5>
+//                 </div>
+//                 <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+//                   {searchResults.map((product) => (
+//                     <ProductSummary
+//                       key={`${product.id}-${product.slug}`} // More unique key
+//                       image={product.image_urls?.[0] || ''}
+//                       name={product.name}
+//                       slug={product.slug}
+//                       price={product.price}
+//                       id={product.id}
+//                       url={`/products/${product.slug}`}
+//                     />
+//                   ))}
+                  
+//                   {/* Loading indicators */}
+//                   {isLoading && (
+//                     Array.from({ length: 4 }).map((_, index) => (
+//                       <LoadingCard key={`loading-${index}-${Date.now()}`} />
+//                     ))
+//                   )}
+//                 </div>
+                
+//                 {/* Load more button as fallback */}
+//                 {hasMore && (
+//                   <div className="text-center mt-4">
+//                     <button 
+//                       onClick={loadMore} 
+//                       disabled={isLoading}
+//                       className="btn btn-outline-dark"
+//                     >
+//                       {isLoading ? 'Loading...' : 'Load More'}
+//                     </button>
+//                   </div>
+//                 )}
+                
+//                 {!hasMore && searchResults.length > 0 && (
+//                   <div className="text-center py-4">
+//                     <p className="text-muted">No more products to load</p>
+//                   </div>
+//                 )}
+//               </>
+//             ) : searchTerm ? (
+//               <div className="text-center py-5">
+//                 <h4>No results found for "{searchTerm}"</h4>
+//                 <p className="text-muted">Try different search terms</p>
+//               </div>
+//             ) : (
+//               <div className="text-center py-5">
+//                 <h4>Search for products</h4>
+//                 <p className="text-muted">Enter keywords in the search box above</p>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;
+
+
+// VERSION 03
+
+// import { useEffect, useState, useCallback, useRef } from 'react';
+// import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+// import { SearchAxiosService } from '../../services/net/SearchAxiosService';
+// import LoadingSpinner from './LoadingSpinner';
+// // import ProductSummary from '../products/ProductSummary';
+// import LoadingCard from './LoadingCard';
+// import ProductSummary from '../../pages/products/ProductSummary';
+// import { Product } from '../../types/Offers';
+// import SeoManager from '../../utils/SeoManager';
+// // import SeoManager from '../seo/SeoManager';
+// // import { Product } from '../../types'; // Assume proper type definition
+
+// const SearchPage = () => {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState<Product[]>([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<{ message: string; code?: number } | null>(null);
+//   const [page, setPage] = useState(1);
+//   const [hasMore, setHasMore] = useState(true);
+//   const abortControllerRef = useRef<AbortController>();
+
+//   // SEO configuration
+//   const seoConfig = {
+//     title: `Search: ${searchTerm || 'Products'} | Your Store Name`,
+//     description: searchTerm 
+//       ? `Search results for "${searchTerm}" - Find the best products`
+//       : 'Search our product catalog',
+//     keywords: `${searchTerm}, search, products`,
+//   };
+
+//   // Search execution with abort controller
+//   const performSearch = useCallback(async (query: string, pageNum: number, reset: boolean = false) => {
+//     if (isLoading) return;
+    
+//     abortControllerRef.current?.abort();
+//     abortControllerRef.current = new AbortController();
+    
+//     setIsLoading(true);
+//     setError(null);
+
+//     try {
+//       const response = await SearchAxiosService.searchProducts({
+//         q: query,
+//         page: pageNum,
+//         page_size: 12
+//       }, { signal: abortControllerRef.current.signal });
+
+//       if (response?.data?.items) {
+//         setSearchResults(prev => reset ? response.data.items : [...prev, ...response.data.items]);
+//         setHasMore(response.data.items.length >= 12);
+//       } else {
+//         setHasMore(false);
+//         if (reset) setSearchResults([]);
+//       }
+//     } catch (err: any) {
+//       if (err.name !== 'AbortError') {
+//         setError({ 
+//           message: 'Failed to fetch search results', 
+//           code: err.response?.status 
+//         });
+//       }
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isLoading]);
+
+//   // Initial search and cleanup
+//   useEffect(() => {
+//     const query = searchParams.get('q') || '';
+//     setSearchTerm(query);
+//     setPage(1);
+//     performSearch(query, 1, true);
+
+//     return () => abortControllerRef.current?.abort();
+//   }, [searchParams, performSearch]);
+
+//   // Search form handling
+//   const handleSearchSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     const trimmedTerm = searchTerm.trim();
+//     if (trimmedTerm) {
+//       navigate(`/search?q=${encodeURIComponent(trimmedTerm)}`);
+//     }
+//   };
+
+//   // Infinite scroll with intersection observer
+//   const loadMore = useCallback(() => {
+//     if (!isLoading && hasMore) {
+//       setPage(prev => prev + 1);
+//       performSearch(searchTerm, page + 1);
+//     }
+//   }, [isLoading, hasMore, page, searchTerm, performSearch]);
+
+//   const observer = useRef<IntersectionObserver>();
+//   const lastItemRef = useCallback((node: HTMLDivElement) => {
+//     if (isLoading) return;
+//     if (observer.current) observer.current.disconnect();
+    
+//     observer.current = new IntersectionObserver(entries => {
+//       if (entries[0].isIntersecting && hasMore) {
+//         loadMore();
+//       }
+//     });
+
+//     if (node) observer.current.observe(node);
+//   }, [isLoading, hasMore, loadMore]);
+
+//   // Render helpers
+//   const renderResults = () => (
+//     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+//       {searchResults.map((product, index) => (
+//         <div 
+//           key={`${product.id}-${index}`}
+//           ref={index === searchResults.length - 1 ? lastItemRef : null}
+//         >
+//           <ProductSummary
+//             product={product}
+//             showDetails={true}
+//             discountBadge={product.has_discount}
+//           />
+//         </div>
+//       ))}
+//     </div>
+//   );
+
+//   const renderEmptyState = () => (
+//     <div className="text-center py-5">
+//       <h4>{searchTerm ? `No results for "${searchTerm}"` : 'Start Searching'}</h4>
+//       <p className="text-muted">
+//         {searchTerm ? 'Try different keywords' : 'Enter keywords above to find products'}
+//       </p>
+//     </div>
+//   );
+
+//   return (
+//     <div 
+//       className="modal fade show" 
+//       id="searchModal" 
+//       role="dialog" 
+//       style={{ display: 'block' }}
+//       aria-labelledby="searchModalLabel"
+//     >
+//       <SeoManager {...seoConfig} />
+
+//       <div className="modal-dialog modal-fullscreen" role="document">
+//         <div className="modal-content">
+//           <div className="modal-header flex-wrap gap-3">
+//             <nav aria-label="Breadcrumb" className="flex-shrink-0">
+//               <ol className="breadcrumb">
+//                 <li className="breadcrumb-item">
+//                   <Link to="/" aria-label="Home">
+//                     <img 
+//                       src="/assets/img/us/logos/favicon.svg" 
+//                       alt="Logo" 
+//                       width="40" 
+//                       height="40"
+//                     />
+//                   </Link>
+//                 </li>
+//                 <li className="breadcrumb-item active" aria-current="page">
+//                   Search
+//                 </li>
+//               </ol>
+//             </nav>
+
+//             <form 
+//               className="flex-grow-1" 
+//               onSubmit={handleSearchSubmit}
+//               role="search"
+//             >
+//               <div className="input-group">
+//                 <input
+//                   type="search"
+//                   className="form-control form-control-lg"
+//                   placeholder="Search products..."
+//                   aria-label="Search products"
+//                   value={searchTerm}
+//                   onChange={(e) => setSearchTerm(e.target.value)}
+//                   autoFocus
+//                 />
+//                 <button 
+//                   type="button" 
+//                   className="btn btn-lg btn-outline-secondary" 
+//                   onClick={() => navigate(-1)}
+//                   aria-label="Close search"
+//                 >
+//                   <i className="ci-close" />
+//                 </button>
+//               </div>
+//             </form>
+//           </div>
+
+//           <div className="modal-body p-3">
+//             {error && (
+//               <div className="alert alert-danger" role="alert">
+//                 {error.message} {error.code && `(Code: ${error.code})`}
+//               </div>
+//             )}
+
+//             {isLoading && searchResults.length === 0 ? (
+//               <div className="text-center py-5">
+//                 <LoadingSpinner />
+//                 <p className="mt-3">Searching our catalog...</p>
+//               </div>
+//             ) : searchResults.length > 0 ? (
+//               <>
+//                 <div className="mb-4">
+//                   <h2 className="h5">
+//                     Showing {searchResults.length} results for "{searchTerm}"
+//                   </h2>
+//                 </div>
+//                 {renderResults()}
+//                 {isLoading && <LoadingCard count={4} />}
+//                 {!hasMore && (
+//                   <p className="text-center text-muted mt-4">
+//                     End of results
+//                   </p>
+//                 )}
+//               </>
+//             ) : (
+//               renderEmptyState()
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;
+
+
+// VERSION 04
+// import { useEffect, useState, useCallback, useRef } from 'react';
+// import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+// import { SearchAxiosService } from '../../services/net/SearchAxiosService';
+// import LoadingSpinner from './LoadingSpinner';
+// import ProductSummary from '../../pages/products/ProductSummary';
+// import LoadingCard from './LoadingCard';
+
+// const SearchPage = () => {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState<any[]>([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+//   const [page, setPage] = useState(1);
+//   const [hasMore, setHasMore] = useState(true);
+//   const searchInputRef = useRef<HTMLInputElement>(null);
+//   const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+
+//   // Get initial search term from URL
+//   useEffect(() => {
+//     const query = searchParams.get('q') || '';
+//     setSearchTerm(query);
+//     setSearchResults([]);
+//     setPage(1);
+//     setHasMore(true);
+//     if (query) {
+//       performSearch(query, 1, true);
+//     }
+//   }, [searchParams]);
+
+//   const performSearch = useCallback(async (query: string, pageNum: number, reset: boolean = false) => {
+//     if (isLoading) return;
+    
+//     setIsLoading(true);
+//     setError(null);
+    
+//     try {
+//       const response = await SearchAxiosService.searchProducts({
+//         q: query,
+//         page: pageNum,
+//         page_size: 12
+//       });
+      
+//       if (response?.data?.items) {
+//         setSearchResults(prev => reset ? response.data.items : [...prev, ...response.data.items]);
+//         setHasMore(response.data.items.length >= 12);
+//       } else {
+//         setHasMore(false);
+//         if (reset) setSearchResults([]);
+//       }
+//     } catch (err) {
+//       setError('Failed to fetch search results');
+//       console.error('Search error:', err);
+//     } finally {
+//       setIsLoading(false);
+//       searchInputRef.current?.focus();
+//     }
+//   }, [isLoading]);
+
+//   const handleSearchSubmit = useCallback((e: React.FormEvent) => {
+//     e.preventDefault();
+//     if (searchTerm.trim()) {
+//       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+//     }
+//   }, [searchTerm, navigate]);
+
+//   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+//     setSearchTerm(e.target.value);
+//   }, []);
+
+//   const handleCloseSearch = useCallback(() => {
+//     navigate(-1);
+//   }, [navigate]);
+
+//   const loadMore = useCallback(() => {
+//     if (!isLoading && hasMore && searchTerm) {
+//       const nextPage = page + 1;
+//       setPage(nextPage);
+//       performSearch(searchTerm, nextPage);
+//     }
+//   }, [isLoading, hasMore, page, searchTerm, performSearch]);
+
+//   // Improved infinite scroll handler with proper cleanup
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       if (scrollTimeoutRef.current) {
+//         clearTimeout(scrollTimeoutRef.current);
+//       }
+
+//       scrollTimeoutRef.current = setTimeout(() => {
+//         const scrollThreshold = 200;
+//         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        
+//         if (scrollHeight - (scrollTop + clientHeight) < scrollThreshold) {
+//           loadMore();
+//         }
+//       }, 100);
+//     };
+
+//     window.addEventListener('scroll', handleScroll);
+//     return () => {
+//       window.removeEventListener('scroll', handleScroll);
+//       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+//     };
+//   }, [loadMore]);
+
+//   return (
+//     <div className="modal fade show" id="SearchPage" tabIndex={-1} role="dialog" 
+//          style={{ display: "block" }} aria-modal="true">
+//       <div className="modal-dialog modal-fullscreen" role="document">
+//         <div className="modal-content">
+//           <div className="modal-header flex-wrap">
+//             <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap card-header modal-title" role="tablist">
+//               <li className="nav-item" role="presentation">
+//                 <Link className="navbar-brand pt-0" to="/" data-discover="true">
+//                   <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
+//                     <div className="flex-shrink-0 border rounded-circle" style={{ width: '40px' }}>
+//                       <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+//                         <img alt="Avatar" src="/assets/img/us/logos/favicon.svg" />
+//                       </div>
+//                     </div>
+//                   </span>
+//                 </Link>
+//               </li>
+//               <li className="nav-item" role="presentation">
+//                 <button type="button" className="nav-link" onClick={() => navigate(-1)}>
+//                   <i className="fi-list me-2 ms-n1" />Salesnet
+//                 </button>
+//               </li>
+//             </ul>
+
+//             <form className="container d-flex align-items-center" onSubmit={handleSearchSubmit}>
+//               <div className="position-relative w-100">
+//                 <input
+//                   ref={searchInputRef}
+//                   className="form-control form-control-lg fs-lg border-0 rounded-0 py-3 ps-0"
+//                   placeholder="Search for products..."
+//                   autoComplete="off1"
+//                   aria-label="Search products"
+//                   type="search"
+//                   value={searchTerm}
+//                   onChange={handleInputChange}
+//                 />
+//                 {isLoading && (
+//                   <div className="position-absolute top-50 end-0 translate-middle-y pe-3">
+//                     <LoadingSpinner size="sm" />
+//                   </div>
+//                 )}
+//               </div>
+//               <button
+//                 type="button"
+//                 className="btn-close fs-lg ms-2"
+//                 onClick={handleCloseSearch}
+//                 aria-label="Close"
+//               ></button>
+//             </form>
+//           </div>
+
+//           <div className="modal-body p-3">
+//             {error ? (
+//               <div className="alert alert-danger">{error}</div>
+//             ) : isLoading && searchResults.length === 0 ? (
+//               <div className="text-center py-5">
+//                 <LoadingSpinner />
+//                 <p className="mt-3">Searching for products...</p>
+//               </div>
+//             ) : searchResults.length > 0 ? (
+//               <>
+//                 <div className="mb-3">
+//                   <h5>Found {searchResults.length} results for "{searchTerm}"</h5>
+//                 </div>
+//                 <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+//                   {searchResults.map((product) => (
+//                     <ProductSummary
+//                       key={`${product.id}-${product.slug}`}
+//                       product={product}
+//                       showDetails={true}
+//                       discountBadge={product.has_discount}
+//                     />
+//                   ))}
+                  
+//                   {isLoading && Array.from({ length: 4 }).map((_, index) => (
+//                     <LoadingCard key={`loading-${index}-${Date.now()}`} />
+//                   ))}
+//                 </div>
+                
+//                 {hasMore && (
+//                   <div className="text-center mt-4">
+//                     <button 
+//                       onClick={loadMore} 
+//                       disabled={isLoading}
+//                       className="btn btn-outline-dark"
+//                       aria-label="Load more results"
+//                     >
+//                       {isLoading ? 'Loading...' : 'Load More'}
+//                     </button>
+//                   </div>
+//                 )}
+                
+//                 {!hasMore && searchResults.length > 0 && (
+//                   <div className="text-center py-4">
+//                     <p className="text-muted">End of results</p>
+//                   </div>
+//                 )}
+//               </>
+//             ) : searchTerm ? (
+//               <div className="text-center py-5">
+//                 <h4>No results found for "{searchTerm}"</h4>
+//                 <p className="text-muted">Try different search terms</p>
+//               </div>
+//             ) : (
+//               <div className="text-center py-5">
+//                 <h4>Search for products</h4>
+//                 <p className="text-muted">Enter keywords in the search box above</p>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;
+
+// VERSION 05
+
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { SearchAxiosService } from '../../services/net/SearchAxiosService';
-import LoadingSpinner from './LoadingSpinner';
-import ProductSummary from '../../pages/products/ProductSummary_0';
+import { motion, AnimatePresence } from 'framer-motion';
+import ProductSummary from '../../pages/products/ProductSummary';
 import LoadingCard from './LoadingCard';
+// import { FiX, FiSearch } from 'react-icons/fi';
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
@@ -1119,21 +1829,17 @@ const SearchPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Get initial search term from URL
+  // Focus input on mount and preserve focus
   useEffect(() => {
-    const query = searchParams.get('q') || '';
-    setSearchTerm(query);
-    setSearchResults([]);
-    setPage(1);
-    setHasMore(true);
-    if (query) {
-      performSearch(query, 1, true);
-    }
-  }, [searchParams]);
+    inputRef.current?.focus();
+  }, []);
 
-  const performSearch = async (query: string, pageNum: number, reset: boolean = false) => {
-    if (isLoading) return;
+  // Debounced search handler
+  const performSearch = useCallback(async (query: string, pageNum: number, reset: boolean = false) => {
+    if (isLoading || !query.trim()) return;
     
     setIsLoading(true);
     setError(null);
@@ -1145,194 +1851,211 @@ const SearchPage = () => {
         page_size: 12
       });
       
-      if (response?.data?.items) {
-        if (reset) {
-          setSearchResults(response.data.items);
-        } else {
-          setSearchResults(prev => [...prev, ...response.data.items]);
-        }
-        setHasMore(response.data.items.length >= 12);
+      // console.log(`from search`, response.data.products);
+
+      if (response?.data?.products) {
+        setSearchResults(prev => reset ? response.data.products : [...prev, ...response.data.products]);
+        setHasMore(response.data.products.length >= 12);
       } else {
         setHasMore(false);
         if (reset) setSearchResults([]);
       }
     } catch (err) {
-      setError('Failed to fetch search results');
-      console.error('Search error:', err);
+      setError('Failed to fetch search results. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isLoading]);
 
+  // Handle URL parameter changes
+  useEffect(() => {
+    const query = searchParams.get('q') || '';
+    setSearchTerm(query);
+    
+    if (query) {
+      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+      searchTimeout.current = setTimeout(() => {
+        setPage(1);
+        performSearch(query, 1, true);
+      }, 500);
+    }
+  }, [searchParams, performSearch]);
+
+  // Input handlers
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-    }
+    navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    // Update URL without page reload
+    if (value.trim()) {
+      navigate(`/search?q=${encodeURIComponent(value)}`, { replace: true });
+    }
   };
 
-  const handleCloseSearch = () => {
-    navigate(-1);
+  const clearSearch = () => {
+    setSearchTerm('');
+    navigate('/search', { replace: true });
+    inputRef.current?.focus();
   };
 
+  // Infinite scroll handler
   const loadMore = useCallback(() => {
     if (!isLoading && hasMore) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      performSearch(searchTerm, nextPage);
+      setPage(prev => prev + 1);
+      performSearch(searchTerm, page + 1);
     }
-  }, [isLoading, hasMore, page, searchTerm]);
+  }, [isLoading, hasMore, page, searchTerm, performSearch]);
 
-  // Infinite scroll handler with debounce
+  // Scroll listener with proper debouncing
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    
     const handleScroll = () => {
-      // Clear any pending execution
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      if (scrollHeight - (scrollTop + clientHeight) < 200 && !isLoading) {
+        loadMore();
       }
-      
-      // Debounce the scroll handler
-      timeoutId = setTimeout(() => {
-        const scrollThreshold = 200; // pixels from bottom
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        
-        // Check if we're near the bottom (within threshold)
-        if (scrollHeight - (scrollTop + clientHeight) < scrollThreshold) {
-          loadMore();
-        }
-      }, 100);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (timeoutId) clearTimeout(timeoutId);
+    const debouncedScroll = () => {
+      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+      searchTimeout.current = setTimeout(handleScroll, 100);
     };
-  }, [loadMore]);
+
+    window.addEventListener('scroll', debouncedScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedScroll);
+      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    };
+  }, [loadMore, isLoading]);
 
   return (
-    <div className="modal fade show" id="SearchPage" tabIndex={-1} role="dialog" 
-         style={{ display: "block" }} aria-modal="true">
-      <div className="modal-dialog modal-fullscreen" role="document">
+    <div className="modal fade show" style={{ display: 'block', backdropFilter: 'blur(5px)' }}>
+      <div className="modal-dialog modal-fullscreen">
         <div className="modal-content">
-          {/* ... [keep your existing header code exactly as is] ... */}
-          <div className="modal-header flex-wrap">
-  {/* Brand Logo and Navigation */}
-  <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap card-header modal-title" role="tablist">
-    <li className="nav-item" role="presentation">
-      <Link className="navbar-brand pt-0" to="/" data-discover="true">
-        <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
-          <div className="flex-shrink-0 border rounded-circle" style={{width: '40px'}}>
-            <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
-              <img alt="Avatar" src="/assets/img/us/logos/favicon.svg" />
+          <div className="modal-header border-0">
+            <div className="d-flex w-100 align-items-center">
+              <Link to="/" className="navbar-brand me-3">
+                <img src="/assets/img/us/logos/favicon.svg" alt="Logo" width="40" />
+              </Link>
+              
+              <form className="flex-grow-1" onSubmit={handleSearchSubmit}>
+                <div className="input-group input-group-lg">
+                <span className="input-group-text border-0 bg-transparent pe-1">
+                     <i className="ci-search fs-lg" />
+                </span>
+
+                  <input
+                    ref={inputRef}
+                    type="search"
+                    className="form-control border-0 shadow-none"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    // autoComplete="off"
+                  />
+                  {/* {searchTerm && (
+                    <button
+                      type="button"
+                      className="btn btn-link text-muted"
+                      onClick={clearSearch}
+                    >
+                      <i className="ci-close fs-lg" />
+                    </button>
+                  )} */}
+                  
+                </div>
+              </form>
+              
+              <button
+                className="btn ms-3"
+                onClick={() => navigate(-1)}
+                aria-label="Close"
+              >
+                   <i className="ci-close fs-lg" />
+
+              </button>
             </div>
           </div>
-        </span>
-      </Link>
-    </li>
-    <li className="nav-item" role="presentation">
-      <button type="button" className="nav-link" onClick={() => navigate(-1)}>
-        <i className="fi-list me-2 ms-n1" />Salesnet
-      </button>
-    </li>
-  </ul>
 
-  {/* Search Form */}
-      <form className="container d-flex align-items-center" onSubmit={handleSearchSubmit}>
-        <div className="position-relative w-100">
-          <input
-                  className="form-control form-control-lg fs-lg border-0 rounded-0 py-3 ps-0"
-                  placeholder="Search for products..."
-                  autoComplete="off"
-                  aria-label="Search products"
-                  type="search"
-                  value={searchTerm}
-                  onChange={handleInputChange}
-                />
-                {isLoading && (
-                  <div className="position-absolute top-50 end-0 translate-middle-y pe-3">
-                    <LoadingSpinner size="sm" />
-                  </div>
-                )}
-              </div>
-              <button
-                type="button"
-                className="btn-close fs-lg ms-2"
-                onClick={handleCloseSearch}
-                aria-label="Close"
-              ></button>
-            </form>
-          </div>
+          <div className="modal-body p-4">
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="alert alert-danger"
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          {/* Search Results Area */}
-          <div className="modal-body p-3">
-            {error ? (
-              <div className="alert alert-danger">{error}</div>
-            ) : isLoading && searchResults.length === 0 ? (
-              <div className="text-center py-5">
-                <LoadingSpinner />
-                <p className="mt-3">Searching for products...</p>
+            {isLoading && !searchResults.length ? (
+              <div className="d-flex flex-column align-items-center justify-content-center py-5">
+                <div className="spinner-wave text-primary">
+                  <div className="wave"></div>
+                  <div className="wave"></div>
+                  <div className="wave"></div>
+                </div>
+                
+                <p className="mt-3 text-muted">Searching products...</p>
               </div>
             ) : searchResults.length > 0 ? (
               <>
-                <div className="mb-3">
-                  <h5>Found {searchResults.length} results for "{searchTerm}"</h5>
-                </div>
-                <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
-                  {searchResults.map((product) => (
-                    <ProductSummary
-                      key={`${product.id}-${product.slug}`} // More unique key
-                      image={product.image_urls?.[0] || ''}
-                      name={product.name}
-                      slug={product.slug}
-                      price={product.price}
-                      id={product.id}
-                      url={`/products/${product.slug}`}
-                    />
+                <h5 className="mb-4">
+                  {searchResults.length} results for "{searchTerm}"
+                </h5>
+                
+                <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+                  {searchResults.map((product, index) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <ProductSummary
+                        product={product}
+                        showDetails={true}
+                        discountBadge={product.has_discount}
+                      />
+                    </motion.div>
                   ))}
-                  
-                  {/* Loading indicators */}
-                  {isLoading && (
-                    Array.from({ length: 4 }).map((_, index) => (
-                      <LoadingCard key={`loading-${index}-${Date.now()}`} />
-                    ))
+                </div>
+
+                <div className="mt-4 text-center">
+                  {hasMore && (
+                    <button
+                      onClick={loadMore}
+                      disabled={isLoading}
+                      className="btn btn-outline-dark px-5"
+                    >
+                      {isLoading ? (
+                        <span className="spinner-grow spinner-grow-sm" />
+                      ) : (
+                        'Load More'
+                      )}
+                    </button>
+                  )}
+                  {!hasMore && (
+                    <p className="text-muted">No more products to load</p>
                   )}
                 </div>
-                
-                {/* Load more button as fallback */}
-                {hasMore && (
-                  <div className="text-center mt-4">
-                    <button 
-                      onClick={loadMore} 
-                      disabled={isLoading}
-                      className="btn btn-outline-dark"
-                    >
-                      {isLoading ? 'Loading...' : 'Load More'}
-                    </button>
-                  </div>
-                )}
-                
-                {!hasMore && searchResults.length > 0 && (
-                  <div className="text-center py-4">
-                    <p className="text-muted">No more products to load</p>
-                  </div>
-                )}
               </>
             ) : searchTerm ? (
               <div className="text-center py-5">
-                <h4>No results found for "{searchTerm}"</h4>
+                <h4 className="mb-3">No results found</h4>
                 <p className="text-muted">Try different search terms</p>
               </div>
             ) : (
               <div className="text-center py-5">
-                <h4>Search for products</h4>
-                <p className="text-muted">Enter keywords in the search box above</p>
+                <h4 className="mb-3">Start searching</h4>
+                <p className="text-muted">Enter product name or keywords</p>
               </div>
             )}
           </div>
@@ -1343,3 +2066,549 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
+
+// Add this CSS for the wave spinner
+const waveSpinnerStyles = `
+.spinner-wave {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 40px;
+}
+
+.spinner-wave .wave {
+  position: absolute;
+  width: 13px;
+  height: 40px;
+  background: currentColor;
+  animation: wave 1.2s infinite ease-in-out;
+}
+
+.spinner-wave .wave:nth-child(2) {
+  left: 20px;
+  animation-delay: -1.1s;
+}
+
+.spinner-wave .wave:nth-child(3) {
+  left: 40px;
+  animation-delay: -1.0s;
+}
+
+@keyframes wave {
+  0%, 40%, 100% { transform: scaleY(0.4) }  
+  20% { transform: scaleY(1.0) }
+}
+`;
+
+// Inject styles
+const styleSheet = document.createElement('style');
+styleSheet.innerText = waveSpinnerStyles;
+document.head.appendChild(styleSheet);
+
+
+// VERSION 06
+// import { useEffect, useState, useCallback, useRef } from 'react';
+// import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+// import { SearchAxiosService } from '../../services/net/SearchAxiosService';
+// import { motion, AnimatePresence } from 'framer-motion';
+// import ProductSummary from '../../pages/products/ProductSummary';
+// import LoadingCard from './LoadingCard';
+// import LoadingSpinner from './LoadingSpinner';
+
+// const SearchPage = () => {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState<any[]>([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+//   const [page, setPage] = useState(1);
+//   const [hasMore, setHasMore] = useState(true);
+//   const inputRef = useRef<HTMLInputElement>(null);
+//   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+//   // Focus management
+//   useEffect(() => {
+//     inputRef.current?.focus();
+//   }, []);
+
+//   // Search logic
+//   const performSearch = useCallback(async (query: string, pageNum: number, reset: boolean = false) => {
+//     if (isLoading || !query.trim()) return;
+    
+//     setIsLoading(true);
+//     setError(null);
+    
+//     try {
+//       const response = await SearchAxiosService.searchProducts({
+//         q: query,
+//         page: pageNum,
+//         page_size: 12
+//       });
+      
+//       if (response?.data?.products) {
+//         setSearchResults(prev => reset ? response.data.products : [...prev, ...response.data.products]);
+//         setHasMore(response.data.products.length >= 12);
+//       } else {
+//         setHasMore(false);
+//         if (reset) setSearchResults([]);
+//       }
+//     } catch (err) {
+//       setError('Failed to fetch search results. Please try again.');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isLoading]);
+
+//   // Handle URL changes
+//   useEffect(() => {
+//     const query = searchParams.get('q') || '';
+//     setSearchTerm(query);
+    
+//     if (query) {
+//       if (searchTimeout.current) clearTimeout(searchTimeout.current);
+//       searchTimeout.current = setTimeout(() => {
+//         setPage(1);
+//         performSearch(query, 1, true);
+//       }, 500);
+//     }
+//   }, [searchParams, performSearch]);
+
+//   // Event handlers
+//   const handleSearchSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+//   };
+
+//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const value = e.target.value;
+//     setSearchTerm(value);
+//     navigate(`/search?q=${encodeURIComponent(value)}`, { replace: true });
+//   };
+
+//   const clearSearch = () => {
+//     setSearchTerm('');
+//     navigate('/search', { replace: true });
+//     inputRef.current?.focus();
+//   };
+
+//   // Infinite scroll
+//   const loadMore = useCallback(() => {
+//     if (!isLoading && hasMore) {
+//       setPage(prev => prev + 1);
+//       performSearch(searchTerm, page + 1);
+//     }
+//   }, [isLoading, hasMore, page, searchTerm, performSearch]);
+
+//   // Scroll listener
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+//       if (scrollHeight - (scrollTop + clientHeight) < 200 && !isLoading) {
+//         loadMore();
+//       }
+//     };
+
+//     const debouncedScroll = () => {
+//       if (searchTimeout.current) clearTimeout(searchTimeout.current);
+//       searchTimeout.current = setTimeout(handleScroll, 100);
+//     };
+
+//     window.addEventListener('scroll', debouncedScroll);
+//     return () => {
+//       window.removeEventListener('scroll', debouncedScroll);
+//       if (searchTimeout.current) clearTimeout(searchTimeout.current);
+//     };
+//   }, [loadMore, isLoading]);
+
+//   return (
+//     <div className="modal fade show" style={{ display: 'block', backdropFilter: 'blur(5px)' }}>
+//       <div className="modal-dialog modal-fullscreen">
+//         <div className="modal-content">
+          
+//           <div className="modal-header border-0">
+//             <div className="d-flex w-100 align-items-center gap-3">
+//               <Link to="/" className="navbar-brand me-2">
+//                 <div className="border rounded-circle" style={{ width: '40px' }}>
+//                   <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+//                     <img src="/assets/img/us/logos/favicon.svg" alt="Logo" />
+//                   </div>
+//                 </div>
+//               </Link>
+
+//               <form className="flex-grow-1" onSubmit={handleSearchSubmit}>
+//                 <div className="input-group input-group-lg">
+//                   <span className="input-group-text border-0 bg-transparent pe-1">
+//                     <i className="ci-search fs-lg" />
+//                   </span>
+//                   <input
+//                     ref={inputRef}
+//                     type="search"
+//                     className="form-control border-0 shadow-none ps-0"
+//                     placeholder="Search products..."
+//                     value={searchTerm}
+//                     onChange={handleInputChange}
+//                     autoComplete="off"
+//                   />
+//                   {/* {searchTerm && (
+//                     <button
+//                       type="button"
+//                       className="btn btn-link text-muted"
+//                       onClick={clearSearch}
+//                     >
+//                       <i className="ci-close fs-lg" />
+//                     </button>
+//                   )} */}
+//                 </div>
+//               </form>
+
+//               <button
+//                 className="btn ms-2"
+//                 onClick={() => navigate(-1)}
+//                 aria-label="Close"
+//               >
+//                 <i className="ci-close fs-xl" />
+//               </button>
+//             </div>
+//           </div>
+
+//           <div className="modal-body p-4">
+//             <AnimatePresence>
+//               {error && (
+//                 <motion.div
+//                   initial={{ opacity: 0, y: -20 }}
+//                   animate={{ opacity: 1, y: 0 }}
+//                   exit={{ opacity: 0 }}
+//                   className="alert alert-danger"
+//                 >
+//                   {error}
+//                 </motion.div>
+//               )}
+//             </AnimatePresence>
+
+//             {isLoading && !searchResults.length ? (
+//               <div className="d-flex flex-column align-items-center justify-content-center py-5">
+//                 <LoadingSpinner size="lg" />
+//                 <p className="mt-3 text-muted">Searching products...</p>
+//               </div>
+//             ) : searchResults.length > 0 ? (
+//               <>
+//                 <h5 className="mb-4">
+//                   {searchResults.length} results for "{searchTerm}"
+//                 </h5>
+                
+//                 <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+//                   {searchResults.map((product, index) => (
+//                     <motion.div
+//                       key={product.id}
+//                       initial={{ opacity: 0, y: 20 }}
+//                       animate={{ opacity: 1, y: 0 }}
+//                       transition={{ delay: index * 0.05 }}
+//                     >
+//                       <ProductSummary
+//                         product={product}
+//                         showDetails={true}
+//                         discountBadge={product.has_discount}
+//                       />
+//                     </motion.div>
+//                   ))}
+//                 </div>
+
+//                 <div className="mt-4 text-center">
+//                   {hasMore && (
+//                     <button
+//                       onClick={loadMore}
+//                       disabled={isLoading}
+//                       className="btn btn-outline-dark px-5"
+//                     >
+//                       {isLoading ? (
+//                         <LoadingSpinner size="sm" />
+//                       ) : (
+//                         'Load More'
+//                       )}
+//                     </button>
+//                   )}
+//                   {!hasMore && (
+//                     <p className="text-muted">No more products to load</p>
+//                   )}
+//                 </div>
+//               </>
+//             ) : searchTerm ? (
+//               <div className="text-center py-5">
+//                 <h4 className="mb-3">No results found</h4>
+//                 <p className="text-muted">Try different search terms</p>
+//               </div>
+//             ) : (
+//               <div className="text-center py-5">
+//                 <h4 className="mb-3">Start searching</h4>
+//                 <p className="text-muted">Enter product name or keywords</p>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;
+
+
+// VERSION 07
+
+// import { useEffect, useState, useCallback, useRef } from 'react';
+// import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+// import { SearchAxiosService } from '../../services/net/SearchAxiosService';
+// import { motion, AnimatePresence } from 'framer-motion';
+// import ProductSummary from '../../pages/products/ProductSummary';
+// import LoadingCard from './LoadingCard';
+// import LoadingSpinner from './LoadingSpinner';
+
+// const SearchPage = () => {
+//   const [searchParams] = useSearchParams();
+//   const navigate = useNavigate();
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState<any[]>([]);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+//   const [page, setPage] = useState(1);
+//   const [hasMore, setHasMore] = useState(true);
+//   const inputRef = useRef<HTMLInputElement>(null);
+//   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+//   const pageRef = useRef(page);
+//   const searchTermRef = useRef(searchTerm);
+
+//   // Keep refs updated
+//   useEffect(() => {
+//     pageRef.current = page;
+//     searchTermRef.current = searchTerm;
+//   }, [page, searchTerm]);
+
+//   // Focus management
+//   useEffect(() => {
+//     inputRef.current?.focus();
+//   }, []);
+
+//   // Search logic
+//   const performSearch = useCallback(async (query: string, pageNum: number, reset: boolean = false) => {
+//     if (isLoading || !query.trim()) return;
+    
+//     setIsLoading(true);
+//     setError(null);
+    
+//     try {
+//       const response = await SearchAxiosService.searchProducts({
+//         q: query,
+//         page: pageNum,
+//         page_size: 12
+//       });
+      
+//       if (response?.data?.products) {
+//         setSearchResults(prev => reset ? response.data.products : [...prev, ...response.data.products]);
+//         setHasMore(response.data.products.length >= 12);
+//       } else {
+//         setHasMore(false);
+//         if (reset) setSearchResults([]);
+//       }
+//     } catch (err) {
+//       setError('Failed to fetch search results. Please try again.');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isLoading]);
+
+//   // Handle URL changes
+//   useEffect(() => {
+//     const query = searchParams.get('q') || '';
+//     setSearchTerm(query);
+    
+//     if (query) {
+//       if (searchTimeout.current) clearTimeout(searchTimeout.current);
+//       searchTimeout.current = setTimeout(() => {
+//         setPage(1);
+//         performSearch(query, 1, true);
+//       }, 500);
+//     } else {
+//       setSearchResults([]);
+//       setHasMore(true);
+//     }
+//   }, [searchParams, performSearch]);
+
+//   // Event handlers
+//   const handleSearchSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+//   };
+
+//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const value = e.target.value;
+//     setSearchTerm(value);
+//     navigate(`/search?q=${encodeURIComponent(value)}`, { replace: true });
+//   };
+
+//   const clearSearch = () => {
+//     setSearchTerm('');
+//     navigate('/search', { replace: true });
+//     inputRef.current?.focus();
+//   };
+
+//   // Infinite scroll handler
+//   const loadMore = useCallback(() => {
+//     if (!isLoading && hasMore) {
+//       const nextPage = pageRef.current + 1;
+//       setPage(nextPage);
+//       performSearch(searchTermRef.current, nextPage);
+//     }
+//   }, [isLoading, hasMore, performSearch]);
+
+//   // Scroll listener with proper closure handling
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       const scrollThreshold = 400; // Increased threshold for better reliability
+//       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      
+//       if (
+//         scrollHeight - (scrollTop + clientHeight) < scrollThreshold &&
+//         !isLoading &&
+//         hasMore &&
+//         searchTermRef.current
+//       ) {
+//         loadMore();
+//       }
+//     };
+
+//     const debouncedScroll = () => {
+//       if (searchTimeout.current) clearTimeout(searchTimeout.current);
+//       searchTimeout.current = setTimeout(handleScroll, 100);
+//     };
+
+//     window.addEventListener('scroll', debouncedScroll);
+//     return () => {
+//       window.removeEventListener('scroll', debouncedScroll);
+//       if (searchTimeout.current) clearTimeout(searchTimeout.current);
+//     };
+//   }, [loadMore, isLoading, hasMore]);
+
+//   return (
+//     <div className="modal fade show" style={{ display: 'block', backdropFilter: 'blur(5px)' }}>
+//       <div className="modal-dialog modal-fullscreen">
+//         <div className="modal-content">
+//           <div className="modal-header border-0">
+//             <div className="d-flex w-100 align-items-center gap-3">
+//               <Link to="/" className="navbar-brand me-2">
+//                 <div className="border rounded-circle" style={{ width: '40px' }}>
+//                   <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+//                     <img src="/assets/img/us/logos/favicon.svg" alt="Logo" />
+//                   </div>
+//                 </div>
+//               </Link>
+
+//               <form className="flex-grow-1" onSubmit={handleSearchSubmit}>
+//                 <div className="input-group input-group-lg">
+//                   <span className="input-group-text border-0 bg-transparent pe-1">
+//                     <i className="ci-search fs-lg" />
+//                   </span>
+//                   <input
+//                     ref={inputRef}
+//                     type="search"
+//                     className="form-control border-0 shadow-none ps-0"
+//                     placeholder="Search products..."
+//                     value={searchTerm}
+//                     onChange={handleInputChange}
+//                     autoComplete="off"
+//                   />
+//                   {searchTerm && (
+//                     <button
+//                       type="button"
+//                       className="btn fs-md text-muted"
+//                       onClick={clearSearch}
+//                     >
+//                       <i className="ci-close fs-lg" />
+//                     </button>
+//                   )}
+//                 </div>
+//               </form>
+
+//             </div>
+//           </div>
+
+//           <div className="modal-body p-4">
+//             <AnimatePresence>
+//               {error && (
+//                 <motion.div
+//                   initial={{ opacity: 0, y: -20 }}
+//                   animate={{ opacity: 1, y: 0 }}
+//                   exit={{ opacity: 0 }}
+//                   className="alert alert-danger"
+//                 >
+//                   {error}
+//                 </motion.div>
+//               )}
+//             </AnimatePresence>
+
+//             {isLoading && !searchResults.length ? (
+//               <div className="d-flex flex-column align-items-center justify-content-center py-5">
+//                 <LoadingSpinner size="lg" />
+//                 <p className="mt-3 text-muted">Searching products...</p>
+//               </div>
+//             ) : searchResults.length > 0 ? (
+//               <>
+//                 <h5 className="mb-4">
+//                   Showing {searchResults.length} results for "{searchTerm}"
+//                 </h5>
+                
+//                 <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+//                   {searchResults.map((product, index) => (
+//                     <motion.div
+//                       key={`${product.id}-${index}`}
+//                       initial={{ opacity: 0, y: 20 }}
+//                       animate={{ opacity: 1, y: 0 }}
+//                       transition={{ delay: index * 0.05 }}
+//                     >
+//                       <ProductSummary
+//                         product={product}
+//                         showDetails={true}
+//                         discountBadge={product.has_discount}
+//                       />
+//                     </motion.div>
+//                   ))}
+//                 </div>
+
+//                 <div className="mt-4 text-center">
+//                   {hasMore && (
+//                     <button
+//                       onClick={loadMore}
+//                       disabled={isLoading}
+//                       className="btn btn-outline-dark px-5"
+//                     >
+//                       {isLoading ? (
+//                         <LoadingSpinner size="sm" />
+//                       ) : (
+//                         'Load More'
+//                       )}
+//                     </button>
+//                   )}
+//                   {!hasMore && (
+//                     <p className="text-muted">All results loaded</p>
+//                   )}
+//                 </div>
+//               </>
+//             ) : searchTerm ? (
+//               <div className="text-center py-5">
+//                 <h4 className="mb-3">No results found</h4>
+//                 <p className="text-muted">Try different search terms</p>
+//               </div>
+//             ) : (
+//               <div className="text-center py-5">
+//                 <h4 className="mb-3">Start searching</h4>
+//                 <p className="text-muted">Enter product name or keywords</p>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SearchPage;

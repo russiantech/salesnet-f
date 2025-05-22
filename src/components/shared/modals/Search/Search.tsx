@@ -3,6 +3,7 @@ import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';
 import { SearchAxiosService } from '../../../../services/net/SearchAxiosService';
 // import { SearchAxiosService } from '../services/SearchAxiosService';
+import LoadingSpinner from '../../LoadingSpinner'
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -48,7 +49,7 @@ const Search = () => {
         page_size: 12
       });
       
-      setSearchResults(response.data.items || []);
+      setSearchResults(response.data.products || []);
       
       if (!preventNavigation) {
         navigate(`/search?q=${encodeURIComponent(term)}`);
@@ -219,9 +220,7 @@ const Search = () => {
                     {/* Loading indicator */}
                     {isLoading && (
                         <div className="position-absolute top-50 end-0 translate-middle-y pe-3">
-                            <div className="spinner-border spinner-border-sm text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
+                            <LoadingSpinner size='sm' />
                         </div>
                     )}
                 </div>
@@ -493,7 +492,7 @@ interface Product {
   //   );
   // };
 
-  export const SearchResults = ({ results }: SearchResultsProps) => {
+  export const SearchResults2 = ({ results }: SearchResultsProps) => {
     return (
         <div className="row">
             {results.map((product) => {
@@ -511,6 +510,7 @@ interface Product {
 
                 return (
                     <div key={product.id} className="col-sm-6 col-lg-4 d-flex flex-column gap-3 pt-4 py-lg-4">
+                        
                         <div className="position-relative animate-underline d-flex align-items-center ps-xl-3">
                             {/* Product Image */}
                             <div className="ratio ratio-1x1 flex-shrink-0" style={{ width: '110px' }}>
@@ -559,11 +559,64 @@ interface Product {
                                 <div className="h5 mb-0">${formattedPrice}</div>
                             </div>
                         </div>
+
                     </div>
                 );
             })}
         </div>
     );
+};
+
+// 
+// import { ProductSummary } from './ProductSummary';
+import type { Product } from '../../types';
+import ProductSummary from '../../../../pages/products/ProductSummary';
+
+interface SearchResultsProps {
+  results: Product[];
+}
+
+export const SearchResults = ({ results }: SearchResultsProps) => {
+  return (
+    <div className="row">
+      {results.map((product) => (
+        <div 
+          key={product.id} 
+          className="col-sm-6 col-lg-4 d-flex flex-column gap-3 pt-4 py-lg-4"
+        >
+          {/* <ProductSummary
+            product={{
+              ...product,
+              // Ensure numeric price and proper formatting
+              price: typeof product.price === 'string' 
+                ? parseFloat(product.price) 
+                : product.price,
+              // Normalize rating data
+              average_rating: Math.min(
+                Math.max(Number(product.average_rating) || 0, 0), 
+                5
+              ),
+              reviews_count: product.review_count || product.comments_count || 0,
+              // Ensure image array exists
+              image_urls: product.image_urls?.length 
+                ? product.image_urls 
+                : ['/assets/img/placeholder.png']
+            }}
+            showDetails={false}
+            showBadge={false}
+            className="animate-underline bg-body rounded-3 p-2 p-sm-3"
+          /> */}
+
+          <ProductSummary
+            key={product.id}
+            product={product}
+            showDetails={true}
+        />
+
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Search;

@@ -57,6 +57,18 @@ export const ProductAxiosService = {
     });
   },
 
+  // Get trending products with pagination
+  async getTrendingProducts(params = {}, config = {}) {
+    return AxiosService.fetchPage('/products/trending', {
+      params: {
+        page: 1,
+        page_size: 8,
+        ...params
+      },
+      ...config
+    });
+  },
+
     getProductsByCategorySlug: async (
         slug: string,
         page: number,

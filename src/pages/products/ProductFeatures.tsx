@@ -152,6 +152,7 @@
 // };
 
 
+
 // 
 // components/product/ProductFeatures.jsx
 import React, { useState } from 'react';
@@ -188,103 +189,104 @@ export const ProductBadge = ({ type }) => {
   );
 };
 
+
 /**
  * Product Favorites Component
  * Handles adding/removing products from favorites with loading animation
  */
-export const ProductFavorites = ({ productId, initialIsFavorite = false }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
-  const isAuthenticated = UsersService.isAuthenticated();
+// export const ProductFavorites = ({ productId, initialIsFavorite = false }) => {
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
+//   const isAuthenticated = UsersService.isAuthenticated();
   
-  const { toggleWishlist, isWishlisted } = useProductInteractions(productId, isAuthenticated);
+//   const { toggleWishlist, isWishlisted } = useProductInteractions(productId, isAuthenticated);
   
-  const handleToggleFavorite = async () => {
-    if (!isAuthenticated) {
-      NotificationService.showDialog('Please sign in to add items to favorites', 'info');
-      return;
-    }
+//   const handleToggleFavorite = async () => {
+//     if (!isAuthenticated) {
+//       NotificationService.showDialog('Please sign in to add items to favorites', 'info');
+//       return;
+//     }
     
-    setIsLoading(true);
-    try {
-      await toggleWishlist();
-      setIsFavorite(!isFavorite);
-      NotificationService.showDialog(
-        `Product ${!isFavorite ? 'added to' : 'removed from'} favorites`,
-        'success'
-      );
-    } catch (error) {
-      NotificationService.showDialog('Failed to update favorites', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+//     setIsLoading(true);
+//     try {
+//       await toggleWishlist();
+//       setIsFavorite(!isFavorite);
+//       NotificationService.showDialog(
+//         `Product ${!isFavorite ? 'added to' : 'removed from'} favorites`,
+//         'success'
+//       );
+//     } catch (error) {
+//       NotificationService.showDialog('Failed to update favorites', 'error');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
   
-  return (
-    <button 
-      type="button" 
-      className={`btn btn-icon btn-secondary animate-pulse d-flex align-items-center justify-content-center${isFavorite ? ' active' : ''}`}
-      aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-      onClick={handleToggleFavorite}
-      disabled={isLoading}
-    >
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <i className={`ci-heart${isFavorite ? '-filled' : ''} fs-base animate-target`} />
-      )}
-    </button>
-  );
-};
+//   return (
+//     <button 
+//       type="button" 
+//       className={`btn btn-icon btn-secondary animate-pulse d-flex align-items-center justify-content-center${isFavorite ? ' active' : ''}`}
+//       aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+//       onClick={handleToggleFavorite}
+//       disabled={isLoading}
+//     >
+//       {isLoading ? (
+//         <LoadingSpinner />
+//       ) : (
+//         <i className={`ci-heart${isFavorite ? '-filled' : ''} fs-base animate-target`} />
+//       )}
+//     </button>
+//   );
+// };
 
 /**
  * Product Compare Component
  * Handles adding/removing products from comparison list with loading animation
  */
-export const ProductCompare = ({ productId, initialIsCompared = false }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCompared, setIsCompared] = useState(initialIsCompared);
-  const isAuthenticated = UsersService.isAuthenticated();
+// export const ProductCompare = ({ productId, initialIsCompared = false }) => {
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isCompared, setIsCompared] = useState(initialIsCompared);
+//   const isAuthenticated = UsersService.isAuthenticated();
   
-  const handleToggleCompare = async () => {
-    if (!isAuthenticated) {
-      NotificationService.showDialog('Please sign in to add items to compare', 'info');
-      return;
-    }
+//   const handleToggleCompare = async () => {
+//     if (!isAuthenticated) {
+//       NotificationService.showDialog('Please sign in to add items to compare', 'info');
+//       return;
+//     }
     
-    setIsLoading(true);
-    try {
-      // Here you would call your comparison service
-      // For now we'll simulate an API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setIsCompared(!isCompared);
-      NotificationService.showDialog(
-        `Product ${!isCompared ? 'added to' : 'removed from'} compare list`,
-        'success'
-      );
-    } catch (error) {
-      NotificationService.showDialog('Failed to update compare list', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+//     setIsLoading(true);
+//     try {
+//       // Here you would call your comparison service
+//       // For now we'll simulate an API call
+//       await new Promise(resolve => setTimeout(resolve, 500));
+//       setIsCompared(!isCompared);
+//       NotificationService.showDialog(
+//         `Product ${!isCompared ? 'added to' : 'removed from'} compare list`,
+//         'success'
+//       );
+//     } catch (error) {
+//       NotificationService.showDialog('Failed to update compare list', 'error');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
   
-  return (
-    <button 
-      type="button" 
-      className={`btn btn-icon btn-secondary animate-rotate d-flex align-items-center justify-content-center${isCompared ? ' active' : ''}`}
-      aria-label={isCompared ? "Remove from Compare" : "Add to Compare"}
-      onClick={handleToggleCompare}
-      disabled={isLoading}
-    >
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <i className="ci-refresh-cw fs-base animate-target" />
-      )}
-    </button>
-  );
-};
+//   return (
+//     <button 
+//       type="button" 
+//       className={`btn btn-icon btn-secondary animate-rotate d-flex align-items-center justify-content-center${isCompared ? ' active' : ''}`}
+//       aria-label={isCompared ? "Remove from Compare" : "Add to Compare"}
+//       onClick={handleToggleCompare}
+//       disabled={isLoading}
+//     >
+//       {isLoading ? (
+//         <LoadingSpinner />
+//       ) : (
+//         <i className="ci-refresh-cw fs-base animate-target" />
+//       )}
+//     </button>
+//   );
+// };
 
 /**
  * Product Basket Component

@@ -249,8 +249,10 @@ const NotImplimentedPage = () => {
             <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <p className='fw-bold'> The page/feature you're looking for is currently under active development, stay tuned,
-              we're aiming to improve your experience on salesnet.</p>
+            <p className='fw-bold'> 
+              This page/feature is currently under active development. 
+              Stay tuned — we're working hard to bring you an improved experience on SalesNet.
+            </p>
           </div>
           <div className="modal-footer flex-column flex-sm-row align-items-stretch">
             <button className="btn btn-outline-warning" type="button" data-bs-dismiss="modal">Close</button>

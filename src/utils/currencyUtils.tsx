@@ -6,7 +6,8 @@ type CurrencyConfig = {
     maximumFractionDigits?: number
   }
   
-  export function formatPrice(
+  // export function formatPrice(
+  export function formatCurrency(
     price: number,
     currency: string = 'USD',
     options?: Partial<CurrencyConfig>
@@ -41,3 +42,10 @@ type CurrencyConfig = {
     JPY: '¥',
     // Add more as needed
   }
+
+  export function formatCurrency2(amount: number, currency = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  }).format(amount);
+}

@@ -329,7 +329,7 @@ const NewArrivals = () => {
                 <img 
                   src={product.image_urls[0] || '/assets/img/shop/electronics/thumbs/01.png'} 
                   alt={product.name} 
-                  className="object-fit-cover"
+                  className="object-fit-cover rounded"
                 />
               </div>
               <div className="w-100 min-w-0 ps-2 ps-sm-3">

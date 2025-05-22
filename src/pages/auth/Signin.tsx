@@ -88,20 +88,27 @@ const Signin = () => {
   
               const message = res.data.full_messages?.[0] || res.data.message || res.data.error || 'Login successful';
               
+              // if (res.data.success && res.data.user) {
               if (res.data.success) {
-                  // Create user object with tokens
-                  const user = res.data;
-                  console.log(`user is: ${user}`)
-                  const user_data = {
-                      ...user,  // If user data comes nested
-                      access_token: user.access_token,
-                      refresh_token: user.refresh_token
-                  };
 
+                // re-authenticate only if logged in again, so it won't update the user info.
+                 if(res.data.access_token){
+                      // Create user object with tokens
+                      const user = res.data;
+                      console.log(`user is: ${JSON.stringify(user)}`)
+                      const user_data = {
+                          ...user,  // If user data comes nested
+                          access_token: user.access_token,
+                          refresh_token: user.refresh_token
+                      };
+    
+                      console.log(`user_data: ${JSON.stringify(user_data)}`);
+    
+                      UsersService.authenticate(user_data);
+                      
+                      NotificationService.showDialog(message, 'success');
+                 }
 
-                  UsersService.authenticate(user_data);
-                  
-                  NotificationService.showDialog(message, 'success');
                   // navigate('/user/personal');
                   // Redirect to referrer or default to '/user/personal'
                   // const referrer = document.referrer || '/user/personal';

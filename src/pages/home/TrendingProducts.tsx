@@ -1205,9 +1205,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
-import ProductCard from '../products/ProductCard';
 import ProductSummary from '../products/ProductSummary';
-// import ProductCard from '../../components/pages/Sproducts/ProductCard';
 
 const TrendingProducts = () => {
   const [trendingProducts, setTrendingProducts] = useState([]);
@@ -1253,7 +1251,7 @@ const TrendingProducts = () => {
       <div className="d-flex align-items-center justify-content-between border-bottom pb-3 pb-md-4">
         <h2 className="h3 mb-0">Trending products</h2>
         <div className="nav">
-          <Link to="/trend" className="nav-link badge text-bg-success rounded-pill animate-scale">
+          <Link to="/products/trending" className="nav-link badge text-bg-success rounded-pill animate-scale">
             <span className="text-nowrap animate-target">View all</span>
             <i className="ci-chevron-right fs-base ms-1 animate-target"></i>
           </Link>

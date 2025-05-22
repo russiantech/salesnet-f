@@ -3,6 +3,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import './index.css';
 
@@ -15,7 +16,9 @@ if (container) {
     <StrictMode>
       <Router> {/* Only one router at root level */}
         <AuthProvider>
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </AuthProvider>
       </Router>
     </StrictMode>

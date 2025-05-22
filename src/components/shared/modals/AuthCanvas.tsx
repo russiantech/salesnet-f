@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NotificationService } from "../../../services/local/NotificationService";
 import { UsersService } from "../../../services/local/UsersService";
 import { AxiosUsersService } from "../../../services/net/AxiosUsersService";
@@ -219,177 +219,171 @@ const QuickSignup = () => {
 
 
 // Quick Sign-in Component
-const QuickSignin1 = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from || '/user/personal'; // Default redirect path
+// const QuickSignin1 = () => {
+//     const navigate = useNavigate();
+//     const location = useLocation();
+//     const from = location.state?.from || '/user/personal'; // Default redirect path
 
-    const [formData, setFormData] = useState({
-        username: '',
-        password: '',
-    });
+//     const [formData, setFormData] = useState({
+//         username: '',
+//         password: '',
+//     });
 
-    const [modalState, setModalState] = useState({ show: false, message: '', type: '' });
-    const [isLoading, setIsLoading] = useState(false);
+//     const [modalState, setModalState] = useState({ show: false, message: '', type: '' });
+//     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        const observer = (data) => {
-            setModalState(data);
-        };
+//     useEffect(() => {
+//         const observer = (data) => {
+//             setModalState(data);
+//         };
 
-        NotificationService.subscribe(observer);
-        return () => {
-            NotificationService.unsubscribe(observer);
-        };
-    }, []);
+//         NotificationService.subscribe(observer);
+//         return () => {
+//             NotificationService.unsubscribe(observer);
+//         };
+//     }, []);
 
-    const onSubmitForm = (evt) => {
-        evt.preventDefault();
-        setIsLoading(true);
+//     const onSubmitForm = (evt) => {
+//         evt.preventDefault();
+//         setIsLoading(true);
 
-        NotificationService.showDialog("Sending...", "primary");
+//         NotificationService.showDialog("Sending...", "primary");
 
-        if (!formData.username || !formData.password) {
-            NotificationService.showDialog("Must provide both username and password.", "danger");
-            setIsLoading(false);
-            return;
-        }
+//         if (!formData.username || !formData.password) {
+//             NotificationService.showDialog("Must provide both username and password.", "danger");
+//             setIsLoading(false);
+//             return;
+//         }
 
-        AxiosUsersService.signin(formData)
-            .then(res => {
-                const message = res.data.full_messages?.[0] || res.data.message || res.data.error || 'Login successful';
+//         AxiosUsersService.signin(formData)
+//             .then(res => {
+//                 const message = res.data.full_messages?.[0] || res.data.message || res.data.error || 'Login successful';
 
-                if (res.data.success) {
-                    const user = res.data;
-                    const user_data = {
-                        ...user,
-                        access_token: user.access_token,
-                        refresh_token: user.refresh_token
-                    };
+//                 if (res.data.success) {
+//                     const user = res.data;
+//                     const user_data = {
+//                         ...user,
+//                         access_token: user.access_token,
+//                         refresh_token: user.refresh_token
+//                     };
 
-                    UsersService.authenticate(user_data);
-                    NotificationService.showDialog(message, 'success');
-                    navigate(from, { replace: true });
-                } else {
-                    NotificationService.showDialog(message, 'error');
-                }
-            })
-            .catch(err => {
-                const errorMessage = err.response?.data?.error || err.message || 'An unknown error occurred';
-                NotificationService.showDialog(errorMessage, 'error');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
+//                     UsersService.authenticate(user_data);
+//                     NotificationService.showDialog(message, 'success');
+//                     navigate(from, { replace: true });
+//                 } else {
+//                     NotificationService.showDialog(message, 'error');
+//                 }
+//             })
+//             .catch(err => {
+//                 const errorMessage = err.response?.data?.error || err.message || 'An unknown error occurred';
+//                 NotificationService.showDialog(errorMessage, 'error');
+//             })
+//             .finally(() => {
+//                 setIsLoading(false);
+//             });
+//     };
 
-    const onInputChange = (key, evt) => {
-        setFormData({ ...formData, [key]: evt.target.value });
-    };
+//     const onInputChange = (key, evt) => {
+//         setFormData({ ...formData, [key]: evt.target.value });
+//     };
 
-    return (
-        <div 
-            className="offcanvas offcanvas-end pb-sm-2 px-sm-2"
-            id="quickSigninCanvas"
-            tabIndex={-1}
-            aria-labelledby="signinLabel"
-            style={{ width: '500px' }}
-        >
-            {/* Header */}
-            <div className="offcanvas-header flex-column align-items-start py-3 pt-lg-4">
-                <div className="d-flex align-items-center justify-content-between w-100 mb-3 mb-lg-4">
-                    <NavLink className="navbar-brand d-flex align-items-center" to="/">
-                        <img src="/assets/img/us/logos/favicon.svg" alt="Logo" className="me-2" style={{ width: '32px', height: '32px' }} />
-                        <h4 className="offcanvas-title" id="signinLabel">Quick Sign-in to Continue</h4>
-                    </NavLink>
-                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-            </div>
+//     return (
+//         <div 
+//             className="offcanvas offcanvas-end pb-sm-2 px-sm-2"
+//             id="quickSigninCanvas"
+//             tabIndex={-1}
+//             aria-labelledby="signinLabel"
+//             style={{ width: '500px' }}
+//         >
+//             {/* Header */}
+//             <div className="offcanvas-header flex-column align-items-start py-3 pt-lg-4">
+//                 <div className="d-flex align-items-center justify-content-between w-100 mb-3 mb-lg-4">
+//                     <NavLink className="navbar-brand d-flex align-items-center" to="/">
+//                         <img src="/assets/img/us/logos/favicon.svg" alt="Logo" className="me-2" style={{ width: '32px', height: '32px' }} />
+//                         <h4 className="offcanvas-title" id="signinLabel">Quick Sign-in to Continue</h4>
+//                     </NavLink>
+//                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+//                 </div>
+//             </div>
 
-            {/* Body */}
-            <div className="offcanvas-body d-flex flex-column gap-4 pt-2">
-                {/* <h1 className="h2 mt-auto">Welcome back</h1> */}
-                <div className="nav fs-sm mb-2 animate-scale">
-                    Don't have an account? 
-                    <button className="animate-target p-1 ms-2 badge rounded-pill text-bg-info" data-bs-toggle="offcanvas" data-bs-target="#quickSignupCanvas"
-                        aria-controls="signupCanvas" aria-label="Sign up Canvas">Create an account</button>
-                </div>
-                {/* Sign-in Form */}
-                <form className="needs-validation" id="signin_form" onSubmit={onSubmitForm} noValidate>
-                    <div className="position-relative mb-4">
-                        <label htmlFor="username" className="form-label">Username</label>
-                        <input type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={(evt) => onInputChange('username', evt)}
-                            placeholder="Enter your username"
-                            className="form-control form-control-lg"
-                            id="username"
-                            required />
-                        <div className="invalid-tooltip bg-transparent py-0">Must enter your username!</div>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={(evt) => onInputChange('password', evt)}
-                            className="form-control form-control-lg"
-                            id="password"
-                            minLength={4}
-                            placeholder="Minimum 4 characters"
-                            required />
-                        <div className="invalid-tooltip bg-transparent py-0">Password does not meet the required criteria!</div>
-                    </div>
+//             {/* Body */}
+//             <div className="offcanvas-body d-flex flex-column gap-4 pt-2">
+//                 {/* <h1 className="h2 mt-auto">Welcome back</h1> */}
+//                 <div className="nav fs-sm mb-2 animate-scale">
+//                     Don't have an account? 
+//                     <button className="animate-target p-1 ms-2 badge rounded-pill text-bg-info" data-bs-toggle="offcanvas" data-bs-target="#quickSignupCanvas"
+//                         aria-controls="signupCanvas" aria-label="Sign up Canvas">Create an account</button>
+//                 </div>
+//                 {/* Sign-in Form */}
+//                 <form className="needs-validation" id="signin_form" onSubmit={onSubmitForm} noValidate>
+//                     <div className="position-relative mb-4">
+//                         <label htmlFor="username" className="form-label">Username</label>
+//                         <input type="text"
+//                             name="username"
+//                             value={formData.username}
+//                             onChange={(evt) => onInputChange('username', evt)}
+//                             placeholder="Enter your username"
+//                             className="form-control form-control-lg"
+//                             id="username"
+//                             required />
+//                         <div className="invalid-tooltip bg-transparent py-0">Must enter your username!</div>
+//                     </div>
+//                     <div className="mb-4">
+//                         <label htmlFor="password" className="form-label">Password</label>
+//                         <input type="password"
+//                             name="password"
+//                             value={formData.password}
+//                             onChange={(evt) => onInputChange('password', evt)}
+//                             className="form-control form-control-lg"
+//                             id="password"
+//                             minLength={4}
+//                             placeholder="Minimum 4 characters"
+//                             required />
+//                         <div className="invalid-tooltip bg-transparent py-0">Password does not meet the required criteria!</div>
+//                     </div>
 
-                    <ResponseModal show={modalState.show} message={modalState.message} type={modalState.type} />
+//                     <ResponseModal show={modalState.show} message={modalState.message} type={modalState.type} />
 
-                    <button type="submit" className={`btn btn-lg bg-dark text-white w-100 ${isLoading ? 'disabled' : ''}`} disabled={isLoading}>
-                        {isLoading ? (
-                            <div className="spinner-grow spinner-grow-sm" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        ) : (
-                            'Sign in'
-                        )}
-                    </button>
-                </form>
-                {/* Divider */}
-                <div className="d-flex align-items-center my-4">
-                    <hr className="w-100 m-0" />
-                    <span className="text-body-emphasis fw-medium text-nowrap mx-4">or continue with</span>
-                    <hr className="w-100 m-0" />
-                </div>
-                {/*  */}
-                <div className="d-flex flex-column flex-sm-row gap-3 pb-4 mb-3 mb-lg-4">
-                    <button id="google-signin-btn" type="button" className="btn btn-lg btn-outline-secondary w-100 px-2">
-                        <i className="ci-google ms-1 me-1" />
-                        Google
-                    </button>
-                    <button type="button" disabled className="btn btn-lg btn-outline-secondary w-100 px-2">
-                        <i className="ci-facebook ms-1 me-1" />
-                        Facebook
-                    </button>
-                    <button type="button" disabled className="btn btn-lg btn-outline-secondary w-100 px-2">
-                        <i className="ci-apple ms-1 me-1" />
-                        Apple
-                    </button>
-                </div>
+//                     <button type="submit" className={`btn btn-lg bg-dark text-white w-100 ${isLoading ? 'disabled' : ''}`} disabled={isLoading}>
+//                         {isLoading ? (
+//                             <div className="spinner-grow spinner-grow-sm" role="status">
+//                                 <span className="visually-hidden">Loading...</span>
+//                             </div>
+//                         ) : (
+//                             'Sign in'
+//                         )}
+//                     </button>
+//                 </form>
+//                 {/* Divider */}
+//                 <div className="d-flex align-items-center my-4">
+//                     <hr className="w-100 m-0" />
+//                     <span className="text-body-emphasis fw-medium text-nowrap mx-4">or continue with</span>
+//                     <hr className="w-100 m-0" />
+//                 </div>
+//                 {/*  */}
+//                 <div className="d-flex flex-column flex-sm-row gap-3 pb-4 mb-3 mb-lg-4">
+//                     <button id="google-signin-btn" type="button" className="btn btn-lg btn-outline-secondary w-100 px-2">
+//                         <i className="ci-google ms-1 me-1" />
+//                         Google
+//                     </button>
+//                     <button type="button" disabled className="btn btn-lg btn-outline-secondary w-100 px-2">
+//                         <i className="ci-facebook ms-1 me-1" />
+//                         Facebook
+//                     </button>
+//                     <button type="button" disabled className="btn btn-lg btn-outline-secondary w-100 px-2">
+//                         <i className="ci-apple ms-1 me-1" />
+//                         Apple
+//                     </button>
+//                 </div>
 
-            </div>
+//             </div>
 
-        </div>
-    );
-};
+//         </div>
+//     );
+// };
 
 // 
 // src/components/auth/QuickSignin.tsx
-import { useRef, useState, useEffect } from 'react';
-import { useNavigate, useLocation, NavLink } from 'react-router-dom';
-// import { NotificationService } from '../../services/local/NotificationService';
-// import { UsersService } from '../../services/local/UsersService';
-// import { AxiosUsersService } from '../../services/net/AxiosUsersService';
-// import { ResponseModal } from '../shared/ResponseModal';
 
 const QuickSignin = () => {
     const signinCanvasRef = useRef<HTMLDivElement>(null); // Moved ref inside component
@@ -433,6 +427,7 @@ const QuickSignin = () => {
                 const message = res.data.full_messages?.[0] || res.data.message || res.data.error || 'Login successful';
 
                 if (res.data.success) {
+                    if(res.data.access_token){
                     const user = res.data;
                     const user_data = {
                         ...user,
@@ -442,7 +437,7 @@ const QuickSignin = () => {
 
                     UsersService.authenticate(user_data);
                     NotificationService.showDialog(message, 'success');
-                    
+                }
                     // Close the offcanvas after successful login
                     if (signinCanvasRef.current) {
                         const offcanvas = bootstrap.Offcanvas.getInstance(signinCanvasRef.current);
@@ -451,7 +446,7 @@ const QuickSignin = () => {
                     
                     // navigate(from, { replace: true });
                 } else {
-                    NotificationService.showDialog(message, 'error');
+                    NotificationService.showDialog(message, 'danger');
                 }
             })
             .catch(err => {
