@@ -1,9 +1,9 @@
-import { AxiosService } from "../base/AxiosService";
+import { AxiosService } from "../net/base/AxiosService";
 import { AuthStore } from "./AuthStore";
 
 export const AuthService = {
   async signin(credentials: { email: string; password: string }) {
-    const response = await AxiosService.post('/auth/signinn', credentials);
+    const response = await AxiosService.json.post('/auth/signinn', credentials);
     
     AuthStore.setState({
       user: response.data.user,
@@ -20,7 +20,7 @@ export const AuthService = {
     const refreshToken = AuthStore.getState().tokens?.refresh_token;
     if (!refreshToken) throw new Error('No refresh token available');
     
-    const response = await AxiosService.post('/auth/refresh-token', {
+    const response = await AxiosService.json.post('/auth/refresh-token', {
       refresh_token: refreshToken
     });
     
@@ -36,7 +36,7 @@ export const AuthService = {
   },
 
   async logout() {
-    await AxiosService.post('/auth/signout');
+    await AxiosService.json.post('/auth/signout');
     AuthStore.clear();
   }
 };

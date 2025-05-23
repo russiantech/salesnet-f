@@ -1,9 +1,17 @@
 // src/components/PrivateRoute.tsx
+// import { Navigate, Outlet, useLocation } from "react-router-dom";
+// import { UsersService } from "../local/UsersService";
+// import { useState, useEffect } from "react";
+// // import { NotificationService } from "../local/NotificationService";
+
+// 
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { UsersService } from "../local/UsersService";
 import { useState, useEffect } from "react";
 import { NotificationService } from "../local/NotificationService";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
+
+// 
 
 interface PrivateRouteProps {
   children: React.ReactElement;
@@ -54,11 +62,6 @@ export const PrivateRoute = ({ children }: PrivateRouteProps) => {
 
 
 // [=======FOR PROTECTING A GROUP OF ROUTES ALL AT ONCE ]
-// src/components/PrivateRoute.tsx
-// import { Navigate, Outlet, useLocation } from "react-router-dom";
-// import { UsersService } from "../local/UsersService";
-// import { useState, useEffect } from "react";
-// import { NotificationService } from "../local/NotificationService";
 
 // const ProtectedLayout = () => {
 //   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -83,10 +86,6 @@ export const PrivateRoute = ({ children }: PrivateRouteProps) => {
 
 // 
 // VERSION 02
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { UsersService } from "../local/UsersService";
-import { useState, useEffect } from "react";
-import { NotificationService } from "../local/NotificationService";
 
 const ProtectedLayout = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);

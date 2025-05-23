@@ -1,4 +1,5 @@
-import { LocalStorageService } from "../base/LocalStorageService";
+
+import { LocalStorageService } from "../local/base/LocalStorageService";
 
 const AUTH_KEY = 'auth';
 
