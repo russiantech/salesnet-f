@@ -1,39 +1,39 @@
-// ================================
-// FILE: utils/pwaManager.js
-// Create this file in src/utils/pwaManager.tsx
-// ================================
+// FILE: src/utils/pwaManager.tsx
+
+type PWAEvent = 'onInstallPromptReady' | 'onInstalled' | 'onUpdateAvailable';
+
+type PWAEventCallbacks = {
+  [K in PWAEvent]: ((data: any) => void)[];
+};
 
 class PWAManager {
+  private deferredPrompt: any | null = null;
+  private isInstalled: boolean = false;
+  private isStandalone: boolean = false;
+  private callbacks: PWAEventCallbacks = {
+    onInstallPromptReady: [],
+    onInstalled: [],
+    onUpdateAvailable: [],
+  };
+
   constructor() {
-    this.deferredPrompt = null;
-    this.isInstalled = false;
-    this.isStandalone = false;
-    this.callbacks = {
-      onInstallPromptReady: [],
-      onInstalled: [],
-      onUpdateAvailable: []
-    };
-    
-    // Only initialize if we're in the browser
     if (typeof window !== 'undefined') {
       this.init();
     }
   }
 
-  init() {
-    // Check if app is already installed/standalone
-    this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
-                       window.navigator.standalone === true;
+  private init(): void {
+    this.isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone === true;
 
-    // Listen for beforeinstallprompt event
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
       console.log('PWA: beforeinstallprompt event fired');
       e.preventDefault();
       this.deferredPrompt = e;
       this.notifyCallbacks('onInstallPromptReady', true);
     });
 
-    // Listen for app installed event
     window.addEventListener('appinstalled', () => {
       console.log('PWA: App installed successfully');
       this.isInstalled = true;
@@ -41,27 +41,27 @@ class PWAManager {
       this.notifyCallbacks('onInstalled', true);
     });
 
-    // Register service worker if supported
     this.registerServiceWorker();
   }
 
-  registerServiceWorker() {
+  private registerServiceWorker(): void {
     if ('serviceWorker' in navigator) {
-      // Use different URLs based on environment
-      const swUrl = process.env.NODE_ENV === 'production' 
-        ? '/service-worker.js' 
-        : '/sw.js'; // For development
-      
-      navigator.serviceWorker.register(swUrl)
+      const swUrl =
+        process.env.NODE_ENV === 'production' ? '/service-worker.js' : '/sw.js';
+
+      navigator.serviceWorker
+        .register(swUrl)
         .then((registration) => {
-          console.log('PWA: Service Worker registered successfully:', registration);
-          
-          // Check for updates
+          console.log('PWA: Service Worker registered:', registration);
+
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                if (
+                  newWorker.state === 'installed' &&
+                  navigator.serviceWorker.controller
+                ) {
                   console.log('PWA: New content available');
                   this.notifyCallbacks('onUpdateAvailable', registration);
                 }
@@ -69,15 +69,13 @@ class PWAManager {
             }
           });
         })
-        .catch((registrationError) => {
-          console.log('PWA: Service Worker registration failed:', registrationError);
+        .catch((err) => {
+          console.log('PWA: Service Worker registration failed:', err);
         });
-    } else {
-      console.log('PWA: Service Worker not supported');
     }
   }
 
-  async showInstallPrompt() {
+  public async showInstallPrompt(): Promise<{ outcome: string }> {
     if (!this.deferredPrompt) {
       console.log('PWA: No install prompt available');
       return { outcome: 'no-prompt' };
@@ -87,41 +85,34 @@ class PWAManager {
     const result = await this.deferredPrompt.prompt();
     console.log('PWA: Install prompt result:', result);
     this.deferredPrompt = null;
-    
     return result;
   }
 
-  canInstall() {
+  public canInstall(): boolean {
     const canInstall = this.deferredPrompt !== null && !this.isStandalone;
-    console.log('PWA: Can install?', canInstall, {
-      hasDeferredPrompt: !!this.deferredPrompt,
-      isStandalone: this.isStandalone
-    });
+    console.log('PWA: Can install?', canInstall);
     return canInstall;
   }
 
-  isAppInstalled() {
+  public isAppInstalled(): boolean {
     return this.isInstalled || this.isStandalone;
   }
 
-  subscribe(event, callback) {
+  public subscribe(event: PWAEvent, callback: (data: any) => void): void {
     if (this.callbacks[event]) {
       this.callbacks[event].push(callback);
     }
   }
 
-  unsubscribe(event, callback) {
+  public unsubscribe(event: PWAEvent, callback: (data: any) => void): void {
     if (this.callbacks[event]) {
-      this.callbacks[event] = this.callbacks[event].filter(cb => cb !== callback);
+      this.callbacks[event] = this.callbacks[event].filter((cb) => cb !== callback);
     }
   }
 
-  notifyCallbacks(event, data) {
-    if (this.callbacks[event]) {
-      this.callbacks[event].forEach(callback => callback(data));
-    }
+  private notifyCallbacks(event: PWAEvent, data: any): void {
+    this.callbacks[event].forEach((cb) => cb(data));
   }
 }
 
-// Singleton instance
 export const pwaManager = new PWAManager();

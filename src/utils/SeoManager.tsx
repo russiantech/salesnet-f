@@ -1,6 +1,20 @@
 import { Helmet } from 'react-helmet-async';
 
-const SeoConfig = ({ title, description, keywords, canonical, image }) => {
+interface SeoConfigProps {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  canonical?: string;
+  image?: string;
+}
+
+const SeoConfig = ({
+  title = 'Salesnet | Internet of sales. Quality Products And Best Deals',
+  description = 'Discover amazing products and exclusive offers at Salesnet. Shop now for the best deals!',
+  keywords = 'ecommerce, online shopping, deals, offers, trending products',
+  canonical,
+  image = '/assets/img/us/logos/favicon.ico',
+}: SeoConfigProps) => {
   return (
     <Helmet>
       <title>{title}</title>
@@ -15,13 +29,6 @@ const SeoConfig = ({ title, description, keywords, canonical, image }) => {
       {canonical && <link rel="canonical" href={canonical} />}
     </Helmet>
   );
-};
-
-SeoConfig.defaultProps = {
-  title: 'Salesnet | Internet of sales. Quality Products And Best Deals',
-  description: 'Discover amazing products and exclusive offers at Salesnet. Shop now for the best deals!',
-  keywords: 'ecommerce, online shopping, deals, offers, trending products',
-  image: '/assets/img/us/logos/favicon.ico'
 };
 
 export default SeoConfig;

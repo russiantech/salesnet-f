@@ -1,23 +1,24 @@
-
-// ================================
-// FILE 2: hooks/usePWA.tsx
-// Purpose: React hook to easily use PWA functionality in components
-// ================================
+// FILE: hooks/usePWA.tsx
 
 import { useState, useEffect } from 'react';
 import { pwaManager } from '../utils/pwaManager';
 
+type InstallPromptResult = {
+  outcome: string;
+  [key: string]: any; // for additional prompt fields
+};
+
 export const usePWA = () => {
-  const [canInstall, setCanInstall] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
-  const [isInstalling, setIsInstalling] = useState(false);
+  const [canInstall, setCanInstall] = useState<boolean>(false);
+  const [isInstalled, setIsInstalled] = useState<boolean>(false);
+  const [isInstalling, setIsInstalling] = useState<boolean>(false);
 
   useEffect(() => {
-    // Initial state
+    // Set initial states
     setCanInstall(pwaManager.canInstall());
     setIsInstalled(pwaManager.isAppInstalled());
 
-    const handleInstallPromptReady = (ready) => {
+    const handleInstallPromptReady = (ready: boolean) => {
       console.log('PWA Hook: Install prompt ready:', ready);
       setCanInstall(ready);
     };
@@ -37,7 +38,7 @@ export const usePWA = () => {
     };
   }, []);
 
-  const install = async () => {
+  const install = async (): Promise<InstallPromptResult> => {
     setIsInstalling(true);
     try {
       const result = await pwaManager.showInstallPrompt();
@@ -55,6 +56,6 @@ export const usePWA = () => {
     isInstalled,
     isInstalling,
     install,
-    manager: pwaManager
+    manager: pwaManager,
   };
 };
