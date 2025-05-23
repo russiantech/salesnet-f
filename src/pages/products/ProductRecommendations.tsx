@@ -78,6 +78,7 @@ const ProductRecommendations = () => {
                             //     url={`/products/${product.slug}`}
                             // />
                             
+                            // <ProductSummary key={product.id} product={product} />
                             <ProductSummary product={product} />
                             
                         ))}

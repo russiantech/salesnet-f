@@ -72,6 +72,8 @@ import CategoriesPage from './pages/categories/CategoriesPage';
 import LoadingSpinner from './components/shared/LoadingSpinner';
 import AuthCanvas from './components/shared/modals/AuthCanvas';
 import { GlobalNotifications } from './components/shared/GlobalNotifications';
+import Installer from './components/shared/Installer';
+import ManualInstallButton from './components/shared/ManualInstallButton';
 
 const ProductsInCategory = lazy(() => import("./pages/products/ProductsInCategory"));
 
@@ -100,6 +102,8 @@ const App = () => {
       <Search />
       <AuthCanvas />
       <GlobalNotifications />
+
+      <ManualInstallButton />
       
       {/* Suspense handles all lazy components */}
       <Suspense fallback={<LoadingSpinner />}>
@@ -125,9 +129,12 @@ const App = () => {
             <Route path="/tests/*" element={<TestRoutes />} />
 
             <Route path="*" element={<NotFoundPage />} />
-
+            
         </Routes>
       </Suspense>
+
+       <Installer />
+
     </>
   );
 };
