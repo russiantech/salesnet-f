@@ -179,8 +179,20 @@ export const AxiosService = {
       multipartInstance.put(url, data, config),
   },
 
-  fetchPage: (url: string, pagination = { page: 1, page_size: 10 }) => 
-    jsonInstance.get(`${url}?page=${pagination.page}&page_size=${pagination.page_size}`),
+  // fetchPage1: (url: string, pagination = { page: 1, page_size: 10 }) => 
+  //   jsonInstance.get(`${url}?page=${pagination.page}&page_size=${pagination.page_size}`),
+
+  // now can handle additional url parameters
+  fetchPage: (url: string, params: Record<string, any> = { page: 1, page_size: 10 }) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, String(value));
+      }
+    });
+    return jsonInstance.get(`${url}?${searchParams.toString()}`);
+  }
+
 };
 
 // SEE USAGE BELOW:
