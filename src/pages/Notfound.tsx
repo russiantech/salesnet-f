@@ -241,7 +241,7 @@ const NotFoundPage = () => {
 const NotImplimentedPage = () => {
   return (
 
-    <div className="modal fade" id="NotImplimentedPage" tabIndex="-1" aria-modal="true" role="dialog">
+    <div className="modal fade" id="NotImplimentedPage" tabIndex={-1} aria-modal="true" role="dialog">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">

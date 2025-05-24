@@ -1,32 +1,25 @@
-import React from 'react'
+interface LoadingSpinnerProps {
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
 
-const LoadingSpinner_0 = ({ size = 'md' }) => (
-  <div className={`spinner-border text-primary spinner-border-${size}`} role="status">
-      <span className="visually-hidden">Loading...</span>
-  </div>
-);
-
-const LoadingSpinner = ({ size = 'md' }) => (
-  <div className="loading-spinner">
+const LoadingSpinner = ({ size = 'md', className }: LoadingSpinnerProps) => {
+  return (
+    <div className={`loading-spinner ${className || ''}`}>
       <div className="spinner"></div>
-  </div>
-);
+    </div>
+  );
+};
 
-export const LoadingZoom = ({ size = 'sm' }) => (
+interface LoadingZoomProps {
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const LoadingZoom = ({ size = 'sm' }: LoadingZoomProps) => (
   <span className="loading-zoom">
-      <span className={`spinner-grow spinner-grow-${size}`} role="status" aria-hidden="true"></span>
-      <span className="visually-hidden">Loading...</span>
+    <span className={`spinner-grow spinner-grow-${size}`} role="status" aria-hidden="true"></span>
+    <span className="visually-hidden">Loading...</span>
   </span>
 );
 
-
-// Export all components as default
-// const LoadingComponents = {
-//   LoadingSpinner_0,
-//   LoadingSpinner,
-//   LoadingZoom,
-// };
-// export default LoadingComponents;
-
-export default LoadingSpinner
-// export default { LoadingSpinner, LoadingZoom }
+export default LoadingSpinner;

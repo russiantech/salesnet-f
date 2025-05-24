@@ -3,7 +3,7 @@
 // const ProductReviewForm = () => {
 //     return (
 //         <div>
-//             <div className="modal fade" id="reviewForm" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="reviewFormLabel" aria-hidden="true">
+//             <div className="modal fade" id="reviewForm" data-bs-backdrop="static" tabIndex={-1} aria-labelledby="reviewFormLabel" aria-hidden="true">
 //                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 //                     <form className="modal-content needs-validation" noValidate>
 //                         <div className="modal-header border-0">

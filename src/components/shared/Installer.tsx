@@ -1,131 +1,120 @@
 // ================================
 // FILE: components/Installer.tsx
-// Purpose: Smart PWA installer that handles its own timing and user experience
-// ================================
-// ================================
-// FILE: components/shared/Installer.js
-// Update your existing file at src/components/shared/Installer.tsx
+// Purpose: Smart PWA installer with controlled timing and user experience
 // ================================
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { usePWA } from '../../hooks/usePWA';
 
+type InstallOutcome = 'accepted' | 'dismissed' | 'error';
+
+interface InstallResult {
+  outcome: InstallOutcome;
+  error?: Error;
+}
+
 const Installer = () => {
+  // Hooks and refs
   const { canInstall, isInstalling, install } = usePWA();
   const [hasBeenShown, setHasBeenShown] = useState(false);
   const [userDismissed, setUserDismissed] = useState(false);
   const [showInstaller, setShowInstaller] = useState(false);
-  const offcanvasRef = useRef(null);
+  const offcanvasRef = useRef<HTMLDivElement>(null);
 
-  // Debug logging
-  console.log('Installer render:', { canInstall, showInstaller, hasBeenShown, userDismissed });
-
-  // Smart timing logic
+  // Debug logging (remove in production)
   useEffect(() => {
-    if (!canInstall || hasBeenShown || userDismissed) {
-      console.log('Installer: Not showing due to conditions:', { canInstall, hasBeenShown, userDismissed });
-      return;
-    }
+    console.debug('Installer state:', { 
+      canInstall, 
+      showInstaller, 
+      hasBeenShown, 
+      userDismissed,
+      isInstalling
+    });
+  }, [canInstall, showInstaller, hasBeenShown, userDismissed, isInstalling]);
 
-    // Check dismiss history
-    const dismissCount = parseInt(sessionStorage.getItem('pwa-dismiss-count') || '0');
+  // Installation control logic
+  useEffect(() => {
+    if (!canInstall || hasBeenShown || userDismissed) return;
+
+    const dismissCount = parseInt(sessionStorage.getItem('pwa-dismiss-count') || '0', 10);
     const lastDismissed = sessionStorage.getItem('pwa-last-dismissed');
     const today = new Date().toDateString();
 
-    if (dismissCount >= 2) {
-      console.log('Installer: Too many dismissals');
-      return;
-    }
+    if (dismissCount >= 2 || lastDismissed === today) return;
 
-    if (lastDismissed === today) {
-      console.log('Installer: Already dismissed today');
-      return;
-    }
-
-    console.log('Installer: Setting up timing logic');
-
-    const showInstaller = () => {
-      console.log('Installer: Showing installer');
+    const timer = setTimeout(() => {
       setShowInstaller(true);
       setHasBeenShown(true);
       
-      // Trigger Bootstrap offcanvas
+      // Initialize offcanvas after state update
       setTimeout(() => {
-        if (offcanvasRef.current && window.bootstrap) {
-          console.log('Installer: Triggering Bootstrap offcanvas');
-          const offcanvas = new window.bootstrap.Offcanvas(offcanvasRef.current);
-          offcanvas.show();
-        } else {
-          console.warn('Installer: Bootstrap not available or ref not set');
+        if (offcanvasRef.current && window.bootstrap?.Offcanvas) {
+          const BootstrapOffcanvas = window.bootstrap.Offcanvas as any;
+          new BootstrapOffcanvas(offcanvasRef.current).show();
         }
       }, 100);
-    };
+    }, 5000); // Show after 5 seconds (adjust as needed)
 
-    // Simple timing for testing - show after 5 seconds
-    const timer = setTimeout(() => {
-      console.log('Installer: Timer triggered');
-      showInstaller();
-    }, 5000);
-
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [canInstall, hasBeenShown, userDismissed]);
 
-  const handleInstall = async () => {
-    console.log('Installer: Install button clicked');
+  const handleInstall = async (): Promise<void> => {
+    if (!install) return;
+
     try {
-      const result = await install();
-      console.log('Installer: Install result:', result);
+      const result = await install() as InstallResult;
       if (result.outcome === 'accepted') {
         setShowInstaller(false);
         sessionStorage.removeItem('pwa-dismiss-count');
         sessionStorage.removeItem('pwa-last-dismissed');
       }
     } catch (error) {
-      console.error('Installer: Installation error:', error);
+      console.error('Installation failed:', error);
     }
   };
 
-  const handleClose = () => {
-    console.log('Installer: Close button clicked');
+  const handleClose = (): void => {
     setUserDismissed(true);
     setShowInstaller(false);
     
-    const currentCount = parseInt(sessionStorage.getItem('pwa-dismiss-count') || '0');
+    const currentCount = parseInt(sessionStorage.getItem('pwa-dismiss-count') || '0', 10);
     sessionStorage.setItem('pwa-dismiss-count', (currentCount + 1).toString());
     sessionStorage.setItem('pwa-last-dismissed', new Date().toDateString());
     
-    if (offcanvasRef.current && window.bootstrap) {
+    if (offcanvasRef.current && window.bootstrap?.Offcanvas) {
       const offcanvas = window.bootstrap.Offcanvas.getInstance(offcanvasRef.current);
-      if (offcanvas) {
-        offcanvas.hide();
-      }
+      offcanvas?.hide();
     }
   };
 
-  // Always render the component for testing, just hide it conditionally
   const shouldShow = canInstall && (showInstaller || hasBeenShown);
-  
+
+  if (!shouldShow) return null;
+
   return (
     <div 
       ref={offcanvasRef}
       className="offcanvas offcanvas-bottom" 
-      id="offcanvasBottom" 
-      tabIndex="-1" 
-      aria-labelledby="offcanvasBottomLabel"
+      id="pwa-installer-offcanvas"
+      tabIndex={-1}
+      aria-labelledby="pwa-installer-label"
       data-bs-backdrop="true"
       data-bs-keyboard="true"
-      style={{ display: shouldShow ? 'block' : 'none' }}
     >
       <div className="offcanvas-header border-bottom">
-        <h5 className="offcanvas-title" id="offcanvasBottomLabel">
-          <Link className="navbar-brand pt-0" to="#">
+        <h5 className="offcanvas-title" id="pwa-installer-label">
+          <Link className="navbar-brand pt-0" to="/" aria-label="Salesnet Home">
             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
               <div className="flex-shrink-0 border rounded-circle" style={{ width: '40px' }}>
                 <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
-                  <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
+                  <img 
+                    src="/assets/img/us/logos/favicon.svg" 
+                    alt="Salesnet Logo" 
+                    width="40"
+                    height="40"
+                    loading="lazy"
+                  />
                 </div>
               </div>
             </span>
@@ -133,54 +122,53 @@ const Installer = () => {
           </Link>
         </h5>
         <button 
-          className="btn-close" 
           type="button" 
+          className="btn-close" 
           data-bs-dismiss="offcanvas" 
-          aria-label="Close"
+          aria-label="Close installer"
           onClick={handleClose}
         />
       </div>
-      <div className="offcanvas-body d-flex flex-column align-items-center justify-content-center text-center">
-        <p className='lead'>Install Salesnet - Internet of sales - Sell like crazy charm.</p>
+
+      <div className="offcanvas-body text-center">
+        <p className="lead mb-4">Install Salesnet - Internet of Sales</p>
         
-        <div className="row text-center mb-3 d-none d-md-flex">
-          <div className="col">
-            <small className="text-muted">
-              <i className="ci-zap me-1"></i>
-              Faster Loading
-            </small>
-          </div>
-          <div className="col">
-            <small className="text-muted">
-              <i className="ci-wifi-off me-1"></i>
-              Works Offline
-            </small>
-          </div>
-          <div className="col">
-            <small className="text-muted">
-              <i className="ci-home me-1"></i>
-              Home Screen
-            </small>
-          </div>
+        <div className="row mb-4 d-none d-md-flex">
+          {[
+            { icon: 'ci-zap', text: 'Faster Loading' },
+            { icon: 'ci-wifi-off', text: 'Works Offline' },
+            { icon: 'ci-home', text: 'Home Screen' }
+          ].map((feature, index) => (
+            <div key={index} className="col">
+              <small className="text-muted">
+                <i className={`${feature.icon} me-1`} />
+                {feature.text}
+              </small>
+            </div>
+          ))}
         </div>
 
-        <div className="d-flex flex-column align-items-center gap-3 pb-4 mb-3 mb-lg-4">
+        <div className="d-flex flex-column align-items-center gap-3 pb-4">
           <button 
-            id="install" 
-            type="button" 
-            className="btn btn-dark rounded w-100 px-3 py-2 btn-lg btn-info rounded-pill" 
-            style={{ maxWidth: '250px', fontSize: '1rem' }}
+            type="button"
+            className="btn btn-dark btn-lg rounded-pill px-4 py-2"
+            style={{ maxWidth: '250px' }}
             onClick={handleInstall}
             disabled={isInstalling}
+            aria-busy={isInstalling}
           >
             {isInstalling ? (
               <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span 
+                  className="spinner-border spinner-border-sm me-2" 
+                  role="status" 
+                  aria-hidden="true"
+                />
                 Installing...
               </>
             ) : (
               <>
-                <i className="ci-download ms-2 me-2"></i>
+                <i className="ci-download me-2" aria-hidden="true" />
                 Add to Home Screen
               </>
             )}
@@ -190,12 +178,13 @@ const Installer = () => {
             type="button" 
             className="btn btn-link text-muted btn-sm"
             onClick={handleClose}
+            aria-label="Dismiss installation prompt"
           >
             Maybe later
           </button>
         </div>
 
-        <small className="text-muted">
+        <small className="text-muted d-block mt-2">
           You can always install later from your browser menu
         </small>
       </div>

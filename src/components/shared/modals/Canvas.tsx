@@ -18,7 +18,7 @@ const Basket = () => {
       {/* Empty Basket Offcanvas */}
       <div className="offcanvas offcanvas-end pb-sm-2 px-sm-2 d-none"
         id="shoppingCart_01"
-        tabIndex="-1"
+        tabIndex={-1}
         aria-labelledby="shoppingCartLabel"
         style={{ width: '500px' }}
         aria-modal="true"
@@ -56,7 +56,7 @@ const Basket = () => {
       <div
         className="offcanvas offcanvas-end pb-sm-2 px-sm-2"
         id="shoppingCart"
-        tabIndex="-1"
+        tabIndex={-1}
         aria-labelledby="shoppingCartLabel"
         style={{ width: '500px' }}
       >
@@ -218,7 +218,7 @@ const Basket = () => {
 
 const Installer = () => {
   return (
-    <div className="offcanvas offcanvas-bottom" id="offcanvasBottom" tabIndex="-1" aria-labelledby="offcanvasBottomLabel">
+    <div className="offcanvas offcanvas-bottom" id="offcanvasBottom" tabIndex={-1} aria-labelledby="offcanvasBottomLabel">
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasBottomLabel">
           <Link className="navbar-brand pt-0" to="#">

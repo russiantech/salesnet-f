@@ -264,13 +264,13 @@ const ProductDetails = () => {
                                     </button>
                                 </li>
                                 <li className="nav-item me-md-1" role="presentation">
-                                    <button aria-controls="delivery-tab-pane" aria-selected="false" className="nav-link badge rounded-pill text-info bg-info-subtle p-2" data-bs-target="#delivery-tab-pane" data-bs-toggle="tab" id="delivery-tab" role="tab" tabIndex="-1" type="button">
+                                    <button aria-controls="delivery-tab-pane" aria-selected="false" className="nav-link badge rounded-pill text-info bg-info-subtle p-2" data-bs-target="#delivery-tab-pane" data-bs-toggle="tab" id="delivery-tab" role="tab" tabIndex={-1} type="button">
                                         Delivery
                                         <span className="d-none d-md-inline"> and returns</span>
                                     </button>
                                 </li>
                                 <li className="nav-item" role="presentation">
-                                    <button aria-controls="reviews-tab-pane" aria-selected="false" className="nav-link badge rounded-pill text-info bg-info-subtle p-2" data-bs-target="#reviews-tab-pane" data-bs-toggle="tab" id="reviews-tab" role="tab" tabIndex="-1" type="button">
+                                    <button aria-controls="reviews-tab-pane" aria-selected="false" className="nav-link badge rounded-pill text-info bg-info-subtle p-2" data-bs-target="#reviews-tab-pane" data-bs-toggle="tab" id="reviews-tab" role="tab" tabIndex={-1} type="button">
                                         Reviews
                                         <span className="d-none d-md-inline"> ({product.reviews_count})</span>
                                     </button>

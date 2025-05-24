@@ -2,7 +2,7 @@
 const Categories1 = () => {
   return (
     <>
-      <div className="offcanvas offcanvas-start d-flex h-100 " id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+      <div className="offcanvas offcanvas-start d-flex h-100 " id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
         style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column', minWidth: '300px', maxWidth: '100%' }}>
 
         <div className="offcanvas-header border-bottom">
@@ -379,7 +379,7 @@ const Categories2 = () => {
   };
 
   return (
-    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
       style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column', minWidth: '300px', maxWidth: '100%' }}>
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasLeftLabel">Browse Salessnet.</h5>
@@ -472,7 +472,7 @@ const Categories3 = () => {
   };
   
   return (
-    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
       style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column', minWidth: '300px', maxWidth: '100%' }}>
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasLeftLabel">Browse Salessnet.</h5>
@@ -576,7 +576,7 @@ const Categories4 = () => {
   };
 
   return (
-    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
       style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column', minWidth: '300px', maxWidth: '100%' }}>
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasLeftLabel">Browse Salessnet.</h5>
@@ -677,7 +677,7 @@ const Categories5 = () => {
   };
 
   return (
-    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+    <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
       style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column', minWidth: '300px', maxWidth: '100%' }}>
       <div className="offcanvas-header border-bottom">
         <h5 className="offcanvas-title" id="offcanvasLeftLabel">Browse Salessnet.</h5>
@@ -768,7 +768,7 @@ const Categories6 = () => {
 
   return (
     <>
-      <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+      <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
         style={{ paddingLeft: 0, overflowX: 'auto', display: 'flex', flexDirection: 'column', width:'800px', minWidth: '300px', maxWidth: '100%' }}>
 
         <div className="offcanvas-header border-bottom">
@@ -958,7 +958,7 @@ const Categories = () => {
 
   return (
     <>
-      <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex="-1" aria-labelledby="offcanvasLeftLabel"
+      <div className="offcanvas offcanvas-start d-flex h-100" id="SideCategory" tabIndex={-1} aria-labelledby="offcanvasLeftLabel"
         // style={{ paddingLeft: 0, overflowX: 'visible', display: 'flex', flexGrow:20, flexDirection: 'column', minWidth: '300px', maxWidth: '100%' }}
         style={{
           // width: 'auto',
@@ -1188,7 +1188,7 @@ const Categories8 = () => {
     <div 
       className="offcanvas offcanvas-start d-flex h-100" 
       id="SideCategory" 
-      tabIndex="-1" 
+      tabIndex={-1} 
       aria-labelledby="offcanvasLeftLabel"
       style={{ 
         paddingLeft: 0, 

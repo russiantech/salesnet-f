@@ -88,7 +88,7 @@ const Search = () => {
   };
 
   // return (
-  //   <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex="-1">
+  //   <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex={-1}>
   //     <div className="offcanvas-header border-bottom p-0 py-lg-1">
   //       <form className="container d-flex align-items-center" onSubmit={handleSubmit}>
   //         <div className="position-relative w-100">
@@ -203,7 +203,7 @@ const Search = () => {
   };
   
   return (
-    <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex="-1">
+    <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex={-1}>
         <div className="offcanvas-header border-bottom p-0 py-lg-1">
             <form className="container d-flex align-items-center" onSubmit={handleSubmit}>
                 <div className="position-relative w-100">

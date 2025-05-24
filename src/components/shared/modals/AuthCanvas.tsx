@@ -24,17 +24,17 @@ interface Observer {
 }
 
 // Extend Window interface to include bootstrap
-declare global {
-    interface Window {
-        bootstrap: {
-            Offcanvas: {
-                getInstance: (element: HTMLElement) => {
-                    hide: () => void;
-                } | null;
-            };
-        };
-    }
-}
+// declare global {
+//     interface Window {
+//         bootstrap: {
+//             Offcanvas: {
+//                 getInstance: (element: HTMLElement) => {
+//                     hide: () => void;
+//                 } | null;
+//             };
+//         };
+//     }
+// }
 
 const AuthCanvas = () => {
     return (
