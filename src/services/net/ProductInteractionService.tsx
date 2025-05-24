@@ -11,7 +11,7 @@ export const ProductInteractionService = {
      * @param {string} productId - The ID of the product to add to favorites
      * @returns {Promise} The axios response
      */
-    add: (productId) => {
+    add: (productId: any): Promise<any> => {
       return AxiosService.json.post('/favorites', { product_id: productId });
     },
 
@@ -20,7 +20,7 @@ export const ProductInteractionService = {
      * @param {string} productId - The ID of the product to remove from favorites
      * @returns {Promise} The axios response
      */
-    remove: (productId) => {
+    remove: (productId: any): Promise<any> => {
       return AxiosService.json.delete(`/favorites/${productId}`);
     },
 
@@ -30,7 +30,7 @@ export const ProductInteractionService = {
      * @param {boolean} currentStatus - The current favorite status
      * @returns {Promise} The axios response
      */
-    toggle: (productId, currentStatus) => {
+    toggle: (productId: any, currentStatus: any): Promise<any> => {
       return currentStatus 
         ? ProductInteractionService.favorites.remove(productId)
         : ProductInteractionService.favorites.add(productId);
@@ -41,7 +41,7 @@ export const ProductInteractionService = {
      * @param {Object} params - Optional query parameters
      * @returns {Promise} The axios response
      */
-    list: (params = {}) => {
+    list: (params: object = {}): Promise<any> => {
       const defaultParams = { page: 1, page_size: 20 };
       return AxiosService.json.get('/favorites', {
         params: { ...defaultParams, ...params }
@@ -53,7 +53,7 @@ export const ProductInteractionService = {
      * @param {string} productId - The ID of the product to check
      * @returns {Promise} The axios response
      */
-    check: (productId) => {
+    check: (productId: any): Promise<any> => {
       return AxiosService.json.get(`/favorites/check/${productId}`);
     }
   },
@@ -67,7 +67,7 @@ export const ProductInteractionService = {
      * @param {Object} options - Optional product options
      * @returns {Promise} The axios response
      */
-    add: (productId, quantity = 1, options = {}) => {
+    add: (productId: any, quantity: number = 1, options: object = {}): Promise<any> => {
       return AxiosService.json.post('/basket', { 
         product_id: productId,
         quantity,
@@ -80,7 +80,7 @@ export const ProductInteractionService = {
      * @param {string} itemId - The basket item ID
      * @returns {Promise} The axios response
      */
-    remove: (itemId) => {
+    remove: (itemId: any): Promise<any> => {
       return AxiosService.json.delete(`/basket/${itemId}`);
     },
 
@@ -90,15 +90,15 @@ export const ProductInteractionService = {
      * @param {number} quantity - The new quantity
      * @returns {Promise} The axios response
      */
-    updateQuantity: (itemId, quantity) => {
-      return AxiosService.json.patch(`/basket/${itemId}`, { quantity });
+    updateQuantity: (itemId: any, quantity: any): Promise<any> => {
+      return AxiosService.json.put(`/basket/${itemId}`, { quantity });
     },
 
     /**
      * Get user's basket contents
      * @returns {Promise} The axios response
      */
-    get: () => {
+    get: (): Promise<any> => {
       return AxiosService.json.get('/basket');
     },
 
@@ -106,7 +106,7 @@ export const ProductInteractionService = {
      * Clear the entire basket
      * @returns {Promise} The axios response
      */
-    clear: () => {
+    clear: (): Promise<any> => {
       return AxiosService.json.delete('/basket');
     }
   },
@@ -118,7 +118,7 @@ export const ProductInteractionService = {
      * @param {string} productId - The ID of the product to add to compare
      * @returns {Promise} The axios response
      */
-    add: (productId) => {
+    add: (productId: any): Promise<any> => {
       return AxiosService.json.post('/compare', { product_id: productId });
     },
 
@@ -127,7 +127,7 @@ export const ProductInteractionService = {
      * @param {string} productId - The ID of the product to remove from compare
      * @returns {Promise} The axios response
      */
-    remove: (productId) => {
+    remove: (productId: any): Promise<any> => {
       return AxiosService.json.delete(`/compare/${productId}`);
     },
 
@@ -137,7 +137,7 @@ export const ProductInteractionService = {
      * @param {boolean} currentStatus - The current compare status
      * @returns {Promise} The axios response
      */
-    toggle: (productId, currentStatus) => {
+    toggle: (productId: any, currentStatus: any): Promise<any> => {
       return currentStatus 
         ? ProductInteractionService.compare.remove(productId)
         : ProductInteractionService.compare.add(productId);
@@ -147,7 +147,7 @@ export const ProductInteractionService = {
      * Get user's compare list
      * @returns {Promise} The axios response
      */
-    list: () => {
+    list: (): Promise<any> => {
       return AxiosService.json.get('/compare');
     },
 
@@ -156,7 +156,7 @@ export const ProductInteractionService = {
      * @param {string} productId - The ID of the product to check
      * @returns {Promise} The axios response
      */
-    check: (productId) => {
+    check: (productId: any): Promise<any> => {
       return AxiosService.json.get(`/compare/check/${productId}`);
     },
 
@@ -164,7 +164,7 @@ export const ProductInteractionService = {
      * Clear the entire compare list
      * @returns {Promise} The axios response
      */
-    clear: () => {
+    clear: (): Promise<any> => {
       return AxiosService.json.delete('/compare');
     }
   },
@@ -178,7 +178,7 @@ export const ProductInteractionService = {
      * @param {string} review - Optional review text
      * @returns {Promise} The axios response
      */
-    submit: (productId, rating, review = '') => {
+    submit: (productId: any, rating: any, review: string = ''): Promise<any> => {
       return AxiosService.json.post(`/products/${productId}/ratings`, {
         rating,
         review
@@ -191,7 +191,7 @@ export const ProductInteractionService = {
      * @param {Object} params - Optional query parameters
      * @returns {Promise} The axios response
      */
-    get: (productId, params = {}) => {
+    get: (productId: any, params: object = {}): Promise<any> => {
       const defaultParams = { page: 1, page_size: 10 };
       return AxiosService.json.get(`/products/${productId}/ratings`, {
         params: { ...defaultParams, ...params }
@@ -205,8 +205,8 @@ export const ProductInteractionService = {
      * @param {Object} updates - The fields to update
      * @returns {Promise} The axios response
      */
-    update: (productId, ratingId, updates) => {
-      return AxiosService.json.patch(`/products/${productId}/ratings/${ratingId}`, updates);
+    update: (productId: any, ratingId: any, updates: unknown): Promise<any> => {
+      return AxiosService.json.put(`/products/${productId}/ratings/${ratingId}`, updates);
     },
 
     /**
@@ -215,7 +215,7 @@ export const ProductInteractionService = {
      * @param {string} ratingId - The ID of the rating
      * @returns {Promise} The axios response
      */
-    delete: (productId, ratingId) => {
+    delete: (productId: any, ratingId: any): Promise<any> => {
       return AxiosService.json.delete(`/products/${productId}/ratings/${ratingId}`);
     }
   }

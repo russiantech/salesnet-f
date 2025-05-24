@@ -69,6 +69,6 @@ export const AxiosUsersService = {
     },
 
     fetchAll(pagination: Pagination = { page: 1, page_size: 10 }) {
-        return AxiosService.json.fetchPage('/users', pagination);
+        return AxiosService.json.get('/users');
     },
 };

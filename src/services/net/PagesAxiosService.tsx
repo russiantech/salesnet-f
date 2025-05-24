@@ -2,7 +2,7 @@ import {AxiosService} from "./base/AxiosService";
 
 export const PagesAxiosService = {
     getHome() {
-        return AxiosService.get('/');
+        return AxiosService.json.get('/');
     },
     
     getAbout() {
