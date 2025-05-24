@@ -11,9 +11,10 @@ import {
   FireOutlined
 } from '@ant-design/icons';
 import OfferForm from './OfferForm';
-import { Offer, OfferStatus } from '../../types/Offer';
-import { OffersAxiosService } from '../../services/net/OffersAxiosService';
-import { formatDate, timeLeft } from '../../utils/dateUtils';
+import { OffersAxiosService } from '../../../services/net/OffersAxiosService';
+import { Offer } from '../../../types/Offers';
+import { formatDate } from '../../../utils/dateUtils';
+// import { Offer, OfferStatus } from '../../types/Offer';
 
 const OfferManager: React.FC = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -30,10 +31,10 @@ const OfferManager: React.FC = () => {
   const fetchOffers = async () => {
     setLoading(true);
     try {
-      const response = await OffersAxiosService.getOffers();
+      // const response = await OffersAxiosService.getOffers();
+      const response = await OffersAxiosService.fetchOffers();
       setOffers(response.data);
-    } catch (error) {
-      message.error('Failed to fetch offers');
+    } catch (error) {      message.error('Failed to fetch offers');
     } finally {
       setLoading(false);
     }
