@@ -7,10 +7,10 @@ type PWAEventCallbacks = {
 };
 
 class PWAManager {
-  private deferredPrompt: any | null = null;
-  private isInstalled: boolean = false;
-  private isStandalone: boolean = false;
-  private callbacks: PWAEventCallbacks = {
+  public deferredPrompt: any | null = null;
+  public isInstalled: boolean = false;
+  public isStandalone: boolean = false;
+  public callbacks: PWAEventCallbacks = {
     onInstallPromptReady: [],
     onInstalled: [],
     onUpdateAvailable: [],
@@ -22,7 +22,7 @@ class PWAManager {
     }
   }
 
-  private init(): void {
+  public init(): void {
     this.isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true;
@@ -44,7 +44,7 @@ class PWAManager {
     this.registerServiceWorker();
   }
 
-  private registerServiceWorker(): void {
+  public registerServiceWorker(): void {
     if ('serviceWorker' in navigator) {
       const swUrl =
         process.env.NODE_ENV === 'production' ? '/service-worker.js' : '/sw.js';
@@ -110,7 +110,7 @@ class PWAManager {
     }
   }
 
-  private notifyCallbacks(event: PWAEvent, data: any): void {
+  public notifyCallbacks(event: PWAEvent, data: any): void {
     this.callbacks[event].forEach((cb) => cb(data));
   }
 }
