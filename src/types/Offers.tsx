@@ -1,39 +1,9 @@
-// // src/types/Offer.ts
-// export interface Offer {
-//     id: number;
-//     title: string;
-//     slug: string;
-//     product: {
-//       id: number;
-//       name: string;
-//       price: number;
-//       average_rating: number;
-//       comments_count: number;
-//       stock: number;
-//       stock_percentage: number;
-//       images: Array<{
-//         file_path: string;
-//       }>;
-//     };
 
-//     discount_type: 'percentage' | 'fixed_amount';
-//     discount_value: number;
-//     calculated_price: number;
-//     promo_code?: string;
-//     start_date: string;
-//     end_date: string;
-//     banner_image?: string;
-//     background_gradient?: string;
-//     text_color?: string;
-//     is_featured: boolean;
-//   }
 
-// 
-
-// src/types/offers.ts
+// src/types/offers.tsx
 export interface Offer {
     id: number;
-    title: string;
+    name: string;
     slug: string;
     description?: string;
     discount_type: 'percentage' | 'fixed_amount' | 'buy_x_get_y';
@@ -51,6 +21,7 @@ export interface Offer {
     updated_at: string;
     products: Product[];
     categories: Category[];
+    is_percentage: true;
   }
   
   export interface Product {
@@ -68,7 +39,7 @@ export interface Offer {
   }
   
   export interface OfferCreatePayload {
-    title: string;
+    name: string;
     description?: string;
     discount_type: 'percentage' | 'fixed_amount';
     discount_value: number;
