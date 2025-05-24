@@ -1,5 +1,4 @@
-import { Helmet } from 'react-helmet'; // Import Helmet
-// import Aside from '../../user/shared/Aside'
+import { Helmet } from 'react-helmet-async';
 import Navigation from '../../../components/shared/Navigation'
 import Aside from '../shared/Aside'
 
