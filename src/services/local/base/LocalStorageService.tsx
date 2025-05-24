@@ -1,20 +1,28 @@
+
+// src/services/base/LocalStorageService.tsx
 export const LocalStorageService = {
-    get(key) {
+    
+    get(key: string): string | null {
+        if (typeof window === 'undefined') return null;
         return localStorage.getItem(key);
     },
-    set(key, value) {
-        localStorage.setItem(key, value);
+    
+    set(key: string, value: string): void {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem(key, value);
+        }
     },
-    remove(key) {
-        localStorage.removeItem(key);
+    
+    remove(key: string): void {
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem(key);
+        }
     },
-    clear(key) {
-        localStorage.removeItem(key);
+
+    clear(key: string): void {
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem(key);
+        }
     },
-    delete(key) {
-        localStorage.removeItem(key);
-    },
-    clearAll() {
-        localStorage.clear();
-    }
+
 };
