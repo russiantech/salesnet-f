@@ -11,15 +11,13 @@ export default defineConfig({
     }) : undefined,
   ].filter(Boolean),
   build: {
+    // Set the correct output directory for Vercel
+    outDir: 'dist',
     // Continue building even with TypeScript errors
     rollupOptions: {
       onwarn: () => {},
     },
     // Skip type checking during build
     emptyOutDir: true,
-  },
-  // Set the correct output directory for Vercel
-  build: {
-    outDir: 'dist',
   }
 })
