@@ -1,22 +1,37 @@
 // Service Worker with TypeScript
-declare const self: ServiceWorkerGlobalScope;
+/// <reference lib="webworker" />
 
-interface CacheStorage {
-  open(cacheName: string): Promise<Cache>;
-  keys(): Promise<string[]>;
-  delete(cacheName: string): Promise<boolean>;
-  match(request: RequestInfo): Promise<Response | undefined>;
-}
+// Cast the global scope to ServiceWorkerGlobalScope
+const sw = self as unknown as ServiceWorkerGlobalScope;
 
 const CACHE_NAME = 'salesnet-pwa-v1';
 const urlsToCache: string[] = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/assets/img/us/logos/favicon.svg'
+  '/manifest.json',
+  '/src/main.tsx',
+  // Core CSS files
+  '/assets/css/theme.min.css',
+  '/assets/css/theme.rtl.min.css',
+  '/assets/css/custom.css',
+  '/assets/icons/salesnet-icons.min.css',
+  // Vendor CSS
+  '/assets/vendor/choices_js/choices.min.css',
+  '/assets/vendor/swiper/swiper-bundle.min.css',
+  '/assets/vendor/simplebar/simplebar.min.css',
+  // JavaScript files
+  '/assets/js/theme-switcher.js',
+  '/assets/js/theme.min.js',
+  '/assets/vendor/choices_js/choices.min.js',
+  '/assets/vendor/simplebar/simplebar.min.js',
+  // Fonts
+  '/assets/fonts/inter-variable-latin.woff',
+  '/assets/icons/salesnet-icons.woff',
+  // Icons and images
+  '/assets/img/us/logos/favicon.ico',
+  '/assets/app-icons/icon-180x180.png'
 ];
 
-self.addEventListener('install', (event: ExtendableEvent) => {
+sw.addEventListener('install', (event: ExtendableEvent) => {
   console.log('SW: Install event');
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -27,7 +42,7 @@ self.addEventListener('install', (event: ExtendableEvent) => {
   );
 });
 
-self.addEventListener('fetch', (event: FetchEvent) => {
+sw.addEventListener('fetch', (event: FetchEvent) => {
   event.respondWith(
     caches.match(event.request)
       .then((response: Response | undefined) => {
