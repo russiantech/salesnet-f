@@ -152,7 +152,7 @@ const Categories: React.FC = () => {
           <header className="navbar navbar-expand-lg d-block z-fixed p-0" data-sticky-navbar='{"offset": 500}'>
             <div className="container px-0 px-lg-1">
               <div className="row">
-                <div className="col-lg-6 col-12">
+
                   {loading && <LoadingSpinner />}
                   
                   {error && (
@@ -170,6 +170,8 @@ const Categories: React.FC = () => {
                       </div>
                     </div>
                   )}
+
+                <div className="col-lg-6 col-12">
 
                   <div className="navbar-nav">
                     <div className="dropdown w-100">
