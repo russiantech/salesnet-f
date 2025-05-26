@@ -21,9 +21,7 @@ export const registerNavigation = (handler: (path: string) => void) => {
 
 const getBaseURL = (): string => {
   return window.location.hostname === 'localhost' 
-    ? 'http://localhost:8080/api' 
-    : 'https://salesnet.securecryptosrecovery.com/api';
-    // : 'https://salesnet.onrender.com/api';
+    ? 'http://localhost:8080/api' : 'https://salesnet.securecryptosrecovery.com/api'; // : 'https://salesnet.onrender.com/api';
 };
 
 const createAxiosInstance = (contentType = 'application/json'): AxiosInstance => {
