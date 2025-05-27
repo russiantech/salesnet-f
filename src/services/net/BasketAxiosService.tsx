@@ -1,357 +1,229 @@
-// // src/services/net/BasketAxiosService.ts
-// import { AxiosService } from "./base/AxiosService";
-
-import { UsersService } from "../local/UsersService";
-
-// export const BasketAxiosService = {
-//     /**
-//      * Add multiple items to cart
-//      * @param productIds Array of product IDs to add
-//      * @param quantities Optional array of quantities (defaults to 1 for each)
-//      */
-//     addMultipleToBasket: (productIds: string[], quantities?: number[]) => {
-//         const items = productIds.map((id, index) => ({
-//             product_id: id,
-//             quantity: quantities?.[index] || 1
-//         }));
-        
-//         // return AxiosService.json.post('/cart/items/batch', { items });
-//         return AxiosService.json.post('/basket ', { items });
-//     }, 
-
-//     // ... other cart-related methods
-// };
-
-// 
-
-// src/services/BasketService.tsx
-// import { UsersService } from "./UsersService";
-// import { BasketAxiosService } from "./net/BasketAxiosService";
+// src/services/net/BasketAxiosService.tsx
+import { AxiosService } from "./base/AxiosService";
+import { AxiosResponse } from "axios";
 
 interface BasketItem {
   id: string;
   product_id: string;
-  name: string;
+  product_name: string;
+  product_image: string;
   price: number;
   quantity: number;
-  image_url: string;
-  slug: string;
+  total: number;
 }
 
-interface BasketData {
+interface BasketResponse {
   items: BasketItem[];
-  total_items: number;
   subtotal: number;
+  item_count: number;
+  tax?: number;
+  shipping?: number;
+  total?: number;
 }
 
-interface LocalStorageBasketItem {
+interface AddToBasketRequest {
   product_id: string;
   quantity: number;
-  added_at: string;
 }
 
-class BasketServiceClass {
-  private readonly STORAGE_KEY = 'salesnet_basket';
-  private readonly STORAGE_EXPIRY_DAYS = 30;
+interface AddMultipleToBasketRequest {
+  items: AddToBasketRequest[];
+}
+
+export const BasketAxiosService = {
+  /**
+   * Get current user's basket
+   */
+  getBasket: (): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.get('/basket');
+  },
 
   /**
-   * Get basket items (from DB if logged in, localStorage if not)
+   * Add single item to basket
+   * @param productId Product ID to add
+   * @param quantity Quantity to add (default: 1)
    */
-  async getBasket(): Promise<BasketData> {
-    if (UsersService.isAuthenticated()) {
-      return await this.getDatabaseBasket();
-    } else {
-      return await this.getLocalStorageBasket();
-    }
-  }
+  addToBasket: (productId: string, quantity: number = 1): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.post('/basket/items', {
+      product_id: productId,
+      quantity: quantity
+    });
+  },
 
   /**
-   * Add item to basket
+   * Add multiple items to basket
+   * @param productIds Array of product IDs to add
+   * @param quantities Optional array of quantities (defaults to 1 for each)
    */
-  async addToBasket(productId: string, quantity: number = 1): Promise<void> {
-    if (UsersService.isAuthenticated()) {
-      await this.addToDatabaseBasket(productId, quantity);
-    } else {
-      await this.addToLocalStorageBasket(productId, quantity);
-    }
-  }
+  addMultipleToBasket: (productIds: string[], quantities?: number[]): Promise<AxiosResponse<BasketResponse>> => {
+    const items = productIds.map((id, index) => ({
+      product_id: id,
+      quantity: quantities?.[index] || 1
+    }));
+    
+    return AxiosService.json.post('/basket/items/batch', { items });
+  },
 
   /**
    * Update item quantity in basket
+   * @param itemId Basket item ID
+   * @param quantity New quantity
    */
-  async updateQuantity(itemId: string, quantity: number): Promise<void> {
-    if (UsersService.isAuthenticated()) {
-      await this.updateDatabaseQuantity(itemId, quantity);
-    } else {
-      await this.updateLocalStorageQuantity(itemId, quantity);
-    }
-  }
+  updateQuantity: (itemId: string, quantity: number): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.patch(`/basket/items/${itemId}`, {
+      quantity: quantity
+    });
+  },
 
   /**
    * Remove item from basket
+   * @param itemId Basket item ID to remove
    */
-  async removeItem(itemId: string): Promise<void> {
-    if (UsersService.isAuthenticated()) {
-      await this.removeDatabaseItem(itemId);
-    } else {
-      await this.removeLocalStorageItem(itemId);
-    }
-  }
+  removeFromBasket: (itemId: string): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.delete(`/basket/items/${itemId}`);
+  },
+
+  /**
+   * Remove multiple items from basket
+   * @param itemIds Array of basket item IDs to remove
+   */
+  removeMultipleFromBasket: (itemIds: string[]): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.delete('/basket/items/batch', {
+      data: { item_ids: itemIds }
+    });
+  },
 
   /**
    * Clear entire basket
    */
-  async clearBasket(): Promise<void> {
-    if (UsersService.isAuthenticated()) {
-      await this.clearDatabaseBasket();
-    } else {
-      await this.clearLocalStorageBasket();
-    }
-  }
+  clearBasket: (): Promise<AxiosResponse<{ message: string }>> => {
+    return AxiosService.json.delete('/basket');
+  },
 
   /**
-   * Sync local storage basket to database when user logs in
+   * Apply coupon code to basket
+   * @param couponCode Coupon code to apply
    */
-  async syncLocalBasketToDatabase(): Promise<void> {
-    try {
-      const localBasket = this.getLocalStorageItems();
-      if (localBasket.length === 0) return;
-
-      // Add local items to database
-      for (const item of localBasket) {
-        await BasketAxiosService.addToBasket(item.product_id, item.quantity);
-      }
-
-      // Clear local storage after successful sync
-      this.clearLocalStorage();
-      
-      console.log('Local basket synced to database successfully');
-    } catch (error) {
-      console.error('Failed to sync local basket to database:', error);
-      throw error;
-    }
-  }
+  applyCoupon: (couponCode: string): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.post('/basket/coupon', {
+      coupon_code: couponCode
+    });
+  },
 
   /**
-   * Get basket count for UI display
+   * Remove coupon from basket
    */
-  async getBasketCount(): Promise<number> {
-    try {
-      const basket = await this.getBasket();
-      return basket.total_items;
-    } catch (error) {
-      console.error('Failed to get basket count:', error);
-      return 0;
-    }
+  removeCoupon: (): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.delete('/basket/coupon');
+  },
+
+  /**
+   * Get basket summary (totals, taxes, shipping)
+   */
+  getBasketSummary: (): Promise<AxiosResponse<{
+    subtotal: number;
+    tax: number;
+    shipping: number;
+    discount: number;
+    total: number;
+    item_count: number;
+  }>> => {
+    return AxiosService.json.get('/basket/summary');
+  },
+
+  /**
+   * Calculate shipping for basket
+   * @param shippingAddress Shipping address for calculation
+   */
+  calculateShipping: (shippingAddress: {
+    country: string;
+    state?: string;
+    city: string;
+    postal_code: string;
+  }): Promise<AxiosResponse<{
+    shipping_options: Array<{
+      id: string;
+      name: string;
+      price: number;
+      estimated_delivery: string;
+    }>;
+  }>> => {
+    return AxiosService.json.post('/basket/shipping/calculate', shippingAddress);
+  },
+
+  /**
+   * Save basket for later (wishlist-like functionality)
+   */
+  saveForLater: (itemId: string): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.post(`/basket/items/${itemId}/save-for-later`);
+  },
+
+  /**
+   * Move item from saved for later back to basket
+   */
+  moveToBasket: (savedItemId: string): Promise<AxiosResponse<BasketResponse>> => {
+    return AxiosService.json.post(`/basket/saved-items/${savedItemId}/move-to-basket`);
+  },
+
+  /**
+   * Get saved for later items
+   */
+  getSavedItems: (): Promise<AxiosResponse<{
+    saved_items: Array<{
+      id: string;
+      product_id: string;
+      product_name: string;
+      product_image: string;
+      price: number;
+      saved_at: string;
+    }>;
+  }>> => {
+    return AxiosService.json.get('/basket/saved-items');
+  },
+
+  /**
+   * Validate basket before checkout
+   */
+  validateBasket: (): Promise<AxiosResponse<{
+    valid: boolean;
+    errors: Array<{
+      item_id: string;
+      message: string;
+      type: 'out_of_stock' | 'price_changed' | 'unavailable';
+    }>;
+  }>> => {
+    return AxiosService.json.post('/basket/validate');
+  },
+
+  /**
+   * Get recommended products based on basket contents
+   */
+  getRecommendations: (): Promise<AxiosResponse<{
+    recommendations: Array<{
+      product_id: string;
+      product_name: string;
+      product_image: string;
+      price: number;
+      reason: string;
+    }>;
+  }>> => {
+    return AxiosService.json.get('/basket/recommendations');
+  },
+
+  /**
+   * Check if products are still available and get updated prices
+   * @param productIds Array of product IDs to check
+   */
+  checkAvailability: (productIds: string[]): Promise<AxiosResponse<{
+    products: Array<{
+      product_id: string;
+      available: boolean;
+      current_price: number;
+      stock_quantity: number;
+    }>;
+  }>> => {
+    return AxiosService.json.post('/basket/check-availability', {
+      product_ids: productIds
+    });
   }
-
-  // =============================================================================
-  // DATABASE OPERATIONS (Logged-in users)
-  // =============================================================================
-
-  private async getDatabaseBasket(): Promise<BasketData> {
-    try {
-      const response = await BasketAxiosService.getBasket();
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch database basket:', error);
-      throw new Error('Failed to fetch basket from server');
-    }
-  }
-
-  private async addToDatabaseBasket(productId: string, quantity: number): Promise<void> {
-    try {
-      await BasketAxiosService.addToBasket(productId, quantity);
-    } catch (error) {
-      console.error('Failed to add item to database basket:', error);
-      throw new Error('Failed to add item to basket');
-    }
-  }
-
-  private async updateDatabaseQuantity(itemId: string, quantity: number): Promise<void> {
-    try {
-      await BasketAxiosService.updateQuantity(itemId, quantity);
-    } catch (error) {
-      console.error('Failed to update database basket quantity:', error);
-      throw new Error('Failed to update item quantity');
-    }
-  }
-
-  private async removeDatabaseItem(itemId: string): Promise<void> {
-    try {
-      await BasketAxiosService.removeItem(itemId);
-    } catch (error) {
-      console.error('Failed to remove item from database basket:', error);
-      throw new Error('Failed to remove item from basket');
-    }
-  }
-
-  private async clearDatabaseBasket(): Promise<void> {
-    try {
-      await BasketAxiosService.clearBasket();
-    } catch (error) {
-      console.error('Failed to clear database basket:', error);
-      throw new Error('Failed to clear basket');
-    }
-  }
-
-  // =============================================================================
-  // LOCAL STORAGE OPERATIONS (Non-logged-in users)
-  // =============================================================================
-
-  private async getLocalStorageBasket(): Promise<BasketData> {
-    try {
-      const localItems = this.getLocalStorageItems();
-      const items: BasketItem[] = [];
-      let subtotal = 0;
-      let totalItems = 0;
-
-      // Fetch product details for each item
-      for (const localItem of localItems) {
-        try {
-          // This would need to be implemented to fetch product details
-          const productDetails = await this.fetchProductDetails(localItem.product_id);
-          
-          const basketItem: BasketItem = {
-            id: localItem.product_id, // Use product_id as id for localStorage items
-            product_id: localItem.product_id,
-            name: productDetails.name,
-            price: productDetails.price,
-            quantity: localItem.quantity,
-            image_url: productDetails.image_url,
-            slug: productDetails.slug
-          };
-
-          items.push(basketItem);
-          subtotal += basketItem.price * basketItem.quantity;
-          totalItems += basketItem.quantity;
-        } catch (error) {
-          console.warn(`Failed to fetch details for product ${localItem.product_id}:`, error);
-          // Remove invalid items from localStorage
-          this.removeLocalStorageItem(localItem.product_id);
-        }
-      }
-
-      return {
-        items,
-        total_items: totalItems,
-        subtotal
-      };
-    } catch (error) {
-      console.error('Failed to get localStorage basket:', error);
-      return { items: [], total_items: 0, subtotal: 0 };
-    }
-  }
-
-  private async addToLocalStorageBasket(productId: string, quantity: number): Promise<void> {
-    const items = this.getLocalStorageItems();
-    const existingItemIndex = items.findIndex(item => item.product_id === productId);
-
-    if (existingItemIndex >= 0) {
-      // Update existing item quantity
-      items[existingItemIndex].quantity += quantity;
-    } else {
-      // Add new item
-      items.push({
-        product_id: productId,
-        quantity,
-        added_at: new Date().toISOString()
-      });
-    }
-
-    this.saveLocalStorageItems(items);
-  }
-
-  private async updateLocalStorageQuantity(itemId: string, quantity: number): Promise<void> {
-    const items = this.getLocalStorageItems();
-    const itemIndex = items.findIndex(item => item.product_id === itemId);
-
-    if (itemIndex >= 0) {
-      if (quantity > 0) {
-        items[itemIndex].quantity = quantity;
-      } else {
-        items.splice(itemIndex, 1);
-      }
-      this.saveLocalStorageItems(items);
-    }
-  }
-
-  private async removeLocalStorageItem(itemId: string): Promise<void> {
-    const items = this.getLocalStorageItems();
-    const filteredItems = items.filter(item => item.product_id !== itemId);
-    this.saveLocalStorageItems(filteredItems);
-  }
-
-  private async clearLocalStorageBasket(): Promise<void> {
-    this.clearLocalStorage();
-  }
-
-  // =============================================================================
-  // LOCAL STORAGE HELPERS
-  // =============================================================================
-
-  private getLocalStorageItems(): LocalStorageBasketItem[] {
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      if (!stored) return [];
-
-      const parsed = JSON.parse(stored);
-      
-      // Check if data is expired
-      if (this.isStorageExpired(parsed.timestamp)) {
-        this.clearLocalStorage();
-        return [];
-      }
-
-      return parsed.items || [];
-    } catch (error) {
-      console.error('Failed to parse localStorage basket:', error);
-      this.clearLocalStorage();
-      return [];
-    }
-  }
-
-  private saveLocalStorageItems(items: LocalStorageBasketItem[]): void {
-    try {
-      const data = {
-        items,
-        timestamp: Date.now(),
-        version: '1.0'
-      };
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
-    } catch (error) {
-      console.error('Failed to save to localStorage:', error);
-      throw new Error('Failed to save basket data');
-    }
-  }
-
-  private clearLocalStorage(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-  }
-
-  private isStorageExpired(timestamp: number): boolean {
-    const expiryTime = this.STORAGE_EXPIRY_DAYS * 24 * 60 * 60 * 1000; // Convert days to milliseconds
-    return Date.now() - timestamp > expiryTime;
-  }
-
-  private async fetchProductDetails(productId: string): Promise<any> {
-    // This should call your ProductAxiosService to get product details
-    // For now, returning mock data - implement actual API call
-    try {
-      // const response = await ProductAxiosService.getProduct(productId);
-      // return response.data;
-      
-      // Mock implementation
-      return {
-        name: `Product ${productId}`,
-        price: 99.99,
-        image_url: '/assets/img/shop/placeholder.png',
-        slug: `product-${productId}`
-      };
-    } catch (error) {
-      throw new Error(`Product ${productId} not found`);
-    }
-  }
-}
-
-export const BasketService = new BasketServiceClass();
+};
