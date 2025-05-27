@@ -234,7 +234,42 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         }
     };
 
-    // ==========================
+    // =============DRAG & DROP & PASTE FROM CLIPBOARD===========
+const [isPasteAllowed, setIsPasteAllowed] = useState(true);
+const uploadAreaRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+        if (!isPasteAllowed || !uploadAreaRef.current) return;
+
+        const items = e.clipboardData?.items;
+        if (!items) return;
+
+        const files: File[] = [];
+        
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (item.kind === 'file') {
+                const file = item.getAsFile();
+                if (file && 
+                    (file.type.startsWith('image/') || file.type.startsWith('video/')) && 
+                    file.size <= 8 * 1024 * 1024
+                ) {
+                    files.push(file);
+                }
+            }
+        }
+
+        if (files.length > 0) {
+            e.preventDefault();
+            handleFileChange({ target: { files } } as React.ChangeEvent<HTMLInputElement>);
+        }
+    };
+
+    document.addEventListener('paste', handlePaste);
+    return () => document.removeEventListener('paste', handlePaste);
+}, [isPasteAllowed]);
+
 
     // Add these state variables
 const [isDragging, setIsDragging] = useState(false);
@@ -1122,7 +1157,7 @@ const removeMedia = (index: number) => {
     //     setPreviews(newPreviews);
     // };
 
-    
+
     // Handle input changes with validation
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -1685,39 +1720,65 @@ const removeMedia = (index: number) => {
                                                 
 
                                                 {/*  */}
-                                                <div className="col">
-    <div
-        className={`d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3 ${
-            isDragging ? 'border-primary bg-primary bg-opacity-10' : ''
-        }`}
-        onClick={() => fileInputRef.current?.click()}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        style={{ minHeight: '150px' }}
-    >
-        <div className="text-center">
-            <i className={`fi-plus-circle fs-4 ${
-                isDragging ? 'text-primary' : 'text-secondary-emphasis'
-            } mb-2`} />
-            <div className="hover-effect-underline stretched-link fs-sm fw-medium">
-                {isDragging ? 'Drop files here' : 'Upload photos/videos'}
-            </div>
-            <div className="fs-xs text-muted mt-1">
-                or drag and drop
-            </div>
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="d-none"
-                multiple
-                accept="image/*,video/*"
-            />
+                                            {/* <div className="col">
+                                            <div className={`d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3 ${
+                                            isDragging ? 'border-primary bg-primary bg-opacity-10' : ''
+                                            }`}
+                                            onClick={() => fileInputRef.current?.click()}
+                                            onDragEnter={handleDragEnter}
+                                            onDragLeave={handleDragLeave}
+                                            onDragOver={handleDragOver}
+                                            onDrop={handleDrop}
+                                            style={{ minHeight: '150px' }}
+                                            >
+                                            <div className="text-center">
+                                            <i className={`fi-plus-circle fs-4 ${
+                                            isDragging ? 'text-primary' : 'text-secondary-emphasis'
+                                            } mb-2`} />
+                                            <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+                                            {isDragging ? 'Drop files here' : 'Upload photos/videos'}
+                                            </div>
+                                            <div className="fs-xs text-muted mt-1">
+                                            or drag and drop
+                                            </div>
+                                            <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            onChange={handleFileChange}
+                                            className="d-none"
+                                            multiple
+                                            accept="image/*,video/*"
+                                            />
+                                            </div>
+                                            </div>
+                                            </div> */} 
+<div className="col">                                            
+<div 
+    ref={uploadAreaRef}
+    className={`d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3 ${
+        isDragging ? 'border-primary bg-primary bg-opacity-10' : ''
+    }`}
+    onClick={() => fileInputRef.current?.click()}
+    onDragEnter={handleDragEnter}
+    onDragLeave={handleDragLeave}
+    onDragOver={handleDragOver}
+    onDrop={handleDrop}
+    style={{ minHeight: '150px' }}
+>
+    <div className="text-center">
+        <i className={`fi-plus-circle fs-4 ${
+            isDragging ? 'text-primary' : 'text-secondary-emphasis'
+        } mb-2`} />
+        <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+            {isDragging ? 'Drop files here' : 'Upload photos/videos'}
+        </div>
+        <div className="fs-xs text-muted mt-1">
+            or drag and drop, paste from clipboard
         </div>
     </div>
 </div>
+</div>
+
 
                                             </div>
                                         </div>
