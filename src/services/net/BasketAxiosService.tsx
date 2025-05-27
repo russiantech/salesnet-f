@@ -70,7 +70,7 @@ export const BasketAxiosService = {
    * @param quantity New quantity
    */
   updateQuantity: (itemId: string, quantity: number): Promise<AxiosResponse<BasketResponse>> => {
-    return AxiosService.json.patch(`/basket/items/${itemId}`, {
+    return AxiosService.json.put(`/basket/items/${itemId}`, {
       quantity: quantity
     });
   },
@@ -227,3 +227,5 @@ export const BasketAxiosService = {
     });
   }
 };
+
+export default BasketAxiosService;
