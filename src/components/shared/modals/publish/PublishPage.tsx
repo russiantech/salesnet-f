@@ -13,6 +13,52 @@ interface PublishPageProps {
     editProductData?: ProductFormData; // If receiving data via props
 }
 
+// 
+interface Category {
+    id: string;
+    name: string;
+    children?: Category[];
+}
+
+interface MediaFile {
+    url: string;
+    type: 'image' | 'video';
+    name: string;
+    size: number;
+}
+
+interface ProductFormData {
+    basic_info: {
+        name: string;
+        categories: Set<string>;
+        price: number;
+        stock: number;
+        condition: 'new' | 'used' | 'good' | 'fair';
+        description: string;
+        listing_type: 'product' | 'service' | 'property' | 'rental' | 'vehicle';
+    };
+    delivery_options: {
+        delivery_type: 'delivery' | 'pickup';
+    };
+    contact_info: {
+        first_name: string;
+        email: string;
+        phone: string;
+    };
+    location: {
+        address: string;
+        latitude: number | null;
+        longitude: number | null;
+    };
+    media: {
+        video_link: string;
+    };
+    promotion: {
+        promotion_plan: string;
+    };
+    version?: number;
+}
+
 const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
     const navigate = useNavigate();
@@ -188,6 +234,41 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         }
     };
 
+    // ==========================
+
+    // Add these state variables
+const [isDragging, setIsDragging] = useState(false);
+
+// Add these handlers for drag and drop
+const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+};
+
+const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+};
+
+const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+};
+
+const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        const files = Array.from(e.dataTransfer.files);
+        handleFileChange({ target: { files } } as React.ChangeEvent<HTMLInputElement>);
+    }
+};
+// ================================
+
     // HANDLE CATEGORIES / NESTED ALSO.
     const [selectedCategoryIds, setSelectedCategoryIds] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState(true);
@@ -294,108 +375,300 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         );
     };
 
-    const CategorySelector = ({
-        categories,
-        selectedIds,
-        onChange,
-        error,
-        initiallyExpanded = true
-    }) => {
-        const [isOpen, setIsOpen] = useState(false);
-        const [searchQuery, setSearchQuery] = useState('');
-        const containerRef = React.useRef(null);
+//     const CategorySelector = ({
+//         categories,
+//         selectedIds,
+//         onChange,
+//         error,
+//         initiallyExpanded = true
+//     }) => {
+//         const [isOpen, setIsOpen] = useState(false);
+//         const [searchQuery, setSearchQuery] = useState('');
+//         const containerRef = React.useRef(null);
 
-        // Close when clicking outside
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (containerRef.current && !containerRef.current.contains(event.target)) {
-                    setIsOpen(false);
-                }
-            };
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, []);
+//         // Close when clicking outside
+//         useEffect(() => {
+//             const handleClickOutside = (event) => {
+//                 if (containerRef.current && !containerRef.current.contains(event.target)) {
+//                     setIsOpen(false);
+//                 }
+//             };
+//             document.addEventListener('mousedown', handleClickOutside);
+//             return () => document.removeEventListener('mousedown', handleClickOutside);
+//         }, []);
 
-        const filteredCategories = useMemo(() => {
-            if (!searchQuery) return categories;
+//         const filteredCategories = useMemo(() => {
+//             if (!searchQuery) return categories;
 
-            const searchLower = searchQuery.toLowerCase();
-            const filter = (items) => {
-                return items.filter(item => {
-                    const matches = item.name.toLowerCase().includes(searchLower);
-                    const childMatches = item.children ? filter(item.children).length > 0 : false;
-                    return matches || childMatches;
-                }).map(item => ({
-                    ...item,
-                    children: item.children ? filter(item.children) : undefined
-                }));
-            };
+//             const searchLower = searchQuery.toLowerCase();
+//             const filter = (items) => {
+//                 return items.filter(item => {
+//                     const matches = item.name.toLowerCase().includes(searchLower);
+//                     const childMatches = item.children ? filter(item.children).length > 0 : false;
+//                     return matches || childMatches;
+//                 }).map(item => ({
+//                     ...item,
+//                     children: item.children ? filter(item.children) : undefined
+//                 }));
+//             };
 
-            return filter(categories);
-        }, [categories, searchQuery]);
+//             return filter(categories);
+//         }, [categories, searchQuery]);
 
-        const selectedCategoryNames = useMemo(() => {
-            const getNames = (items) => {
-                return items.reduce((acc, item) => {
-                    if (selectedIds.has(item.id)) acc.push(item.name);
-                    if (item.children) acc.push(...getNames(item.children));
-                    return acc;
-                }, []);
-            };
-            return getNames(categories);
-        }, [categories, selectedIds]);
+//         const selectedCategoryNames = useMemo(() => {
+//             const getNames = (items) => {
+//                 return items.reduce((acc, item) => {
+//                     if (selectedIds.has(item.id)) acc.push(item.name);
+//                     if (item.children) acc.push(...getNames(item.children));
+//                     return acc;
+//                 }, []);
+//             };
+//             return getNames(categories);
+//         }, [categories, selectedIds]);
 
-        return (
-            <div className="position-relative" ref={containerRef}>
-                <div
-                    className={`form-control ${error ? 'is-invalid' : ''}`}
-                    onClick={() => setIsOpen(!isOpen)}
-                    style={{ cursor: 'pointer', minHeight: '38px' }}
-                >
-                    <div className="d-flex flex-wrap gap-1">
-                        {selectedCategoryNames.length > 0 ? (
-                            selectedCategoryNames.map((name, i) => (
-                                <span key={i} className="badge bg-primary">
-                                    {name}
-                                </span>
-                            ))
-                        ) : (
-                            <span className="text-muted">Select categories...</span>
-                        )}
-                    </div>
+//         return (
+//             <div className="position-relative" ref={containerRef}>
+//                 <div
+//                     className={`form-control ${error ? 'is-invalid' : ''}`}
+//                     onClick={() => setIsOpen(!isOpen)}
+//                     style={{ cursor: 'pointer', minHeight: '38px' }}
+//                 >
+//                     <div className="d-flex flex-wrap gap-1">
+//                         {selectedCategoryNames.length > 0 ? (
+//                             selectedCategoryNames.map((name, i) => (
+//                                 <span key={i} className="badge bg-primary">
+//                                     {name}
+//                                 </span>
+//                             ))
+//                         ) : (
+//                             <span className="text-muted">Select categories...</span>
+//                         )}
+//                     </div>
+//                 </div>
+
+//                 {isOpen && (
+//                     <div className="card position-absolute w-100 mt-1 shadow" style={{ zIndex: 1000 }}>
+//                         <div className="card-body p-2">
+//                             <input
+//                                 type="text"
+//                                 className="form-control mb-2"
+//                                 placeholder="Search categories..."
+//                                 value={searchQuery}
+//                                 onChange={(e) => setSearchQuery(e.target.value)}
+//                             />
+
+//                             <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+//                                 <NestedCategoryList
+//                                     categories={filteredCategories}
+//                                     selectedIds={selectedIds}
+//                                     onSelect={(id) => {
+//                                         const newSet = new Set(selectedIds);
+//                                         newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+//                                         onChange(newSet);
+//                                     }}
+//                                     initiallyExpanded={initiallyExpanded}
+//                                 />
+//                             </div>
+//                         </div>
+//                     </div>
+//                 )}
+
+//                 {error && <div className="invalid-feedback d-block">{error}</div>}
+//             </div>
+//         );
+//     };
+
+//     // 
+//     const CategorySelector2 = ({
+//     categories,
+//     selectedIds,
+//     onChange,
+//     error,
+//     initiallyExpanded = true
+// }) => {
+//     const [isOpen, setIsOpen] = useState(false);
+//     const [searchQuery, setSearchQuery] = useState('');
+//     const containerRef = React.useRef<HTMLDivElement>(null);
+
+//     // Only close when clicking outside
+//     useEffect(() => {
+//         const handleClickOutside = (event: MouseEvent) => {
+//             if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+//                 setIsOpen(false);
+//             }
+//         };
+        
+//         document.addEventListener('mousedown', handleClickOutside);
+//         return () => document.removeEventListener('mousedown', handleClickOutside);
+//     }, []);
+
+//     // Prevent dropdown from closing when clicking inside
+//     const handleDropdownClick = (e: React.MouseEvent) => {
+//         e.stopPropagation();
+//     };
+
+//     // ... rest of the component remains the same until the return statement ...
+
+//     return (
+//         <div className="position-relative" ref={containerRef}>
+//             <div
+//                 className={`form-control ${error ? 'is-invalid' : ''}`}
+//                 onClick={(e) => {
+//                     e.stopPropagation();
+//                     setIsOpen(!isOpen);
+//                 }}
+//                 style={{ cursor: 'pointer', minHeight: '38px' }}
+//             >
+//                 {/* ... existing content ... */}
+//             </div>
+
+//             {isOpen && (
+//                 <div 
+//                     className="card position-absolute w-100 mt-1 shadow" 
+//                     style={{ zIndex: 1000 }}
+//                     onClick={handleDropdownClick}
+//                 >
+//                     {/* ... existing dropdown content ... */}
+//                 </div>
+//             )}
+//         </div>
+//     );
+// };
+
+interface Category {
+    id: string;
+    name: string;
+    children?: Category[];
+}
+
+interface CategorySelectorProps {
+    categories: Category[];
+    selectedIds: Set<string>;
+    onChange: (newSelectedIds: Set<string>) => void;
+    error?: string;
+    initiallyExpanded?: boolean;
+}
+
+const CategorySelector: React.FC<CategorySelectorProps> = ({
+    categories,
+    selectedIds,
+    onChange,
+    error,
+    initiallyExpanded = true
+}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Close only when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Prevent dropdown from closing when interacting with its content
+    const handleDropdownInteraction = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    };
+
+    const filteredCategories = useMemo(() => {
+        if (!searchQuery.trim()) return categories;
+
+        const searchLower = searchQuery.toLowerCase();
+        const filterItems = (items: Category[]): Category[] => {
+            return items.filter(item => {
+                const matches = item.name.toLowerCase().includes(searchLower);
+                const childMatches = item.children ? filterItems(item.children).length > 0 : false;
+                return matches || childMatches;
+            }).map(item => ({
+                ...item,
+                children: item.children ? filterItems(item.children) : undefined
+            }));
+        };
+
+        return filterItems(categories);
+    }, [categories, searchQuery]);
+
+    const selectedCategoryNames = useMemo(() => {
+        const getNames = (items: Category[]): string[] => {
+            return items.reduce<string[]>((acc, item) => {
+                if (selectedIds.has(item.id)) acc.push(item.name);
+                if (item.children) acc.push(...getNames(item.children));
+                return acc;
+            }, []);
+        };
+        return getNames(categories);
+    }, [categories, selectedIds]);
+
+    const handleCategorySelect = (id: string) => {
+        const newSet = new Set(selectedIds);
+        newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+        onChange(newSet);
+    };
+
+    return (
+        <div className="position-relative" ref={containerRef}>
+            <div
+                className={`form-control ${error ? 'is-invalid' : ''}`}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen(!isOpen);
+                }}
+                style={{ cursor: 'pointer', minHeight: '38px' }}
+            >
+                <div className="d-flex flex-wrap gap-1">
+                    {selectedCategoryNames.length > 0 ? (
+                        selectedCategoryNames.map((name, i) => (
+                            <span key={`${name}-${i}`} className="badge bg-primary">
+                                {name}
+                            </span>
+                        ))
+                    ) : (
+                        <span className="text-muted">Select categories...</span>
+                    )}
                 </div>
+            </div>
 
-                {isOpen && (
-                    <div className="card position-absolute w-100 mt-1 shadow" style={{ zIndex: 1000 }}>
-                        <div className="card-body p-2">
-                            <input
-                                type="text"
-                                className="form-control mb-2"
-                                placeholder="Search categories..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+            {isOpen && (
+                <div 
+                    className="card position-absolute w-100 mt-1 shadow" 
+                    style={{ zIndex: 1000 }}
+                    onClick={handleDropdownInteraction}
+                >
+                    <div className="card-body p-2">
+                        <input
+                            type="text"
+                            className="form-control mb-2"
+                            placeholder="Search categories..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onClick={handleDropdownInteraction}
+                        />
+
+                        <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                            <NestedCategoryList
+                                categories={filteredCategories}
+                                selectedIds={selectedIds}
+                                onSelect={handleCategorySelect}
+                                initiallyExpanded={initiallyExpanded}
                             />
-
-                            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                <NestedCategoryList
-                                    categories={filteredCategories}
-                                    selectedIds={selectedIds}
-                                    onSelect={(id) => {
-                                        const newSet = new Set(selectedIds);
-                                        newSet.has(id) ? newSet.delete(id) : newSet.add(id);
-                                        onChange(newSet);
-                                    }}
-                                    initiallyExpanded={initiallyExpanded}
-                                />
-                            </div>
                         </div>
                     </div>
-                )}
+                </div>
+            )}
 
-                {error && <div className="invalid-feedback d-block">{error}</div>}
-            </div>
-        );
-    };
+            {error && <div className="invalid-feedback d-block">{error}</div>}
+        </div>
+    );
+};
+
+
 
     // ==================================================
 
@@ -756,53 +1029,100 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     };
 
     // Handle file selection
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        const validFiles = files.filter(file =>
-            (file.type.startsWith('image/') || file.type.startsWith('video/')) &&
-            file.size <= 8 * 1024 * 1024 // 8MB limit
-        );
+    // const handleFileChange = (e) => {
+    //     const files = Array.from(e.target.files);
+    //     const validFiles = files.filter(file =>
+    //         (file.type.startsWith('image/') || file.type.startsWith('video/')) &&
+    //         file.size <= 8 * 1024 * 1024 // 8MB limit
+    //     );
 
-        if (validFiles.length !== files.length) {
-            setResponseModal({
-                show: true,
-                message: 'Only image and video files under 8MB are allowed',
-                success: false
-            });
-        }
+    //     if (validFiles.length !== files.length) {
+    //         setResponseModal({
+    //             show: true,
+    //             message: 'Only image and video files under 8MB are allowed',
+    //             success: false
+    //         });
+    //     }
 
-        const newMediaFiles = [...mediaFiles, ...validFiles];
-        setMediaFiles(newMediaFiles);
+    //     const newMediaFiles = [...mediaFiles, ...validFiles];
+    //     setMediaFiles(newMediaFiles);
 
-        // Generate previews
-        const newPreviews = [];
-        validFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                newPreviews.push({
-                    url: e.target.result,
-                    type: file.type.startsWith('image/') ? 'image' : 'video',
-                    name: file.name,
-                    size: file.size
-                });
-                setPreviews([...previews, ...newPreviews]);
-            };
-            reader.readAsDataURL(file);
+    //     // Generate previews
+    //     const newPreviews = [];
+    //     validFiles.forEach(file => {
+    //         const reader = new FileReader();
+    //         reader.onload = (e) => {
+    //             newPreviews.push({
+    //                 url: e.target.result,
+    //                 type: file.type.startsWith('image/') ? 'image' : 'video',
+    //                 name: file.name,
+    //                 size: file.size
+    //             });
+    //             setPreviews([...previews, ...newPreviews]);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     });
+    // };
+    // 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] } }) => {
+    const files = Array.from(e.target.files || []);
+    const validFiles = files.filter(file => 
+        (file.type.startsWith('image/') || file.type.startsWith('video/')) && 
+        file.size <= 8 * 1024 * 1024 // 8MB limit
+    );
+
+    if (validFiles.length !== files.length) {
+        setResponseModal({
+            show: true,
+            message: 'Only image and video files under 8MB are allowed',
+            success: false
         });
-    };
+    }
 
-    // Remove a media file
-    const removeMedia = (index) => {
-        const newMediaFiles = [...mediaFiles];
-        const newPreviews = [...previews];
+    const newMediaFiles = [...mediaFiles, ...validFiles];
+    setMediaFiles(newMediaFiles);
 
-        newMediaFiles.splice(index, 1);
-        newPreviews.splice(index, 1);
+    // Generate previews
+    const newPreviews: MediaFile[] = [];
+    validFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            newPreviews.push({
+                url: e.target?.result as string,
+                type: file.type.startsWith('image/') ? 'image' : 'video',
+                name: file.name,
+                size: file.size
+            });
+            setPreviews(prev => [...prev, ...newPreviews]);
+        };
+        reader.readAsDataURL(file);
+    });
+};
 
-        setMediaFiles(newMediaFiles);
-        setPreviews(newPreviews);
-    };
+const removeMedia = (index: number) => {
+    const newMediaFiles = [...mediaFiles];
+    const newPreviews = [...previews];
+    
+    newMediaFiles.splice(index, 1);
+    newPreviews.splice(index, 1);
+    
+    setMediaFiles(newMediaFiles);
+    setPreviews(newPreviews);
+};
 
+    // // Remove a media file
+    // const removeMedia = (index) => {
+    //     const newMediaFiles = [...mediaFiles];
+    //     const newPreviews = [...previews];
+
+    //     newMediaFiles.splice(index, 1);
+    //     newPreviews.splice(index, 1);
+
+    //     setMediaFiles(newMediaFiles);
+    //     setPreviews(newPreviews);
+    // };
+
+    
     // Handle input changes with validation
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -1341,9 +1661,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                                 ))}
 
                                                 {/* Upload button */}
-                                                <div className="col">
-                                                    <div
-                                                        className="d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3"
+                                                {/* <div className="col">
+                                                    <div  className="d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3"
                                                         onClick={() => fileInputRef.current.click()}
                                                         style={{ minHeight: '150px' }}
                                                     >
@@ -1362,7 +1681,44 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> */}
+                                                
+
+                                                {/*  */}
+                                                <div className="col">
+    <div
+        className={`d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3 ${
+            isDragging ? 'border-primary bg-primary bg-opacity-10' : ''
+        }`}
+        onClick={() => fileInputRef.current?.click()}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        style={{ minHeight: '150px' }}
+    >
+        <div className="text-center">
+            <i className={`fi-plus-circle fs-4 ${
+                isDragging ? 'text-primary' : 'text-secondary-emphasis'
+            } mb-2`} />
+            <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+                {isDragging ? 'Drop files here' : 'Upload photos/videos'}
+            </div>
+            <div className="fs-xs text-muted mt-1">
+                or drag and drop
+            </div>
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="d-none"
+                multiple
+                accept="image/*,video/*"
+            />
+        </div>
+    </div>
+</div>
+
                                             </div>
                                         </div>
                                         <div className="pt-3 mt-2 mt-md-3">

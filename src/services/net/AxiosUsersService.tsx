@@ -3,11 +3,13 @@ import { AxiosService } from "./base/AxiosService";
 
 // Simple type definitions that match your actual usage
 interface SigninUser {
-  email: string;
+  username: string;
   password: string;
 }
 
 interface SignupUser {
+  username: string;
+  phone: string;
   email: string;
   password: string;
   name?: string;

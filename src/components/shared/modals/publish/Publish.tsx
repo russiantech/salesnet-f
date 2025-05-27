@@ -42,24 +42,7 @@ const Publish = () => {
   };
 
   return (
-    // <div className="modal fade" id="PublishPage1" tabIndex={-1} aria-modal="true" role="dialog">
-    //   <div className="modal-dialog modal-fullscreen" role="document">
-    //     <div className="modal-content">
-    //       <div className="modal-header">
-    //         <h5 className="modal-title">List Product - Sales Works Like Charm</h5>
-    //         <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" />
-    //       </div>
-    //       <div className="modal-body d-flex flex-column gap-4 pt-2">
-    //         <PublishPage/>
-    //       </div>
-    //       <div className="modal-footer flex-column flex-sm-row align-items-stretch">
-    //         <button className="btn btn-primary" type="button" data-bs-dismiss="modal">
-    //           Close
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
+
     <PublishPage/>
   );
 }

@@ -167,299 +167,299 @@
 // 
 
 // First, ensure React hooks are imported correctly at the top of the file
-import { useState, useCallback, useEffect } from 'react';
-import { ProductInteractionService } from '../services/net/ProductInteractionService';
-// import ProductInteractionService from '../services/ProductInteractionService';
+// import { useState, useCallback, useEffect } from 'react';
+// import { ProductInteractionService } from '../services/net/ProductInteractionService';
+// // import ProductInteractionService from '../services/ProductInteractionService';
 
-// Define the hook function
-export const useProductInteractions1 = (productId, isAuthenticated) => {
-  const [inBasket, setInBasket] = useState(false);
-  const [basketQuantity, setBasketQuantity] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+// // Define the hook function
+// export const useProductInteractions1 = (productId, isAuthenticated) => {
+//   const [inBasket, setInBasket] = useState(false);
+//   const [basketQuantity, setBasketQuantity] = useState(0);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isWishlisted, setIsWishlisted] = useState(false);
   
-  // Check if product is in basket
-  const checkBasketStatus = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Check if product is in basket
+//   const checkBasketStatus = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    try {
-      const response = await ProductInteractionService.basket.get();
+//     try {
+//       const response = await ProductInteractionService.basket.get();
       
-      // Safe access to possibly undefined properties
-      if (response?.data?.products) {
-        const basketItem = response.data.products.find(item => item.product_id === productId);
+//       // Safe access to possibly undefined properties
+//       if (response?.data?.products) {
+//         const basketItem = response.data.products.find(item => item.product_id === productId);
         
-        setInBasket(!!basketItem);
-        setBasketQuantity(basketItem ? basketItem.quantity : 0);
-      } else {
-        // Handle case where products array doesn't exist
-        console.log('No products found in basket or unexpected response format');
-        setInBasket(false);
-        setBasketQuantity(0);
-      }
-    } catch (error) {
-      console.error('Error checking basket status:', error);
-      setInBasket(false);
-      setBasketQuantity(0);
-    }
-  }, [isAuthenticated, productId]);
+//         setInBasket(!!basketItem);
+//         setBasketQuantity(basketItem ? basketItem.quantity : 0);
+//       } else {
+//         // Handle case where products array doesn't exist
+//         console.log('No products found in basket or unexpected response format');
+//         setInBasket(false);
+//         setBasketQuantity(0);
+//       }
+//     } catch (error) {
+//       console.error('Error checking basket status:', error);
+//       setInBasket(false);
+//       setBasketQuantity(0);
+//     }
+//   }, [isAuthenticated, productId]);
   
-  // Check if product is wishlisted
-  const checkWishlistStatus = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Check if product is wishlisted
+//   const checkWishlistStatus = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    try {
-      const response = await ProductInteractionService.favorites.get();
+//     try {
+//       const response = await ProductInteractionService.favorites.get();
       
-      if (response?.data?.products) {
-        const wishlisted = response.data.products.some(item => item.product_id === productId);
-        setIsWishlisted(wishlisted);
-      } else {
-        setIsWishlisted(false);
-      }
-    } catch (error) {
-      console.error('Error checking wishlist status:', error);
-      setIsWishlisted(false);
-    }
-  }, [isAuthenticated, productId]);
+//       if (response?.data?.products) {
+//         const wishlisted = response.data.products.some(item => item.product_id === productId);
+//         setIsWishlisted(wishlisted);
+//       } else {
+//         setIsWishlisted(false);
+//       }
+//     } catch (error) {
+//       console.error('Error checking wishlist status:', error);
+//       setIsWishlisted(false);
+//     }
+//   }, [isAuthenticated, productId]);
   
-  // Add to basket function
-  const addToBasket = useCallback(async (quantity = 1) => {
-    if (!isAuthenticated || !productId) return;
+//   // Add to basket function
+//   const addToBasket = useCallback(async (quantity = 1) => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      await ProductInteractionService.basket.add(productId, quantity);
-      await checkBasketStatus();
-    } catch (error) {
-      console.error('Error adding product to basket:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, checkBasketStatus]);
+//     setIsLoading(true);
+//     try {
+//       await ProductInteractionService.basket.add(productId, quantity);
+//       await checkBasketStatus();
+//     } catch (error) {
+//       console.error('Error adding product to basket:', error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, checkBasketStatus]);
   
-  // Remove from basket function
-  const removeFromBasket = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Remove from basket function
+//   const removeFromBasket = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      await ProductInteractionService.basket.remove(productId);
-      setInBasket(false);
-      setBasketQuantity(0);
-    } catch (error) {
-      console.error('Error removing product from basket:', error);
-      // Refresh basket status to ensure UI is in sync
-      await checkBasketStatus();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, checkBasketStatus]);
+//     setIsLoading(true);
+//     try {
+//       await ProductInteractionService.basket.remove(productId);
+//       setInBasket(false);
+//       setBasketQuantity(0);
+//     } catch (error) {
+//       console.error('Error removing product from basket:', error);
+//       // Refresh basket status to ensure UI is in sync
+//       await checkBasketStatus();
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, checkBasketStatus]);
   
-  // Update basket quantity
-  const updateBasketQuantity = useCallback(async (quantity) => {
-    if (!isAuthenticated || !productId) return;
+//   // Update basket quantity
+//   const updateBasketQuantity = useCallback(async (quantity) => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      await ProductInteractionService.basket.update(productId, quantity);
-      await checkBasketStatus();
-    } catch (error) {
-      console.error('Error updating basket quantity:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, checkBasketStatus]);
+//     setIsLoading(true);
+//     try {
+//       await ProductInteractionService.basket.update(productId, quantity);
+//       await checkBasketStatus();
+//     } catch (error) {
+//       console.error('Error updating basket quantity:', error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, checkBasketStatus]);
   
-  // Toggle wishlist status
-  const toggleWishlist = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Toggle wishlist status
+//   const toggleWishlist = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      if (isWishlisted) {
-        await ProductInteractionService.favorites.remove(productId);
-        setIsWishlisted(false);
-      } else {
-        await ProductInteractionService.favorites.add(productId);
-        setIsWishlisted(true);
-      }
-    } catch (error) {
-      console.error('Error toggling wishlist status:', error);
-      // Refresh wishlist status to ensure UI is in sync
-      await checkWishlistStatus();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, isWishlisted, checkWishlistStatus]);
+//     setIsLoading(true);
+//     try {
+//       if (isWishlisted) {
+//         await ProductInteractionService.favorites.remove(productId);
+//         setIsWishlisted(false);
+//       } else {
+//         await ProductInteractionService.favorites.add(productId);
+//         setIsWishlisted(true);
+//       }
+//     } catch (error) {
+//       console.error('Error toggling wishlist status:', error);
+//       // Refresh wishlist status to ensure UI is in sync
+//       await checkWishlistStatus();
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, isWishlisted, checkWishlistStatus]);
   
-  // Check basket and wishlist status on mount and when auth status changes
-  useEffect(() => {
-    if (isAuthenticated && productId) {
-      checkBasketStatus();
-      checkWishlistStatus();
-    } else {
-      // Reset states when not authenticated
-      setInBasket(false);
-      setBasketQuantity(0);
-      setIsWishlisted(false);
-    }
-  }, [isAuthenticated, productId, checkBasketStatus, checkWishlistStatus]);
+//   // Check basket and wishlist status on mount and when auth status changes
+//   useEffect(() => {
+//     if (isAuthenticated && productId) {
+//       checkBasketStatus();
+//       checkWishlistStatus();
+//     } else {
+//       // Reset states when not authenticated
+//       setInBasket(false);
+//       setBasketQuantity(0);
+//       setIsWishlisted(false);
+//     }
+//   }, [isAuthenticated, productId, checkBasketStatus, checkWishlistStatus]);
   
-  return {
-    inBasket,
-    basketQuantity,
-    isWishlisted,
-    isLoading,
-    addToBasket,
-    removeFromBasket,
-    updateBasketQuantity,
-    toggleWishlist,
-    refreshBasketStatus: checkBasketStatus,
-    refreshWishlistStatus: checkWishlistStatus
-  };
-};
+//   return {
+//     inBasket,
+//     basketQuantity,
+//     isWishlisted,
+//     isLoading,
+//     addToBasket,
+//     removeFromBasket,
+//     updateBasketQuantity,
+//     toggleWishlist,
+//     refreshBasketStatus: checkBasketStatus,
+//     refreshWishlistStatus: checkWishlistStatus
+//   };
+// };
 
 // export default useProductInteractions1;
 
 // 
 
-import { useState, useCallback, useEffect } from 'react';
-import { ProductInteractionService } from '../services/net/ProductInteractionService';
+// import { useState, useCallback, useEffect } from 'react';
+// import { ProductInteractionService } from '../services/net/ProductInteractionService';
 
-export const useProductInteractions2 = (productId, isAuthenticated) => {
-  const [inBasket, setInBasket] = useState(false);
-  const [basketQuantity, setBasketQuantity] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+// export const useProductInteractions2 = (productId, isAuthenticated) => {
+//   const [inBasket, setInBasket] = useState(false);
+//   const [basketQuantity, setBasketQuantity] = useState(0);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isWishlisted, setIsWishlisted] = useState(false);
   
-  // Initial data fetch
-  const fetchProductState = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Initial data fetch
+//   const fetchProductState = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    try {
-      // Get basket data
-      const basketResponse = await ProductInteractionService.basket.get();
-      if (basketResponse?.data?.products) {
-        const basketItem = basketResponse.data.products.find(item => item.product_id === productId);
-        setInBasket(!!basketItem);
-        setBasketQuantity(basketItem ? basketItem.quantity : 0);
-      }
+//     try {
+//       // Get basket data
+//       const basketResponse = await ProductInteractionService.basket.get();
+//       if (basketResponse?.data?.products) {
+//         const basketItem = basketResponse.data.products.find(item => item.product_id === productId);
+//         setInBasket(!!basketItem);
+//         setBasketQuantity(basketItem ? basketItem.quantity : 0);
+//       }
       
-      // Get wishlist data
-      const wishlistResponse = await ProductInteractionService.favorites.list();
-      if (wishlistResponse?.data?.products) {
-        const wishlisted = wishlistResponse.data.products.some(item => item.product_id === productId);
-        setIsWishlisted(wishlisted);
-      }
-    } catch (error) {
-      console.error('Error fetching product state:', error);
-    }
-  }, [isAuthenticated, productId]);
+//       // Get wishlist data
+//       const wishlistResponse = await ProductInteractionService.favorites.list();
+//       if (wishlistResponse?.data?.products) {
+//         const wishlisted = wishlistResponse.data.products.some(item => item.product_id === productId);
+//         setIsWishlisted(wishlisted);
+//       }
+//     } catch (error) {
+//       console.error('Error fetching product state:', error);
+//     }
+//   }, [isAuthenticated, productId]);
   
-  // Add to basket - directly call API without checking first
-  const addToBasket = useCallback(async (quantity = 1) => {
-    if (!isAuthenticated || !productId) return;
+//   // Add to basket - directly call API without checking first
+//   const addToBasket = useCallback(async (quantity = 1) => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      await ProductInteractionService.basket.add(productId, quantity);
-      // Update local state
-      setInBasket(true);
-      setBasketQuantity(prev => prev + quantity);
-    } catch (error) {
-      console.error('Error adding product to basket:', error);
-      // Only fetch full state when there's an error
-      await fetchProductState();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, fetchProductState]);
+//     setIsLoading(true);
+//     try {
+//       await ProductInteractionService.basket.add(productId, quantity);
+//       // Update local state
+//       setInBasket(true);
+//       setBasketQuantity(prev => prev + quantity);
+//     } catch (error) {
+//       console.error('Error adding product to basket:', error);
+//       // Only fetch full state when there's an error
+//       await fetchProductState();
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, fetchProductState]);
   
-  // Remove from basket - directly call API without checking first
-  const removeFromBasket = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Remove from basket - directly call API without checking first
+//   const removeFromBasket = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      await ProductInteractionService.basket.remove(productId);
-      // Update local state
-      setInBasket(false);
-      setBasketQuantity(0);
-    } catch (error) {
-      console.error('Error removing product from basket:', error);
-      // Only fetch full state when there's an error
-      await fetchProductState();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, fetchProductState]);
+//     setIsLoading(true);
+//     try {
+//       await ProductInteractionService.basket.remove(productId);
+//       // Update local state
+//       setInBasket(false);
+//       setBasketQuantity(0);
+//     } catch (error) {
+//       console.error('Error removing product from basket:', error);
+//       // Only fetch full state when there's an error
+//       await fetchProductState();
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, fetchProductState]);
   
-  // Update basket quantity - directly call API without checking first
-  const updateBasketQuantity = useCallback(async (quantity) => {
-    if (!isAuthenticated || !productId) return;
+//   // Update basket quantity - directly call API without checking first
+//   const updateBasketQuantity = useCallback(async (quantity) => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      await ProductInteractionService.basket.updateQuantity(productId, quantity);
-      // Update local state
-      setInBasket(quantity > 0);
-      setBasketQuantity(quantity);
-    } catch (error) {
-      console.error('Error updating basket quantity:', error);
-      // Only fetch full state when there's an error
-      await fetchProductState();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, fetchProductState]);
+//     setIsLoading(true);
+//     try {
+//       await ProductInteractionService.basket.updateQuantity(productId, quantity);
+//       // Update local state
+//       setInBasket(quantity > 0);
+//       setBasketQuantity(quantity);
+//     } catch (error) {
+//       console.error('Error updating basket quantity:', error);
+//       // Only fetch full state when there's an error
+//       await fetchProductState();
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, fetchProductState]);
   
-  // Toggle wishlist - directly call API without checking first
-  const toggleWishlist = useCallback(async () => {
-    if (!isAuthenticated || !productId) return;
+//   // Toggle wishlist - directly call API without checking first
+//   const toggleWishlist = useCallback(async () => {
+//     if (!isAuthenticated || !productId) return;
     
-    setIsLoading(true);
-    try {
-      if (isWishlisted) {
-        await ProductInteractionService.favorites.remove(productId);
-        setIsWishlisted(false);
-      } else {
-        await ProductInteractionService.favorites.add(productId);
-        setIsWishlisted(true);
-      }
-    } catch (error) {
-      console.error('Error toggling wishlist status:', error);
-      // Only fetch full state when there's an error
-      await fetchProductState();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated, productId, isWishlisted, fetchProductState]);
+//     setIsLoading(true);
+//     try {
+//       if (isWishlisted) {
+//         await ProductInteractionService.favorites.remove(productId);
+//         setIsWishlisted(false);
+//       } else {
+//         await ProductInteractionService.favorites.add(productId);
+//         setIsWishlisted(true);
+//       }
+//     } catch (error) {
+//       console.error('Error toggling wishlist status:', error);
+//       // Only fetch full state when there's an error
+//       await fetchProductState();
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   }, [isAuthenticated, productId, isWishlisted, fetchProductState]);
   
-  // Initial fetch on mount and when auth status changes
-  useEffect(() => {
-    if (isAuthenticated && productId) {
-      fetchProductState();
-    } else {
-      // Reset states when not authenticated
-      setInBasket(false);
-      setBasketQuantity(0);
-      setIsWishlisted(false);
-    }
-  }, [isAuthenticated, productId, fetchProductState]);
+//   // Initial fetch on mount and when auth status changes
+//   useEffect(() => {
+//     if (isAuthenticated && productId) {
+//       fetchProductState();
+//     } else {
+//       // Reset states when not authenticated
+//       setInBasket(false);
+//       setBasketQuantity(0);
+//       setIsWishlisted(false);
+//     }
+//   }, [isAuthenticated, productId, fetchProductState]);
   
-  return {
-    inBasket,
-    basketQuantity,
-    isWishlisted,
-    isLoading,
-    addToBasket,
-    removeFromBasket,
-    updateBasketQuantity,
-    toggleWishlist,
-    refreshState: fetchProductState
-  };
-};
+//   return {
+//     inBasket,
+//     basketQuantity,
+//     isWishlisted,
+//     isLoading,
+//     addToBasket,
+//     removeFromBasket,
+//     updateBasketQuantity,
+//     toggleWishlist,
+//     refreshState: fetchProductState
+//   };
+// };
 
 // 
 // 
@@ -669,7 +669,7 @@ export const useProductInteractions = (productId, isAuthenticated, productName =
     NotificationService.setIsLoading(true);
     
     try {
-      await ProductInteractionService.basket.update(productId, quantity);
+      await ProductInteractionService.basket.updateQuantity(productId, quantity);
       // Update local state
       setInBasket(quantity > 0);
       setBasketQuantity(quantity);
@@ -707,7 +707,7 @@ export const useProductInteractions = (productId, isAuthenticated, productName =
     
     try {
       if (wasWishlisted) {
-        await ProductInteractionService.wishlist.remove(productId);
+        await ProductInteractionService.favorites.remove(productId);
         setIsWishlisted(false);
         
         // Show success notification
@@ -716,7 +716,7 @@ export const useProductInteractions = (productId, isAuthenticated, productName =
           'info'
         );
       } else {
-        await ProductInteractionService.wishlist.add(productId);
+        await ProductInteractionService.favorites.add(productId);
         setIsWishlisted(true);
         
         // Show success notification

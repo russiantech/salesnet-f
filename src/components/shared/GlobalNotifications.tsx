@@ -15,15 +15,28 @@ export const GlobalNotifications = () => {
     return () => NotificationService.unsubscribe(handleNotification);
   }, []);
 
-  useEffect(() => {
-    if (notification && toastRef.current) {
-      const toastEl = toastRef.current;
-      const bsToast = new (window as any).bootstrap.Toast(toastEl);
-      bsToast.show();
+  // useEffect(() => {
+  //   if (notification && toastRef.current) {
+  //     const toastEl = toastRef.current;
+  //     const bsToast = new (window as any).bootstrap.Toast(toastEl);
+  //     bsToast.show();
 
-      const timer = setTimeout(() => setNotification(null), 5000);
-      return () => clearTimeout(timer);
+  //     const timer = setTimeout(() => setNotification(null), 5000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [notification]);
+  // 
+    useEffect(() => {
+    if (!notification || !toastRef.current) {
+      return; // Early return, no cleanup needed
     }
+
+    const toastEl = toastRef.current;
+    const bsToast = new (window as any).bootstrap.Toast(toastEl);
+    bsToast.show();
+
+    const timer = setTimeout(() => setNotification(null), 5000);
+    return () => clearTimeout(timer);
   }, [notification]);
 
   return (

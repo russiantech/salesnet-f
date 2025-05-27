@@ -84,7 +84,7 @@ const OfferRoutes = lazy(() => import("./routes/OfferRoutes"));
 const UserRoutes = lazy(() => import("./routes/UserRoutes"));
 const VendorRoutes = lazy(() => import("./routes/VendorRoutes"));
 
-const Canvas = lazy(() => import("./components/shared/modals/Canvas"));
+const BasketCanvas = lazy(() => import("./components/shared/modals/BasketCanvas"));
 const Publish = lazy(() => import("./components/shared/modals/publish/Publish"));
 const Search = lazy(() => import("./components/shared/modals/Search/Search"));
 const SearchPage = lazy(() => import("./components/shared/SearchPage"));
@@ -98,8 +98,8 @@ const App = () => {
       {/* Static content that's always rendered */}
       <NotImplimentedPage />
       <Publish />
-      <Canvas />
       <Search />
+      <BasketCanvas />
       <AuthCanvas />
       <GlobalNotifications />
 
