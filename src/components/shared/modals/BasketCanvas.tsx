@@ -663,7 +663,7 @@ const BasketCanvas: React.FC = () => {
 
   const renderEmptyBasket = () => (
     <div className="offcanvas offcanvas-end pb-sm-2 px-sm-2"
-      id="shoppingCart_01"
+      id="shoppingCart"
       tabIndex={-1}
       aria-labelledby="shoppingCartLabel"
       style={{ width: '500px' }}

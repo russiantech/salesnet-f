@@ -29,7 +29,12 @@ export const ProductAxiosService = {
     },
 
     // Fetch all categories
-    fetchCategories: () => AxiosService.json.get('/categories?page_size=100'),
+    // fetchCategories: () => AxiosService.json.get('/categories?page_size=100'),
+
+    fetchCategories: (query = {}, username: string) => {
+        const finalQuery = { location: '/categories', page: 1, page_size: 30, username, ...query };
+        return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    },
 
     // fetchProductsByCategories: () => AxiosService.json.get('/by-categories'),
     fetchProductsByCategories: () => AxiosService.fetchPage('/by-categories-all'),

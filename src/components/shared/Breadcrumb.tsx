@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 interface BreadcrumbItem {
   label: string;
-  href?: string;
+  path?: string;
   active?: boolean;
 }
 
@@ -22,8 +22,8 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
             className={`breadcrumb-item ${item.active || index === items.length - 1 ? 'active' : ''}`}
             aria-current={item.active || index === items.length - 1 ? 'page' : undefined}
           >
-            {item.href ? (
-              <Link to={item.href}>{item.label}</Link>
+            {item.path ? (
+              <Link to={item.path}>{item.label}</Link>
             ) : (
               <span>{item.label}</span>
             )}
