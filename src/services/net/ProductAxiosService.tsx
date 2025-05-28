@@ -32,7 +32,7 @@ export const ProductAxiosService = {
     // fetchCategories: () => AxiosService.json.get('/categories?page_size=100'),
 
     fetchCategories: (query = {}, username: string) => {
-        const finalQuery = { location: '/categories', page: 1, page_size: 30, username, ...query };
+        const finalQuery = { location: '/categories', page: 1, page_size: 90, username, ...query };
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
 

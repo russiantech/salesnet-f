@@ -1088,7 +1088,7 @@ const OfferForm: React.FC<OfferFormProps> = ({ offer, onSuccess }) => {
           ProductAxiosService.fetchCategories()
         ]);
 
-        // setProducts(productsRes.data.products);
+        setProducts(productsRes.data.products);
         setFilteredProducts(productsRes.data.products);
         setCategories(categoriesRes.data.categories);
         setFilteredCategories(categoriesRes.data.categories);
