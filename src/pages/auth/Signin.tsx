@@ -237,7 +237,7 @@ const Signin = () => {
               <span className="position-absolute top-0 start-0 w-100 h-100 d-none-dark" style={{ background: 'linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)' }} />
               <span className="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark" style={{ background: 'linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)' }} />
               <div className="ratio h-100" style={{ '--cz-aspect-ratio': 'calc(1030 / 1032 * 100%)' }}>
-                <img src="/assets/img/us/pages/7.jpg" alt="Girl" />
+                <img src="/assets/img/us/pages/shopping_bag.jpg" alt="Girl" />
               </div>
             </div>
           </div>

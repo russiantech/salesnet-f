@@ -160,10 +160,10 @@ const NotFoundPage = () => {
               {/* Text */}
               <div className="col-md-5 col-xxl-4 offset-md-1 order-md-1">
                 <div className="text-center text-md-start px-4 px-sm-5 px-md-0">
-                  <h1 className="mb-sm-4">We lost that page...</h1>
+                  <h1 className="mb-sm-4">Sorry, this place does not exist in our world !</h1>
                   <p className="pb-2 pb-sm-3 pb-md-0 mb-4 mb-md-5">
-                    The page you are looking for was moved, removed or might never
-                    existed. Here some helpful links:
+                    
+                Try finding what you need in the menu or the links below.
                   </p>
                   <div className="position-relative">
                     <i className="ci-search position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />

@@ -183,7 +183,7 @@ export const ProductBadge = ({ type }) => {
   };
   
   return (
-    <span className={`badge ${badgeClasses[type]} position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3 z-2`}>
+    <span className={`badge ${badgeClasses[type]} rounded-pill position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3 z-2`}>
       {badgeLabels[type]}
     </span>
   );

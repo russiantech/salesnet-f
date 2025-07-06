@@ -393,9 +393,9 @@ const Orders = () => {
                 limit: 10
             });
 
-           console.log(`response.data for orders:-`, response.data);
-            setOrders(response.data.orders || []);
-            setTotalPages(response.data.page_meta.total_pages_count || 1);
+           console.log(`response.data for orders:-`, response);
+            setOrders(response.orders || []);
+            setTotalPages(response.page_meta.total_pages_count || 1);
             setLoading(false);
         } catch (err) {
             setError('Failed to load orders. Please try again later.');
@@ -407,7 +407,7 @@ const Orders = () => {
     const fetchOrderDetails = async (orderId) => {
         try {
             const orderDetails = await  OrdersAxiosService.getOrderById(orderId);
-            setSelectedOrder(orderDetails.data);
+            setSelectedOrder(orderDetails);
         } catch (err) {
             console.error('Failed to fetch order details:', err);
         }
@@ -483,6 +483,7 @@ const Orders = () => {
                                                 >
                                                     {statusOptions.map((option, index) => (
                                                         <>
+                                                        {/* {console.log(`index: ${index}, value: ${option.value}, option: ${option.label}`)} */}
                                                         <option key={index} value={option.id} dangerouslySetInnerHTML={{ __html: option.label }} />
                                                         {/* <option key={index} value={option.value} dangerouslySetInnerHTML={{ __html: option.label }} /> */}
                                                         </>

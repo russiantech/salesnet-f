@@ -6,7 +6,7 @@ import { ProductAxiosService } from '../../../../services/net/ProductAxiosServic
 
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../../LoadingSpinner';
-
+ 
 // Add this at the top of your PublishPage component
 interface PublishPageProps {
     productSlug?: string; // If using routing params
@@ -59,6 +59,13 @@ interface ProductFormData {
     version?: number;
 }
 
+// 4 ATTRIBUTES
+interface ProductAttribute {
+  key: string;
+  value: string;
+}
+
+
 const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
     const navigate = useNavigate();
@@ -78,43 +85,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     // Add state for location loading
     const [isLocating, setIsLocating] = useState(false);
 
-    // 
-    // const initialFormData = {
-    // basic_info: {
-    //     name: '',
-    //     // categories: [],
-    //     // categories: new Set(), // Initialize as empty Set,
-    //     categories: new Set<string>(),
-    //     price: 0.1,
-    //     stock: 1,
-    //     condition: 'new',
-    //     description: '',
-    //     listing_type: 'product'
-    //     // listing_type: null
-    // },
-    // delivery_options: {
-    //     delivery_type: 'delivery'
-    // },
-    // contact_info: {
-    //     first_name: '',
-    //     email: '',
-    //     phone: ''
-    // },
-
-    // location: {
-    //     address: '',
-    //     latitude: null,
-    //     longitude: null
-    // },
-    // media: {
-    //     images: [],
-    //     video_link: '', // Initialize video_link
-    //     documents: []
-    // },
-    // promotion: {
-    //     promotion_plan: ''
-    // }
-    // };
+  
     const initialFormData = {
         basic_info: {
             name: '',
@@ -153,6 +124,33 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         message: '',
         success: false
     });
+
+
+    // 4 attributes
+
+    // Add to component state
+const [attributes, setAttributes] = useState<ProductAttribute[]>([{ key: '', value: '' }]);
+
+// Attribute handlers
+const handleAttributeChange = (index: number, field: keyof ProductAttribute, value: string) => {
+  const newAttributes = [...attributes];
+  newAttributes[index][field] = value;
+  setAttributes(newAttributes);
+};
+
+const addAttribute = () => {
+  setAttributes([...attributes, { key: '', value: '' }]);
+};
+
+const removeAttribute = (index: number) => {
+  if (attributes.length > 1) {
+    const newAttributes = [...attributes];
+    newAttributes.splice(index, 1);
+    setAttributes(newAttributes);
+  }
+};
+
+    // 4 attributes end
 
     // Add this useEffect for initializing edit data
     useEffect(() => {
@@ -1187,6 +1185,14 @@ const removeMedia = (index: number) => {
     const prepareSubmissionData = () => {
         const submissionData = new FormData();
 
+        // Add to prepareSubmissionData() for new attributes
+        attributes.forEach((attr, index) => {
+        if (attr.key && attr.value) {
+            submissionData.append(`attributes[${index}][key]`, attr.key);
+            submissionData.append(`attributes[${index}][value]`, attr.value);
+        }
+        });
+
         // Process form data sections
         Object.entries(formData).forEach(([section, data]) => {
             Object.entries(data).forEach(([key, value]) => {
@@ -1199,6 +1205,7 @@ const removeMedia = (index: number) => {
                 submissionData.append(`${section}[${key}]`, processedValue);
             });
         });
+
 
         // Handle media files
         processMediaFiles(submissionData);
@@ -1643,6 +1650,72 @@ const removeMedia = (index: number) => {
                                         </div>
                                     </div>
                                 </section>
+
+                                {/*  */}
+                                <section className="position-relative bg-body rounded p-2 m-2">
+    <div className="position-relative z-1">
+      <h2 className="h4 mb-3">Product Attributes</h2>
+      <div className="alert alert-info">
+        <i className="ci-info-circle me-2"></i>
+        Add specifications like size, color, material, etc.
+      </div>
+      
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>Value</th>
+              <th width="50px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {attributes.map((attr, index) => (
+              <tr key={index}>
+                <td>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="e.g., Color"
+                    value={attr.key}
+                    onChange={(e) => handleAttributeChange(index, 'key', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="e.g., Red"
+                    value={attr.value}
+                    onChange={(e) => handleAttributeChange(index, 'value', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-danger"
+                    onClick={() => removeAttribute(index)}
+                    disabled={attributes.length <= 1}
+                  >
+                    <i className="ci-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      
+      <button
+        type="button"
+        className="btn btn-outline-primary"
+        onClick={addAttribute}
+      >
+        <i className="ci-add me-2"></i> Add Attribute
+      </button>
+    </div>
+  </section>
+                                {/*  */}
                             </div>
 
                             {/* Media Tab */}

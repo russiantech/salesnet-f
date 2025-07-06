@@ -1,3 +1,9 @@
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/thumbs';
+@import 'glightbox/dist/css/glightbox.css';
+
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -65,4 +71,23 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/*  */
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.swiper-thumb {
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-thumb:hover {
+  opacity: 0.8;
+}
+
+.main-swiper .swiper-slide {
+  border-radius: 1rem;
+  overflow: hidden;
 }

@@ -1,6 +1,13 @@
 {
   "compilerOptions": {
-     "composite": true,
+
+    // I  chosed to use vite.config.json instead to configure alias.
+    // "baseUrl": "src",
+    // "paths": {
+    //   "@/*": ["*"]
+    // },
+
+    "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,

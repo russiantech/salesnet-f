@@ -25,7 +25,7 @@ export const ProductAxiosService = {
         if (typeof slug !== "string") {
             throw new Error("Slug must be a string");
         }
-        return AxiosService.json.get(`/products/${slug}?include_user=1`);
+        return AxiosService.json.get(`/products/${slug}?include_user=true&include_reviews=true`);
     },
 
     // Fetch all categories

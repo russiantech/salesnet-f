@@ -67,7 +67,7 @@ const ProductRecommendations = () => {
                     </div>
 
                     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
-                        {products.map((product) => (
+                        {products.map((product, index) => (
                             // <ProductSummary
                             //     key={product.id}
                             //     image={product.image_urls.length > 0 ? product.image_urls[0] : ''}
@@ -79,7 +79,7 @@ const ProductRecommendations = () => {
                             // />
                             
                             // <ProductSummary key={product.id} product={product} />
-                            <ProductSummary product={product} />
+                            <ProductSummary key={index} product={product} />
                             
                         ))}
 

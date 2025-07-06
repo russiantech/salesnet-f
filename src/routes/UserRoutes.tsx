@@ -6,6 +6,7 @@ import Navigation from '../components/shared/Navigation';
 // import PrivateRoute from '../services/guards/PrivateRoute';
 import ProtectedLayout from '../services/guards/ProtectedLayout';
 import SeoConfig from '../utils/SeoManager';
+import CheckoutSuccess from '../pages/user/checkout/CheckoutSuccess';
 
 // Lazy load user-related pages
 const Personal = lazy(() => import('../pages/user/personal/Personal'));
@@ -52,6 +53,7 @@ const UserRoutes = () => (
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/success" element={<CheckoutSuccess />} />
         </Route>
       </Routes>
     </Suspense>

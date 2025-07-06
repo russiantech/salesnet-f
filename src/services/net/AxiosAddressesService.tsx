@@ -15,9 +15,29 @@ export const AxiosAddressesService = {
   /**
    * Fetch all addresses
    */
-  async fetchAll(): Promise<AxiosResponse<Address[]>> {
-    return AxiosService.json.get('/addresses');
-  },
+  // async fetchAll(): Promise<AxiosResponse<Address[]>> {
+  //   return AxiosService.json.get('/addresses');
+  // },
+
+  /**
+ * Fetch all addresses with optional inclusions
+ */
+async fetchAll(options?: {
+  include_city?: boolean;
+  include_state?: boolean;
+  include_country?: boolean;
+  include_user?: boolean;
+  include_store?: boolean;
+}): Promise<AxiosResponse<Address[]>> {
+  const params = {
+    include_city: options?.include_city ?? true,
+    include_state: options?.include_state ?? false,
+    include_country: options?.include_country ?? false,
+    include_user: options?.include_user ?? false,
+  };
+
+  return AxiosService.json.get('/addresses', { params });
+},
 
   /**
    * Create a new address

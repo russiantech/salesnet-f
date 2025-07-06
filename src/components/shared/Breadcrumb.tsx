@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
-    <nav aria-label="breadcrumb">
+    <nav className="container pt-1 pt-md-0 my-3 my-md-4" aria-label="breadcrumb">
       <ol className="breadcrumb pt-3 mt-2 mt-md-3 mb-md-4">
         {items.map((item, index) => (
           <li 
