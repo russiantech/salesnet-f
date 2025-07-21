@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import { NotificationService } from '../../services/local/NotificationService';
 import Breadcrumb from '../../components/shared/Breadcrumb';
 import CategoriesProducts from './CategoriesProducts';
+import { BasketButton } from '../products/interactions/BasketButton';
+import { ChatButton } from '../products/interactions/ChatButton';
+import { FavoriteButton } from '../products/interactions/FavoriteButton';
+import { ShareButton } from '../products/interactions/ShareButton';
 // import ProductsByCategories from './CategoriesProducts';
 // import ProductsByCategories from '../products/ProductsByCategories';
 
@@ -75,10 +79,10 @@ const Products = () => {
                                 </div>
                                 <div className="d-flex justify-content-between flex-grow-1 gap-4">
                                     <span className="badge rounded-pill text-info bg-info-subtle1 d-inline-flex align-items-center fs-sm">
-                                        .
+                                        
                                     </span>
 
-                                    <div className="d-flex gap-2">
+                                    {/* <div className="d-flex gap-2">
                                         <button className="btn btn-sm btn-info rounded-pill animate-pulse text-info bg-info-subtle" type="button">
                                             <i className="ci-shopping-cart animate-target fs-sm ms-n1 me-1" />
                                             Basket
@@ -116,7 +120,22 @@ const Products = () => {
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>
+                                    </div> */}
+
+                                     <div className="d-flex gap-2">
+                                                                        
+                                                                        <BasketButton productId={0} productName={0} className='rounded-pill' />
+                                    
+                                                                        <FavoriteButton productId={0} productName={0} className='rounded-pill' />
+                                                    
+                                                                        <ChatButton businessId={0} />
+                                                    
+
+                                                                        <ShareButton productId={''} productName={''} />
+                                                                        
+                                                                      </div>
+                                    
+
                                 </div>
                             </div>
                         </div>

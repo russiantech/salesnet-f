@@ -139,12 +139,12 @@ const ProductsByOffers = () => {
                             </div>
                             
                             <div className="d-flex align-items-center gap-3">
-                                <button className="btn btn-sm btn-outline-secondary">
+                                <button className="btn btn-sm btn-outline-secondary rounded-pill">
                                     <i className="ci-filter me-2" />
                                     Filter
                                 </button>
                                 <div className="vr d-none d-md-inline-block" />
-                                <button className="btn btn-sm btn-outline-secondary">
+                                <button className="btn btn-sm btn-outline-secondary rounded-pill">
                                     <i className="ci-sort-asc me-2" />
                                     Sort
                                 </button>
@@ -170,7 +170,7 @@ const ProductsByOffers = () => {
                                     
                                     <Link
                                         to={`/offers/${offer.slug}`}
-                                        className="btn btn-sm btn-outline-dark"
+                                        className="btn btn-sm btn-outline-dark rounded-pill"
                                     >
                                         View Details
                                         <i className="ci-arrow-right ms-2" />
@@ -180,9 +180,9 @@ const ProductsByOffers = () => {
 
                             {/* Products Grid */}
                             <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
-                                {offer.products.map((product) => (
+                                {offer.products.map((product, i) => (
                                     <ProductSummary
-                                        key={product.id}
+                                        key={product.id + i}
                                         product={product}
                                         showDetails={true}
                                     />

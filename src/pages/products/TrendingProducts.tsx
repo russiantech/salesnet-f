@@ -9,113 +9,6 @@ import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import './TrendingProducts.css'
 import SeoConfig from '../../utils/SeoManager';
 
-const TrendingProducts2 = () => {
-  const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchTrendingProducts = useCallback(async (pageNumber, signal) => {
-    try {
-      setLoading(true);
-      const response = await ProductAxiosService.getTrendingProducts({
-        page: pageNumber,
-        page_size: 8
-      }, { signal });
-
-      setProducts(prev => [...prev, ...response.data.products]);
-      setHasMore(response.data.page_meta.has_next_page);
-      setError(null);
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        setError('Failed to load trending products');
-        NotificationService.showDialog(err.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchTrendingProducts(page, controller.signal);
-    return () => controller.abort();
-  }, [page, fetchTrendingProducts]);
-
-  const handleScroll = useCallback(() => {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 500 && !loading && hasMore) {
-      setPage(prev => prev + 1);
-    }
-  }, [loading, hasMore]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  if (error) {
-    return (
-      <div className="container py-5 text-center">
-        <div className="alert alert-danger">{error}</div>
-      </div>
-    );
-  }
-
-  return (
-    <main className="content-wrapper">
-      <div className="container py-4 py-lg-5">
-        <div className="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
-          <h2 className="h3 mb-0">
-            <i className="ci-rocket text-danger me-2" />
-            Trending Products
-          </h2>
-          <span className="badge bg-primary rounded-pill bg-opacity-10 text-primary">
-            {products.length} Items
-          </span>
-        </div>
-
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-          {products.map((product) => (
-            <ProductSummary
-              key={product.id}
-              product={product}
-              showBadge={true}
-              discountBadge={product.has_discount}
-            />
-          ))}
-        </div>
-
-        {loading && (
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <LoadingCard key={`loading-${index}`} />
-            ))}
-          </div>
-        )}
-
-        {!hasMore && (
-          <div className="text-center py-5 mt-4">
-            <p className="text-muted">No more trending products to load</p>
-          </div>
-        )}
-      </div>
-    </main>
-  );
-};
-
-// export default TrendingProducts;
-
-// 
-// import { useState, useEffect, useCallback } from 'react';
-// import { motion, useScroll, useTransform } from 'framer-motion';
-// // import { ProductsAxiosService } from '../../services/net/ProductsAxiosService';
-// import ProductSummary from '../products/ProductSummary';
-// import LoadingCard from '../../components/shared/LoadingCard';
-// import Breadcrumb from '../../components/shared/Breadcrumb';
-// import { NotificationService } from '../../services/local/NotificationService';
-// import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 
 const TrendingProducts = () => {
   const [products, setProducts] = useState([]);
@@ -234,12 +127,12 @@ const TrendingProducts = () => {
               </div>
               
               <div className="d-flex align-items-center gap-3">
-                <button className="btn btn-sm btn-outline-secondary">
+                <button className="btn btn-sm btn-outline-secondary rounded-pill">
                   <i className="ci-filter me-2" />
                   Filter
                 </button>
                 <div className="vr d-none d-md-inline-block" />
-                <button className="btn btn-sm btn-outline-secondary">
+                <button className="btn btn-sm btn-outline-secondary rounded-pill">
                   <i className="ci-sort-asc me-2" />
                   Sort
                 </button>
@@ -255,11 +148,11 @@ const TrendingProducts = () => {
           >
             {products.map((product, index) => (
               <motion.div
-                key={product.id}
+                key={index}
                 className="col"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ 
+                transition={{
                   delay: index * 0.1,
                   type: 'spring',
                   stiffness: 100

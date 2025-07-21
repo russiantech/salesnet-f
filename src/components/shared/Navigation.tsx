@@ -22,11 +22,11 @@
 //     const { pathname } = location;
 //     const [userRole] = useState<'user' | 'vendor' | null>(null);
 
-//     const isProfileRoute = pathname.startsWith('/user/') || pathname.startsWith('/vendor/');
+//     const isProfileRoute = pathname.startsWith('/users/') || pathname.startsWith('/vendor/');
     
 //     const getDashboardLink = () => {
 //         if (userRole === 'vendor') return '/vendor/dashboard';
-//         if (userRole === 'user') return '/user/personal';
+//         if (userRole === 'user') return '/users/personal';
 //         return '/auth/signin';
 //     };
 
@@ -159,7 +159,7 @@
 //                                             </NavLink>
 //                                         </li>
 //                                         <li className="nav-item">
-//                                             <NavLink className="nav-link animate-scale" to="/user/favorites">
+//                                             <NavLink className="nav-link animate-scale" to="/users/favorites">
 //                                                 <i className="ci-heart fs-2 m-1 animate-target" />
 //                                                 Favorites
 //                                             </NavLink>
@@ -167,7 +167,7 @@
 //                                         <li className="nav-item">
 //                                             <NavLink 
 //                                                 className="nav-link animate-scale" 
-//                                                 to="/user/basket" 
+//                                                 to="/users/basket" 
 //                                                 data-bs-toggle="offcanvas" 
 //                                                 data-bs-target="#shoppingCart" 
 //                                                 aria-controls="shoppingCart" 
@@ -290,7 +290,7 @@
 
 //                     <NavLink 
 //                         className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" 
-//                         to="/user/favorites"
+//                         to="/users/favorites"
 //                     >
 //                         <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill">3</span>
 //                         <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
@@ -353,11 +353,11 @@ const TopNav = () => {
         return unsubscribe;
     }, []);
 
-    const isProfileRoute = pathname.startsWith('/user/') || pathname.startsWith('/vendor/');
+    const isProfileRoute = pathname.startsWith('/users/') || pathname.startsWith('/vendor/');
     
     const getDashboardLink = () => {
         if (userRole === 'vendor') return '/vendor/dashboard';
-        if (userRole === 'user') return '/user/personal';
+        if (userRole === 'user') return '/users/personal';
         return '/auth/signin';
     };
 
@@ -493,7 +493,7 @@ const TopNav = () => {
                                             </NavLink>
                                         </li>
                                         <li className="nav-item">
-                                            <NavLink className="nav-link animate-scale" to="/user/favorites">
+                                            <NavLink className="nav-link animate-scale" to="/users/favorites">
                                                 <i className="ci-heart fs-2 m-1 animate-target" />
                                                 Favorites
                                             </NavLink>
@@ -501,7 +501,7 @@ const TopNav = () => {
                                         <li className="nav-item">
                                             <NavLink 
                                                 className="nav-link animate-scale" 
-                                                to="/user/basket" 
+                                                to="/users/basket" 
                                                 data-bs-toggle="offcanvas" 
                                                 data-bs-target="#shoppingCart" 
                                                 aria-controls="shoppingCart" 
@@ -643,7 +643,7 @@ const BottomNav = () => {
 
                     <NavLink 
                         className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle mx-2" 
-                        to="/user/favorites"
+                        to="/users/favorites"
                     >
                         {basketCount > 0 && (
                             <span className="position-absolute top-50 start-100 mt-n1 ms-n3 badge text-bg-success rounded-pill">

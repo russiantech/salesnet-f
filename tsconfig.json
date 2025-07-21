@@ -5,6 +5,10 @@
   //     "@/*": ["*"]
   //   }
   // },
+"compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"],
+},
 
   "files": [],
   "references": [

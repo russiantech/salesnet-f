@@ -442,12 +442,12 @@ const BasketCanvas: React.FC = () => {
         )}
 
         {/* <div className="d-flex w-100 gap-3 mb-3">
-          <NavLink data-bs-dismiss="offcanvas" className="btn btn-lg btn-secondary w-100" to="/user/basket">
+          <NavLink data-bs-dismiss="offcanvas" className="btn btn-lg btn-secondary w-100" to="/users/basket">
             View cart
           </NavLink>
           <Link 
             className="btn btn-lg btn-primary w-100" 
-            to={isAuthenticated ? "/user/checkout" : "/login?redirect=checkout"}
+            to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
             data-bs-dismiss="offcanvas"
             aria-label="Proceed to checkout"
           >
@@ -457,11 +457,11 @@ const BasketCanvas: React.FC = () => {
          <div className="d-flex w-100 gap-3 mb-3">
     <NavLink 
       className="btn btn-lg btn-secondary w-100"
-      to="/user/basket"
+      to="/users/basket"
       onClick={async (e) => {
         e.preventDefault();
         await closeOffcanvas();
-        navigate('/user/basket');
+        navigate('/users/basket');
       }}
       aria-label="View cart"
     >
@@ -469,10 +469,10 @@ const BasketCanvas: React.FC = () => {
     </NavLink>
     <Link 
       className="btn btn-lg btn-primary w-100"
-      to={isAuthenticated ? "/user/checkout" : "/login?redirect=checkout"}
+      to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
       onClick={async (e) => {
         e.preventDefault();
-        const targetPath = isAuthenticated ? "/user/checkout" : "/login?redirect=checkout";
+        const targetPath = isAuthenticated ? "/users/checkout" : "/login?redirect=checkout";
         await closeOffcanvas();
         navigate(targetPath);
       }}

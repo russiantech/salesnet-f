@@ -1,0 +1,41 @@
+.cover-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.cover-placeholder {
+  width: 100%;
+  height: 250px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+  margin-top: -60px;
+}
+
+.profile-avatar img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-name {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.profile-nav .nav-link {
+  border-radius: 50px !important;
+  white-space: nowrap;
+}

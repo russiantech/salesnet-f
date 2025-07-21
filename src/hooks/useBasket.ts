@@ -114,7 +114,7 @@ const DEFAULT_BASKET_STATE: BasketState = {
   items: [],
   subtotal: 0,
   itemCount: 0,
-  freeShippingThreshold: 50,
+  freeShippingThreshold: 100000,
   isLoading: true
 };
 

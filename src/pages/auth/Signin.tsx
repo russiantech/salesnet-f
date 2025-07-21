@@ -1,4 +1,4 @@
-import { AxiosUsersService } from "../../services/net/AxiosUsersService";
+import { UsersAxiosService } from "../../services/net/UsersAxiosService";
 import { NotificationService } from "../../services/local/NotificationService";
 import ResponseModal from "../../components/shared/modals/ResponseModal";
 import { NavLink, useNavigate, useHref, useLocation } from "react-router-dom";
@@ -8,7 +8,7 @@ import { UsersService } from "../../services/local/UsersService";
 const Signin = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from || '/user/personal'; // Default redirect path
+    const from = location.state?.from || '/users/personal'; // Default redirect path
 
     const [formData, setFormData] = useState({
         username: '',
@@ -41,7 +41,7 @@ const Signin = () => {
     //         return;
     //     }
 
-    //     AxiosUsersService.signin(formData).then(res => {
+    //     UsersAxiosService.signin(formData).then(res => {
 
     //         const message = res.data.data.full_messages && res.data.data.full_messages.length > 0
     //             ? res.data.data.full_messages[0]
@@ -55,7 +55,7 @@ const Signin = () => {
     //             UsersService.authenticate(res.data.data.user);
 
     //             NotificationService.showDialog(message || 'Successfully logged in', 'success');
-    //             // navigate('/user/personal'); 
+    //             // navigate('/users/personal'); 
     //         } else {
     //             NotificationService.showDialog(message || 'Unknown error occurred', 'error');
     //         }
@@ -79,7 +79,7 @@ const Signin = () => {
           return;
       }
   
-      AxiosUsersService.signin(formData)
+      UsersAxiosService.signin(formData)
           .then(res => {
             // console.log(res);
               if (!res.data) {
@@ -109,9 +109,9 @@ const Signin = () => {
                       NotificationService.showDialog(message, 'success');
                  }
 
-                  // navigate('/user/personal');
-                  // Redirect to referrer or default to '/user/personal'
-                  // const referrer = document.referrer || '/user/personal';
+                  // navigate('/users/personal');
+                  // Redirect to referrer or default to '/users/personal'
+                  // const referrer = document.referrer || '/users/personal';
                   navigate(from, { replace: true });
                   
               } else {

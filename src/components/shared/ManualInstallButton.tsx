@@ -12,7 +12,7 @@ interface ManualInstallButtonProps {
 }
 
 const ManualInstallButton = ({ 
-  className = "btn btn-outline-primary btn-sm position-fixed",
+  className = "btn btn-outline-primary btn-sm position-fixed rounded-pill",
   style = { top: '20px', right: '20px', zIndex: 1000 },
   children = "Install App"
 }: ManualInstallButtonProps) => {

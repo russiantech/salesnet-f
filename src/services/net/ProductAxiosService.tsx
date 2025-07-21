@@ -8,6 +8,21 @@ export const ProductAxiosService = {
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
 
+    // Fetch a paginated list of products
+    // getByOwner: (query = {}, username: string) => {
+    //     const finalQuery = { location: `/products/${username}/users`, page: 1, page_size: 5, username, ...query };
+    //     return AxiosService.json.get(finalQuery.location, finalQuery);
+    // },
+
+    // Fetch a paginated list of products by owner
+
+    getByOwner: (query = {}, username: string) => {
+        const location = `/products/${username}/users`;
+        const finalQuery = { location, page: 1, page_size: 5, ...query };
+        return AxiosService.json.get(location, finalQuery);
+    },
+
+
     // Fetch a paginated list of recommended products 
     getRecommended: (query = {}, username: string) => {
         const finalQuery = { location: '/products/recommendations', page: 1, page_size: 5, username, ...query };
@@ -25,7 +40,7 @@ export const ProductAxiosService = {
         if (typeof slug !== "string") {
             throw new Error("Slug must be a string");
         }
-        return AxiosService.json.get(`/products/${slug}?include_user=true&include_reviews=true`);
+        return AxiosService.json.get(`/products/${slug}?include_user=true&include_page=true&include_reviews=true`);
     },
 
     // Fetch all categories
@@ -365,5 +380,39 @@ export const ProductInteractionService = {
         delete: (productId: string, ratingId: string) => {
             return AxiosService.json.delete(`/products/${productId}/ratings/${ratingId}`);
         }
-    }
+    },
+
+    
+    // Get products by owner (user or page)
+    getByOwner: (ownerId: string, ownerType: 'user' | 'page', query = {}) => {
+        const finalQuery = { 
+            location: `/products/by-owner/${ownerId}`, 
+            page: 1, 
+            page_size: 12,
+            owner_type: ownerType,
+            ...query 
+        };
+        return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    },
+
+    // Get business stats (moved to BusinessAxiosService)
+    // getBusinessStats: (businessId: string, businessType: 'user' | 'page') => {
+    //     return AxiosService.json.get(`/business/${businessId}/stats`, {
+    //         params: { type: businessType }
+    //     });
+    // },
+
+    // New method to get products for business profile
+    getForBusinessProfile: (businessId: string, businessType: 'user' | 'page', query = {}) => {
+        const finalQuery = { 
+            location: `/products/for-business/${businessId}`, 
+            page: 1, 
+            page_size: 8,
+            business_type: businessType,
+            include_metrics: true,
+            ...query 
+        };
+        return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    },
+
 };

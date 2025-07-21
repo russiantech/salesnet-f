@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../partials/Layout";
 import NavigationMenu from "../partials/NavigationMenu";
 import { UsersService } from "../../services/local/UsersService";
-import { AxiosUsersService } from "../../services/net/AxiosUsersService";
+import { UsersAxiosService } from "../../services/net/UsersAxiosService";
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ class RecoverPassword extends React.Component {
   }
 
   onSubmitForm(evt) {
-    AxiosUsersService.login(this.state).then(res => {
+    UsersAxiosService.login(this.state).then(res => {
       if (res.data && res.data.success) {
         this.setState({
           show_message: true,

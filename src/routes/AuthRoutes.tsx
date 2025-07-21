@@ -28,7 +28,7 @@ const AuthRoutes = () => (
   <Suspense fallback={null}>
   <>
   <SeoConfig 
-          title={'Authenticate and browse Salesnet Securely . Internet of sales.'}
+          title={'Authenticate and browse Salesnet Securely.'}
         description={ 'Discover this exclusive offer with amazing discounts'}
         keywords={`offer, discount, deals`}
         // image={offer?.banner_image}

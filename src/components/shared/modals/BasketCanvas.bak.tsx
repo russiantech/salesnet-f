@@ -191,10 +191,10 @@
 //             <span className="h6 mb-0">$2,317.00</span>
 //           </div>
 //           <div className="d-flex w-100 gap-3">
-//             <NavLink className="btn btn-lg btn-secondary w-100" to='/user/basket'>
+//             <NavLink className="btn btn-lg btn-secondary w-100" to='/users/basket'>
 //               View cart
 //             </NavLink>
-//             <Link className="btn btn-lg btn-primary w-100" to="/user/checkout">
+//             <Link className="btn btn-lg btn-primary w-100" to="/users/checkout">
 //               Checkout
 //             </Link>
 //           </div>
@@ -541,14 +541,14 @@
 //         <div className="d-flex w-100 gap-3 mb-3">
 //           <NavLink 
 //             className="btn btn-lg btn-secondary w-100" 
-//             to="/user/basket"
+//             to="/users/basket"
 //             data-bs-dismiss="offcanvas"
 //           >
 //             View cart
 //           </NavLink>
 //           <Link 
 //             className="btn btn-lg btn-primary w-100" 
-//             to={isAuthenticated ? "/user/checkout" : "/login?redirect=checkout"}
+//             to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
 //             data-bs-dismiss="offcanvas"
 //           >
 //             Checkout
@@ -838,13 +838,13 @@ const BasketCanvas: React.FC = () => {
         <div className="d-flex w-100 gap-3">
           <NavLink 
             className="btn btn-lg btn-secondary w-100" 
-            to={isAuthenticated ? '/user/basket' : '/basket'}
+            to={isAuthenticated ? '/users/basket' : '/basket'}
           >
             View cart
           </NavLink>
           <Link 
             className="btn btn-lg btn-primary w-100" 
-            to={isAuthenticated ? "/user/checkout" : "/checkout"}
+            to={isAuthenticated ? "/users/checkout" : "/checkout"}
           >
             Checkout
           </Link>

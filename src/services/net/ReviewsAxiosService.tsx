@@ -27,6 +27,41 @@ export const ReviewAxiosService = {
   listAllReviews: (queryParams = {}) => 
     AxiosService.json.get('/reviews/products', { params: queryParams }),
   
+
+
+  
+  // NEW
+
+  // Get reviews for a business
+    getForBusiness: (businessId: string, businessType: 'user' | 'page') => {
+        return AxiosService.json.get(`/reviews/business/${businessId}`, {
+            params: { type: businessType }
+        });
+    },
+
+    // Create a review for a business
+    createBusinessReview: (data: {
+        businessId: string;
+        businessType: 'user' | 'page';
+        rating: number;
+        comment: string;
+    }) => {
+        return AxiosService.json.post('/reviews/business', data);
+    },
+
+    // Get reviews by user
+    getByUser: (userId: string, query = {}) => {
+        const finalQuery = { 
+            location: `/users/${userId}/reviews`, 
+            page: 1, 
+            page_size: 10,
+            ...query 
+        };
+        return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    },
+
+
+
 };
 
 export default ReviewAxiosService;

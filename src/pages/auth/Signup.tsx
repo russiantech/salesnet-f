@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import { UsersService } from "../../services/local/UsersService";
-import { AxiosUsersService } from "../../services/net/AxiosUsersService";
+import { UsersAxiosService } from "../../services/net/UsersAxiosService";
 import { NotificationService } from "../../services/local/NotificationService";
 import ResponseModal from "../../components/shared/modals/ResponseModal";
 
@@ -44,7 +44,7 @@ const Signup = () => {
             return;
         }
     
-        AxiosUsersService.signup(formData).then(res => {
+        UsersAxiosService.signup(formData).then(res => {
             const message = res.data.full_messages && res.data.full_messages.length > 0
                 ? res.data.full_messages[0]
                 : res.data.message || res.data.error;
@@ -52,7 +52,7 @@ const Signup = () => {
             if (res.data && res.data.success) {
                 NotificationService.showDialog(message || 'You registered successfully', 'success');
                 navigate('/auth/signin'); 
-                // navigate('/user/personal'); 
+                // navigate('/users/personal'); 
             } else {
                 NotificationService.showDialog(message || 'Unknown error occurred', 'error');
             }

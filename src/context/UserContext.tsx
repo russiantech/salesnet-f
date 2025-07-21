@@ -1,6 +1,6 @@
 // contexts/UserContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { AxiosUsersService } from '@/services/net/AxiosUsersService';
+import { UsersAxiosService } from '@/services/net/UsersAxiosService';
 import { UsersService } from '@/services/local/UsersService';
 
 interface User {
@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUser = async () => {
     try {
       setIsLoading(true);
-      const response = await AxiosUsersService.getProfile();
+      const response = await UsersAxiosService.getProfile();
       setUser(response.data);
     } catch (error) {
       setUser(null);
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    AxiosUsersService.signout();
+    UsersAxiosService.signout();
     setUser(null);
   };
 

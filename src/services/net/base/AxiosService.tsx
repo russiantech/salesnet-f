@@ -2,6 +2,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { UsersService } from '../../local/UsersService';
 import { NotificationService } from '../../local/NotificationService';
+import { getEnv } from '../../../utils/env';
 
 interface AuthTokens {
   accessToken: string | null;
@@ -21,12 +22,23 @@ export const registerNavigation = (handler: (path: string) => void) => {
 
 const getBaseURL = (): string => {
   return window.location.hostname === 'localhost' 
-    ? 'http://localhost:8080/api' : 'https://salesnet.securecryptosrecovery.com/api'; // : 'https://salesnet.onrender.com/api';
+    ? getEnv('VITE_API_BASE_URL') || "http://localhost:8080/api" : 'https://salesnet.onrender.com/api';
+    // ? 'http://localhost:8080/api' : 'https://salesnet.securecryptosrecovery.com/api'; // : 'https://salesnet.onrender.com/api';
 };
+
+// Configure base Axios instance
+// const axiosInstance = axios.create({
+//     baseURL: import.meta.env.VITE_API_BASE_URL,
+//     timeout: 10000,
+//     headers: {
+//         "Content-Type": "application/json",
+//     },
+// });
 
 const createAxiosInstance = (contentType = 'application/json'): AxiosInstance => {
   const instance = axios.create({
     baseURL: getBaseURL(),
+    timeout: 10000,
     headers: {
       'Content-Type': contentType,
     },

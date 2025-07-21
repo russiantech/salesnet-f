@@ -279,7 +279,25 @@ const SingleOffer = () => {
         );
     };
 
-    if (!offer) return <LoadingCard count={1} />;
+    // if (!offer) return <LoadingCard count={1} />;
+    if (loading && !offer) {
+        return (
+            <><SeoConfig
+                title={offer ? `${offer.name} | Special Offer` : 'Special Offer'}
+                description={offer?.description || 'Discover this exclusive offer with amazing discounts'}
+                keywords={`offer, discount, ${offer?.name}, deals`}
+                image={offer?.banner_image}
+                canonical={`/offers/${offer?.slug}`} /><main className="container py-5">
+                    <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <div className="col" key={`loading-${index}`}>
+                                <LoadingCard />
+                            </div>
+                        ))}
+                    </div>
+                </main></>
+        );
+        }
 
     return (
         <main className="content-wrapper position-relative">
@@ -340,10 +358,7 @@ const SingleOffer = () => {
                                 </span>
                                 <CountdownTimer endDate={offer.dates.end} />
                             </div>
-                            <Link
-                                to="/offers"
-                                className="btn btn-sm btn-outline-dark mt-2 mt-md-0"
-                            >
+                            <Link to="/offers" className="btn btn-sm btn-outline-dark mt-2 mt-md-0 rounded-pill">
                                 <i className="ci-arrow-left me-2" />
                                 Back to Offers
                             </Link>
@@ -359,14 +374,13 @@ const SingleOffer = () => {
                     )}
 
                     {/* Products Grid */}
-                    <motion.div 
-                        className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pb-4"
+                    <motion.div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pb-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                     >
                         {products.map((product, index) => (
                             <motion.div
-                                key={product.id}
+                                key={product.id + index}
                                 className="col"
                                 initial={{ opacity: 0, y: 50 }}
                                 animate={{ opacity: 1, y: 0 }}

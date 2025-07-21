@@ -2,7 +2,7 @@
 // import { useState, useEffect, useRef } from "react";
 // import { NotificationService } from "../../../services/local/NotificationService";
 // import { UsersService } from "../../../services/local/UsersService";
-// import { AxiosUsersService } from "../../../services/net/AxiosUsersService";
+// import { UsersAxiosService } from "../../../services/net/UsersAxiosService";
 // import ResponseModal from "./ResponseModal";
 
 // // TypeScript interfaces
@@ -86,7 +86,7 @@
 //             return;
 //         }
 
-//         AxiosUsersService.signup(formData).then((res: any) => {
+//         UsersAxiosService.signup(formData).then((res: any) => {
 //             const message = res.data.full_messages && res.data.full_messages.length > 0
 //                 ? res.data.full_messages[0]
 //                 : res.data.message || res.data.error;
@@ -94,7 +94,7 @@
 //             if (res.data && res.data.success) {
 //                 NotificationService.showDialog(message || 'You registered successfully', 'success');
 //                 // navigate('/auth/signin');
-//                 // navigate('/user/personal'); 
+//                 // navigate('/users/personal'); 
 //             } else {
 //                 NotificationService.showDialog(message || 'Unknown error occurred', 'error');
 //             }
@@ -252,7 +252,7 @@
 //     const signinCanvasRef = useRef<HTMLDivElement>(null);
 //     const navigate = useNavigate();
 //     const location = useLocation();
-//     const from = location.state?.from || '/user/personal';
+//     const from = location.state?.from || '/users/personal';
 
 //     const [formData, setFormData] = useState<Omit<FormData, 'email' | 'phone'>>({
 //         username: '',
@@ -285,7 +285,7 @@
 //             return;
 //         }
 
-//         AxiosUsersService.signin(formData)
+//         UsersAxiosService.signin(formData)
 //             .then((res: any) => {
 //                 const message = res.data.full_messages?.[0] || res.data.message || res.data.error || 'Login successful';
 
@@ -428,7 +428,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { NotificationService } from "../../../services/local/NotificationService";
 import { UsersService } from "../../../services/local/UsersService";
-import { AxiosUsersService } from "../../../services/net/AxiosUsersService";
+import { UsersAxiosService } from "../../../services/net/UsersAxiosService";
 import ResponseModal from "./ResponseModal";
 
 // TypeScript interfaces
@@ -502,7 +502,7 @@ const QuickSignup = () => {
         }
 
         // Now formData matches SignupUser type exactly
-        AxiosUsersService.signup(formData).then((res: any) => {
+        UsersAxiosService.signup(formData).then((res: any) => {
             const message = res.data.full_messages && res.data.full_messages.length > 0
                 ? res.data.full_messages[0]
                 : res.data.message || res.data.error;
@@ -545,8 +545,8 @@ const QuickSignup = () => {
 
                 <div className="offcanvas-body d-flex flex-column gap-4 pt-2">
                     <div className="nav fs-sm mb-3 mb-lg-2 animate-scale">
-                        I already have an account
-                        <button className="animate-scale badge rounded-pill p-1 ml-1 text-bg-info" data-bs-toggle="offcanvas" data-bs-target="#quickSigninCanvas"
+                        I already have an account, 
+                        <button className="animate-target btn badge rounded-pill ml-1 text-bg-info" data-bs-toggle="offcanvas" data-bs-target="#quickSigninCanvas"
                             aria-controls="signinCanvas" aria-label="Sign in Canvas">Sign in</button>
                     </div>
 
@@ -557,11 +557,11 @@ const QuickSignup = () => {
                                 name="username"
                                 value={formData.username}
                                 onChange={(evt) => onInputChange('username', evt)}
-                                placeholder="enter/choose your username"
+                                placeholder="Type your username"
                                 className="form-control form-control-lg"
                                 id="username"
                                 required />
-                            <div className="invalid-tooltip bg-transparent py-0">Must enter/choose your username!</div>
+                            <div className="invalid-tooltip bg-transparent py-0">Must type your username!</div>
                         </div>
                         <div className="position-relative mb-4">
                             <label htmlFor="email" className="form-label">Email</label>
@@ -656,7 +656,7 @@ const QuickSignin = () => {
     const signinCanvasRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from || '/user/personal';
+    const from = location.state?.from || '/users/personal';
 
     const [formData, setFormData] = useState<SigninFormData>({
         username: '',
@@ -689,7 +689,7 @@ const QuickSignin = () => {
             return;
         }
 
-        AxiosUsersService.signin(formData)
+        UsersAxiosService.signin(formData)
             .then((res: any) => {
                 const message = res.data.full_messages?.[0] || res.data.message || res.data.error || 'Login successful';
 
@@ -749,7 +749,7 @@ const QuickSignin = () => {
             <div className="offcanvas-body d-flex flex-column gap-4 pt-2">
                 <div className="nav fs-sm mb-2 animate-scale">
                     Don't have an account? 
-                    <button className="animate-target p-1 ms-2 badge rounded-pill text-bg-info" data-bs-toggle="offcanvas" data-bs-target="#quickSignupCanvas"
+                    <button className="animate-target p-1 ms-1 btn badge rounded-pill text-bg-info" data-bs-toggle="offcanvas" data-bs-target="#quickSignupCanvas"
                         aria-controls="signupCanvas" aria-label="Sign up Canvas">Create an account</button>
                 </div>
 

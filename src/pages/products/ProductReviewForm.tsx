@@ -439,7 +439,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           <div className="modal-footer flex-nowrap gap-3 border-0">
             <button
               type="button"
-              className="btn btn-secondary w-100"
+              className="btn btn-secondary w-100 rounded-pill"
               data-bs-dismiss="modal"
               disabled={isSubmitting}
             >
@@ -447,7 +447,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             </button>
             <button
               type="submit"
-              className="btn btn-dark w-100"
+              className="btn btn-dark w- rounded-pill"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

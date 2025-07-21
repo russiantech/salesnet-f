@@ -76,7 +76,7 @@ const Aside = () => {
                                 <i className="ci-settings fs-base opacity-75 me-2" />
                                 Settings
                             </NavLink>
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/user/signout">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/users/signout">
                                 <i className="ci-log-out fs-base opacity-75 me-2" />
                                 Signout
                             </NavLink>

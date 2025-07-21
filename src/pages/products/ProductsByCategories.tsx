@@ -86,11 +86,9 @@ const ProductsByCategories = () => {
                     <div className="d-flex align-items-start justify-content-between border-bottom pb-3 pb-md-4">
                         <div className="d-flex align-items-center">
                             <h2 className="h3 pe-3 me-3 mb-0">{category.name}</h2>
-                            <Link
-                                to={`/categories/${category.slug}`}
+                            <Link to={`/categories/${category.slug}`}
                                 className="product-card-button btn btn-icon btn-dark animate-slide-end ms-2 border-2"
-                                aria-label={`View all ${category.name} products`}
-                            >
+                                aria-label={`View all ${category.name} products`} >
                                 <i className="ci-arrow-up-right fs-base animate-target" />
                             </Link>
                         </div>

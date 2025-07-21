@@ -22,6 +22,7 @@ const ProductRoutes = lazy(() => import("./routes/ProductRoutes"));
 const OfferRoutes = lazy(() => import("./routes/OfferRoutes"));
 const UserRoutes = lazy(() => import("./routes/UserRoutes"));
 const VendorRoutes = lazy(() => import("./routes/VendorRoutes"));
+const PagesRoutes = lazy(() => import("./routes/PagesRoutes"));
 
 const BasketCanvas = lazy(() => import("./components/shared/modals/BasketCanvas"));
 // const Publish = lazy(() => import("./components/shared/modals/publish/Publish"));
@@ -61,9 +62,10 @@ const App = () => {
 
             <Route path="/auth/*" element={<AuthRoutes />} />
 
-            <Route path="/user/*" element={<UserRoutes />} />
+            <Route path="/users/*" element={<UserRoutes />} />
 
-            <Route path="/vendor/*" element={<VendorRoutes />} />
+            <Route path="/vendors/*" element={<VendorRoutes />} />
+            <Route path="/pages/*" element={<PagesRoutes />} />
 
             {/* TEST ROUTES */}
             {/* <Route path="/insert-offers" element={<OfferForm offer={undefined} onSuccess={undefined} />} /> */}
