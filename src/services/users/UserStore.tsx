@@ -1,4 +1,7 @@
- 
+
+// src/services/users/UserStore.tsx
+// This file contains the UserStore which manages user authentication state and local storage
+
 import { LocalStorageService } from "../local/base/LocalStorageService";
 
 // Define interfaces for better type safety

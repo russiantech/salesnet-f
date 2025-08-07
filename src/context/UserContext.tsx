@@ -34,6 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setIsLoading(true);
       const response = await UsersAxiosService.getProfile();
+      // UsersService.setUser(response.data);
       setUser(response.data);
     } catch (error) {
       setUser(null);

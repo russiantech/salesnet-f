@@ -12,6 +12,7 @@ interface AuthTokens {
 interface RefreshTokenResponse {
   access_token: string;
   refresh_token?: string;
+  
 }
 
 let navigationHandler: ((path: string) => void) | null = null;
@@ -38,7 +39,7 @@ const getBaseURL = (): string => {
 const createAxiosInstance = (contentType = 'application/json'): AxiosInstance => {
   const instance = axios.create({
     baseURL: getBaseURL(),
-    timeout: 10000,
+    timeout: 50000,
     headers: {
       'Content-Type': contentType,
     },

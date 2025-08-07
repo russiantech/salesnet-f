@@ -1,3 +1,7 @@
+//
+// src/services/users/UserService.tsx
+// This file contains the UserService which handles user-related operations
+
 import { UsersService } from "../local/UsersService";
 import { AxiosService} from "../net/base/AxiosService";
 

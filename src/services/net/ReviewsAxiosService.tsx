@@ -3,7 +3,7 @@ import { AxiosService } from "./base/AxiosService";
 export const ReviewAxiosService = {
   // Create a new comment
   createReview: (productSlug: string, data: {
-    content: string;
+    comment: string;
     rating: number;
     recommend?: boolean;
   }) => AxiosService.json.post(`/reviews/${productSlug}/products`, data),
@@ -12,9 +12,13 @@ export const ReviewAxiosService = {
   getProductReviews: (productSlug: string, queryParams = {}) => 
     AxiosService.json.get(`/reviews/products/${productSlug}`, { params: queryParams }),
 
+  // Get Reviews for a user
+  getUserReviews: (userId: string = '', queryParams = {}) => 
+    AxiosService.json.get(`/reviews/users/${userId}`, { params: queryParams }),
+
   // Update a comment
   updateReview: (review_id: number, data: {
-    content?: string;
+    comment?: string;
     rating?: number;
     recommend?: boolean;
   }) => AxiosService.json.put(`/reviews/${review_id}`, data),
@@ -27,11 +31,8 @@ export const ReviewAxiosService = {
   listAllReviews: (queryParams = {}) => 
     AxiosService.json.get('/reviews/products', { params: queryParams }),
   
-
-
   
   // NEW
-
   // Get reviews for a business
     getForBusiness: (businessId: string, businessType: 'user' | 'page') => {
         return AxiosService.json.get(`/reviews/business/${businessId}`, {
@@ -59,8 +60,6 @@ export const ReviewAxiosService = {
         };
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
-
-
 
 };
 

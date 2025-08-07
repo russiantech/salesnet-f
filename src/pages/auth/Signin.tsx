@@ -9,6 +9,7 @@ const Signin = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from || '/users/personal'; // Default redirect path
+    const isAuthenticated = UsersService.isAuthenticated();
 
     const [formData, setFormData] = useState({
         username: '',
@@ -29,6 +30,14 @@ const Signin = () => {
         };
     }, []);
 
+    
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate(from, { replace: true })
+        }
+    }, [isAuthenticated, navigate, from])
+    
     // const onSubmitForm = (evt) => {
     //     evt.preventDefault();
     //     setIsLoading(true);
@@ -95,14 +104,14 @@ const Signin = () => {
                  if(res.data.access_token){
                       // Create user object with tokens
                       const user = res.data;
-                      console.log(`user is: ${JSON.stringify(user)}`)
+                      // console.log(`user is: ${JSON.stringify(user)}`)
                       const user_data = {
                           ...user,  // If user data comes nested
                           access_token: user.access_token,
                           refresh_token: user.refresh_token
                       };
     
-                      console.log(`user_data: ${JSON.stringify(user_data)}`);
+                      // console.log(`user_data: ${JSON.stringify(user_data)}`);
     
                       UsersService.authenticate(user_data);
                       
