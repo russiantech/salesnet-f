@@ -23,8 +23,9 @@ export const registerNavigation = (handler: (path: string) => void) => {
 
 const getBaseURL = (): string => {
   return window.location.hostname === 'localhost' 
-    ? getEnv('VITE_API_BASE_URL') || "http://localhost:8080/api" : 'https://salesnet.onrender.com/api';
+    ? getEnv('VITE_API_BASE_URL') || "http://localhost:8080/api" : getEnv('VITE_API_BASE_PRODUCTION_URL') || 'https://api.salesnet.ng/api';
     // ? 'http://localhost:8080/api' : 'https://salesnet.securecryptosrecovery.com/api'; // : 'https://salesnet.onrender.com/api';
+    // https://api.salesnet.ng/api/products
 };
 
 // Configure base Axios instance
