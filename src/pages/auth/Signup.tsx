@@ -82,8 +82,8 @@ const Signup = () => {
                     <header className="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
                         <NavLink className="navbar-brand pt-0" to="/">
                             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
-                                <div className="flex-shrink-0 border rounded-circle" style={{ width: '32px' }}>
-                                    <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+                                <div className="flex-shrink-0 borders" style={{ width: '32px' }}>
+                                    <div className="ratio ratio-1x1 overflow-hidden">
                                         <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
                                     </div>
                                 </div>
@@ -99,7 +99,7 @@ const Signup = () => {
                     </div>
                     <div className="nav fs-sm mb-4 d-lg-none">
                         <span className="me-2">Uncertain about creating an account?</span>
-                        <NavLink className="text-decoration-none rounded-pill p-1 text-bg-info" to="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Explore the Benefits</NavLink>
+                        <NavLink className="text-decoration-none rounded-pill text-bg-info" to="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Benefits</NavLink>
                     </div>
                     {/* Form */}
                     <form className="needs-validation" id="signup_form" onSubmit={onSubmitForm} noValidate>
@@ -243,7 +243,7 @@ const Signup = () => {
                                                     <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
                                                     <i className="fi-settings position-relative z-2 fs-4 m-1" />
                                                 </div>
-                                                <h3 className="h6 pt-2 my-2">Manage your subscriptions.</h3>
+                                                <h3 className="h6 pt-2 my-2">Promotional activities.</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -271,7 +271,7 @@ const Signup = () => {
                                                     <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
                                                     <i className="fi-percent position-relative z-2 fs-4 m-1" />
                                                 </div>
-                                                <h3 className="h6 pt-2 my-2">Monitor and track usage.</h3>
+                                                <h3 className="h6 pt-2 my-2">sales statistics.</h3>
                                             </div>
                                         </div>
                                     </div>

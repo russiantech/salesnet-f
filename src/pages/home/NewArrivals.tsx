@@ -309,12 +309,12 @@ const NewArrivals = () => {
                 />
               </div>
               <h3 className="display-2 mb-2">{bannerProduct.name}</h3>
-              <p className="text-body fw-medium mb-4">{bannerProduct.description.substring(0, 50)}...</p>
+              <p className="text-body fw-medium mb-4">{bannerProduct?.description?.substring(0, 50)}...</p>
               <Link 
                 className="btn btn-sm btn-primary" 
                 to={`/products/${bannerProduct.slug}`}
               >
-                From ${bannerProduct.price.toFixed(2)}
+                From {bannerProduct.price?.toFixed(2) ?? 'N/A'}
                 <i className="ci-arrow-up-right fs-base ms-1 me-n1" />
               </Link>
             </div>

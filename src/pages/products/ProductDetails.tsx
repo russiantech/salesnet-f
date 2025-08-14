@@ -110,7 +110,7 @@ const ProductDetails = () => {
             phone: userOwner.phone
           };
         }
-        console.log(`ownerData:, ${ownerData}, ${JSON.stringify(data)}`);
+        // console.log(`ownerData:, ${ownerData}, ${JSON.stringify(data)}`);
         setOwner(ownerData);
 
       } catch (err) {

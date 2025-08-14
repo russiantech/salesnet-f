@@ -9,9 +9,6 @@ import { SubscriptionPlans } from './Promote';
 interface PublishPageProps {
   productSlug?: string;
   editProductData?: ProductFormData;
-  onSuccess?: (updatedProduct?: Product) => void;
-  onClose?: () => void;
-  mode?: 'create' | 'edit';
 }
 
 interface Category {
@@ -65,8 +62,8 @@ interface ProductAttribute {
   key: string;
   value: string;
 }
-const PublishPage = ({ productSlug, editProductData, onSuccess, onClose, mode = 'create' }: PublishPageProps) => {
-// const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
+
+const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -131,7 +128,6 @@ const PublishPage = ({ productSlug, editProductData, onSuccess, onClose, mode = 
     success: false
   });
 
-  /*
   useEffect(() => {
     if (productSlug || editProductData) {
       setIsEditMode(true);
@@ -174,519 +170,11 @@ const PublishPage = ({ productSlug, editProductData, onSuccess, onClose, mode = 
       });
     }
   };
-  */
 
-
-
- /*
-  // Enhanced initialization
-  useEffect(() => {
-    const initializeFormData = async () => {
-      try {
-        let productData: ProductFormData | null = null;
-        
-        // Determine data source based on props
-        if (mode === 'edit') {
-          if (editProductData) {
-            productData = editProductData;
-          } else if (productSlug) {
-            const response = await ProductAxiosService.getBySlug(productSlug);
-            productData = response.data;
-          }
-        }
-
-        if (productData) {
-          // Convert API data to form data structure
-          const formData = transformProductToFormData(productData);
-          setFormData(formData);
-          setProductId(productData.id || null);
-          
-          // Set media previews if available
-          if (productData.media?.length) {
-            setPreviews(productData.media.map(item => ({
-              url: item.url,
-              type: item.type,
-              name: item.name,
-              size: item.size
-            })));
-          }
-        } else if (mode === 'create') {
-          // Reset to initial form data for create mode
-          setFormData(initialFormData);
-          setProductId(null);
-          setPreviews([]);
-        }
-      } catch (error) {
-        console.error('Initialization error:', error);
-        setResponseModal({
-          show: true,
-          message: 'Failed to load product data',
-          success: false
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initializeFormData();
-  }, [productSlug, editProductData, mode]);
-  
- 
-  // Helper function to transform API product data to form data
-  const transformProductToFormData = (productData: any): ProductFormData => {
-    return {
-      id: productData.id,
-      basic_info: {
-        name: productData.name,
-        categories: new Set(productData.categories?.map((c: any) => c.id)) || new Set(),
-        price: productData.price,
-        stock: productData.stock || 1,
-        condition: productData.condition || 'new',
-        description: productData.description || '',
-        listing_type: productData.listing_type || 'product',
-        status: productData.status || 'draft'
-      },
-      delivery_options: {
-        delivery_type: productData.delivery_type || 'delivery'
-      },
-      contact_info: {
-        first_name: productData.contact_info?.first_name || '',
-        email: productData.contact_info?.email || '',
-        phone: productData.contact_info?.phone || ''
-      },
-      location: {
-        address: productData.location?.address || '',
-        latitude: productData.location?.latitude || null,
-        longitude: productData.location?.longitude || null
-      },
-      media: {
-        video_link: productData.media?.video_link || ''
-      },
-      promotion: {
-        promotion_plan: productData.promotion?.plan || ''
-      },
-      version: productData.version || 0
-    };
-  };
-
-  // Enhanced submission handler
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      if (!validateCurrentTab()) {
-        setIsSubmitting(false);
-        return;
-      }
-
-      const submissionData = prepareSubmissionData();
-      let response;
-
-      if (mode === 'edit' && productId) {
-        // Update existing product
-        response = await ProductAxiosService.updateProduct(productId, submissionData);
-      } else {
-        // Create new product
-        response = await ProductAxiosService.createProduct(submissionData);
-      }
-
-      if (response.data.success) {
-        const successMessage = mode === 'edit' 
-          ? 'Product updated successfully!' 
-          : 'Product created successfully!';
-
-        setResponseModal({
-          show: true,
-          message: successMessage,
-          success: true
-        });
-
-        // Call success handler with updated product data
-        if (onSuccess) {
-          onSuccess(response.data.product);
-        }
-
-        // Close modal after delay if no handler provided
-        setTimeout(() => {
-          if (closeButtonRef.current) closeButtonRef.current.click();
-          if (onClose) onClose();
-        }, 2000);
-      } else {
-        throw new Error(response.data.error || 'Submission failed');
-      }
-    } catch (error: any) {
-      console.error('Submission error:', error);
-      const errorMessage = error.response?.data?.error || 
-                         error.message || 
-                         'Failed to process your request';
-      
-      setResponseModal({
-        show: true,
-        message: errorMessage,
-        success: false
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Enhanced prepareSubmissionData for both create and update
-  const prepareSubmissionData = () => {
-    const formDataObj = new FormData();
-
-    // Basic info
-    formDataObj.append('basic_info[name]', formData.basic_info.name);
-    formDataObj.append('basic_info[price]', formData.basic_info.price.toString());
-    formDataObj.append('basic_info[stock]', formData.basic_info.stock.toString());
-    formDataObj.append('basic_info[condition]', formData.basic_info.condition);
-    formDataObj.append('basic_info[description]', formData.basic_info.description);
-    formDataObj.append('basic_info[listing_type]', formData.basic_info.listing_type);
-    
-    // Categories as JSON array
-    formDataObj.append('basic_info[categories]', JSON.stringify(Array.from(formData.basic_info.categories)));
-
-    // Delivery options
-    formDataObj.append('delivery_options[delivery_type]', formData.delivery_options.delivery_type);
-
-    // Contact info
-    formDataObj.append('contact_info[first_name]', formData.contact_info.first_name);
-    formDataObj.append('contact_info[email]', formData.contact_info.email);
-    formDataObj.append('contact_info[phone]', formData.contact_info.phone);
-
-    // Location
-    formDataObj.append('location[address]', formData.location.address);
-    if (formData.location.latitude) {
-      formDataObj.append('location[latitude]', formData.location.latitude.toString());
-    }
-    if (formData.location.longitude) {
-      formDataObj.append('location[longitude]', formData.location.longitude.toString());
-    }
-
-    // Media
-    formDataObj.append('media[video_link]', formData.media.video_link);
-
-    // Promotion
-    if (formData.promotion.promotion_plan) {
-      formDataObj.append('promotion[promotion_plan]', formData.promotion.promotion_plan);
-    }
-
-    // Attributes
-    attributes.forEach((attr, index) => {
-      if (attr.key && attr.value) {
-        formDataObj.append(`attributes[${index}][key]`, attr.key);
-        formDataObj.append(`attributes[${index}][value]`, attr.value);
-      }
-    });
-
-    // Media files
-    mediaFiles.forEach((file, index) => {
-      formDataObj.append('media_files[]', file);
-      formDataObj.append(`media_files[${index}][is_cover]`, index === 0 ? 'true' : 'false');
-    });
-
-    // Removed media IDs (for updates)
-    if (mode === 'edit' && removedMediaIds.length > 0) {
-      removedMediaIds.forEach(id => {
-        formDataObj.append('removed_media_ids[]', id);
-      });
-    }
-
-    // Version for optimistic locking (updates only)
-    if (mode === 'edit' && formData.version !== undefined) {
-      formDataObj.append('version', formData.version.toString());
-    }
-
-    return formDataObj;
-  };
-*/
-
-// FIXED: Enhanced initialization for PublishPage
-useEffect(() => {
-    const initializeFormData = async () => {
-        try {
-            setLoading(true);
-            let productData: ProductFormData | null = null;
-            
-            // Determine data source based on props
-            if (mode === 'edit') {
-                if (editProductData) {
-                    // Use the data passed directly from parent
-                    productData = editProductData;
-                    console.log('Using editProductData:', editProductData);
-                } else if (productSlug) {
-                    // Fetch product data if only slug is provided
-                    console.log('Fetching product data for slug:', productSlug);
-                    const response = await ProductAxiosService.getBySlug(productSlug);
-                    if (response.data.success || response.data) {
-                        const apiProduct = response.data.success ? response.data : response.data;
-                        productData = transformProductToFormData(apiProduct);
-                    }
-                }
-            }
-
-            if (productData) {
-                console.log('Setting form data:', productData);
-                setFormData(productData);
-                setProductId(productData.id || null);
-                setIsEditMode(true);
-                
-                // Set categories selection
-                if (productData.basic_info?.categories) {
-                    setSelectedCategoryIds(new Set(productData.basic_info.categories));
-                }
-                
-                // Set media previews if available
-                if (productData.media?.image_urls && productData.media.image_urls.length > 0) {
-                    const mediaPreviewsFromUrls = productData.media.image_urls.map((url, index) => ({
-                        url: url,
-                        type: 'image' as const,
-                        name: `Image ${index + 1}`,
-                        size: 0 // Unknown size for existing images
-                    }));
-                    setPreviews(mediaPreviewsFromUrls);
-                }
-            } else if (mode === 'create') {
-                // Reset to initial form data for create mode
-                setFormData(initialFormData);
-                setProductId(null);
-                setIsEditMode(false);
-                setPreviews([]);
-                setSelectedCategoryIds(new Set());
-            }
-        } catch (error) {
-            console.error('Initialization error:', error);
-            setResponseModal({
-                show: true,
-                message: 'Failed to load product data',
-                success: false
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    initializeFormData();
-}, [productSlug, editProductData, mode]);
-
-// FIXED: Helper function to transform API product data to form data
-const transformProductToFormData = (apiProduct: any): ProductFormData => {
-    console.log('Transforming API product to form data:', apiProduct);
-    
-    // Extract categories
-    const categories = new Set<string>();
-    if (apiProduct.categories && Array.isArray(apiProduct.categories)) {
-        apiProduct.categories.forEach((category: any) => {
-            if (typeof category === 'object' && category.id) {
-                categories.add(category.id.toString());
-            } else if (typeof category === 'string' || typeof category === 'number') {
-                categories.add(category.toString());
-            }
-        });
-    }
-
-    // Extract image URLs
-    const imageUrls = [];
-    if (apiProduct.image_urls && Array.isArray(apiProduct.image_urls)) {
-        imageUrls.push(...apiProduct.image_urls);
-    } else if (apiProduct.image_url) {
-        imageUrls.push(apiProduct.image_url);
-    }
-
-    return {
-        id: apiProduct.id?.toString(),
-        slug: apiProduct.slug,
-        basic_info: {
-            name: apiProduct.name || '',
-            categories: categories,
-            price: parseFloat(apiProduct.price || apiProduct.original_price || 0),
-            stock: parseInt(apiProduct.stock?.toString() || '1'),
-            condition: apiProduct.condition || 'new',
-            description: apiProduct.description || '',
-            listing_type: apiProduct.listing_type || 'product',
-            status: apiProduct.status || 'draft'
-        },
-        delivery_options: {
-            delivery_type: apiProduct.delivery_type || 
-                          apiProduct.delivery_options?.delivery_type || 
-                          'delivery'
-        },
-        contact_info: {
-            first_name: apiProduct.contact_info?.first_name || '',
-            email: apiProduct.contact_info?.email || '',
-            phone: apiProduct.contact_info?.phone || ''
-        },
-        location: {
-            address: apiProduct.location?.address || apiProduct.address || '',
-            latitude: apiProduct.location?.latitude || apiProduct.latitude || null,
-            longitude: apiProduct.location?.longitude || apiProduct.longitude || null
-        },
-        media: {
-            video_link: apiProduct.media?.video_link || apiProduct.video_link || '',
-            image_urls: imageUrls
-        },
-        promotion: {
-            promotion_plan: apiProduct.promotion?.plan || apiProduct.promotion_plan || ''
-        },
-        version: apiProduct.version || 0
-    };
-};
-
-// FIXED: Enhanced submission handler for both create and edit
-const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-        if (!validateCurrentTab()) {
-            setIsSubmitting(false);
-            return;
-        }
-
-        const submissionData = prepareSubmissionData();
-        let response;
-
-        if (mode === 'edit' && (productId || productSlug)) {
-            // Update existing product - use productId if available, otherwise use productSlug
-            const identifier = productId || productSlug;
-            console.log('Updating product with identifier:', identifier);
-            response = await ProductAxiosService.updateProduct(identifier, submissionData);
-        } else {
-            // Create new product
-            console.log('Creating new product');
-            response = await ProductAxiosService.createProduct(submissionData);
-        }
-
-        console.log('API Response:', response);
-
-        if (response.data.success) {
-            const successMessage = mode === 'edit' 
-                ? 'Product updated successfully!' 
-                : 'Product created successfully!';
-
-            setResponseModal({
-                show: true,
-                message: successMessage,
-                success: true
-            });
-
-            // Call success handler with updated product data
-            if (onSuccess) {
-                onSuccess(response.data.product || response.data);
-            }
-
-            // Close modal after delay
-            setTimeout(() => {
-                if (onClose) {
-                    onClose();
-                } else if (closeButtonRef.current) {
-                    closeButtonRef.current.click();
-                }
-            }, 1500);
-        } else {
-            throw new Error(response.data.error || 'Submission failed');
-        }
-    } catch (error: any) {
-        console.error('Submission error:', error);
-        const errorMessage = error.response?.data?.error || 
-                           error.response?.data?.message ||
-                           error.message || 
-                           'Failed to process your request';
-        
-        // Handle array error messages
-        const displayMessage = Array.isArray(errorMessage) ? errorMessage[0] : errorMessage;
-        
-        setResponseModal({
-            show: true,
-            message: displayMessage,
-            success: false
-        });
-    } finally {
-        setIsSubmitting(false);
-    }
-};
-
-// FIXED: Enhanced prepareSubmissionData for both create and update
-const prepareSubmissionData = () => {
-    const formDataObj = new FormData();
-
-    console.log('Preparing submission data for mode:', mode);
-    console.log('Current form data:', formData);
-
-    // Basic info
-    formDataObj.append('basic_info[name]', formData.basic_info.name);
-    formDataObj.append('basic_info[price]', formData.basic_info.price.toString());
-    formDataObj.append('basic_info[stock]', formData.basic_info.stock.toString());
-    formDataObj.append('basic_info[condition]', formData.basic_info.condition);
-    formDataObj.append('basic_info[description]', formData.basic_info.description);
-    formDataObj.append('basic_info[listing_type]', formData.basic_info.listing_type);
-    formDataObj.append('basic_info[status]', formData.basic_info.status || 'published');
-    
-    // Categories as JSON array
-    const categoriesArray = Array.from(formData.basic_info.categories);
-    formDataObj.append('basic_info[categories]', JSON.stringify(categoriesArray));
-
-    // Delivery options
-    formDataObj.append('delivery_options[delivery_type]', formData.delivery_options.delivery_type);
-
-    // Contact info
-    formDataObj.append('contact_info[first_name]', formData.contact_info.first_name);
-    formDataObj.append('contact_info[email]', formData.contact_info.email);
-    formDataObj.append('contact_info[phone]', formData.contact_info.phone);
-
-    // Location
-    formDataObj.append('location[address]', formData.location.address);
-    if (formData.location.latitude !== null) {
-        formDataObj.append('location[latitude]', formData.location.latitude.toString());
-    }
-    if (formData.location.longitude !== null) {
-        formDataObj.append('location[longitude]', formData.location.longitude.toString());
-    }
-
-    // Media
-    formDataObj.append('media[video_link]', formData.media.video_link);
-
-    // Promotion
-    if (formData.promotion.promotion_plan) {
-        formDataObj.append('promotion[promotion_plan]', formData.promotion.promotion_plan);
-    }
-
-    // Attributes
-    attributes.forEach((attr, index) => {
-        if (attr.key && attr.value) {
-            formDataObj.append(`attributes[${index}][key]`, attr.key);
-            formDataObj.append(`attributes[${index}][value]`, attr.value);
-        }
-    });
-
-    // Media files - only new files
-    mediaFiles.forEach((file, index) => {
-        formDataObj.append('media_files[]', file);
-        formDataObj.append(`media_files[${index}][is_cover]`, index === 0 ? 'true' : 'false');
-    });
-
-    // Removed media IDs (for updates only)
-    if (mode === 'edit' && removedMediaIds.length > 0) {
-        removedMediaIds.forEach(id => {
-            formDataObj.append('removed_media_ids[]', id);
-        });
-    }
-
-    // Version for optimistic locking (updates only)
-    if (mode === 'edit' && formData.version !== undefined) {
-        formDataObj.append('version', formData.version.toString());
-    }
-
-    // Debug log
-    console.log('FormData entries:');
-    for (const [key, value] of formDataObj.entries()) {
-        console.log(key, value instanceof File ? `${value.name} (File)` : value);
-    }
-
-    return formDataObj;
-};
-
-     const handleAttributeChange = (index: number, field: keyof ProductAttribute, value: string) => {
+//   
+    // Add to component state
+    // Attribute handlers
+    const handleAttributeChange = (index: number, field: keyof ProductAttribute, value: string) => {
         const newAttributes = [...attributes];
         newAttributes[index][field] = value;
         setAttributes(newAttributes);
@@ -745,7 +233,7 @@ const prepareSubmissionData = () => {
   };
 
   // Handle subscription success
-  const handleSubscriptionSuccess = async () => {
+  const handleSubscriptionSuccess = async (subscription: any) => {
     try {
       if (productId) {
         await ProductAxiosService.updateProductStatus(productId, 'published');
@@ -777,6 +265,10 @@ const prepareSubmissionData = () => {
       saveProductAsDraft();
     }
   }, [activeTab]);
+
+  // ... (Other existing functions: handleAttributeChange, addAttribute, removeAttribute, 
+  // handleFileChange, removeMedia, handleGetLocation, validateField, 
+  // validateCurrentTab, prepareSubmissionData, handleSubmit, etc.)
 
   
       // =============DRAG & DROP & PASTE FROM CLIPBOARD===========
@@ -1042,8 +534,7 @@ const prepareSubmissionData = () => {
                       <div className="d-flex flex-wrap gap-1">
                           {selectedCategoryNames.length > 0 ? (
                               selectedCategoryNames.map((name, i) => (
-                                //   <span key={`${name}-${i}`} className="badge bg-subtle-success rounded-pill">
-                                  <span key={`${name}-${i}`} className="badge fs-xs text-info bg-info-subtle rounded-pill">
+                                  <span key={`${name}-${i}`} className="badge bg-primary">
                                       {name}
                                   </span>
                               ))
@@ -1098,10 +589,84 @@ const prepareSubmissionData = () => {
           error: PropTypes.string,
       };
   
+      const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const files = Array.from(e.target.files || []);
+          const newFiles = files.filter(file =>
+              !mediaFiles.some(existingFile =>
+                  existingFile.name === file.name &&
+                  existingFile.size === file.size
+              )
+          );
+  
+          setMediaFiles(prev => [...prev, ...newFiles]);
+  
+          // Generate previews
+          newFiles.forEach(file => {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                  setPreviews(prev => [...prev, e.target?.result as string]);
+              };
+              reader.readAsDataURL(file);
+          });
+      };
   
       // Geolocation handler
+      const handleGetLocation = () => {
+          setIsLocating(true);
+          if (!navigator.geolocation) {
+              alert("Geolocation is not supported by your browser");
+              setIsLocating(false);
+              return;
+          }
+  
+          navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                  try {
+                      const { latitude, longitude } = position.coords;
+                      // Update form with coordinates
+                      setFormData(prev => ({
+                          ...prev,
+                          location: {
+                              ...prev.location,
+                              latitude,
+                              longitude
+                          }
+                      }));
+  
+                      // Optional: Reverse geocode to get address
+                      const response = await fetch(
+                          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                      );
+                      const data = await response.json();
+                      const address = data.display_name || "Current Location";
+  
+                      setFormData(prev => ({
+                          ...prev,
+                          location: {
+                              ...prev.location,
+                              address
+                          }
+                      }));
+                  } catch (error) {
+                      console.error("Geocoding error:", error);
+                  }
+                  setIsLocating(false);
+              },
+              (error) => {
+                  alert("Error getting location: " + error.message);
+                  setIsLocating(false);
+              }
+          );
+      };
   
   
+      const validateMedia = (media: typeof initialFormData.media) => {
+          const errors: string[] = [];
+          if (media.video_link && !isValidURL(media.video_link)) {
+              errors.push('Invalid video URL format');
+          }
+          return errors;
+      };
   
   
       // 2. Modify handleCategoryChange to update basic_info
@@ -1385,8 +950,7 @@ const prepareSubmissionData = () => {
           // Validate the field
           validateField(name, value);
       };
-
-      /*
+  
       const prepareSubmissionData = () => {
           const submissionData = new FormData();
   
@@ -1425,18 +989,98 @@ const prepareSubmissionData = () => {
   
           return submissionData;
       };
-      */
-
+  
       // Helper functions
+      const processFormValue = (key: string, value: any): string | Blob => {
+          // Convert Sets to JSON arrays
+          if (value instanceof Set) {
+              return JSON.stringify(Array.from(value));
+          }
+  
+          // Convert Date objects to ISO strings
+          if (value instanceof Date) {
+              return value.toISOString();
+          }
+  
+          // Handle boolean values
+          if (typeof value === 'boolean') {
+              return value ? 'true' : 'false';
+          }
+  
+          // Convert numbers to strings
+          if (typeof value === 'number') {
+              return value.toString();
+          }
+  
+          return value;
+      };
   
       // Revised media processing function
+      const processMediaFiles = (submissionData: FormData) => {
+  
+          // 
+          // Append valid removed media IDs
+          // removedMediaIds.forEach(id => {
+          //     if (typeof id === 'string' && id.startsWith('media_')) {
+          //         submissionData.append('removed_media_ids[]', id);
+          //     }
+          // });
+  
+          // Append new media files (excluding removed ones)
+          mediaFiles
+              .filter(file => !removedNewFiles.includes(file))
+              .forEach((file, index) => {
+                  submissionData.append('media[]', file);
+                  submissionData.append(`media[${index}][isCover]`, index === 0 ? 'true' : 'false');
+  
+                  // submissionData.append('images[]', file)
+                  // submissionData.append(`images[${index}][isCover]`, index === 0 ? 'true' : 'false');
+  
+              });
+  
+          // Append removed existing media IDs
+          removedMediaIds.forEach(id => {
+              submissionData.append('removed_media_ids[]', id);
+          });
+      };
   
       // Update your removal handler
+      const handleRemoveMedia = (index: number, id?: string) => {
+          if (id) {
+              // Existing file from server
+              setRemovedMediaIds(prev => [...prev, id]);
+          } else {
+              // New file not yet uploaded
+              setRemovedNewFiles(prev => [...prev, mediaFiles[index]]);
+          }
   
+          // Update UI state
+          setMediaFiles(prev => prev.filter((_, i) => i !== index));
+          setPreviews(prev => prev.filter((_, i) => i !== index));
+      };
   
+      const isFieldModified = (key: string, section: string): boolean => {
+          // Implement field modification check logic for edit mode
+          if (!initialFormData[section]) return true;
+          return JSON.stringify(formData[section][key]) !==
+              JSON.stringify(initialFormData[section][key]);
+      };
   
-
-      /*
+      const logFormData = (submissionData: FormData) => {
+          if (process.env.NODE_ENV === 'development') {
+              console.log('--- FormData Entries ---');
+              for (const [key, value] of submissionData.entries()) {
+                  console.log(key, value instanceof File ? `${value.name} (File)` : value);
+              }
+          }
+      };
+  
+    //   const [showModal, setShowModal] = useState(false);
+      // const closeButtonRef = useRef(null);
+  
+    //   const handleClose = () => setShowModal(false);
+      const handleShow = () => setShowModal(true);
+  
       const handleSubmit = async (e) => {
           e.preventDefault();
           setIsSubmitting(true);
@@ -1512,7 +1156,7 @@ const prepareSubmissionData = () => {
           } finally {
               setIsSubmitting(false);
           }
-      };*/
+      };
   
       // 7. Update edit initialization
       useEffect(() => {
@@ -1552,6 +1196,9 @@ const handleBack = () => {
         }
     };
 
+  // ... (CategorySelector component implementation remains the same)
+
+  
 // Helper function to calculate progress percentage
 const progressPercentage = () => {
   const tabs = ['home', 'listing-type', 'images', 'contact', 'location', 'promote'];
@@ -1631,7 +1278,7 @@ const progressPercentage = () => {
                                                                     />
                                                                 ) : (
                                                                     <div className="text-muted">
-                                                                        <LoadingZoom size='sm' />
+                                                                        <LoadingSpinner />
                                                                         {categories === null ? '...' : 'Fetching categories...'}
                                                                     </div>
                                                                 )}

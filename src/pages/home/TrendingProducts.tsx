@@ -439,10 +439,16 @@ const TrendingProducts = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <ProductSummary 
+                  {/* <ProductSummary 
                     product={product} 
                     showDetails={true} 
                     showMetrics={true} 
+                  /> */}
+                  <ProductSummary
+                    product={product}
+                    showMetrics={true} 
+                    showSubscription={true}  // Toggle subscription display
+                    showDetails={true}       // Enhanced details with subscription
                   />
                 </motion.div>
               </SwiperSlide>

@@ -62,11 +62,19 @@ const Products = () => {
                               <div className="h6 mb-0 me-1 me-md-0">$19</div>
                               <div className="d-flex gap-2">
                                 <div className="d-flex align-items-center fs-xs text-body-emphasis bg-body-tertiary rounded-pill px-2 py-1">
+                                  <i className="ci-eye text-body-secondary me-1" />
+                                  13
+                                </div>
+                                <div className="d-flex align-items-center fs-xs text-body-emphasis bg-body-tertiary rounded-pill px-2 py-1">
                                   <i className="ci-heart text-body-secondary me-1" />
                                   13
                                 </div>
                                 <div className="d-flex align-items-center fs-xs text-body-emphasis bg-body-tertiary rounded-pill px-2 py-1">
                                   <i className="ci-message-circle text-body-secondary me-1" />
+                                  4
+                                </div>
+                                <div className="d-flex align-items-center fs-xs text-body-emphasis bg-body-tertiary rounded-pill px-2 py-1">
+                                  <i className="ci-phone text-body-secondary me-1" />
                                   4
                                 </div>
                               </div>

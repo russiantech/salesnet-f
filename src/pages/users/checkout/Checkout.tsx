@@ -3460,12 +3460,12 @@ const Checkout = () => {
         customer: {
           email: customerEmail,
           phone_number: customerPhone,
-          name: user?.full_name || 'Customer'
+          name: user?.username || user?.full_name || 'Customer'
         },
         customizations: {
           title: 'Order Payment - 3D Payment Security.',
           description: `Payment for order #${order.id}`,
-          logo: '/assets/img/logo.png'
+          logo: '/assets/img/us/logos/favicon.ico'
         },
         metadata: {
           merchant_reference: order.payment_reference,

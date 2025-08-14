@@ -1156,7 +1156,7 @@ const Payments = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await axios.get(`/api/payment-methods`, {
+      const response = await axios.get(`/payment-methods`, {
         params: { user_id: user?.id },
         headers: { 
           'Content-Type': 'application/json',

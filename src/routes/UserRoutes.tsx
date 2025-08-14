@@ -71,6 +71,8 @@ import ProtectedLayout from '../services/guards/ProtectedLayout';
 import SeoConfig from '../utils/SeoManager';
 import CheckoutSuccess from '../pages/users/checkout/CheckoutSuccess';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
+import Products from '../pages/users/products/Products';
+import PublishPage from '../components/shared/modals/publish/PublishPage';
 
 // Lazy load user-related pages
 const Personal = lazy(() => import('../pages/users/personal/Personal'));
@@ -93,7 +95,7 @@ const UserRoutes = () => (
     <>
         <Navigation />
         <SeoConfig 
-            title={'User - welcome to internet of sales.'}
+            title={'User - Internet of sales.'}
             description={'Discover this exclusive offer with amazing discounts'}
             keywords={`user, account, discount, deals`}
             canonical={`/users`}
@@ -113,6 +115,8 @@ const UserRoutes = () => (
                 {/* Protected routes */}
                 <Route element={<ProtectedLayout />}>
                     <Route path="/personal" element={<Personal />} />
+                    <Route path="/products" element={<Products />} />
+                    {/* <Route path="/products/edit/:slug" element={<PublishPage productSlug="big-medical-show-main-can-a-measure" />} /> */}
                     <Route path="/notifications" element={<Notifications />} />
                     <Route path="/addresses" element={<Addresses />} />
                     <Route path="/favorites" element={<Favorites />} />

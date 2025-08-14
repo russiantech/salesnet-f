@@ -470,7 +470,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                   >
                     {isLoading ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+                        <LoadingZoom size="sm" />
                         Processing...
                       </>
                     ) : (

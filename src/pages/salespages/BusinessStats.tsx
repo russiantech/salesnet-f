@@ -25,14 +25,24 @@ export const BusinessStats = ({ productsCount, followersCount, rating }) => {
   );
 };
 
-export const BusinessStats2 = ({ productsCount, followersCount, rating }) => {
+type BusinessStatsProps = {
+  productsCount: number;
+  followersCount: number;
+  rating: number;
+};
+export const BusinessStats2 = ({ productsCount, followersCount, rating }: BusinessStatsProps) => {
   return (
-
     <div className="d-flex flex-wrap gap-3 mb-3 text-muted small">
-        <div className='badge border rounded-pill text-warning'><i className="ci-star me-1"></i> {rating || '0.0'} Ratings</div>
-        <div className='badge border rounded-pill text-danger'><i className="ci-heart me-1"></i> {followersCount || 0} Followers</div>
-        <div className='badge border rounded-pill text-success'><i className="ci-shopping-cart me-1"></i> {productsCount || 0} Products</div>
+      <div className='badge border rounded-pill text-warning'>
+        <i className="ci-star me-1"></i> {(rating ?? 0).toFixed(1)} Rating
       </div>
+      <div className='badge border rounded-pill text-danger'>
+        <i className="ci-heart me-1"></i> {followersCount ?? 0} Followers
+      </div>
+      <div className='badge border rounded-pill text-success'>
+        <i className="ci-shopping-cart me-1"></i> {productsCount ?? 0} Products
+      </div>
+    </div>
   );
 };
 

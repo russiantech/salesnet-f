@@ -1,16 +1,26 @@
 /// <reference path="../../../types/css.d.ts" />
 // import '../../../types/css.d.ts'; // Adjust path as needed
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import Navigation from '../../../components/shared/Navigation'
+import SeoConfig from '../../../utils/SeoManager'
 import Aside from '../shared/Aside'
 
 const Dashboard = () => {
   return (
     <>
-     <Helmet>
-        <title>Dashboard - Salesnet</title> {/* Set the page title */}
-        <meta name="description" content=" " /> {/* Optional meta description */}
-      </Helmet>
+     {/* <Helmet>
+        <title>Dashboard - Salesnet</title> 
+        <meta name="description" content=" " /> 
+      </Helmet> */}
+
+      <SeoConfig 
+          title={'Dashboard - Salesnet'}
+          description={ 'Discover this exclusive offer with amazing discounts'}
+          keywords={`products, quality, discount, deals`}
+          // image={offer?.banner_image}
+          canonical={`/products`}
+      />
+
 
     <Navigation />
       {/* Page content */}

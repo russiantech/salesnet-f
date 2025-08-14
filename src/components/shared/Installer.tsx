@@ -106,8 +106,8 @@ const Installer = () => {
         <h5 className="offcanvas-title" id="pwa-installer-label">
           <Link className="navbar-brand pt-0" to="/" aria-label="Salesnet Home">
             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
-              <div className="flex-shrink-0 border rounded-circle" style={{ width: '40px' }}>
-                <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+              <div className="flex-shrink-0 rounded-circle" style={{ width: '40px' }}>
+                <div className="ratio ratio-1x1 rounded-circle">
                   <img 
                     src="/assets/img/us/logos/favicon.svg" 
                     alt="Salesnet Logo" 

@@ -3,23 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  
   "scripts": {
-  "dev": "vite",
-  "build": "tsc --noEmit || true && vite build",
-  "build:ignore-errors": "npm run build",
-  "lint": "eslint .",
-  "preview": "vite preview"
-},
-  
+    "dev": "vite",
+    "build": "tsc --noEmit || true && vite build",
+    "build:ignore-errors": "npm run build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "axios": "^1.8.1",
     "framer-motion": "^12.11.3",
     "glightbox": "^3.3.1",
+    "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "react": "^19.2.0-canary-97cdd5d3-20250710",
     "react-dom": "^19.2.0-canary-97cdd5d3-20250710",
     "react-helmet-async": "^2.0.5-next",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.2.0",
     "react-select": "^5.10.1",
     "swiper": "^11.2.6",

@@ -151,8 +151,8 @@ const Signin = () => {
             <header className="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
               <NavLink className="navbar-brand pt-0" to="/">
                 <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
-                  <div className="flex-shrink-0 border rounded-circle" style={{ width: '32px' }}>
-                    <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+                  <div className="flex-shrink-0" style={{ width: '32px' }}>
+                    <div className="ratio ratio-1x1 overflow-hidden">
                       <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
                     </div>
                   </div>

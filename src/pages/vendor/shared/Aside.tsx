@@ -29,27 +29,27 @@ const Aside = () => {
                     {/* Body (Navigation) */}
                     <div className="offcanvas-body d-block pt-2 pt-lg-4 pb-lg-0">
                         <nav className="list-group list-group-borderless">
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill pe-none---" to="/vendor/dashboard">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill pe-none---" to="/vendors/dashboard">
                                 <i className="ci-grid fs-base opacity-75 me-2" />
                                 Dashboard
                             </NavLink>
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/products">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendors/products">
                                 <i className="ci-layers fs-base opacity-75 me-2" />
                                 Products (4)
                             </NavLink>
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/sales">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendors/sales">
                                 <i className="ci-pie-chart fs-base opacity-75 me-2" />
                                 Sales
                             </NavLink>
                             {/* <button className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" 
-                            to="/vendor/sales">
+                            to="/vendors/sales">
                                 <i className="ci-pie-chart fs-base opacity-75 me-2" />
                                 Create-offer
                             </button> */}
 
                             <NavLink data-bs-toggle="modal" data-bs-target="#OfferForm" 
                             className="list-group-item list-group-item-action d-flex align-items-center rounded-pill animate-scale " 
-                            to="/vendor/offers/!" data-discover="true">
+                            to="/vendors/offers/!" data-discover="true">
                               {/* <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center 
                               w-100 h-100 rounded-circle animate-scale fs-lg">
                                 <i className="ci-powerbank animate-target fs-4 m-1"></i>Create Offer</span> */}
@@ -57,22 +57,22 @@ const Aside = () => {
                                  Create-offer
                             </NavLink>
 
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/payouts">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendors/payouts">
                                 <i className="ci-dollar-sign fs-base opacity-75 me-2" />
                                 Payouts
                             </NavLink>
                         </nav>
                         <h6 className="pt-4 ps-2 ms-1">User account</h6>
                         <nav className="list-group list-group-borderless">
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/purchases">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendors/purchases">
                                 <i className="ci-shopping-bag fs-base opacity-75 me-2" />
                                 Purchases (6)
                             </NavLink>
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/favorites">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendors/favorites">
                                 <i className="ci-heart fs-base opacity-75 me-2" />
                                 Favorites
                             </NavLink>
-                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendor/settings">
+                            <NavLink className="list-group-item list-group-item-action d-flex align-items-center rounded-pill" to="/vendors/settings">
                                 <i className="ci-settings fs-base opacity-75 me-2" />
                                 Settings
                             </NavLink>

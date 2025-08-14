@@ -20,9 +20,9 @@ const Installer = () => {
         <h5 className="offcanvas-title" id="offcanvasBottomLabel">
           <Link className="navbar-brand pt-0" to="#">
             <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
-              <div className="flex-shrink-0 border rounded-circle" style={{ width: '40px' }}>
+              <div className="flex-shrink-0 rounded-circle" style={{ width: '40px' }}>
                 <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
-                  <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
+                  <img src="/assets/img/us/logos/favicon.svg" alt="Salesnet" />
                 </div>
               </div>
             </span>

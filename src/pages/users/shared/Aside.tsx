@@ -275,6 +275,14 @@ const Aside = () => {
             <nav className="list-group list-group-borderless">
               <NavLink 
                 className="list-group-item list-group-item-action d-flex align-items-center"
+                to="/users/products"
+              >
+                {/* <i className="ci-click fs-base opacity-75 me-2" /> */}
+                <i className="ci-database fs-base opacity-75 me-2" />
+                Products
+              </NavLink>
+              <NavLink 
+                className="list-group-item list-group-item-action d-flex align-items-center"
                 to="/users/personal"
               >
                 <i className="ci-user fs-base opacity-75 me-2" />

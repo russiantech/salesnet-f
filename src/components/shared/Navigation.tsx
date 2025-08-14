@@ -411,7 +411,7 @@ const TopNav = () => {
                             className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2"
                         >
                             <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-                                <i className="ci-powerbank animate-target text-white" />
+                                <i className="ci-click animate-target text-white" />
                             </span>
                         </NavLink>
 
@@ -526,7 +526,8 @@ const TopNav = () => {
                                                 className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2"
                                             >
                                                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
-                                                    <i className="ci-powerbank animate-target fs-4 m-1" />
+                                                    {/* <i className="ci-powerbank animate-target fs-4 m-1" /> */}
+                                                    <i className="ci-click animate-target fs-4 m-1"></i>
                                                 </span>
                                             </NavLink>
                                         </li>

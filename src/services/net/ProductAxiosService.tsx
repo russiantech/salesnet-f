@@ -16,11 +16,30 @@ export const ProductAxiosService = {
 
     // Fetch a paginated list of products by owner
 
+    //     getByOwner: (query = {}, username: string) => {
+    //     const location = `/products/${username}/users`;
+    //     const finalQuery = { location, page: 1, page_size: 5, ...query };
+    //     return AxiosService.json.get(location, finalQuery);
+    // },
+
     getByOwner: (query = {}, username: string) => {
         const location = `/products/${username}/users`;
-        const finalQuery = { location, page: 1, page_size: 5, ...query };
-        return AxiosService.json.get(location, finalQuery);
+        const finalQuery = { page: 1, page_size: 5, ...query };
+        return AxiosService.json.get(location, { params: finalQuery });
     },
+
+
+        // Get products by owner (user or page)
+    // getByOwner: (ownerId: string, ownerType: 'user' | 'page', query = {}) => {
+    //     const finalQuery = { 
+    //         location: `/products/by-owner/${ownerId}`, 
+    //         page: 1, 
+    //         page_size: 12,
+    //         owner_type: ownerType,
+    //         ...query 
+    //     };
+    //     return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    // },
 
 
     // Fetch a paginated list of recommended products 
