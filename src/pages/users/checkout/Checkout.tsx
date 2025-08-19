@@ -3440,7 +3440,7 @@ const Checkout = () => {
       handler.openIframe();
     });
   };
-
+  /*
   const processFlutterwavePayment = async (
     order: any, 
     amount: number, 
@@ -3509,7 +3509,83 @@ const Checkout = () => {
         },
       });
     });
-  };
+  };*/
+
+  const processFlutterwavePayment = async (
+  order: any, 
+  amount: number, 
+  customerEmail: string, 
+  customerPhone: string
+) => {
+  if (!scriptsLoaded.flutterwave) {
+    throw new Error('Flutterwave payment system not available');
+  }
+
+  return new Promise<void>((resolve, reject) => {
+    let paymentHandled = false; // track if payment succeeded
+
+    (window as any).FlutterwaveCheckout({
+      public_key: paymentConfig.flutterwave.publicKey,
+      tx_ref: order.payment_reference,
+      amount,
+      currency: 'NGN',
+      customer: {
+        email: customerEmail,
+        phone_number: customerPhone,
+        name: user?.username || user?.full_name || 'Customer'
+      },
+      customizations: {
+        title: 'Order Payment - 3D Payment Security.',
+        description: `Payment for order #${order.id}`,
+        logo: '/assets/img/us/logos/favicon.ico'
+      },
+      metadata: {
+        merchant_reference: order.payment_reference,
+        order_id: order.id,
+        customer_email: customerEmail
+      },
+      
+      callback: async (response: any) => {
+        try {
+          const verificationResult = await verifyPayment({
+            paymentMethod: 'flutterwave',
+            transactionId: response.transaction_id,
+            paymentReference: order.payment_reference,
+            orderId: order.id
+          });
+
+          if (verificationResult.success) {
+            paymentHandled = true; // mark as successful
+            navigate('/users/checkout/success', { 
+              state: { 
+                order: { ...order, paymentStatus: 'completed' },
+                paymentData: verificationResult.data 
+              } 
+            });
+            resolve();
+          } else {
+            throw new Error(verificationResult.message || 'Payment verification failed');
+          }
+        } catch (error) {
+          console.error('Flutterwave verification error:', error);
+          NotificationService.showDialog(
+            error instanceof Error ? error.message : 'Payment verification failed'
+          );
+          reject(error);
+        }
+      },
+      
+      onclose: () => {
+        setIsProcessing(false);
+        if (!paymentHandled) { // only show cancelled if no success
+          NotificationService.showDialog('Payment cancelled', 'info');
+          reject(new Error('Payment cancelled by user'));
+        }
+      },
+    });
+  });
+};
+
 
   const processOpayPayment = async (
     order: any, 

@@ -2747,6 +2747,7 @@ import { NotificationService } from '../../../services/local/NotificationService
 import { ProductAxiosService } from '../../../services/net/ProductAxiosService';
 import Aside from '../shared/Aside';
 import { UsersService } from '../../../services/local/UsersService';
+import { useRef } from 'react';
 
 interface Product {
     id: string;
@@ -2936,6 +2937,7 @@ const Products = () => {
     }, []);
 
     // Filter handlers - now pass new filters directly to fetchProducts
+    /*
     const handleSearch = (searchTerm: string) => {
         const newFilters = { ...filters, search: searchTerm };
         setFilters(newFilters);
@@ -2943,6 +2945,27 @@ const Products = () => {
         // Reset to page 1 and fetch immediately
         setPagination(prev => ({ ...prev, current_page: 1 }));
         fetchProducts(1, pagination.per_page, newFilters);
+    };
+*/
+    const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    const handleSearch = (searchTerm: string) => {
+    // update state right away so UI reflects input
+    const newFilters = { ...filters, search: searchTerm };
+    setFilters(newFilters);
+    console.log("🔍 Search changed to:", searchTerm);
+
+    // reset page
+    setPagination((prev) => ({ ...prev, current_page: 1 }));
+
+    // debounce API call
+    if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+    }
+
+    searchTimeout.current = setTimeout(() => {
+        fetchProducts(1, pagination.per_page, newFilters);
+    }, 500); // wait 500ms after last keystroke
     };
 
     const handleSort = (sortBy: string) => {
@@ -3000,10 +3023,14 @@ const Products = () => {
         setSelectedProducts(isSelected ? products.map(product => product.id) : []);
     };
 
-    const handleEditProduct = (productId: string) => {
-        // navigate(`/users/products/${productId}/edit`);
-        navigate(`/users/products/edit/${productId}`);
-        // navigate(`/prducts/edit/${productId}`);
+    // const handleEditProduct = (productId: string) => {
+    //     // navigate(`/users/products/${productId}/edit`);
+    //     navigate(`/users/products/edit/${productId}`);
+    //     // navigate(`/prducts/edit/${productId}`);
+    // };
+
+    const handleEditProduct = (productSlug: string) => {
+        navigate(`/users/products/${productSlug}/edit`);
     };
 
     const handlePromoteProduct = (productId: string) => {
@@ -3201,7 +3228,7 @@ const Products = () => {
             <main className="content-wrapper">
                 <div className="container pt-4 pt-lg-5 pb-5">
                     <div className="text-center py-5">
-                        <LoadingSpinner />
+                        <LoadingSpinner size='sm' />
                         <p className="mt-3">Loading your products...</p>
                     </div>
                 </div>
@@ -3276,16 +3303,27 @@ const Products = () => {
                                     </h1>
                                     
                                     <div className="d-flex gap-2 align-items-center">
-                                        <div className="position-relative" style={{maxWidth: '300px'}}>
+                                        <div className="position-relative d-flex" style={{maxWidth: '300px'}}>
                                             <i className="ci-search position-absolute top-50 start-0 translate-middle-y ms-3" />
-                                            <input 
+                                            {/* <input 
                                                 type="search" 
                                                 className="product-search form-control form-icon-start rounded-pill" 
                                                 placeholder="Search products..."
                                                 value={filters.search}
                                                 onChange={(e) => handleSearch(e.target.value)}
-                                                disabled={loading.products}
+                                                // disabled={loading.products}
+                                            /> */}
+                                            {loading.products && <LoadingZoom size='sm' />}
+                                            <input 
+                                            type="search" 
+                                            className="product-search form-control form-icon-start rounded-pill" 
+                                            placeholder="Search products..."
+                                            value={filters.search}
+                                            onChange={(e) => handleSearch(e.target.value)}
                                             />
+
+                                            
+
                                         </div>
                                         <button
                                             className="btn btn-primary rounded-pill"
@@ -3575,11 +3613,11 @@ const Products = () => {
                                                                 </button>
                                                                 <ul className="dropdown-menu dropdown-menu-end">
                                                                     <li>
-                                                                        <button 
-                                                                            className="dropdown-item"
-                                                                            onClick={() => handleEditProduct(product.id)}
+                                                                        <button className="dropdown-item rounded-pill"
+                                                                            onClick={() => handleEditProduct(product.slug)}
                                                                         >
-                                                                            <i className="ci-edit opacity-75 me-2" />
+                                                                            {/* <i className="ci-pencil opacity-75 me-2" /> */}
+                                                                            <i className="ci-edit-3 opacity-75 me-2"></i>
                                                                             Edit
                                                                         </button>
                                                                     </li>
@@ -3691,13 +3729,13 @@ const Products = () => {
                                         <small className="text-muted">
                                             Showing {((pagination.current_page - 1) * pagination.per_page) + 1} to {Math.min(pagination.current_page * pagination.per_page, pagination.total)} of {pagination.total} products
                                             <br />
-                                            <span className="badge bg-info-subtle text-info-emphasis mt-1">
+                                            <span className="badge rounded-pill bg-info-subtle text-info-emphasis mt-1">
                                                 Page {pagination.current_page} of {pagination.last_page} | {pagination.per_page} per page
                                             </span>
                                         </small>
-                                        <div className="d-flex gap-2">
+                                        <div className="d-flex gap-2 rounded-pill">
                                             <select 
-                                                className="form-select form-select-sm"
+                                                className="form-select form-select-sm rounded-pill"
                                                 value={pagination.per_page}
                                                 onChange={(e) => handlePerPageChange(parseInt(e.target.value))}
                                                 disabled={loading.products}

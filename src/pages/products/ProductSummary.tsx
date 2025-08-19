@@ -1020,12 +1020,12 @@ export const ProductSummary = ({
           {product.has_subscription && product.subscription && (
             <div className="mb-2">
               <div className="d-flex align-items-center gap-2">
-                <span className={`badge bg-${product?.subscription?.plan?.plan?.badge_color || 'primary'} rounded-pill bg-opacity-10 text-${product?.subscription?.plan?.badge_color || 'primary'} fs-xs`}>
+                <span className={`badge rounded-pill bg-${product?.subscription?.plan?.plan?.badge_color || 'primary'} bg-opacity-10 text-${product?.subscription?.plan?.badge_color || 'primary'} fs-xs`}>
                   <i className={`${product?.subscription?.plan?.plan?.icon || 'ci-crown'} me-1`} />
                   {product?.subscription?.plan?.name}
                 </span>
                 {product.subscription.is_expiring_soon && (
-                  <span className="badge bg-warning bg-opacity-10 text-warning fs-xs" title={`Expires in ${product.subscription.days_remaining} days`}>
+                  <span className="badge rounded-pill bg-warning bg-opacity-10 text-warning fs-xs" title={`Expires in ${product.subscription.days_remaining} days`}>
                     <i className="ci-clock me-1" />
                     {product.subscription.days_remaining}d left
                   </span>

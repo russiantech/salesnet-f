@@ -194,7 +194,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
         currency: 'NGN',
         reference: subscription.payment_reference,
         metadata: {
-          merchant_reference: subscription.payment_reference,
+          merchant_reference: txRef,
           subscription_id: subscription.id,
           entity_type: entityType,
           entity_id: entityId,
@@ -213,7 +213,89 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
   };
 
 
-  const processFlutterwavePayment = async (
+//   const processFlutterwavePayment = async (
+//   subscription: any, 
+//   amount: number, 
+//   customerEmail: string, 
+//   customerPhone: string
+// ) => {
+//   if (!scriptsLoaded.flutterwave) {
+//     throw new Error('Flutterwave payment system not available');
+//   }
+
+//   // Generate a unique transaction reference if not provided
+//   const generateTxRef = () => {
+//     const timestamp = Date.now();
+//     const random = Math.floor(Math.random() * 1000);
+//     return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
+//   };
+
+//   // Use existing payment_reference or generate a new one
+//   const txRef = subscription.payment_reference || generateTxRef();
+
+//   // Debug log to check the reference
+//   console.log('Transaction Reference:', txRef);
+//   console.log('Subscription object:', subscription);
+
+//   return new Promise<void>((resolve, reject) => {
+//     (window as any).FlutterwaveCheckout({
+//       public_key: paymentConfig?.flutterwave?.publicKey,
+//       tx_ref: txRef, // Use the generated or existing reference
+      
+//       amount,
+//       currency: 'NGN',
+//       customer: {
+//         email: customerEmail,
+//         phone_number: customerPhone,
+//         name: user?.username || 'Customer'
+//       },
+//       customizations: {
+//         title: 'Subscription Payment - 3D Payment Security.',
+//         description: `Payment for ${subscription.plan_name} subscription`,
+//         logo: '/assets/img/us/logos/favicon.ico'
+//       },
+//       metadata: {
+//         merchant_reference: txRef, // Use the same reference
+//         subscription_id: subscription.id,
+//         entity_type: entityType,
+//         entity_id: entityId,
+//         customer_email: customerEmail
+//       },
+      
+//       callback: async (response: any) => {
+//         try {
+//           const verificationResult = await verifyPayment({
+//             paymentMethod: 'flutterwave',
+//             transactionId: response.transaction_id,
+//             paymentReference: txRef, // Use the same reference for verification
+//             subscriptionId: subscription.id
+//           });
+
+//           if (verificationResult.success || verificationResult.data.success) {
+//             onSubscriptionSuccess?.(verificationResult.subscription || verificationResult.data.subscription);
+//             resolve();
+//           } else {
+//             throw new Error(verificationResult.data.message || 'Payment verification failed');
+//           }
+//         } catch (error) {
+//           console.error('Flutterwave verification error:', error);
+//           NotificationService.showDialog(
+//             error instanceof Error ? error.message : 'Payment verification failed'
+//           );
+//           reject(error);
+//         }
+//       },
+      
+//       onclose: () => {
+//         setIsProcessing(false);
+//         NotificationService.showDialog('Payment cancelled', 'info');
+//         reject(new Error('Payment cancelled by user'));
+//       },
+//     });
+//   });
+// };
+// Now fix payment cancellled error upon successful payment when success modal is closed(x) using `paymentHandled`
+const processFlutterwavePayment = async (
   subscription: any, 
   amount: number, 
   customerEmail: string, 
@@ -223,25 +305,23 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
     throw new Error('Flutterwave payment system not available');
   }
 
-  // Generate a unique transaction reference if not provided
   const generateTxRef = () => {
     const timestamp = Date.now();
     const random = Math.floor(Math.random() * 1000);
     return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
   };
 
-  // Use existing payment_reference or generate a new one
   const txRef = subscription.payment_reference || generateTxRef();
 
-  // Debug log to check the reference
   console.log('Transaction Reference:', txRef);
   console.log('Subscription object:', subscription);
 
   return new Promise<void>((resolve, reject) => {
+    let paymentHandled = false; // Track whether callback succeeded
+
     (window as any).FlutterwaveCheckout({
       public_key: paymentConfig?.flutterwave?.publicKey,
-      tx_ref: txRef, // Use the generated or existing reference
-      
+      tx_ref: txRef,
       amount,
       currency: 'NGN',
       customer: {
@@ -255,46 +335,52 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
         logo: '/assets/img/us/logos/favicon.ico'
       },
       metadata: {
-        merchant_reference: txRef, // Use the same reference
+        merchant_reference: txRef,
         subscription_id: subscription.id,
         entity_type: entityType,
         entity_id: entityId,
         customer_email: customerEmail
       },
-      
+
       callback: async (response: any) => {
         try {
           const verificationResult = await verifyPayment({
             paymentMethod: 'flutterwave',
             transactionId: response.transaction_id,
-            paymentReference: txRef, // Use the same reference for verification
+            paymentReference: txRef,
             subscriptionId: subscription.id
           });
 
-          if (verificationResult.success || verificationResult.data.success) {
-            onSubscriptionSuccess?.(verificationResult.subscription || verificationResult.data.subscription);
+          console.log(`verificationResult ${JSON.stringify(verificationResult)}`);
+
+          if (verificationResult?.success || verificationResult.data?.success) {
+            paymentHandled = true; //  Mark as handled
+            onSubscriptionSuccess?.(
+              verificationResult?.subscription || verificationResult?.data?.subscription
+            );
             resolve();
           } else {
-            throw new Error(verificationResult.data.message || 'Payment verification failed');
+            throw new Error(verificationResult?.data?.message || 'Payment verification failed');
           }
         } catch (error) {
           console.error('Flutterwave verification error:', error);
           NotificationService.showDialog(
-            error instanceof Error ? error.message : 'Payment verification failed'
+            error instanceof Error ? error?.message : 'Payment verification failed'
           );
           reject(error);
         }
       },
-      
+
       onclose: () => {
         setIsProcessing(false);
-        NotificationService.showDialog('Payment cancelled', 'info');
-        reject(new Error('Payment cancelled by user'));
+        if (!paymentHandled) { //  Only show cancel if no success
+          NotificationService.showDialog('Payment cancelled', 'warning');
+          reject(new Error('Payment cancelled by user'));
+        }
       },
     });
   });
 };
-
 
   const processPaypalPayment = async (
     subscription: any, 
@@ -505,6 +591,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                         type="radio"
                         name="paymentMethod"
                         id={`payment-${method}`}
+                        disabled={scriptLoadError[method]}
                         value={method}
                         checked={paymentMethod === method}
                         onChange={(e) => setPaymentMethod(e.target.value as any)}

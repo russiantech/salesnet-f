@@ -1303,7 +1303,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                 <section className="position-relative bg-body rounded p-2 m-2">
                   <div className="position-relative z-1 p-2 m-2">
                     <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
-                    <div className="nav flex-nowrap gap-2 text-nowrap">
+                    <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto">
                       {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
                         <Fragment key={type}>
                           <input

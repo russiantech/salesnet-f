@@ -21,6 +21,7 @@ import { BasketButton } from './interactions/BasketButton';
 import { FavoriteButton } from './interactions/FavoriteButton';
 import { ShareButton } from './interactions/ShareButton';
 import { useBootstrapPopovers } from '../../hooks/useBootstrapPopovers';
+import SeoConfig from '../../utils/SeoManager';
 
 interface ProductOwner {
   id: number;
@@ -188,6 +189,14 @@ const ProductDetails = () => {
 
   return (
     <>
+    <SeoConfig 
+        title={` ${product?.name || slug} - Salesnet.`}
+        description={product?.description}
+        keywords={`${product?.name}, products, quality, discount, deals`}
+        // image={offer?.banner_image}
+        canonical={`/products`}
+    />
+    
       <main className="content-wrapper">
         <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
           <Breadcrumb 
@@ -519,7 +528,16 @@ const ProductDetails = () => {
                           </div>
                           <div className="pt-3">
                             <h3 className="h6">Do you have any questions?</h3>
-                            <a className="btn btn-sm btn-primary" href="#!">Contact us</a>
+                            <Link 
+                              to={`https://wa.me/+2347026561327?text=Hello Salesnet!, I'm interested in this product <${product.name}>.`} 
+                              className="btn btn-sm btn-success rounded-pill me-1"
+                            >
+                            <i className="ci-whatsapp me-1"></i> Whatsapp
+                            </Link>
+
+                            <Link to={`tel:07026561327`} className="btn btn-sm btn-info rounded-pill me-1"><i className="ci-phone me-1"></i> Call us</Link>
+                            <Link to={`mailto:scale@salesnet.ng`} className="btn btn-sm btn-primary rounded-pill"><i className="ci-mail me-1"></i> mail us</Link>
+
                           </div>
                         </div>
                       </div>
@@ -557,16 +575,16 @@ const ProductDetails = () => {
                                 data-bs-content="For same day delivery within same city, kindly place your order before 11.AM." />
                               </li>
                             </ul>
-                            <p>If you are not happy with your purchase, you can return it within 15 days for a full refund or exchange.</p>
+                            <p>If you are not happy with your purchase, you can return it within 7 days for a full refund or exchange.</p>
                             <h3 className="h6">Returns</h3>
                             <ul className="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
                               <li className="d-flex align-items-center position-relative pe-4">
                                 <span>Time frame:</span>
                                 <span className="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2" />
-                                <span className="text-dark-emphasis fw-medium text-end">Up to 15 days.</span>
+                                <span className="text-dark-emphasis fw-medium text-end">Up to 7 days.</span>
                                 <i className="ci-info fs-base text-warning position-absolute top-50 end-0 translate-middle-y" 
                                 data-bs-toggle="popover" data-bs-trigger="hover" data-bs-custom-class="popover-sm" 
-                                data-bs-content="up to 15 days interval to return an item to salesnet." />
+                                data-bs-content="up to 7 days interval to return an item to salesnet." />
                               </li>
                             </ul>
                           </div>
@@ -1265,19 +1283,19 @@ export default ProductDetails;
 //                                 />
 //                               </li>
 //                             </ul>
-//                             <p>If you are not happy with your purchase, you can return it within 15 days for a full refund or exchange.</p>
+//                             <p>If you are not happy with your purchase, you can return it within 7 days for a full refund or exchange.</p>
 //                             <h3 className="h6">Returns</h3>
 //                             <ul className="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
 //                               <li className="d-flex align-items-center position-relative pe-4">
 //                                 <span>Time frame:</span>
 //                                 <span className="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2" />
-//                                 <span className="text-dark-emphasis fw-medium text-end">Up to 15 days.</span>
+//                                 <span className="text-dark-emphasis fw-medium text-end">Up to 7 days.</span>
 //                                 <i 
 //                                   className="ci-info fs-base text-body-tertiary position-absolute top-50 end-0 translate-middle-y" 
 //                                   data-bs-toggle="popover" 
 //                                   data-bs-trigger="hover focus" 
 //                                   data-bs-custom-class="popover-sm" 
-//                                   data-bs-content="up to 15 days interval to return an item to salesnet."
+//                                   data-bs-content="up to 7 days interval to return an item to salesnet."
 //                                   data-bs-placement="top"
 //                                   tabIndex={0}
 //                                   role="button"

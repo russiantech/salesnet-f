@@ -72,7 +72,8 @@ import SeoConfig from '../utils/SeoManager';
 import CheckoutSuccess from '../pages/users/checkout/CheckoutSuccess';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import Products from '../pages/users/products/Products';
-import PublishPage from '../components/shared/modals/publish/PublishPage';
+// import PublishPage from '../components/shared/modals/publish/PublishPage';
+import EditProductPage from '../pages/users/products/EditProductPage';
 
 // Lazy load user-related pages
 const Personal = lazy(() => import('../pages/users/personal/Personal'));
@@ -116,6 +117,9 @@ const UserRoutes = () => (
                 <Route element={<ProtectedLayout />}>
                     <Route path="/personal" element={<Personal />} />
                     <Route path="/products" element={<Products />} />
+
+                    <Route path="/products/:slug/edit" element={<EditProductPage />} />
+
                     {/* <Route path="/products/edit/:slug" element={<PublishPage productSlug="big-medical-show-main-can-a-measure" />} /> */}
                     <Route path="/notifications" element={<Notifications />} />
                     <Route path="/addresses" element={<Addresses />} />

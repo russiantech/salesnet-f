@@ -55,11 +55,28 @@ export const ProductAxiosService = {
     },
 
     // Fetch a product by its slug
-    getBySlug: (slug: string) => {
+    // getBySlug: (slug: string) => {
+    //     if (typeof slug !== "string") {
+    //         throw new Error("Slug must be a string");
+    //     }
+    //     return AxiosService.json.get(`/products/${slug}?include_user=true&include_page=true&include_reviews=true`);
+    //     // return AxiosService.json.get(`/products/${slug}`);
+    // },
+
+    // Fetch a product by its slug
+    getBySlug: (slug: string, query = {}) => {
         if (typeof slug !== "string") {
             throw new Error("Slug must be a string");
         }
-        return AxiosService.json.get(`/products/${slug}?include_user=true&include_page=true&include_reviews=true`);
+
+        const finalQuery = { 
+            include_user: true, 
+            include_page: true, 
+            include_reviews: true,
+            ...query 
+        };
+
+        return AxiosService.fetchPage(`/products/${slug}`, finalQuery);
     },
 
     // Fetch all categories
