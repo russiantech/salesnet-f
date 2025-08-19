@@ -3498,13 +3498,23 @@ const Products = () => {
                                                             }
                                                         </p>
                                                         {!filters.search && filters.status === 'all' && (
-                                                            <button
-                                                                className="btn btn-primary"
+
+                                                            <>
+
+                                                            {/* <button className="btn btn-primary"
                                                                 onClick={() => navigate('/account/products/create')}
                                                             >
-                                                                <i className="ci-plus me-1"></i>
+                                                                <i className="ci-click me-1"></i>
+                                                                Create Product
+                                                            </button> */}
+
+                                                            <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PublishPage" aria-current="page">
+                                                                 <i className="ci-click  me-1 animate-target text-white"></i>
                                                                 Create Product
                                                             </button>
+
+                                                            </>
+                                                            
                                                         )}
                                                     </td>
                                                 </tr>
