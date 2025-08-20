@@ -125,7 +125,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
   const [responseModal, setResponseModal] = useState({
     show: false,
     message: '',
-    success: false
+    success: false,
+    type: 'info'
   });
 
   useEffect(() => {
@@ -860,7 +861,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
               setResponseModal({
                   show: true,
                   message: 'Please fill in all required fields(*) correctly',
-                  success: false
+                  success: false,
+                  type="warning"
               });
           }
           return isValid;
@@ -1871,12 +1873,13 @@ const progressPercentage = () => {
       </div>
 
       {/* Response Modal */}
-      <ResponseModal
+      {/* <ResponseModal
         show={responseModal.show}
         message={responseModal.message}
+        type={`${responseModal.type || 'info' } `}
         success={responseModal.success}
         onClose={() => setResponseModal({ ...responseModal, show: false })}
-      />
+      /> */}
     </section>
   );
 };

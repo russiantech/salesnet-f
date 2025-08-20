@@ -887,7 +887,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
     const isValid = tabValidations[activeTab]();
     if (!isValid) {
-      NotificationService.showDialog('Please fill in all required fields(*) correctly', 'error');
+      NotificationService.showDialog('Please fill in all required fields(*) correctly', 'danger');
     }
     return isValid;
   };
