@@ -240,7 +240,7 @@ const ProductDetails = () => {
                       </div>
                       <span className="badge rounded-pill text-dark bg-grey-subtle fs-sm border">{owner.name}</span>
                     </Link>
-                    <span className="fs-xs">
+                    <span className="fs-xs text-muted">
                       {/* Listed {formatDate(product!.created_at)} */}
                       Listed {formatRelativeTime(product!.created_at)}
                     </span>
@@ -434,7 +434,7 @@ const ProductDetails = () => {
               {/* <div className="sticky-top" style={{ top: '1rem', position:'sticky !important' }}> */}
               <div className="">
                 <section className="pt-2 pt-lg-0 mt-2 mt-sm-3 mt-lg-0">
-                  <ul className="nav nav-pills mb-3 flex-nowrap" role="tablist">
+                  {/* <ul className="nav nav-pills mb-3 flex-nowrap" role="tablist">
                     <li className="nav-item" role="presentation">
                       <button 
                         type="button" 
@@ -462,7 +462,6 @@ const ProductDetails = () => {
                         aria-selected="false"
                       >
                         <i className="ci-shopping-cart me-2 ms-n1" />
-                        {/* Delivery & Returns */}
                         Delivery
                       </button>
                     </li>
@@ -481,7 +480,65 @@ const ProductDetails = () => {
                         Reviews <span className="badge rounded-pill bg-warning"> {product.reviews_count}</span>
                       </button>
                     </li>
-                  </ul>
+                  </ul> */}
+
+  <div className="overflow-x-auto" data-simplebar data-simplebar-auto-hide="false">
+    <ul
+      className="nav nav-pills mb-3 flex-nowrap d-flex gap-2"
+      role="tablist"
+      style={{ whiteSpace: "nowrap" }} // prevents wrapping
+    >
+      <li className="nav-item flex-shrink-0" role="presentation">
+        <button
+          type="button"
+          className="nav-link active"
+          id="description-tab"
+          data-bs-toggle="pill"
+          data-bs-target="#description-tab-pane"
+          role="tab"
+          aria-controls="description-tab-pane"
+          aria-selected="true"
+        >
+          <i className="ci-info me-2 ms-n1" />
+          Description
+        </button>
+      </li>
+      <li className="nav-item flex-shrink-0" role="presentation">
+        <button
+          className="nav-link"
+          id="pills-delivery-tab"
+          data-bs-toggle="pill"
+          data-bs-target="#delivery-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="delivery-tab-pane"
+          aria-selected="false"
+        >
+          <i className="ci-shopping-cart me-2 ms-n1" />
+          Delivery
+        </button>
+      </li>
+      <li className="nav-item flex-shrink-0" role="presentation">
+        <button
+          className="nav-link rounded-pill"
+          id="reviews-tab"
+          data-bs-toggle="pill"
+          data-bs-target="#reviews-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="#reviews-tab-pane"
+          aria-selected="false"
+        >
+          <i className="ci-message-square me-2 ms-n1" />
+          Reviews{" "}
+          <span className="badge rounded-pill bg-warning">
+            {product.reviews_count}
+          </span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
                   
                   <div className="tab-content pt-4 mt-sm-1 mt-md-3">
                     <div 
