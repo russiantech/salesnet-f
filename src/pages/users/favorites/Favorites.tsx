@@ -1665,8 +1665,8 @@
 // VERSION 05 - make it add correct product ids when selecting/moving, also displays spinning effect
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from '../../../components/shared/LoadingSpinner';
+import { Link, useNavigate } from 'react-router-dom';
+import LoadingSpinner, { LoadingZoom } from '../../../components/shared/LoadingSpinner';
 import { NotificationService } from '../../../services/local/NotificationService';
 import { FavoritesAxiosService } from '../../../services/net/FavoritesAxiosService';
 // import ProductCard from '../../products/ProductCard';
@@ -1707,7 +1707,6 @@ interface FavoriteItem {
 }
 
 const Favorites = () => {
-    const navigate = useNavigate();
     const [lists, setLists] = useState<FavoriteList[]>([]);
     const [selectedList, setSelectedList] = useState<string | null>(null);
     const [items, setItems] = useState<FavoriteItem[]>([]);
@@ -2154,12 +2153,16 @@ const Favorites = () => {
                                 <div className="d-flex align-items-center justify-content-between pb-3 mb-1 mb-sm-2 mb-md-3">
                                     <h1 className="h2 me-3 mb-0">Favorites</h1>
                                     <div className="nav">
-                                        <button 
-                                            className="nav-link animate-underline px-0 py-1 py-ms-2" 
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#wishlistModal"
-                                        >
-                                            <i className="ci-plus fs-base me-1" />
+
+                                        {/* <button className="nav-link animate-scale px-0 p-1 py-1 py-ms-2 - animate-target badge text-bg-info rounded-pill" data-bs-toggle="modal"
+                                            data-bs-target="#wishlistModal">
+                                            <i className="ci-heart fs-base me-1 animate-scale"/>
+                                            Add favorite list
+                                        </button> */}
+
+                                        <button className="nav-link animate-scale px-0 py-1 py-ms-2" data-bs-toggle="modal"
+                                            data-bs-target="#wishlistModal">
+                                            <i className="ci-heart fs-base me-1 animate-scale"/>
                                             <span className="animate-target badge text-bg-info rounded-pill">
                                                 Add favorite list
                                             </span>
@@ -2213,11 +2216,8 @@ const Favorites = () => {
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-sm btn-dark w-100"
-                                                            onClick={() => document.getElementById('wishlist-selector')?.click()}
-                                                        >
+                                                        <button type="button" className="btn btn-sm btn-dark w-100"
+                                                            onClick={() => document.getElementById('wishlist-selector')?.click()} >
                                                             Select list
                                                         </button>
                                                     </div>
@@ -2225,8 +2225,7 @@ const Favorites = () => {
                                             )}
                                         </div>
                                         <div className="col-sm-5 col-md-4 col-xxl-3">
-                                            <select
-                                                className="form-select"
+                                            <select className="form-select"
                                                 value={sortOption}
                                                 onChange={(e) => setSortOption(e.target.value)}
                                                 disabled={loading.items || items.length === 0}
@@ -2262,20 +2261,18 @@ const Favorites = () => {
                                             disabled={selectedItems.length === 0 || loading.items}
                                         >
                                             {loading.items ? (
-                                                <span className="spinner-border spinner-border-sm me-2" role="status" />
+                                                 <LoadingZoom size="sm" />
                                             ) : (
                                                 <i className="ci-shopping-cart fs-base me-2" />
                                             )}
                                             <span className="animate-target d-none d-md-inline">Add to cart</span>
                                         </button>
                                         <div className="dropdown">
-                                            <button
-                                                className="nav-link animate-underline px-0 pe-sm-2 py-2 me-4 dropdown-toggle"
+                                            <button className="nav-link animate-underline px-0 pe-sm-2 py-2 me-4 dropdown-toggle"
                                                 disabled={selectedItems.length === 0 || loading.items}
-                                                data-bs-toggle="dropdown"
-                                            >
+                                                data-bs-toggle="dropdown" >
                                                 {loading.items ? (
-                                                    <span className="spinner-border spinner-border-sm me-2" role="status" />
+                                                     <LoadingZoom size="sm" />
                                                 ) : (
                                                     <i className="ci-repeat fs-base me-2" />
                                                 )}
@@ -2299,7 +2296,7 @@ const Favorites = () => {
                                             disabled={selectedItems.length === 0 || loading.items}
                                         >
                                             {loading.items ? (
-                                                <span className="spinner-border spinner-border-sm me-1" role="status" />
+                                                <LoadingZoom size="sm" />
                                             ) : (
                                                 <i className="ci-trash fs-base me-1" />
                                             )}
@@ -2318,10 +2315,11 @@ const Favorites = () => {
                                     <div className="text-center py-5">
                                         <i className="ci-heart-filled display-4 text-muted mb-4" />
                                         <h3>No items in this list</h3>
-                                        <p className="text-muted">Add some products to your favorites</p>
+                                        <p className="text-muted">Add some products to your favorites. <Link to="/products">Browse products.</Link></p>
                                     </div>
                                 ) : (
-                                    <div className="row row-cols-2 row-cols-md-3 g-4">
+                                    <div className="row row-cols-2 row-cols-md-3 g-2">
+                                        {/* <div className="overflow-auto pe-3 row-cols-2 row-cols-md-3 g-2 row" data-simplebar style={{maxHeight: "640px"}}> */}
                                         {items.map(item => (
                                             <div className="col" key={item.products.id}>
                                                 <ProductSummary 
@@ -2332,6 +2330,7 @@ const Favorites = () => {
                                                 />
                                             </div>
                                         ))}
+                                    {/* </div> */}
                                     </div>
                                 )}
                             </div>
