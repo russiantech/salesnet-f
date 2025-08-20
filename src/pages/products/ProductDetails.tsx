@@ -240,17 +240,18 @@ const ProductDetails = () => {
                       </div>
                       <span className="badge rounded-pill text-dark bg-grey-subtle fs-sm border">{owner.name}</span>
                     </Link>
-                    <span className="text-body-secondary fs-sm">
+                    <span className="fs-xs">
                       {/* Listed {formatDate(product!.created_at)} */}
                       Listed {formatRelativeTime(product!.created_at)}
                     </span>
                   </div>
+
                 )}
 
-                <div className="d-flex justify-content-between flex-grow-1 gap-4">
+                <div className="d-flex justify-content-between flex-grow-1 gap-2">
                   <span className="rounded-pill fw-bold fs-sm align-items-center"></span>
 
-                  <div className="d-flex gap-2">
+                  <div className="d-flex gap-1">
                     
                     <BasketButton productId={product.id} productName={product.name} className='rounded-pill' />
                     <span className="btn btn-sm btn-dark rounded-pill animate-pulse text-dafaut fs-sm">
