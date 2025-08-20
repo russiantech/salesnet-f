@@ -232,6 +232,7 @@ import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import ProductCard from '../products/ProductCard';
 // import renderRatingStar '../../utils/RenderRatingStar';
 import { ProductRating } from '../products/ProductFeatures';
+import { formatCurrency } from '../../utils/currencyUtils';
 
 const NewArrivals = () => {
   const [products, setProducts] = useState([]);
@@ -351,7 +352,8 @@ const NewArrivals = () => {
                     <span className="animate-target">{product.name}</span>
                   </Link>
                 </h4>
-                <div className="h5 mb-0">${product.price.toFixed(2)}</div>
+                {/* <div className="h5 mb-0">${product.price.toFixed(2)}</div> */}
+                <div className="h5 mb-0">{formatCurrency(product.price, 'NGN', { short: true })}</div>
               </div>
             </div>
           ))}
@@ -388,7 +390,7 @@ const NewArrivals = () => {
                     <span className="animate-target">{product.name}</span>
                   </Link>
                 </h4>
-                <div className="h5 mb-0">${product.price.toFixed(2)}</div>
+                <div className="h5 mb-0">{formatCurrency(product.price, 'NGN', { short: true })}</div>
               </div>
             </div>
           ))}

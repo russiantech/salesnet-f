@@ -99,8 +99,7 @@ const CategoriesProducts = () => {
                 <section className="container py-5 text-center">
                     <h2>Failed to load categories</h2>
                     <p className="text-muted mb-4">{error}</p>
-                    <button 
-                        onClick={() => {
+                    <button onClick={() => {
                             setError(null);
                             fetchCategories();
                         }} 

@@ -858,8 +858,7 @@ export const ProductSummary = ({
 
   const renderPrice = () => {
     const hasDiscount = product.discount_price || product.discount;
-    const discountedPrice = product.discount_price || 
-                          (product.discount ? product.discount.calculated_price : null);
+    const discountedPrice = product.discount_price ||  (product.discount ? product.discount.calculated_price : null);
     
     return (
       <div className="h5 lh-1 mb-0 flex-grow-1 me-2">
@@ -868,7 +867,8 @@ export const ProductSummary = ({
             <span className="text-danger fw-medium">{formatCurrency(discountedPrice)}</span>
             <div className="d-flex align-items-center gap-2">
               <span className="text-decoration-line-through text-body-tertiary fs-sm">
-                {formatCurrency(product.price)}
+                {/* {formatCurrency(product.price)} */}
+                {formatCurrency(product.price, 'NGN', { short: true })}
               </span>
               {discountBadge && product.discount && (
                 <span className="badge bg-danger bg-opacity-10 text-danger fs-xs">
@@ -880,7 +880,7 @@ export const ProductSummary = ({
             </div>
           </div>
         ) : (
-          <span className="fw-medium">{formatCurrency(product.price)}</span>
+          <span className="fw-medium"> {formatCurrency(product.price, 'NGN', { short: true })} </span>
         )}
       </div>
     );
@@ -986,7 +986,7 @@ export const ProductSummary = ({
         </div>
 
         {/* Product info */}
-        <div className="flex-grow-1 d-flex flex-column p-3">
+        <div className="flex-grow-1 d-flex flex-column p-2">
           <div className="mb-2">
             <ProductRating
               averageRating={product.average_rating}
@@ -1005,10 +1005,9 @@ export const ProductSummary = ({
                 lineHeight: '1.4',
                 minHeight: '2.8em'
               }}>
-                <span className="flex-grow-1">{product.name}</span>
+                <span className="flex-grow-1 text-truncate">{product.name}</span>
                 {product.has_subscription && (
-                  <i 
-                    className="ci-crown text-warning fs-sm flex-shrink-0" 
+                  <i className="ci-crown text-warning fs-sm flex-shrink-0" 
                     title={`${product.subscription?.plan?.name} Plan`}
                   />
                 )}

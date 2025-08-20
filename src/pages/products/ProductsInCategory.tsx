@@ -237,13 +237,7 @@ if (!category && !loading && products.length === 0) {
             </div>
 
             {loadingMore && (
-              // <div className="text-center my-4">
-              //   <div className="spinner-border text-primary" role="status">
-              //     <span className="visually-hidden">Loading...</span>
-              //   </div>
-              // </div>
               <LoadingSpinner size='sm' />
-
             )}
 
             {!pageMeta.has_next_page && products.length > 0 && (

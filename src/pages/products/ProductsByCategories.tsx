@@ -5,7 +5,6 @@ import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
-import ResponseModal from '../../components/shared/modals/ResponseModal';
 import ProductSummary from './ProductSummary';
 
 const ProductsByCategories = () => {

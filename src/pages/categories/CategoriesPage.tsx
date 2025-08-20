@@ -69,12 +69,12 @@ const Products = () => {
                             <div className="d-flex flex-column flex-md-row align-items-md-center gap-3 gap-md-4">
                                 <div className="nav align-items-center gap-2 fs-sm">
                                     <Link className="nav-link text-body gap-1 p-0" to="/">
-                                        <div className="flex-shrink-0 border rounded-circle" style={{ width: "32px" }}>
-                                            <div className="ratio ratio-1x1 rounded-circle overflow-hidden">
+                                        <div className="flex-shrink-0" style={{ width: "32px" }}>
+                                            <div className="ratio ratio-1x1 overflow-hidden">
                                                 <img alt="Avatar" src="/assets/img/us/logos/favicon.svg" />
                                             </div>
                                         </div>
-                                       <span className='badge rounded-pill text-info bg-grey-subtle fs-sm'>Home</span> 
+                                       <span className='badge rounded-pill fs-sm text-dark border'>Home</span> 
                                     </Link>
                                 </div>
                                 <div className="d-flex justify-content-between flex-grow-1 gap-4">

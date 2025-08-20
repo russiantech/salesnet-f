@@ -91,6 +91,10 @@ const SalesBanner = () => {
     );
   }
 
+  function formatCurrency(discount: any, arg1: string, arg2: { short: boolean; }): any {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <section className="container pt-2 mt-2">
       <Swiper
@@ -145,7 +149,8 @@ const SalesBanner = () => {
                         </>
                       ) : (
                         <>
-                          {banner.currency_symbol || '$'}{Math.round(parseFloat(banner.discount))}
+                          {/* {banner.currency_symbol || '$'}{Math.round(parseFloat(banner.discount))} */}
+                          {banner.currency_symbol || formatCurrency(banner.discount, 'NGN', { short: true }) }
                           <span className="d-inline-block ms-n2">
                             <span className="d-block fs-5">OFF</span>
                           </span>
