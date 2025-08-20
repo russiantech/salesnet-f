@@ -22,6 +22,7 @@ import { FavoriteButton } from './interactions/FavoriteButton';
 import { ShareButton } from './interactions/ShareButton';
 import { useBootstrapPopovers } from '../../hooks/useBootstrapPopovers';
 import SeoConfig from '../../utils/SeoManager';
+import { formatCurrency } from '../../utils/currencyUtils';
 
 interface ProductOwner {
   id: number;
@@ -253,7 +254,7 @@ const ProductDetails = () => {
                     
                     <BasketButton productId={product.id} productName={product.name} className='rounded-pill' />
                     <span className="btn btn-sm btn-dark rounded-pill animate-pulse text-dafaut fs-sm">
-                     ₦{product.price}
+                      {formatCurrency(product.price, 'NGN', { short: true })}
                     </span>
 
                     <FavoriteButton productId={product.id} productName={product.name} className='rounded-pill' />
@@ -499,7 +500,12 @@ const ProductDetails = () => {
                           <div className="pt-5 mt-md-2 mb-lg-4">
                           <h3 className="h6">General specs</h3>
                           <ul className="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
-
+                              
+                              <li className="d-flex align-items-center position-relative pe-4">
+                              <span>Price:</span>
+                              <span className="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2" />
+                              <span className="text-dark-emphasis fw-medium text-end">{formatCurrency(product.price, 'NGN', { short: false })}</span>
+                            </li>
                             {product.attributes.map((attr, index) => (
                                       <li key={index} className="d-flex align-items-center position-relative pe-4">
                                       <span>{attr.key}:</span>
@@ -511,11 +517,11 @@ const ProductDetails = () => {
                                     </li>
                                     ))}
 
-                            <li className="d-flex align-items-center position-relative pe-4">
+                            {/* <li className="d-flex align-items-center position-relative pe-4">
                               <span>Manufacturer:</span>
                               <span className="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2" />
                               <span className="text-dark-emphasis fw-medium text-end">Apple Inc.</span>
-                            </li>
+                            </li> */}
                             
                             </ul>
                             </div>
