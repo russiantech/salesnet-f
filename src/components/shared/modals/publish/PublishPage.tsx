@@ -125,8 +125,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
   const [responseModal, setResponseModal] = useState({
     show: false,
     message: '',
-    success: false,
-    type: 'info'
+    success: false
   });
 
   useEffect(() => {
@@ -561,7 +560,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                                   onClick={handleDropdownInteraction}
                               />
   
-                              <div className="overflow-x-auto" data-simplebar data-simplebar-auto-hide="false" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                              <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                                   <NestedCategoryList
                                       categories={filteredCategories}
                                       selectedIds={selectedIds}
@@ -861,8 +860,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
               setResponseModal({
                   show: true,
                   message: 'Please fill in all required fields(*) correctly',
-                  success: false,
-                  type="warning"
+                  success: false
               });
           }
           return isValid;
@@ -1215,7 +1213,7 @@ const progressPercentage = () => {
         <div className="modal-content">
           {/* Navigation tabs */}
           <div className="modal-header">
-            <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap overflow-x-auto pe-1" data-simplebar data-simplebar-auto-hide="false" role="tablist">
+            <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap overflow-y-auto pe-1" role="tablist">
               {['home', 'listing-type', 'images', 'contact', 'location', 'promote'].map((tab) => (
                 <li className="nav-item" role="presentation" key={tab}>
                   <button
@@ -1242,7 +1240,7 @@ const progressPercentage = () => {
             />
           </div>
 
-          <div className="modal-body p-0 overflow-x-auto" data-simplebar data-simplebar-auto-hide="false" style={{ maxHeight: "80vh", overflowY: "auto" }}>
+          <div className="modal-body p-0" style={{ maxHeight: "80vh", overflowY: "auto" }}>
             <div className="tab-content">
               {/* Basic Info Tab */}
               <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`}>
@@ -1873,13 +1871,12 @@ const progressPercentage = () => {
       </div>
 
       {/* Response Modal */}
-      {/* <ResponseModal
+      <ResponseModal
         show={responseModal.show}
         message={responseModal.message}
-        type={`${responseModal.type || 'info' } `}
         success={responseModal.success}
         onClose={() => setResponseModal({ ...responseModal, show: false })}
-      /> */}
+      />
     </section>
   );
 };
