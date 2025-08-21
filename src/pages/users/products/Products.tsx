@@ -2748,6 +2748,7 @@ import { ProductAxiosService } from '../../../services/net/ProductAxiosService';
 import Aside from '../shared/Aside';
 import { UsersService } from '../../../services/local/UsersService';
 import { useRef } from 'react';
+import { formatCurrency } from '../../../utils/currencyUtils';
 
 interface Product {
     id: string;
@@ -3169,13 +3170,6 @@ const Products = () => {
         }
     };
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('en-NG', {
-            style: 'currency',
-            currency: 'NGN'
-        }).format(amount);
-    };
-
     const formatNumber = (num: number) => {
         return new Intl.NumberFormat().format(num);
     };
@@ -3566,10 +3560,12 @@ const Products = () => {
                                                                     </h6>
                                                                     <div className="d-flex flex-md-column align-items-center align-items-md-start gap-2">
                                                                         <div className="h6 mb-0 me-1 me-md-0">
-                                                                            {formatCurrency(product.price)}
+                                                                            {/* {formatCurrency(product.price)} */}
+                                                                            {formatCurrency(product.price, 'NGN', { short: true })}
                                                                             {product.original_price && (
                                                                                 <del className="text-muted fs-sm ms-1">
-                                                                                    {formatCurrency(product.original_price)}
+                                                                                    {/* {formatCurrency(product.original_price)} */}
+                                                                                    {formatCurrency(product.price, 'NGN', { short: true })}
                                                                                 </del>
                                                                             )}
                                                                         </div>
@@ -3588,7 +3584,8 @@ const Products = () => {
                                                                         <span className="text-body-secondary">Sales:</span> {formatNumber(product.sales_count)}
                                                                     </div>
                                                                     <div className="fs-xs text-nowrap d-sm-none">
-                                                                        <span className="text-body-secondary">Earnings:</span> {formatCurrency(product.earnings)}
+                                                                        {/* <span className="text-body-secondary">Earnings:</span> {formatCurrency(product.earnings)} */}
+                                                                        <span className="text-body-secondary">Earnings:</span> {formatCurrency(product.earnings, 'NGN', { short: true })}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3602,8 +3599,9 @@ const Products = () => {
                                                             {formatNumber(product.sales_count)}
                                                         </td>
                                                         <td className="text-end d-none d-sm-table-cell py-3">
-                                                            {formatCurrency(product.earnings)}
-                                                            <span className="earnings visually-hidden">{product.earnings}</span>
+                                                            {/* {formatCurrency(product.earnings)} */}
+                                                            {formatCurrency(product.price, 'NGN', { short: true })}
+                                                            <span className="earnings visually-hidden">{formatCurrency(product.earnings, 'NGN', { short: true })}</span>
                                                         </td>
                                                         <td className="text-end py-3 ps-0 ps-sm-3 pe-0">
                                                             <div className="dropdown">

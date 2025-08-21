@@ -1245,156 +1245,156 @@ const progressPercentage = () => {
               {/* Basic Info Tab */}
               <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`}>
                 <section className="position-relative bg-body rounded p-2 m-2">
-                                                    <div className="position-relative z-1">
-                                                        <h2 className="h4 mb-3 mb-sm-4">Basic Information</h2>
-                                                        <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
-                                                            <div className="col">
-                                                                <label htmlFor="name" className="form-label">Product name *</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className={`form-control form-control-lg ${errors.name ? 'is-invalid' : ''}`}
-                                                                    id="name"
-                                                                    name="name"
-                                                                    minLength={5}
-                                                                    placeholder="Product name"
-                                                                    value={formData.basic_info.name}
-                                                                    onChange={handleInputChange}
-                                                                    onBlur={(e) => validateField('name', e.target.value)}
-                                                                    required
-                                                                />
-                                                                {errors.name && (
-                                                                    <div className="invalid-feedback">{errors.name}</div>
-                                                                )}
-                                                            </div>
-                
-                                                            <div className="col">
-                                                                <label className="form-label">Categories *</label>
-                                                                {Array.isArray(categories) && categories.length > 0 ? (
-                                                                    <CategorySelector
-                                                                        categories={categories}
-                                                                        selectedIds={formData.basic_info.categories}
-                                                                        onChange={handleCategoryChange}
-                                                                        error={errors.categories}
-                                                                    />
-                                                                ) : (
-                                                                    <div className="text-muted">
-                                                                        <LoadingSpinner />
-                                                                        {categories === null ? '...' : 'Fetching categories...'}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                
-                                                            <div className="col">
-                                                                <label htmlFor="price" className="form-label">Price *</label>
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="number"
-                                                                        className={`form-control form-control-lg ${errors.price ? 'is-invalid' : ''}`}
-                                                                        id="price"
-                                                                        name="price"
-                                                                        value={formData.basic_info.price}
-                                                                        onChange={handleInputChange}
-                                                                        onBlur={(e) => validateField('price', e.target.value)}
-                                                                        min="0.01"
-                                                                        step="0.01"
-                                                                        required
-                                                                    />
-                                                                    {errors.price && (
-                                                                        <div className="invalid-feedback">{errors.price}</div>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                            <div className="col">
-                                                                <label htmlFor="condition" className="form-label">Condition *</label>
-                                                                <select
-                                                                    className={`form-select form-select-lg ${errors.condition ? 'is-invalid' : ''}`}
-                                                                    id="condition"
-                                                                    name="condition"
-                                                                    value={formData.basic_info.condition}
-                                                                    onChange={handleInputChange}
-                                                                    onBlur={(e) => validateField('condition', e.target.value)}
-                                                                    required
-                                                                >
-                                                                    <option value="">Select condition...</option>
-                                                                    <option value="new">Brand New</option>
-                                                                    <option value="used">Used - Like New</option>
-                                                                    <option value="good">Used - Good</option>
-                                                                    <option value="fair">Used - Fair</option>
-                                                                </select>
-                                                                {errors.condition && (
-                                                                    <div className="invalid-feedback">{errors.condition}</div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                        <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
-                                                        <p className="fs-sm mb-2">Describe your product in detail to attract buyers</p>
-                                                        <textarea
-                                                            className={`form-control form-control-lg ${errors.description ? 'is-invalid' : ''}`}
-                                                            rows={4}
-                                                            id="description"
-                                                            name="description"
-                                                            placeholder="Describe your product (minimum 10 characters)"
-                                                            minLength={10}
-                                                            maxLength={1000}
-                                                            value={formData.basic_info.description}
-                                                            onChange={handleInputChange}
-                                                            onBlur={(e) => validateField('description', e.target.value)}
-                                                            required
-                                                        />
-                                                        {errors.description && (
-                                                            <div className="invalid-feedback">{errors.description}</div>
-                                                        )}
-                                                        <div className="text-end mt-1">
-                                                            <small className="text-muted">
-                                                                {formData.basic_info.description.length}/1000 characters
-                                                            </small>
-                                                        </div>
-                                                    </div>
-                                                </section>
+                    <div className="position-relative z-1">
+                        <h2 className="h4 mb-3 mb-sm-4">Basic Information</h2>
+                        <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
+                            <div className="col">
+                                <label htmlFor="name" className="form-label">Product name *</label>
+                                <input
+                                    type="text"
+                                    className={`form-control form-control-lg ${errors.name ? 'is-invalid' : ''}`}
+                                    id="name"
+                                    name="name"
+                                    minLength={5}
+                                    placeholder="Product name"
+                                    value={formData.basic_info.name}
+                                    onChange={handleInputChange}
+                                    onBlur={(e) => validateField('name', e.target.value)}
+                                    required
+                                />
+                                {errors.name && (
+                                    <div className="invalid-feedback">{errors.name}</div>
+                                )}
+                            </div>
+
+                            <div className="col">
+                                <label className="form-label">Categories *</label>
+                                {Array.isArray(categories) && categories.length > 0 ? (
+                                    <CategorySelector
+                                        categories={categories}
+                                        selectedIds={formData.basic_info.categories}
+                                        onChange={handleCategoryChange}
+                                        error={errors.categories}
+                                    />
+                                ) : (
+                                    <div className="text-muted">
+                                        <LoadingSpinner />
+                                        {categories === null ? '...' : 'Fetching categories...'}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="col">
+                                <label htmlFor="price" className="form-label">Price *</label>
+                                <div className="input-group">
+                                    <input
+                                        type="number"
+                                        className={`form-control form-control-lg ${errors.price ? 'is-invalid' : ''}`}
+                                        id="price"
+                                        name="price"
+                                        value={formData.basic_info.price}
+                                        onChange={handleInputChange}
+                                        onBlur={(e) => validateField('price', e.target.value)}
+                                        min="0.01"
+                                        step="0.01"
+                                        required
+                                    />
+                                    {errors.price && (
+                                        <div className="invalid-feedback">{errors.price}</div>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="col">
+                                <label htmlFor="condition" className="form-label">Condition *</label>
+                                <select
+                                    className={`form-select form-select-lg ${errors.condition ? 'is-invalid' : ''}`}
+                                    id="condition"
+                                    name="condition"
+                                    value={formData.basic_info.condition}
+                                    onChange={handleInputChange}
+                                    onBlur={(e) => validateField('condition', e.target.value)}
+                                    required
+                                >
+                                    <option value="">Select condition...</option>
+                                    <option value="new">Brand New</option>
+                                    <option value="used">Used - Like New</option>
+                                    <option value="good">Used - Good</option>
+                                    <option value="fair">Used - Fair</option>
+                                </select>
+                                {errors.condition && (
+                                    <div className="invalid-feedback">{errors.condition}</div>
+                                )}
+                            </div>
+                        </div>
+                        <label htmlFor="description" className="form-label fs-6 fw-semibold">Description *</label>
+                        <p className="fs-sm mb-2">Describe your product in detail to attract buyers</p>
+                        <textarea
+                            className={`form-control form-control-lg ${errors.description ? 'is-invalid' : ''}`}
+                            rows={4}
+                            id="description"
+                            name="description"
+                            placeholder="Describe your product (minimum 10 characters)"
+                            minLength={10}
+                            maxLength={1000}
+                            value={formData.basic_info.description}
+                            onChange={handleInputChange}
+                            onBlur={(e) => validateField('description', e.target.value)}
+                            required
+                        />
+                        {errors.description && (
+                            <div className="invalid-feedback">{errors.description}</div>
+                        )}
+                        <div className="text-end mt-1">
+                            <small className="text-muted">
+                                {formData.basic_info.description.length}/1000 characters
+                            </small>
+                        </div>
+                    </div>
+                </section>
 
               </div>
 
               {/* Listing Type Tab */}
               <div className={`tab-pane fade ${activeTab === 'listing-type' ? 'show active' : ''}`}>
                 <section className="position-relative bg-body rounded p-2 m-2">
-                                                    <div className="position-relative z-1 p-2 m-2">
-                                                        <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
-                                                        {/* <div className="d-flex flex-wrap gap-2"> */}
-                                                        <div className="nav - flex-nowrap gap-2 text-nowrap">
-                                                            {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
-                                                                <React.Fragment key={type}>
-                                                                    <input
-                                                                        type="radio"
-                                                                        className="btn-check"
-                                                                        name="listing_type"
-                                                                        id={`listing-${type}`}
-                                                                        value={type}
-                                                                        checked={formData.basic_info.listing_type === type}
-                                                                        onChange={handleInputChange}
-                                                                    />
-                                                                    <label htmlFor={`listing-${type}`} className="btn btn-outline-dark rounded-pill">
-                                                                        <div className="d-flex flex-column flex-xxl-row align-items-center m-1">
-                                                                            {/* <div className="nav-item"> */}
-                                                                            <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle">
-                                                                                <i className={`fi-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
-                                                                            </div>
-                                                                            <div className="text-center">
-                                                                                {/* <h3 className="h6 mb-1"> */}
-                                                                                {type === 'product' && 'Sell item'}
-                                                                                {type === 'rental' && 'Rent'}
-                                                                                {type === 'service' && 'Offer service'}
-                                                                                {type === 'property' && 'Sell property'}
-                                                                                {type === 'vehicle' && 'Sell a vehicle'}
-                                                                                {/* </h3> */}
-                                                                            </div>
-                                                                        </div>
-                                                                    </label>
-                                                                </React.Fragment>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </section>
-                
+                    <div className="position-relative z-1 p-2 m-2">
+                        <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
+                        {/* <div className="d-flex flex-wrap gap-2"> */}
+                        <div className="nav - flex-nowrap gap-2 text-nowrap">
+                            {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
+                                <React.Fragment key={type}>
+                                    <input
+                                        type="radio"
+                                        className="btn-check"
+                                        name="listing_type"
+                                        id={`listing-${type}`}
+                                        value={type}
+                                        checked={formData.basic_info.listing_type === type}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label htmlFor={`listing-${type}`} className="btn btn-outline-dark rounded-pill">
+                                        <div className="d-flex flex-column flex-xxl-row align-items-center m-1">
+                                            {/* <div className="nav-item"> */}
+                                            <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle">
+                                                <i className={`fi-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
+                                            </div>
+                                            <div className="text-center">
+                                                {/* <h3 className="h6 mb-1"> */}
+                                                {type === 'product' && 'Sell item'}
+                                                {type === 'rental' && 'Rent'}
+                                                {type === 'service' && 'Offer service'}
+                                                {type === 'property' && 'Sell property'}
+                                                {type === 'vehicle' && 'Sell a vehicle'}
+                                                {/* </h3> */}
+                                            </div>
+                                        </div>
+                                    </label>
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
                 {/* Product Attributes Section */}
                 <section className="position-relative bg-body rounded p-2 m-2">
                   <div className="position-relative z-1">
@@ -1405,7 +1405,7 @@ const progressPercentage = () => {
                           <tr>
                             <th>Attribute</th>
                             <th>Value</th>
-                            <th width="50px"></th>
+                            <th style={{width:"50px"}}></th>
                           </tr>
                         </thead>
                         <tbody>

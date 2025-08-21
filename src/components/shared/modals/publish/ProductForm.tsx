@@ -2812,6 +2812,7 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
     }
   };
 
+  /*
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       if (!isPasteAllowed || !uploadAreaRef.current) return;
@@ -2871,6 +2872,658 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
       handleFileChange({ target: { files } } as React.ChangeEvent<HTMLInputElement>);
     }
   };
+*/
+
+//* ================== */
+// 1. Add these additional state variables to your component:
+const [pasteIndicator, setPasteIndicator] = useState(false);
+const [uploadStatus, setUploadStatus] = useState('');
+
+// 2. Enhanced file validation function (replace or enhance existing):
+const validateFile = useCallback((file: File): { isValid: boolean; error?: string } => {
+  const maxSize = 8 * 1024 * 1024; // 8MB
+  const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+  const allowedVideoTypes = ['video/mp4', 'video/mov', 'video/avi', 'video/wmv', 'video/webm'];
+  const allowedTypes = [...allowedImageTypes, ...allowedVideoTypes];
+
+  if (!allowedTypes.includes(file.type)) {
+    return {
+      isValid: false,
+      error: `File type ${file.type} is not supported. Please use: JPEG, PNG, GIF, WebP, MP4, MOV, AVI, WMV, WebM`
+    };
+  }
+
+  if (file.size > maxSize) {
+    return {
+      isValid: false,
+      error: `File size (${Math.round(file.size / 1024 / 1024)}MB) exceeds the 8MB limit`
+    };
+  }
+
+  if (file.size === 0) {
+    return {
+      isValid: false,
+      error: 'File appears to be empty'
+    };
+  }
+
+  return { isValid: true };
+}, []);
+
+// 3. Enhanced duplicate detection:
+const isDuplicateFile = useCallback((newFile: File, existingFiles: File[]): boolean => {
+  return existingFiles.some(existingFile => 
+    existingFile.name === newFile.name && 
+    existingFile.size === newFile.size &&
+    existingFile.lastModified === newFile.lastModified
+  );
+}, []);
+
+// 4. Enhanced file processing function (replace existing processFiles logic):
+const processFiles = useCallback((files: File[], source: 'paste' | 'drag' | 'click' = 'click') => {
+  if (!files || files.length === 0) return;
+
+  setUploadStatus(`Processing ${files.length} file(s) from ${source}...`);
+  
+  const validFiles: File[] = [];
+  const errors: string[] = [];
+  const duplicates: string[] = [];
+
+  files.forEach((file, index) => {
+    // Check for duplicates
+    if (isDuplicateFile(file, mediaFiles)) {
+      duplicates.push(file.name);
+      return;
+    }
+
+    // Validate file
+    const validation = validateFile(file);
+    if (!validation.isValid) {
+      errors.push(`${file.name}: ${validation.error}`);
+      return;
+    }
+
+    validFiles.push(file);
+  });
+
+  // Show status messages
+  if (duplicates.length > 0) {
+    NotificationService.showDialog(
+      `Duplicate files skipped: ${duplicates.join(', ')}`, 
+      'warning'
+    );
+  }
+
+  if (errors.length > 0) {
+    const errorMessage = errors.length === 1 
+      ? errors[0] 
+      : `${errors.length} files failed validation. First error: ${errors[0]}`;
+    
+    NotificationService.showDialog(errorMessage, 'error');
+  }
+
+  if (validFiles.length === 0) {
+    setUploadStatus('No valid files to process');
+    setTimeout(() => setUploadStatus(''), 3000);
+    return;
+  }
+
+  // Add valid files
+  setMediaFiles(prev => [...prev, ...validFiles]);
+  setUploadStatus(`Successfully added ${validFiles.length} file(s)`);
+
+  // Generate previews for valid files
+  validFiles.forEach((file, fileIndex) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviews(prev => [...prev, {
+        url: e.target?.result as string,
+        type: file.type.startsWith('image/') ? 'image' : 'video',
+        name: file.name,
+        size: file.size,
+        id: `temp-${Date.now()}-${fileIndex}`
+      }]);
+    };
+    reader.onerror = () => {
+      console.error(`Failed to read file: ${file.name}`);
+      NotificationService.showDialog(`Failed to read file: ${file.name}`, 'error');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Clear status after delay
+  setTimeout(() => setUploadStatus(''), 3000);
+}, [mediaFiles, validateFile, isDuplicateFile]);
+
+// 5. Enhanced paste handling (replace existing useEffect for paste):
+useEffect(() => {
+  const handlePaste = async (e: ClipboardEvent) => {
+    if (!isPasteAllowed || !uploadAreaRef.current) return;
+
+    // Show paste indicator
+    setPasteIndicator(true);
+    setTimeout(() => setPasteIndicator(false), 1000);
+
+    const clipboardItems = e.clipboardData?.items;
+    const clipboardFiles = e.clipboardData?.files;
+    
+    if (!clipboardItems && !clipboardFiles) return;
+
+    e.preventDefault();
+
+    const files: File[] = [];
+
+    // Method 1: Process clipboard items (more reliable for some browsers)
+    if (clipboardItems) {
+      for (let i = 0; i < clipboardItems.length; i++) {
+        const item = clipboardItems[i];
+        
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (file) files.push(file);
+        }
+        
+        // Handle string data that might be a file URL or base64
+        if (item.kind === 'string' && (item.type.includes('text') || item.type.includes('html'))) {
+          try {
+            const text = await new Promise<string>((resolve) => {
+              item.getAsString(resolve);
+            });
+            
+            // Check if it's a data URL (base64 image/video)
+            if (text.startsWith('data:image/') || text.startsWith('data:video/')) {
+              const response = await fetch(text);
+              const blob = await response.blob();
+              const extension = blob.type.split('/')[1] || 'jpg';
+              const file = new File([blob], `pasted-file-${Date.now()}.${extension}`, {
+                type: blob.type
+              });
+              files.push(file);
+            }
+            
+            // Handle HTML content with images
+            if (item.type.includes('html')) {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(text, 'text/html');
+              const images = doc.querySelectorAll('img');
+              
+              for (const img of images) {
+                const src = img.src;
+                if (src && (src.startsWith('data:') || src.startsWith('http'))) {
+                  try {
+                    const response = await fetch(src);
+                    const blob = await response.blob();
+                    const extension = blob.type.split('/')[1] || 'jpg';
+                    const file = new File([blob], `pasted-image-${Date.now()}.${extension}`, {
+                      type: blob.type
+                    });
+                    files.push(file);
+                  } catch (error) {
+                    console.warn('Failed to fetch image from HTML:', error);
+                  }
+                }
+              }
+            }
+          } catch (error) {
+            console.warn('Failed to process pasted text as file:', error);
+          }
+        }
+      }
+    }
+
+    // Method 2: Process clipboard files directly (fallback)
+    if (files.length === 0 && clipboardFiles) {
+      files.push(...Array.from(clipboardFiles));
+    }
+
+    if (files.length > 0) {
+      processFiles(files, 'paste');
+    } else {
+      NotificationService.showDialog('No valid files found in clipboard', 'info');
+    }
+  };
+
+  // Enhanced keyboard shortcuts
+  const handleKeyboard = (e: KeyboardEvent) => {
+    // Only handle if the upload area is in focus or no input is focused
+    const activeElement = document.activeElement;
+    const isInputFocused = activeElement?.tagName === 'INPUT' || 
+                          activeElement?.tagName === 'TEXTAREA' || 
+                          activeElement?.contentEditable === 'true';
+
+    // Ctrl+V or Cmd+V for paste (global)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'v' && !isInputFocused) {
+      console.log('Global paste shortcut detected');
+      // The actual paste will be handled by the paste event
+    }
+    
+    // Ctrl+O or Cmd+O for open file dialog
+    if ((e.ctrlKey || e.metaKey) && e.key === 'o' && uploadAreaRef.current) {
+      e.preventDefault();
+      fileInputRef.current?.click();
+    }
+
+    // Escape to cancel any ongoing operations
+    if (e.key === 'Escape') {
+      setIsDragging(false);
+      setPasteIndicator(false);
+    }
+  };
+
+  // Add event listeners
+  document.addEventListener('paste', handlePaste);
+  document.addEventListener('keydown', handleKeyboard);
+
+  // Cleanup
+  return () => {
+    document.removeEventListener('paste', handlePaste);
+    document.removeEventListener('keydown', handleKeyboard);
+  };
+}, [isPasteAllowed, processFiles]);
+
+// 6. Enhanced drag and drop handlers (replace existing ones):
+const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+  setIsDragging(true);
+};
+
+const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  // Only set dragging to false if we're leaving the upload area
+  const rect = uploadAreaRef.current?.getBoundingClientRect();
+  if (rect) {
+    const isOutside = e.clientX < rect.left || e.clientX > rect.right || 
+                     e.clientY < rect.top || e.clientY > rect.bottom;
+    if (isOutside) {
+      setIsDragging(false);
+    }
+  }
+};
+
+const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+};
+
+const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+  setIsDragging(false);
+
+  const droppedFiles = e.dataTransfer.files;
+  if (droppedFiles && droppedFiles.length > 0) {
+    processFiles(Array.from(droppedFiles), 'drag');
+  }
+};
+
+// 7. Enhanced file input change handler (replace existing handleFileChange):
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] | FileList } }) => {
+  const files = Array.from(e.target.files || []);
+  if (files.length > 0) {
+    processFiles(files, 'click');
+  }
+  
+  // Reset input value to allow same file selection again
+  if (fileInputRef.current && 'value' in fileInputRef.current) {
+    fileInputRef.current.value = '';
+  }
+};
+
+// 8. Enhanced upload area JSX (replace the existing upload area in your JSX):
+const renderUploadArea = () => (
+  <>
+    {/* Status indicator */}
+    {uploadStatus && (
+      <div className="alert alert-info alert-dismissible fade show mb-3" role="alert">
+        <i className="ci-info-circle me-2"></i>
+        {uploadStatus}
+      </div>
+    )}
+
+    {/* Paste indicator */}
+    {pasteIndicator && (
+      <div className="position-fixed top-50 start-50 translate-middle bg-primary text-white px-3 py-2 rounded shadow" 
+           style={{ zIndex: 9999 }}>
+        <i className="ci-clipboard me-2"></i>
+        Pasting files...
+      </div>
+    )}
+
+    <div className="col">
+      <div
+        ref={uploadAreaRef}
+        className={`d-flex align-items-center justify-content-center position-relative h-100 cursor-pointer bg-body-tertiary border border-2 border-dotted rounded p-3 
+          ${isDragging ? 'border-primary bg-primary bg-opacity-10' : 'border-secondary-subtle'} 
+          ${pasteIndicator ? 'border-success bg-success bg-opacity-10' : ''}`}
+        onClick={() => fileInputRef.current?.click()}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fileInputRef.current?.click();
+          }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label="Upload files by clicking, dragging, or pasting (Ctrl+V to paste, Ctrl+O to browse)"
+        style={{ minHeight: '150px' }}
+      >
+        <div className="text-center">
+          <i className={`fi-plus-circle fs-4 mb-2 
+            ${isDragging ? 'text-primary' : pasteIndicator ? 'text-success' : 'text-secondary-emphasis'}`} />
+          <div className="hover-effect-underline stretched-link fs-sm fw-medium">
+            {isDragging ? 'Drop files here' : 
+             pasteIndicator ? 'Processing paste...' : 
+             'Upload photos/videos'}
+          </div>
+          <div className="fs-xs text-muted mt-1">
+            Click, drag & drop, or paste<br />
+            <kbd className="bg-body-secondary border px-1 rounded">Ctrl+V</kbd> to paste, <kbd className="bg-body-secondary border px-1 rounded">Ctrl+O</kbd> to browse
+          </div>
+        </div>
+      </div>
+      
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept="image/*,video/*"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        aria-hidden="true"
+      />
+    </div>
+  </>
+);
+
+// 9. Enhanced instructions section (add this after your upload area):
+const renderInstructions = () => (
+  <div className="alert alert-light border-0 bg-body-secondary mt-3">
+    <div className="d-flex">
+      <i className="ci-info-circle text-info mt-1 me-3 flex-shrink-0"></i>
+      <div>
+        <h6 className="mb-2">Multiple Upload Methods Available:</h6>
+        <div className="row">
+          <div className="col-md-6">
+            <ul className="mb-0 small text-muted">
+              <li><strong>Copy & Paste:</strong> Copy images from any app and paste here (<kbd className="bg-body border px-1 rounded small">Ctrl+V</kbd>)</li>
+              <li><strong>Drag & Drop:</strong> Drag files from your computer directly to upload area</li>
+              <li><strong>Click to Browse:</strong> Click upload area or use <kbd className="bg-body border px-1 rounded small">Ctrl+O</kbd></li>
+            </ul>
+          </div>
+          <div className="col-md-6">
+            <ul className="mb-0 small text-muted">
+              <li><strong>Formats:</strong> JPEG, PNG, GIF, WebP, MP4, MOV, AVI, WMV, WebM</li>
+              <li><strong>Size limit:</strong> 8MB per file</li>
+              <li><strong>Cover image:</strong> First image becomes main listing photo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// 10. Enhanced removeMedia function (replace existing):
+const removeMedia = (index: number) => {
+  const preview = previews[index];
+  const newPreviews = [...previews];
+  newPreviews.splice(index, 1);
+  setPreviews(newPreviews);
+
+  // Update formData to include removed media ID if applicable
+  if (preview.id && typeof preview.id === 'number') {
+    setFormData(prev => {
+      const existingRemoved = prev.media.removed_media_ids || [];
+      return {
+        ...prev,
+        media: {
+          ...prev.media,
+          removed_media_ids: [...existingRemoved, preview.id!.toString()]
+        }
+      };
+    });
+  }
+
+  // Remove from mediaFiles if it's a new file
+  const fileIndex = mediaFiles.findIndex(file => 
+    file.name === preview.name && file.size === preview.size
+  );
+  
+  if (fileIndex !== -1) {
+    const newMediaFiles = [...mediaFiles];
+    newMediaFiles.splice(fileIndex, 1);
+    setMediaFiles(newMediaFiles);
+  }
+
+  // Show confirmation
+  setUploadStatus(`Removed: ${preview.name}`);
+  setTimeout(() => setUploadStatus(''), 2000);
+};
+
+// 11. Enhanced media preview rendering (replace your existing preview mapping):
+const renderMediaPreviews = () => (
+  <div className="row row-cols-2 row-cols-sm-3 g-2 g-md-4 g-lg-3 g-xl-4 mb-4">
+    {previews.map((preview, index) => (
+      <div className="col" key={`preview-${index}-${preview.id}`}>
+        <div className="hover-effect-opacity position-relative overflow-hidden rounded">
+          {/* Cover badge */}
+          {index === 0 && (
+            <span className="badge text-bg-light position-absolute top-0 start-0 z-3 mt-2 ms-2">
+              <i className="ci-star-filled me-1"></i>Cover
+            </span>
+          )}
+          
+          {/* Media content */}
+          <div className="ratio" style={{ aspectRatio: '4/3' }}>
+            {preview.type === 'image' ? (
+              <img 
+                src={preview.url} 
+                alt={`Preview ${index + 1}: ${preview.name}`} 
+                className="img-fluid object-fit-cover" 
+                loading="lazy"
+                onError={(e) => {
+                  console.error(`Failed to load preview image: ${preview.name}`);
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+            ) : (
+              <video 
+                controls 
+                className="w-100 h-100 object-fit-cover"
+                preload="metadata"
+                onError={(e) => {
+                  console.error(`Failed to load preview video: ${preview.name}`);
+                }}
+              >
+                <source src={preview.url} type="video/mp4" />
+                <source src={preview.url} type="video/mov" />
+                <source src={preview.url} type="video/avi" />
+                Your browser does not support the video tag.
+              </video>
+            )}
+          </div>
+          
+          {/* Hover controls */}
+          <div className="hover-effect-target position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 opacity-0">
+            <div className="d-flex gap-2">
+              {/* Make cover button (only show for non-cover images) */}
+              {index > 0 && (
+                <button
+                  type="button"
+                  className="btn btn-icon btn-sm btn-light position-relative z-2"
+                  title="Make this the cover image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Move this preview to index 0
+                    const newPreviews = [...previews];
+                    const [movedItem] = newPreviews.splice(index, 1);
+                    newPreviews.unshift(movedItem);
+                    setPreviews(newPreviews);
+                    
+                    // Also reorder mediaFiles if applicable
+                    const fileIndex = mediaFiles.findIndex(file => 
+                      file.name === preview.name && file.size === preview.size
+                    );
+                    if (fileIndex !== -1) {
+                      const newMediaFiles = [...mediaFiles];
+                      const [movedFile] = newMediaFiles.splice(fileIndex, 1);
+                      newMediaFiles.unshift(movedFile);
+                      setMediaFiles(newMediaFiles);
+                    }
+                    
+                    setUploadStatus(`${preview.name} set as cover image`);
+                    setTimeout(() => setUploadStatus(''), 2000);
+                  }}
+                >
+                  <i className="ci-star"></i>
+                </button>
+              )}
+              
+              {/* Remove button */}
+              <button
+                type="button"
+                className="btn btn-icon btn-sm btn-danger position-relative z-2"
+                title={`Remove ${preview.name}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeMedia(index);
+                }}
+              >
+                <i className="ci-trash-empty"></i>
+              </button>
+            </div>
+            <span className="position-absolute top-0 start-0 w-100 h-100 bg-black bg-opacity-25 z-1" />
+          </div>
+        </div>
+        
+        {/* File info */}
+        <div className="mt-1">
+          <small className="text-muted d-block text-truncate">
+            {preview.name}
+          </small>
+          <small className="text-muted">
+            {Math.round(preview.size / 1024)} KB
+            {preview.type === 'video' && <span className="ms-1 badge bg-secondary">Video</span>}
+          </small>
+        </div>
+      </div>
+    ))}
+    
+    {/* Upload area */}
+    {renderUploadArea()}
+  </div>
+);
+
+
+// 12. CSS additions (add these styles to your component or CSS file):
+const additionalStyles = `
+.hover-effect-opacity:hover .hover-effect-target {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.upload-area-focus:focus {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+kbd {
+  font-size: 0.75em;
+}
+
+.badge.text-bg-light {
+  --bs-bg-opacity: 0.9;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes pulse-success {
+  0% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(25, 135, 84, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+}
+
+.paste-indicator {
+  animation: pulse-success 1s ease-out;
+}
+
+@media (max-width: 576px) {
+  .row-cols-2 > * {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+`;
+
+// 13. Final integration in your Media Tab JSX (replace the existing media tab content):
+const MediaTabContent = () => (
+  <div className={`tab-pane fade ${activeTab === 'images' ? 'show active' : ''}`}>
+    <section className="position-relative bg-body rounded p-2 m-2">
+      <div className="position-relative z-1 p-2 m-2">
+        <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
+          <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
+          <div className="position-relative d-flex align-items-center">
+            <i className="fi-info text-info mt-1 me-2" />
+            <span className="fs-sm text-muted">
+              {previews.length} file{previews.length !== 1 ? 's' : ''} selected
+            </span>
+          </div>
+        </div>
+        
+        {previews.length === 0 && (
+          <div className="alert alert-warning d-flex align-items-center">
+            <i className="ci-warning me-2"></i>
+            <div>
+              <strong>At least one image is required</strong> for your listing.
+              <br />
+              <small>The first image will be used as your main listing photo.</small>
+            </div>
+          </div>
+        )}
+        
+        <div style={{ maxWidth: '852px' }}>
+          {renderMediaPreviews()}
+        </div>
+        
+        {/* Video link section */}
+        <div className="pt-3 mt-2 mt-md-3">
+          <label htmlFor="video_link" className="form-label">
+            <i className="ci-video me-2"></i>
+            Link to YouTube/Vimeo video (optional)
+          </label>
+          <div className="position-relative">
+            <i className="fi-link position-absolute top-50 start-0 translate-middle-y fs-lg ms-3" />
+            <input
+              type="url"
+              className="form-control form-control-lg form-icon-start"
+              id="video_link"
+              name="video_link"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value={formData.media.video_link}
+              onChange={handleInputChange}
+            />
+          </div>
+          <small className="text-muted">
+            Adding a video can increase engagement by up to 80%
+          </small>
+        </div>
+        
+        {renderInstructions()}
+      </div>
+    </section>
+    
+    {/* Add the styles */}
+    <style>{additionalStyles}</style>
+  </div>
+);
+//* ================== */
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -3321,7 +3974,7 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
     }
     return isValid;
   };
-
+/*
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] | FileList } }) => {
     const files = Array.from(e.target.files || []);
     const validFiles = files.filter(file =>
@@ -3393,7 +4046,7 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
       setMediaFiles(newMediaFiles);
     }
   };
-
+*/
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     let formSection = 'basic_info';
@@ -3861,7 +4514,8 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
 
         {/* Media Tab */}
         <div className={`tab-pane fade ${activeTab === 'images' ? 'show active' : ''}`}>
-          <section className="position-relative bg-body rounded p-2 m-2">
+          
+          {/* <section className="position-relative bg-body rounded p-2 m-2">
             <div className="position-relative z-1 p-2 m-2">
               <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
                 <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
@@ -3956,7 +4610,9 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
                 </div>
               </div>
             </div>
-          </section>
+          </section> */}
+          {MediaTabContent()}
+
         </div>
 
         {/* Contact Tab */}
