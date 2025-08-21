@@ -4,10 +4,6 @@ import { UsersService } from '../../local/UsersService';
 import { NotificationService } from '../../local/NotificationService';
 import { getEnv } from '../../../utils/env';
 
-interface AuthTokens {
-  accessToken: string | null;
-  refreshToken: string | null;
-}
 
 interface RefreshTokenResponse {
   access_token: string;
@@ -21,11 +17,17 @@ export const registerNavigation = (handler: (path: string) => void) => {
   navigationHandler = handler;
 };
 
+// const getBaseURL = (): string => {
+//   return window.location.hostname === 'localhost' 
+//     ? getEnv('VITE_API_BASE_URL') || "http://localhost:8080/api" : getEnv('VITE_API_BASE_PRODUCTION_URL') || 'https://api.salesnet.ng/api';
+//     // ? 'http://localhost:8080/api' : 'https://salesnet.securecryptosrecovery.com/api'; // : 'https://salesnet.onrender.com/api';
+//     // https://api.salesnet.ng/api/products
+// };
+
 const getBaseURL = (): string => {
-  return window.location.hostname === 'localhost' 
-    ? getEnv('VITE_API_BASE_URL') || "http://localhost:8080/api" : getEnv('VITE_API_BASE_PRODUCTION_URL') || 'https://api.salesnet.ng/api';
-    // ? 'http://localhost:8080/api' : 'https://salesnet.securecryptosrecovery.com/api'; // : 'https://salesnet.onrender.com/api';
-    // https://api.salesnet.ng/api/products
+
+  return getEnv('VITE_API_BASE_URL') || "http://localhost:8080/api";
+
 };
 
 // Configure base Axios instance
