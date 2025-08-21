@@ -25,6 +25,7 @@ dist-ssr
 # Ignore TypeScript and TSX files ending with _<number>
 *_[0-9]*.ts
 *_[0-9]*.tsx
+*_[0-9]*.json
 
 
 # Editor directories and files
