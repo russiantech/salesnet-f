@@ -18,6 +18,14 @@ dist-ssr
 *.development
 # *.production
 
+*.bak
+*.BAK
+# ! want to ignore ANY number after the underscore:
+# Ignore TypeScript and TSX files ending with _<number>
+*_[0-9]*.ts
+*_[0-9]*.tsx
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
