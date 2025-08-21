@@ -17,7 +17,7 @@ dist-ssr
 *.env
 *.local
 *.development
-# *.production
+*.production
 
 *.bak
 *.BAK
