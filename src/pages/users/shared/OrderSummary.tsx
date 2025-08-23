@@ -68,7 +68,7 @@
 //   const displayTotal = context === 'basket' ? estimatedTotal : total;
 //   const displayShipping = context === 'basket' 
 //     ? (qualifiesForFreeShipping ? 'Free' : 'Calculated at checkout')
-//     : (deliveryFee > 0 ? formatPrice(deliveryFee) : 'Free');
+//     : (deliveryFee > 0 ? formatCurrency(deliveryFee) : 'Free');
 
 //   return (
 //     <aside className={`${context === 'checkout' ? 'col-lg-4 offset-xl-1 mb-4' : 'col-lg-4'}`} 
@@ -95,7 +95,7 @@
 //               <li className="d-flex justify-content-between">
 //                 Subtotal ({itemCount} items):
 //                 <span className="text-dark-emphasis fw-medium">
-//                   {formatPrice(subtotal)}
+//                   {formatCurrency(subtotal)}
 //                 </span>
 //               </li>
               
@@ -104,7 +104,7 @@
 //                 <li className="d-flex justify-content-between">
 //                   {context === 'basket' ? 'Saving:' : 'Discount:'}
 //                   <span className="text-danger fw-medium">
-//                     -{formatPrice(context === 'basket' ? savings : discount)}
+//                     -{formatCurrency(context === 'basket' ? savings : discount)}
 //                   </span>
 //                 </li>
 //               )}
@@ -114,7 +114,7 @@
 //                 <li className="d-flex justify-content-between">
 //                   Tax collected:
 //                   <span className="text-dark-emphasis fw-medium">
-//                     {formatPrice(tax)}
+//                     {formatCurrency(tax)}
 //                   </span>
 //                 </li>
 //               )}
@@ -143,7 +143,7 @@
 //                   {context === 'basket' ? 'Estimated total:' : 'Total:'}
 //                 </span>
 //                 <span className="h5 mb-0">
-//                   {formatPrice(displayTotal || 0)}
+//                   {formatCurrency(displayTotal || 0)}
 //                 </span>
 //               </div>
               
@@ -277,6 +277,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { LoadingZoom } from '../../../components/shared/LoadingSpinner';
+import { formatCurrency } from '../../../utils/currencyUtils';
 // import LoadingZoom from './LoadingZoom';
 
 interface OrderSummaryProps {
@@ -325,13 +326,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   const [ageConfirmed, setAgeConfirmed] = useState(true); // Default to true since we don't have age confirmation UI
   const [orderNote, setOrderNote] = useState('');
 
-  const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(price);
-  };
-
   const handlePromoCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!promoCode.trim() || !onApplyPromoCode) return;
@@ -348,7 +342,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   const displayTotal = context === 'basket' ? estimatedTotal : total;
   const displayShipping = context === 'basket' 
     ? (qualifiesForFreeShipping ? 'Free' : 'Calculated at checkout')
-    : (deliveryFee > 0 ? formatPrice(deliveryFee) : 'Free');
+    : (deliveryFee > 0 ? formatCurrency(deliveryFee) : 'Free');
 
   return (
     <aside className={`${context === 'checkout' ? 'col-lg-4 offset-xl-1 mb-4' : 'col-lg-4'}`} 
@@ -375,7 +369,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
               <li className="d-flex justify-content-between">
                 Subtotal ({itemCount} items):
                 <span className="text-dark-emphasis fw-medium">
-                  {formatPrice(subtotal)}
+                  {formatCurrency(subtotal, 'NGN', { short: true })}
                 </span>
               </li>
               
@@ -384,7 +378,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 <li className="d-flex justify-content-between">
                   {context === 'basket' ? 'Saving:' : 'Discount:'}
                   <span className="text-danger fw-medium">
-                    -{formatPrice(context === 'basket' ? savings : discount)}
+                    -{formatCurrency(context === 'basket' ? savings : discount)}
                   </span>
                 </li>
               )}
@@ -394,7 +388,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 <li className="d-flex justify-content-between">
                   Tax collected:
                   <span className="text-dark-emphasis fw-medium">
-                    {formatPrice(tax)}
+                    {formatCurrency(tax, 'NGN', { short: true })}
                   </span>
                 </li>
               )}
@@ -423,7 +417,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                   {context === 'basket' ? 'Estimated total:' : 'Total:'}
                 </span>
                 <span className="h5 mb-0">
-                  {formatPrice(displayTotal || 0)}
+                  {formatCurrency(displayTotal || 0, 'NGN', { short: true })}
                 </span>
               </div>
               

@@ -287,6 +287,7 @@ import ProductRecommendations from '../../products/ProductRecommendations';
 import LoadingSpinner, { LoadingZoom } from '../../../components/shared/LoadingSpinner';
 import { NotificationService } from '../../../services/local/NotificationService';
 import OrderSummary from '../shared/OrderSummary';
+import { formatCurrency } from '../../../utils/currencyUtils';
 
 interface BasketItem {
   id: string | number;
@@ -490,13 +491,6 @@ const Basket: React.FC = () => {
     return `/products/${item.product_id}`;
   };
 
-  const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(price);
-  };
-
   const remainingForFreeShipping = Math.max(0, basketState.freeShippingThreshold - basketState.subtotal);
   const freeShippingProgress = Math.min(100, (basketState.subtotal / basketState.freeShippingThreshold) * 100);
   const qualifiesForFreeShipping = basketState.subtotal >= basketState.freeShippingThreshold;
@@ -532,8 +526,7 @@ const Basket: React.FC = () => {
                   -{item.discount}%
                 </span>
               )}
-              <img 
-                src={item.image || "/assets/img/placeholder.jpg"} 
+              <img src={item.image || "/assets/img/placeholder.jpg"} 
                 width={110} 
                 height={110}
                 alt={item.name}
@@ -570,16 +563,16 @@ const Basket: React.FC = () => {
                 <li className="d-xl-none">
                   <span className="text-body-secondary">Price:</span>{' '}
                   <span className="text-dark-emphasis fw-medium">
-                    {formatPrice(item.price)}
+                    {formatCurrency(item.price, 'NGN', { short: true })}
                     {item.originalPrice && item.originalPrice > item.price && (
                       <del className="text-body-tertiary fw-normal ms-1">
-                        {formatPrice(item.originalPrice)}
+                        {formatCurrency(item.originalPrice, 'NGN', { short: true })}
                       </del>
                     )}
                   </span>
                 </li>
               </ul>
-              <div className="count-input rounded-2 d-md-none mt-3">
+              <div className="count-input rounded-pill d-md-none mt-3">
                 {isItemLoading && (
                   <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: 10 }}>
                     <LoadingZoom size="sm"/>
@@ -619,15 +612,15 @@ const Basket: React.FC = () => {
           </div>
         </td>
         <td className="h6 py-3 d-none d-xl-table-cell">
-          {formatPrice(item.price)}
+          {formatCurrency(item.price, 'NGN', { short: true })}
           {item.originalPrice && item.originalPrice > item.price && (
             <del className="text-body-tertiary fs-xs fw-normal d-block">
-              {formatPrice(item.originalPrice)}
+            {formatCurrency(item.originalPrice, 'NGN', { short: true })}
             </del>
           )}
         </td>
         <td className="py-3 d-none d-md-table-cell">
-          <div className="count-input position-relative">
+          <div className="count-input rounded-pill position-relative">
             {isItemLoading && (
               <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: 10 }}>
                 <LoadingZoom size="sm"/>
@@ -665,7 +658,7 @@ const Basket: React.FC = () => {
           </div>
         </td>
         <td className="h6 py-3 d-none d-md-table-cell">
-          {formatPrice(itemTotal)}
+          {formatCurrency(itemTotal, 'NGN', { short: true })}
         </td>
         <td className="text-end py-3 px-0">
           <button
@@ -742,7 +735,7 @@ const Basket: React.FC = () => {
                 ) : (
                   <>
                     <p className="fs-sm mb-2">
-                      Buy <span className="text-dark-emphasis fw-semibold">{formatPrice(remainingForFreeShipping)}</span> more to get{' '}
+                      Buy <span className="text-dark-emphasis fw-semibold">{formatCurrency(remainingForFreeShipping)}</span> more to get{' '}
                       <span className="text-dark-emphasis fw-semibold">Free Shipping</span>
                     </p>
                     <div
@@ -845,21 +838,21 @@ import OrderSummary from './OrderSummary';
                       <li className="d-flex justify-content-between">
                         Subtotal ({basketState.itemCount} items):
                         <span className="text-dark-emphasis fw-medium">
-                          {formatPrice(basketState.subtotal)}
+                          {formatCurrency(basketState.subtotal)}
                         </span>
                       </li>
                       {basketState.savings > 0 && (
                         <li className="d-flex justify-content-between">
                           Saving:
                           <span className="text-danger fw-medium">
-                            -{formatPrice(basketState.savings)}
+                            -{formatCurrency(basketState.savings)}
                           </span>
                         </li>
                       )}
                       <li className="d-flex justify-content-between">
                         Tax collected:
                         <span className="text-dark-emphasis fw-medium">
-                          {formatPrice(basketState.tax)}
+                          {formatCurrency(basketState.tax)}
                         </span>
                       </li>
                       <li className="d-flex justify-content-between">
@@ -877,7 +870,7 @@ import OrderSummary from './OrderSummary';
                       <div className="d-flex justify-content-between mb-3">
                         <span className="fs-sm">Estimated total:</span>
                         <span className="h5 mb-0">
-                          {formatPrice(basketState.estimatedTotal)}
+                          {formatCurrency(basketState.estimatedTotal)}
                         </span>
                       </div>
                       <Link
