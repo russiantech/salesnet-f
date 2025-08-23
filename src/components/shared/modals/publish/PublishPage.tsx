@@ -700,22 +700,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     );
   };
 
-  const isValidURL = (string: string) => {
-    try {
-      new URL(string);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  };
 
-  const validateMedia = (media: typeof initialFormData.media) => {
-    const errors: string[] = [];
-    if (media.video_link && !isValidURL(media.video_link)) {
-      errors.push('Invalid video URL format');
-    }
-    return errors;
-  };
 
   const handleCategoryChange = (newCategories: Set<string>) => {
     setFormData(prev => ({
@@ -1027,16 +1012,6 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
     });
   };
 
-  const handleRemoveMedia = (index: number, id?: string) => {
-    if (id) {
-      setRemovedMediaIds(prev => [...prev, id]);
-    } else {
-      setRemovedNewFiles(prev => [...prev, mediaFiles[index]]);
-    }
-
-    setMediaFiles(prev => prev.filter((_, i) => i !== index));
-    setPreviews(prev => prev.filter((_, i) => i !== index));
-  };
 
   const isFieldModified = (key: string, section: string): boolean => {
     if (!initialFormData[section]) return true;
@@ -1044,7 +1019,6 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
       JSON.stringify(initialFormData[section][key]);
   };
 
-  const handleShow = () => setShowModal(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -1880,6 +1854,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
             </button>
           </footer>
         </div>
+
       </div>
 
       {/* Post Publish Modal */}
