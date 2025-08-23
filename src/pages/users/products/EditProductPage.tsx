@@ -222,8 +222,7 @@ const EditProductPage = () => {
             <i className="ci-refresh me-2"></i>
             Retry
           </button>
-          <button 
-            className="btn btn-secondary"
+          <button className="btn btn-secondary"
             onClick={() => navigate('/users/products')}
           >
             <i className="ci-arrow-left me-2"></i>

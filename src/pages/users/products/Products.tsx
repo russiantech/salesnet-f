@@ -3310,7 +3310,7 @@ const Products = () => {
                                             {loading.products && <LoadingZoom size='sm' />}
                                             <input 
                                             type="search" 
-                                            className="product-search form-control form-icon-start rounded-pill" 
+                                            className="form-control form-control-sm form-icon-start rounded-pill" 
                                             placeholder="Search products..."
                                             value={filters.search}
                                             onChange={(e) => handleSearch(e.target.value)}
@@ -3319,8 +3319,7 @@ const Products = () => {
                                             
 
                                         </div>
-                                        <button
-                                            className="btn btn-primary rounded-pill"
+                                        <button className="btn btn-sm btn-primary rounded-pill"
                                             onClick={() => navigate(`/users/${username}`)}
                                         >
                                             <i className="ci-meh me-1"></i>
@@ -3332,10 +3331,10 @@ const Products = () => {
                                 {/* Filters and Controls */}
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-6">
-                                        <div className="d-flex gap-2 mb-2 flex-wrap">
+                                        <div className="d-flex gap-1 mb-2 flex-wrap">
                                             <div className="dropdown">
                                                 <button 
-                                                    className="btn btn-outline-secondary dropdown-toggle rounded-pill" 
+                                                    className="btn btn-sm btn-outline-secondary dropdown-toggle rounded-pill" 
                                                     type="button" 
                                                     data-bs-toggle="dropdown"
                                                     disabled={loading.products}
@@ -3353,7 +3352,7 @@ const Products = () => {
                                             
                                             <div className="dropdown">
                                                 <button 
-                                                    className="btn btn-outline-secondary dropdown-toggle rounded-pill" 
+                                                    className="btn btn-sm btn-outline-secondary dropdown-toggle rounded-pill" 
                                                     type="button" 
                                                     data-bs-toggle="dropdown"
                                                     disabled={loading.products}
@@ -3549,25 +3548,21 @@ const Products = () => {
                                                                         {product.status}
                                                                     </span>
                                                                     <h6 className="product mb-2">
-                                                                        <a 
-                                                                            className="fs-sm fw-medium hover-effect-underline stretched-link" 
-                                                                            href={`/products/${product.slug}`}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                        >
+                                                                        <Link className="fs-sm text-truncate fw-medium hover-effect-underline stretched-link" 
+                                                                            to={`/products/${product.slug}`}
+                                                                            target="_blank" rel="noopener noreferrer">
                                                                             {product.name}
-                                                                        </a>
+                                                                        </Link>
                                                                     </h6>
                                                                     <div className="d-flex flex-md-column align-items-center align-items-md-start gap-2">
                                                                         <div className="h6 mb-0 me-1 me-md-0">
                                                                             {/* {formatCurrency(product.price)} */}
                                                                             {formatCurrency(product.price, 'NGN', { short: true })}
-                                                                            {product.original_price && (
+                                                                            {/* {product.original_price && (
                                                                                 <del className="text-muted fs-sm ms-1">
-                                                                                    {/* {formatCurrency(product.original_price)} */}
                                                                                     {formatCurrency(product.price, 'NGN', { short: true })}
                                                                                 </del>
-                                                                            )}
+                                                                            )} */}
                                                                         </div>
                                                                         <div className="d-flex gap-2">
                                                                             <div className="d-flex align-items-center fs-xs text-body-emphasis bg-body-tertiary rounded-pill px-2 py-1">
