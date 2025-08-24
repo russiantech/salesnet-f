@@ -3547,13 +3547,25 @@ const Products = () => {
                                                                     <span className={`badge fs-xs ${getStatusBadgeClass(product.status)} rounded-pill d-md-none mb-1`}>
                                                                         {product.status}
                                                                     </span>
-                                                                    <h6 className="product mb-2">
+                                                                    {/* <h6 className="product mb-2">
                                                                         <Link className="fs-sm text-truncate fw-medium hover-effect-underline stretched-link" 
                                                                             to={`/products/${product.slug}`}
                                                                             target="_blank" rel="noopener noreferrer">
                                                                             {product.name}
                                                                         </Link>
+                                                                    </h6> */}
+                                                                    <h6 className="product mb-2">
+                                                                    <Link
+                                                                        className="fs-sm fw-medium hover-effect-underline stretched-link text-truncate d-inline-block"
+                                                                        to={`/products/${product.slug}`}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        style={{ maxWidth: "200px" }} // adjust width as needed
+                                                                    >
+                                                                        {product.name}
+                                                                    </Link>
                                                                     </h6>
+
                                                                     <div className="d-flex flex-md-column align-items-center align-items-md-start gap-2">
                                                                         <div className="h6 mb-0 me-1 me-md-0">
                                                                             {/* {formatCurrency(product.price)} */}
