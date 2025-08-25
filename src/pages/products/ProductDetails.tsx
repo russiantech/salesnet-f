@@ -797,68 +797,56 @@ interface ProductDetails {
 SwiperCore.use([Navigation, Thumbs, Controller]);
 
 // Helper function to check if URL is a video
+// const isVideoUrl = (url: string): boolean => {
+//   if (!url) return false;
+//   const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
+//   return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+// };
 const isVideoUrl = (url: string): boolean => {
   if (!url) return false;
   const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
-  return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+  const videoPatterns = [/\.mp4(\?.*)?$/i, /\.webm(\?.*)?$/i, /\.ogg(\?.*)?$/i, /\.mov(\?.*)?$/i];
+  return videoPatterns.some(pattern => pattern.test(url.toLowerCase()));
 };
-
-// Video component with hover controls
-const VideoPreview = ({ 
-  src, 
-  alt, 
-  className, 
-  isThumb = false, 
-  onMouseEnter, 
-  onMouseLeave 
+// Media component that handles both images and videos
+const MediaPreview = ({ 
+  mediaUrl, 
+  altText, 
+  className = "", 
+  style = {},
+  isThumb = false,
+  onMouseEnter,
+  onMouseLeave
 }: { 
-  src: string; 
-  alt: string; 
-  className: string; 
-  isThumb?: boolean; 
-  onMouseEnter?: () => void; 
-  onMouseLeave?: () => void; 
+  mediaUrl: string; 
+  altText: string; 
+  className?: string; 
+  style?: React.CSSProperties;
+  isThumb?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
   
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    if (videoRef.current) {
-      videoRef.current.play().catch(err => console.log('Video play failed:', err));
-    }
-    if (onMouseEnter) onMouseEnter();
-  };
-  
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-      if (!isThumb) {
-        videoRef.current.currentTime = 0;
-      }
-    }
-    if (onMouseLeave) onMouseLeave();
-  };
-  
-  return (
-    <div 
-      className="position-relative w-100 h-100"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <video
-        ref={videoRef}
-        src={src}
-        className={className}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        controls={false}
-      />
-      {/* Play icon overlay - show only when not hovered for thumbnails */}
-      {(!isHovered || isThumb) && (
+  if (isVideoUrl(mediaUrl)) {
+    return (
+      <div 
+        className="position-relative w-100 h-100"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        <video
+          ref={videoRef}
+          src={mediaUrl}
+          className={className}
+          style={style}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          controls={false}
+        />
+        {/* Play icon overlay */}
         <div 
           className="position-absolute d-flex align-items-center justify-content-center"
           style={{
@@ -872,10 +860,25 @@ const VideoPreview = ({
             pointerEvents: 'none'
           }}
         >
-          <i className="ci-play text-white" style={{ fontSize: isThumb ? '6px' : '8px', marginLeft: '1px' }}></i>
+          <i className="ci-play text-white" style={{ 
+            fontSize: isThumb ? '6px' : '8px', 
+            marginLeft: '1px' 
+          }}></i>
         </div>
-      )}
-    </div>
+      </div>
+    );
+  }
+  
+  return (
+    <img 
+      src={mediaUrl || '/assets/img/us/placeholder.png'} 
+      alt={altText}
+      className={className}
+      style={style}
+      onError={(e) => {
+        e.currentTarget.src = '/assets/img/us/placeholder.png';
+      }}
+    />
   );
 };
 
@@ -902,6 +905,7 @@ const ProductDetails = () => {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const mainSwiperRef = useRef<SwiperCore | null>(null);
   const lightboxRef = useRef<any>(null);
+  const videoRefs = useRef<{[key: string]: HTMLVideoElement | null}>({});
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -999,6 +1003,42 @@ const ProductDetails = () => {
     if (url.includes('vimeo.com')) return 'vimeo';
     
     return 'image';
+  };
+
+  // Handle mouse enter for video thumbnails
+  const handleThumbMouseEnter = (url: string, index: number) => {
+    if (isVideoUrl(url) && videoRefs.current[`thumb-${index}`]) {
+      videoRefs.current[`thumb-${index}`]?.play()
+        .catch(err => console.log('Video play failed:', err));
+    }
+  };
+
+  // Handle mouse leave for video thumbnails
+  const handleThumbMouseLeave = (url: string, index: number) => {
+    if (isVideoUrl(url) && videoRefs.current[`thumb-${index}`]) {
+      videoRefs.current[`thumb-${index}`]?.pause();
+      if (videoRefs.current[`thumb-${index}`]) {
+        videoRefs.current[`thumb-${index}`]!.currentTime = 0;
+      }
+    }
+  };
+
+  // Handle mouse enter for main video
+  const handleMainMouseEnter = (url: string, index: number) => {
+    if (isVideoUrl(url) && videoRefs.current[`main-${index}`]) {
+      videoRefs.current[`main-${index}`]?.play()
+        .catch(err => console.log('Video play failed:', err));
+    }
+  };
+
+  // Handle mouse leave for main video
+  const handleMainMouseLeave = (url: string, index: number) => {
+    if (isVideoUrl(url) && videoRefs.current[`main-${index}`]) {
+      videoRefs.current[`main-${index}`]?.pause();
+      if (videoRefs.current[`main-${index}`]) {
+        videoRefs.current[`main-${index}`]!.currentTime = 0;
+      }
+    }
   };
 
   if (loading) {
@@ -1109,24 +1149,16 @@ const ProductDetails = () => {
                         data-type={getUrlType(url)}
                         to={url}
                         className="d-block w-100 h-100 position-relative gallery-item"
+                        onMouseEnter={() => handleMainMouseEnter(url, index)}
+                        onMouseLeave={() => handleMainMouseLeave(url, index)}
                       >
                         <div className="ratio" style={{ paddingBottom: '100%' }}>
-                          {isVideoUrl(url) ? (
-                            <VideoPreview 
-                              src={url}
-                              alt={`Product video ${index + 1}`}
-                              className="object-fit-cover position-absolute top-0 start-0 w-100 h-100"
-                            />
-                          ) : (
-                            <img 
-                              src={url} 
-                              alt={`Product view ${index + 1}`} 
-                              onError={(e) => {
-                                e.currentTarget.src = '/assets/img/us/placeholder.png';
-                              }}
-                              className="object-fit-cover position-absolute top-0 start-0 w-100 h-100"
-                            />
-                          )}
+                          <MediaPreview
+                            mediaUrl={url}
+                            altText={`Product view ${index + 1}`}
+                            className="object-fit-cover position-absolute top-0 start-0 w-100 h-100"
+                            style={{ objectFit: 'cover' }}
+                          />
                         </div>
                         <div className="gallery-overlay"></div>
                         <i className="ci-zoom-in gallery-zoom-icon"></i>
@@ -1177,25 +1209,17 @@ const ProductDetails = () => {
                         href={url}
                         className="d-block w-100 h-100 position-relative gallery-item rounded-2"
                         onClick={() => mainSwiperRef.current?.slideTo(index)}
+                        onMouseEnter={() => handleThumbMouseEnter(url, index)}
+                        onMouseLeave={() => handleThumbMouseLeave(url, index)}
                       >
                         <div className="ratio ratio-1x1">
-                          {isVideoUrl(url) ? (
-                            <VideoPreview 
-                              src={url}
-                              alt={`Video thumbnail ${index + 1}`}
-                              className="object-fit-cover position-absolute top-0 start-0 w-100 h-100 rounded-2"
-                              isThumb={true}
-                            />
-                          ) : (
-                            <img 
-                              src={url} 
-                              onError={(e) => {
-                                e.currentTarget.src = '/assets/img/us/placeholder.png';
-                              }}
-                              alt={`${url} ${index + 1}`} 
-                              className="object-fit-cover position-absolute top-0 start-0 w-100 h-100 rounded-2"
-                            />
-                          )}
+                          <MediaPreview
+                            mediaUrl={url}
+                            altText={`Thumbnail ${index + 1}`}
+                            className="object-fit-cover position-absolute top-0 start-0 w-100 h-100 rounded-2"
+                            style={{ objectFit: 'cover' }}
+                            isThumb={true}
+                          />
                         </div>
                         <div className="gallery-overlay"></div>
                         <i className="ci-zoom-in gallery-zoom-icon"></i>
