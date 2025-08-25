@@ -9,7 +9,7 @@ import BusinessAbout from "./BusinessAbout";
 import BusinessHours from "./BusinessHours";
 import BusinessReviews from "./BusinessReviews";
 import { BusinessStats2 } from './BusinessStats';
-import ProductSummary from "../products/ProductSummary";
+import ProductSummary from "../products/ProductSummary_0";
 import "./SalesPages.css";
 import LoadingCard from "../../components/shared/LoadingCard";
 import Breadcrumb from "../../components/shared/Breadcrumb";

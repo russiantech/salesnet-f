@@ -24,7 +24,7 @@ dist-ssr
 # ! want to ignore ANY number after the underscore:
 # Ignore TypeScript and TSX files ending with _<number>
 *_[0-9]*.ts
-*_[0-9]*.tsx
+*_[1-9]*.tsx
 *_[0-9]*.json
 
 

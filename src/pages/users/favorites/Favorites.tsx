@@ -1672,7 +1672,7 @@ import { FavoritesAxiosService } from '../../../services/net/FavoritesAxiosServi
 // import ProductCard from '../../products/ProductCard';
 import Aside from '../shared/Aside';
 import MakeFavoriteModal from './MakeFavoriteModal';
-import ProductSummary from '../../products/ProductSummary';
+import ProductSummary from '../../products/ProductSummary_0';
 import { BasketAxiosService } from '../../../services/net/BasketAxiosService';
 
 interface FavoriteList {

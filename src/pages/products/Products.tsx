@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
 import Breadcrumb from '../../components/shared/Breadcrumb';
-import { ProductSummary } from './ProductSummary';
+import { ProductSummary } from './ProductSummary_0';
 import { Key } from 'react';
 import { BasketButton } from './interactions/BasketButton';
 import { ChatButton } from './interactions/ChatButton';

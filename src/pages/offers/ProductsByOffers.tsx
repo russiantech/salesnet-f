@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import LoadingCard from '../../components/shared/LoadingCard';
-import ProductSummary from '../products/ProductSummary';
+import ProductSummary from '../products/ProductSummary_0';
 import { OffersAxiosService } from '../../services/net/OffersAxiosService';
 import Breadcrumb from '../../components/shared/Breadcrumb';
 

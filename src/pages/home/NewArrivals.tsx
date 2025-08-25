@@ -1124,7 +1124,6 @@ import { Link } from 'react-router-dom';
 import { NotificationService } from '../../services/local/NotificationService';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
-import ProductCard from '../products/ProductCard';
 import { ProductRating } from '../products/ProductFeatures';
 import { formatCurrency } from '../../utils/currencyUtils';
 

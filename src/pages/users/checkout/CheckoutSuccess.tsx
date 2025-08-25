@@ -104,7 +104,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { NotificationService } from '../../../services/local/NotificationService';
 import { AxiosService } from '../../../services/net/base/AxiosService';
 import { formatCurrency } from '../../../utils/currencyUtils';
-import ProductSummary from '../../products/ProductSummary';
+import ProductSummary from '../../products/ProductSummary_0';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
 interface OrderItem {

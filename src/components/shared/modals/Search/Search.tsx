@@ -570,7 +570,7 @@ interface Product {
 // 
 // import { ProductSummary } from './ProductSummary';
 import type { Product } from '../../types';
-import ProductSummary from '../../../../pages/products/ProductSummary';
+import ProductSummary from '../../../../pages/products/ProductSummary_0';
 
 interface SearchResultsProps {
   results: Product[];

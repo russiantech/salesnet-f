@@ -185,7 +185,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { NotificationService } from "../../services/local/NotificationService";
 import LoadingCard from '../../components/shared/LoadingCard';
-import ProductSummary from '../products/ProductSummary';
+import ProductSummary from '../products/ProductSummary_0';
 import { OffersAxiosService } from '../../services/net/OffersAxiosService';
 import Breadcrumb from '../../components/shared/Breadcrumb';
 import { motion, useScroll, useTransform } from 'framer-motion';
