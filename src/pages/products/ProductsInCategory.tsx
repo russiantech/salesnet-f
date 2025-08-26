@@ -1,7 +1,8 @@
 // v2
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import ProductSummary from "./ProductSummary_0";
+// import ProductSummary from "./ProductSummary_0";
+import ProductSummary from "./ProductSummary";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import LoadingCard from '../../components/shared/LoadingCard';

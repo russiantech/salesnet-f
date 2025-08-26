@@ -1042,7 +1042,7 @@ const ProductDetails = () => {
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner size='sm' />;
   }
 
   if (error || !product) {

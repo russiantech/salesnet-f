@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
-import ProductSummary from "./ProductSummary_0";
+// import ProductSummary from "./ProductSummary_0";
+import ProductSummary from "./ProductSummary";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
