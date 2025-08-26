@@ -5,7 +5,8 @@ import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
-import ProductSummary from './ProductSummary_0';
+// import ProductSummary from './ProductSummary_0';
+import ProductSummary from './ProductSummary';
 
 const ProductRecommendations = () => {
     const [products, setProducts] = useState([]);
