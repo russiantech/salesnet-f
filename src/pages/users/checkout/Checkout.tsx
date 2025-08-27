@@ -3703,7 +3703,10 @@ const Checkout = () => {
       />
 
       <main className="content-wrapper">
-        <Breadcrumb 
+             
+        <section className="container pb-5 mb-2 mb-md-3 mb-lg-4 mb-xl-5 ">
+
+           <Breadcrumb 
           items={[
             { label: 'Home', path: '/' },
             { label: 'User', path: '/users/personal' },
@@ -3711,8 +3714,7 @@ const Checkout = () => {
             { label: 'Checkout', path: `/users/checkout` }
           ]} 
         />
-                
-        <section className="container pb-5 mb-2 mb-md-3 mb-lg-4 mb-xl-5 ">
+
           <h1 className="h3 mb-4">Checkout</h1>
           <div className="row">
             <div className="col-lg-8 col-xl-7 mb-5 mb-lg-0">

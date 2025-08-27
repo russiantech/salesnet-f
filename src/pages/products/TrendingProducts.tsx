@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import ProductSummary from './ProductSummary_0';
+// import ProductSummary from './ProductSummary_0';
+import ProductSummary from './ProductSummary';
 import LoadingCard from '../../components/shared/LoadingCard';
 import Breadcrumb from '../../components/shared/Breadcrumb';
 import { NotificationService } from '../../services/local/NotificationService';
