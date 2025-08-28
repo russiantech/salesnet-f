@@ -372,7 +372,8 @@ const Offers = () => {
                           <>
                             {formatCurrency(
                               parseFloat(offer.products[0].price) * (1 - offer.discount.value / 100),
-                              'NGN'
+                              'NGN',
+                              {short:true}
                             )}
                             <del className="text-body-tertiary fs-sm fw-normal">
                               {formatCurrency(Number(offer.products[0].price), 'NGN', { short: true })}
@@ -385,7 +386,7 @@ const Offers = () => {
                               'NGN'
                             )}
                             <del className="text-body-tertiary fs-sm fw-normal">
-                              {formatCurrency(Number(offer.products[0].price), 'NGN')}
+                              {formatCurrency(Number(offer.products[0].price), 'NGN', {short:true})}
                             </del>
                           </>
                         )}
