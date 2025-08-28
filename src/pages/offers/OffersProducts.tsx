@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
 import Breadcrumb from '../../components/shared/Breadcrumb';
-import { ProductSummary } from '../products/ProductSummary_0';
+import { ProductSummary } from '../products/ProductSummary';
 
 const OffersProducts = () => {
     const [products, setProducts] = useState([]);

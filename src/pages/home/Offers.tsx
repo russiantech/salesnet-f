@@ -14,6 +14,7 @@ import { CompareButton } from '../products/interactions/CompareButton';
 import { FavoriteButton } from '../products/interactions/FavoriteButton';
 import { BasketButton } from '../products/interactions/BasketButton';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { formatCurrency } from '../../utils/currencyUtils';
 
 const Offers = () => {
   const prevRef = useRef(null);
@@ -320,7 +321,7 @@ const Offers = () => {
                     </div>
                     <Link 
                       to={`/offers/${offer.slug}`} 
-                      className="d-block rounded-top overflow-hidden p-3 p-sm-4"
+                      className="d-block rounded-top overflow-hidden p-1 p-sm-1"
                       aria-label={`View details for ${offer.products[0].name}`}
                       // style={{ background: offer.background }} // back-ground-not-needed-here.
                     >
@@ -354,7 +355,8 @@ const Offers = () => {
                     </h3>
                     <div className="d-flex align-items-center justify-content-between pb-2 mb-1">
                       <div className="h5 lh-1 mb-0">
-                        {offer.discount.type === 'percentage' ? (
+                        
+                        {/* {offer.discount.type === 'percentage' ? (
                           <>
                             ${(parseFloat(offer.products[0].price) * (1 - offer.discount.value / 100)).toFixed(2)}
                             <del className="text-body-tertiary fs-sm fw-normal">${offer.products[0].price}</del>
@@ -364,7 +366,31 @@ const Offers = () => {
                             ${(parseFloat(offer.products[0].price) - offer.discount.value).toFixed(2)}
                             <del className="text-body-tertiary fs-sm fw-normal">${offer.products[0].price}</del>
                           </>
+                        )} */}
+
+                        {offer.discount.type === 'percentage' ? (
+                          <>
+                            {formatCurrency(
+                              parseFloat(offer.products[0].price) * (1 - offer.discount.value / 100),
+                              'NGN'
+                            )}
+                            <del className="text-body-tertiary fs-sm fw-normal">
+                              {formatCurrency(Number(offer.products[0].price), 'NGN', { short: true })}
+                            </del>
+                          </>
+                        ) : (
+                          <>
+                            {formatCurrency(
+                              parseFloat(offer.products[0].price) - offer.discount.value,
+                              'NGN'
+                            )}
+                            <del className="text-body-tertiary fs-sm fw-normal">
+                              {formatCurrency(Number(offer.products[0].price), 'NGN')}
+                            </del>
+                          </>
                         )}
+
+
                         {/* <span className="badge bg-danger ms-2">
                           {offer.discount.type === 'percentage' 
                             ? `${offer.discount.value}% OFF` 

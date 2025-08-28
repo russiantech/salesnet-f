@@ -1781,7 +1781,7 @@ const handleSubscriptionSuccess = async (subscription: any) => {
                     ) : (
                       <div className="alert alert-info">
                         <i className="ci-info-circle me-2"></i>
-                        Complete the previous steps to enable promotion options
+                        Complete the previous steps and Publish your listing to enable/see promotion options
                       </div>
                     )}
                   </div>

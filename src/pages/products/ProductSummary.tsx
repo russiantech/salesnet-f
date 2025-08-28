@@ -1016,31 +1016,34 @@ export const ProductSummary = ({
 
   const renderPrice = () => {
     const hasDiscount = product.discount_price || product.discount;
-    const discountedPrice = product.discount_price ||  (product.discount ? product.discount.calculated_price : null);
-    
+    const discountedPrice = product?.discount_price ||  (product?.discount ? product?.discount_info?.calculated_price : null);
+    // console.log(product.discount_price, product.discount, product?.discount);
+    console.log(product);
     return (
       <div className="h5 lh-1 mb-0 flex-grow-1 me-2">
         {hasDiscount ? (
           <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-1">
-            <span className="text-danger fw-medium">{formatCurrency(discountedPrice)}</span>
+            <span className="text-danger fw-medium">{formatCurrency(product.original_price, 'NGN', { short: true })}</span>
+            {/* <span className="text-danger fw-medium">{formatCurrency(discountedPrice, 'NGN', { short: true })}</span> */}
             <div className="d-flex align-items-center gap-2">
               <span className="text-decoration-line-through text-body-tertiary fs-sm">
                 {formatCurrency(product.price, 'NGN', { short: true })}
               </span>
               {discountBadge && product.discount && (
-                <span className="badge bg-danger bg-opacity-10 text-danger fs-xs">
-                  {product.discount.discount_type === 'percentage'
-                    ? `${product.discount.discount_value}% OFF`
-                    : `${formatCurrency(product.discount.discount_value)} OFF`}
+                <span className="badge bg-danger bg-opacity-10 text-danger fs-xs rounded-pill">
+                  {product.discount_info.discount_type === 'percentage'
+                    ? `${product.discount_info.discount_value}% OFF`
+                    : `${formatCurrency(product.discount_info.discount_value)} OFF`}
                 </span>
               )}
             </div>
           </div>
         ) : (
-          <span className="fw-medium"> {formatCurrency(product.price, 'NGN', { short: true })} </span>
+          <span className="fw-medium rounded-pill"> {formatCurrency(product.price, 'NGN', { short: true })} </span>
         )}
       </div>
     );
+    
   };
 
   const handleCheckboxChange = (e) => {
@@ -1127,24 +1130,21 @@ export const ProductSummary = ({
           )}
 
           {/* Product media link with video support */}
-          <a className="d-block rounded-top overflow-hidden" href={`/products/${product.slug}`}>
+          <Link className="d-block rounded-top overflow-hidden" to={`/products/${product.slug}`}>
             {showBadge && badgeType() && <ProductBadge type={badgeType()} />}
             <MediaDisplay product={product} />
-          </a>
+          </Link>
         </div>
 
         {/* Product info */}
         <div className="flex-grow-1 d-flex flex-column p-2">
           <div className="mb-2">
-            <ProductRating
-              averageRating={product.average_rating}
-              reviewsCount={product.reviews_count}
-            />
+            <ProductRating averageRating={product.average_rating} reviewsCount={product.reviews_count} />
           </div>
 
           {/* Product Name with Subscription Indicator */}
           <h3 className="mb-2 flex-grow-1">
-            <a className="d-block fs-sm fw-medium text-decoration-none" href={`/products/${product.slug}`}>
+            <Link className="d-block fs-sm fw-medium text-decoration-none" to={`/products/${product.slug}`}>
               <span className="animate-target d-flex align-items-center gap-2" style={{ 
                 display: '-webkit-box',
                 WebkitLineClamp: '2',
@@ -1160,7 +1160,7 @@ export const ProductSummary = ({
                   />
                 )}
               </span>
-            </a>
+            </Link>
           </h3>
 
           {/* Media Type Indicator */}

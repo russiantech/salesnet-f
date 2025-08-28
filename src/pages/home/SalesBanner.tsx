@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { OffersAxiosService } from '../../services/net/OffersAxiosService';
+import { formatCurrency } from '../../utils/currencyUtils';
 
 interface BannerOffer {
   id: number;
@@ -91,10 +92,6 @@ const SalesBanner = () => {
     );
   }
 
-  function formatCurrency(discount: any, arg1: string, arg2: { short: boolean; }): any {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <section className="container pt-2 mt-2">
       <Swiper
@@ -167,8 +164,7 @@ const SalesBanner = () => {
                     </svg>
                   </div>
                   <div className="position-relative">
-                    <span 
-                      className="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark rtl-flip" 
+                    <span className="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark rtl-flip" 
                       style={{ background: banner.effectiveGradient }} 
                     />
                     <div className="row align-items-center position-relative z-2">
@@ -188,7 +184,7 @@ const SalesBanner = () => {
                         <div className="me-xxl-4">
                           <img 
                             src={banner.effectiveImage} 
-                            className="d-block rtl-flip banner-image" 
+                            className="d-block rtl-flip banner-image rounded" 
                             width={420} 
                             alt={banner.name}
                             loading="lazy"
