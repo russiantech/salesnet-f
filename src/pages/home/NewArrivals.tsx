@@ -1255,10 +1255,11 @@ const NewArrivals = () => {
                   altText={bannerProduct.name}
                 />
               </div>
-              <h3 className="display-2 mb-2">{bannerProduct.name}</h3>
-              <p className="text-body fw-medium mb-4">{bannerProduct?.description?.substring(0, 50)}...</p>
+              <h3 className="display-3 mb-2 text-truncate0">{bannerProduct.name}</h3>
+              {/* <p className="text-body fw-medium mb-4">{bannerProduct?.description?.substring(0, 50)}</p> */}
+              <p className="text-body fw-medium mb-4 text-truncate">{bannerProduct?.description}</p>
               <Link 
-                className="btn btn-sm btn-primary" 
+                className="btn btn-sm btn-primary cursor-pointer rounded-pill" 
                 to={`/products/${bannerProduct.slug}`}
               >
                 From {formatCurrency(bannerProduct.price, 'NGN', { short: true })}
@@ -1266,6 +1267,7 @@ const NewArrivals = () => {
               </Link>
             </div>
           </div>
+          
         )}
         
         {/* Product Lists - First Column */}
