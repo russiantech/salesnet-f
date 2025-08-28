@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="footer position-relative bg-dark">
+    <footer className="footer position-relative bg-dark mb-2">
       <span className="position-absolute top-0 start-0 w-100 h-100 bg-body d-none d-block-dark" />
       <div className="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
         {/* Columns with links */}
