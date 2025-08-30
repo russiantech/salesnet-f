@@ -201,12 +201,10 @@ const Footer = () => {
           </div>
           <p className="text-body fs-xs text-center text-md-start mb-0 me-4 order-md-1">
             ©{' '}
-            <Link 
-              className="animate-target text-dark-emphasis fw-medium text-decoration-none" 
-              to="/about" 
+            <Link className="animate-target text-dark-emphasis fw-medium text-decoration-none pe-1 border rounded-pill" 
+              to="https://techa.salesnet.ng" 
               target="_blank" 
-              rel="noreferrer"
-            >
+              rel="noreferrer" >
               Techa - Russian Developers.
             </Link>
           </p>
@@ -214,7 +212,7 @@ const Footer = () => {
       </div>
 
 
-<a href="#top" className="btn-scroll-top btn btn-sm bg-body border-0 rounded-pill shadow animate-slide-end">
+<Link to="#top" className="btn-scroll-top btn btn-sm bg-body border-0 rounded-pill shadow animate-slide-end">
   Top
   <i className="ci-arrow-right fs-base ms-1 me-n1 animate-target" />
   <span className="position-absolute top-0 start-0 w-100 h-100 border rounded-pill z-0" />
@@ -236,7 +234,7 @@ const Footer = () => {
       style={{ strokeDasharray: '155.201', strokeDashoffset: '43.9562' }}
     />
   </svg>
-</a>
+</Link>
 
       {/* Back to top button */}
       <div className="floating-buttons position-fixed top-50 end-0 z-sticky me-3 me-xl-4 pb-4">
