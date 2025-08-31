@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useBootstrapPopovers } from '../../hooks/useBootstrapPopovers';
 
 import { socialLinks } from './FooterMini';
+import { tr } from 'framer-motion/client';
 
 const Footer = () => {
   // Define reusable link groups at the top
@@ -19,7 +20,7 @@ const Footer = () => {
     { label: 'Shipping rates & policies', path: '/shipping-rates-policies', is_disabled: false },
     { label: 'Refunds & replacements', path: '/refunds-replacements', is_disabled: true },
     { label: 'Delivery info', path: '/delivery-info', is_disabled: true },
-    { label: 'Order tracking', path: '/order-tracking', is_disabled: false },
+    { label: 'Order tracking', path: '/order-tracking', is_disabled: true },
     { label: 'Taxes & fees', path: '/taxes-fees', is_disabled: true }
   ];
 
@@ -27,7 +28,7 @@ const Footer = () => {
     { label: 'Money back guarantee', path: '/money-back-guarantee', is_disabled: true },
     { label: 'Product returns', path: '/product-returns', is_disabled: false },
     { label: 'Support center', path: '/customer-service/support-center', is_disabled: false },
-    { label: 'Shipping', path: '/customer-service/shipping', is_disabled: false },
+    { label: 'Shipping', path: '/customer-service/shipping', is_disabled: true },
     { label: 'Terms & conditions', path: '/customer-service/terms-conditions', is_disabled: false }
   ];
 

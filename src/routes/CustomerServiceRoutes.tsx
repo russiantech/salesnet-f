@@ -8,9 +8,9 @@ import Navigation from "../components/shared/Navigation";
 const AboutUs = lazy(() => import("../pages/customerService/AboutUs"));
 const ContactUs = lazy(() => import("../pages/customerService/ContactUs"));
 
-const Help = lazy(() => import("../pages/customerService/Help"));
+const SupportCenter = lazy(() => import("../pages/customerService/SupportCenter"));
 const HelpSingle = lazy(() => import("../pages/customerService/HelpSingle"));
-const Terms = lazy(() => import("../pages/customerService/Terms"));
+const TermsConditions = lazy(() => import("../pages/customerService/TermsConditions"));
 
 // Lazy-loaded components
 // const ContactUs = lazy(() => import("../pages/customerService/ContactUs"));
@@ -34,8 +34,8 @@ const customerServiceRoutes = () => {
         {/* <Route path="/edit/:slug" element={<PublishPage productSlug="big-medical-show-main-can-a-measure" />} /> */}
         
         {/* Public routes */}
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/support-center" element={<Help />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/support-center" element={<SupportCenter />} />
         <Route path="/help/:slug" element={<HelpSingle />} />
                         
       </Routes>

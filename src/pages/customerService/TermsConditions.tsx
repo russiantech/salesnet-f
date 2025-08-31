@@ -2,7 +2,7 @@
 
 import { Link } from "react-router-dom"
 
-const Terms = () => {
+const TermsConditions = () => {
   return (
     <>
     {/* <Navigation /> */}
@@ -78,7 +78,7 @@ const Terms = () => {
                 </li>
               </ul>
               <p className="pb-3 mb-0">For customer service inquiries, please review Your Account Settings, visit Salesnet's 
-                <Link  className="fw-medium" to="/users/help"> Help Center.</Link></p>
+                <Link  className="fw-medium" to="/customer-service/support-center"> Help Center.</Link></p>
               <hr className="my-3 my-lg-4" />
               <h2 className="h5 pt-3 mb-lg-4">Was this information helpful?</h2>
               <div className="d-flex gap-3">
@@ -100,4 +100,4 @@ const Terms = () => {
   )
 }
 
-export default Terms
+export default TermsConditions

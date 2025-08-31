@@ -2,7 +2,7 @@
 
 import { Link } from "react-router-dom"
 
-const Help = () => {
+const SupportCenter = () => {
   return (
     <>
       {/* <Navigation /> */}
@@ -528,4 +528,4 @@ const Help = () => {
   )
 }
 
-export default Help
+export default SupportCenter
