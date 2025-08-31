@@ -5,7 +5,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
-import { NotFoundPage, NotImplimentedPage } from "./pages/Notfound";
+import { NotFoundPage, NotImplimentedPage } from "./pages/customerService/Notfound";
 import CategoriesPage from './pages/categories/CategoriesPage';
 // import OfferForm from './pages/vendor/offers/OfferForm';
 import LoadingSpinner from './components/shared/LoadingSpinner';
@@ -23,6 +23,7 @@ const OfferRoutes = lazy(() => import("./routes/OfferRoutes"));
 const UserRoutes = lazy(() => import("./routes/UserRoutes"));
 const VendorRoutes = lazy(() => import("./routes/VendorRoutes"));
 const PagesRoutes = lazy(() => import("./routes/PagesRoutes"));
+const CustomerServiceRoutes = lazy(() => import("./routes/CustomerServiceRoutes"));
 
 const BasketCanvas = lazy(() => import("./components/shared/modals/BasketCanvas"));
 // const PublishPage = lazy(() => import("./components/shared/modals/publish/Publish"));
@@ -56,6 +57,8 @@ const App = () => {
             <Route path="/categories/:slug" element={<ProductsInCategory />} />
             <Route path="/search" element={<SearchPage />} />
 
+            <Route path="/customer-service/*" element={<CustomerServiceRoutes />} />
+
             <Route path="/products/*" element={<ProductRoutes />} />
 
             <Route path="/offers/*" element={<OfferRoutes />} />
@@ -65,6 +68,7 @@ const App = () => {
             <Route path="/users/*" element={<UserRoutes />} />
 
             <Route path="/vendors/*" element={<VendorRoutes />} />
+
             <Route path="/pages/*" element={<PagesRoutes />} />
 
             {/* TEST ROUTES */}

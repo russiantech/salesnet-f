@@ -1,5 +1,7 @@
 // import Navigation from "../../../components/shared/Navigation"
 
+import { Link } from "react-router-dom"
+
 const Terms = () => {
   return (
     <>
@@ -57,21 +59,21 @@ const Terms = () => {
               <p>If you have any questions, or comments about these Terms please contact Salesnet at:</p>
               <ul className="list-unstyled pb-1">
                 <li className="nav pt-1">
-                  <Link  className="nav-link align-items-start fs-base p-0" to="tel:+15053753082">
+                  <Link  className="nav-link align-items-start fs-base p-0" to="tel:+2347026561327">
                     <i className="ci-phone fs-xl mt-1 me-2" />
                     +234&nbsp;70&nbsp;2656&nbsp;13&nbsp;27
                   </Link>
                 </li>
                 <li className="nav pt-1">
-                  <Link  className="nav-link align-items-start fs-base p-0" to="mailto:contact@salesnet.com">
+                  <Link  className="nav-link align-items-start fs-base p-0" to="mailto:hi@salesnet.ng">
                     <i className="ci-mail fs-xl mt-1 me-2" />
-                    hi@salesnet.co
+                    hi@salesnet.ng
                   </Link>
                 </li>
                 <li className="nav pt-1">
                   <Link  className="nav-link align-items-start fs-base p-0" to="#!">
                     <i className="ci-map-pin fs-xl mt-1 me-2" />
-                    12 Beale St. Suite 600 Lekki, Lagos.
+                    Lekki Ajah, Lagos.
                   </Link>
                 </li>
               </ul>
