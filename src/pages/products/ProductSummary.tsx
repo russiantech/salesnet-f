@@ -1031,9 +1031,9 @@ export const ProductSummary = ({
               </span>
               {discountBadge && product.discount && (
                 <span className="badge bg-danger bg-opacity-10 text-danger fs-xs rounded-pill">
-                  {product.discount_info.discount_type === 'percentage'
-                    ? `${product.discount_info.discount_value}% OFF`
-                    : `${formatCurrency(product.discount_info.discount_value)} OFF`}
+                  {product?.discount_info?.discount_type === 'percentage'
+                    ? `${product?.discount_info?.discount_value}% OFF`
+                    : `${formatCurrency(product?.discount_info?.discount_value)} OFF`}
                 </span>
               )}
             </div>
