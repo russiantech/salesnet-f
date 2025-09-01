@@ -1016,7 +1016,7 @@ export const ProductSummary = ({
 
   const renderPrice = () => {
     const hasDiscount = product.discount_price || product.discount;
-    const discountedPrice = product?.discount_price ||  (product?.discount ? product?.discount_info?.calculated_price || product?.discount_info?.discount_value : null);
+    const discountedPrice = product?.discounted_price ||  (product?.discount ? product?.discount_info?.calculated_price || product?.discount_info?.discount_value : null);
     console.log(`discountedPrice: ${discountedPrice}, product.discount_price: ${product?.discount_price}, product.discount: ${product?.discount}, product?.discount_info: ${JSON.stringify(product?.discount_info)}`);
     console.log(product);
     return (
