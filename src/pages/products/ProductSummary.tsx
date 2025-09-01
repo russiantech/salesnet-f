@@ -1017,13 +1017,13 @@ export const ProductSummary = ({
   const renderPrice = () => {
     const hasDiscount = product.discount_price || product.discount;
     const discountedPrice = product?.discount_price ||  (product?.discount ? product?.discount_info?.calculated_price : null);
-    console.log(`discountedPrice: ${discountedPrice}, product.discount_price: ${product?.discount_price}, product.discount: ${product?.discount}`);
+    console.log(`discountedPrice: ${discountedPrice}, product.discount_price: ${product?.discount_price}, product.discount: ${product?.discount}, product?.discount_info: ${JSON.stringify(product?.discount_info)}`);
     console.log(product);
     return (
       <div className="h5 lh-1 mb-0 flex-grow-1 me-2">
         {hasDiscount ? (
           <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-1">
-            <span className="text-danger fw-medium">{formatCurrency(product?.original_price, 'NGN', { short: true })}</span>
+            <span className="text-danger fw-medium">{formatCurrency((product?.price || product?.original_price), 'NGN', { short: true })}</span>
             {/* <span className="text-danger fw-medium">{formatCurrency(discountedPrice, 'NGN', { short: true })}</span> */}
             <div className="d-flex align-items-center gap-2">
               <span className="text-decoration-line-through text-body-tertiary fs-sm">
