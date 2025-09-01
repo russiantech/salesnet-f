@@ -1016,7 +1016,7 @@ export const ProductSummary = ({
 
   const renderPrice = () => {
     const hasDiscount = product.discount_price || product.discount;
-    const discountedPrice = product?.discount_price ||  (product?.discount ? product?.discount_info?.calculated_price : null);
+    const discountedPrice = product?.discount_price ||  (product?.discount ? product?.discount_info?.calculated_price || product?.discount_info?.discount_value : null);
     console.log(`discountedPrice: ${discountedPrice}, product.discount_price: ${product?.discount_price}, product.discount: ${product?.discount}, product?.discount_info: ${JSON.stringify(product?.discount_info)}`);
     console.log(product);
     return (
@@ -1032,8 +1032,8 @@ export const ProductSummary = ({
               {discountBadge && product?.discount && (
                 <span className="badge bg-danger bg-opacity-10 text-danger fs-xs rounded-pill">
                   {product?.discount_info?.discount_type === 'percentage'
-                    ? `${product?.discount_info?.discount_value}% OFF`
-                    : `${formatCurrency(product?.discount_info?.discount_value)} OFF`}
+                    ? `${discountedPrice}% OFF`
+                    : `${formatCurrency(discountedPrice)} OFF`}
                 </span>
               )}
             </div>
