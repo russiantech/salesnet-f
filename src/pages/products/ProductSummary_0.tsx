@@ -857,9 +857,9 @@ export const ProductSummary = ({
   // };
 
   const renderPrice = () => {
-    const hasDiscount = product.discount_price || product.discount;
-    const discountedPrice = product.discount_price ||  (product.discount ? product.discount.calculated_price : null);
-    
+    const hasDiscount = product.discounted_price || product.discount;
+    const discountedPrice = product.discounted_price ||  (product.discount ? product.discount.calculated_price : product.discount.discount_value);
+
     return (
       <div className="h5 lh-1 mb-0 flex-grow-1 me-2">
         {hasDiscount ? (
@@ -873,7 +873,7 @@ export const ProductSummary = ({
               {discountBadge && product.discount && (
                 <span className="badge bg-danger bg-opacity-10 text-danger fs-xs">
                   {product.discount.discount_type === 'percentage'
-                    ? `${product.discount.discount_value}% OFF`
+                    ? `${formatCurrency(product.discount.discount_value)}% OFF`
                     : `${formatCurrency(product.discount.discount_value)} OFF`}
                 </span>
               )}

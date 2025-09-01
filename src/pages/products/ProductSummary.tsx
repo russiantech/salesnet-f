@@ -1018,7 +1018,7 @@ export const ProductSummary = ({
     const hasDiscount = product.discount_price || product.discount;
     const discountedPrice = product?.discount_price ||  (product?.discount ? product?.discount_info?.calculated_price : null);
     // console.log(product.discount_price, product.discount, product?.discount);
-    console.log(product);
+    // console.log(product);
     return (
       <div className="h5 lh-1 mb-0 flex-grow-1 me-2">
         {hasDiscount ? (

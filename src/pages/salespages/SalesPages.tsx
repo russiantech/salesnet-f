@@ -9,10 +9,10 @@ import BusinessAbout from "./BusinessAbout";
 import BusinessHours from "./BusinessHours";
 import BusinessReviews from "./BusinessReviews";
 import { BusinessStats2 } from './BusinessStats';
-import ProductSummary from "../products/ProductSummary_0";
+import ProductSummary from "../products/ProductSummary";
 import "./SalesPages.css";
 import LoadingCard from "../../components/shared/LoadingCard";
-import Breadcrumb from "../../components/shared/Breadcrumb";
+// import Breadcrumb from "../../components/shared/Breadcrumb";
 import { FollowButton } from "../../components/shared/FollowButton";
 
 interface Address {
@@ -134,7 +134,7 @@ const SalesPages = () => {
           ? productsResponse.data.products 
           : [...prev, ...productsResponse.data.products]
       );
-
+      
       setPageMeta({
         current_page_number: productsResponse.data.page_meta.current_page_number,
         total_pages_count: productsResponse.data.page_meta.total_pages_count,
@@ -493,6 +493,8 @@ const SalesPages = () => {
                      <div className="vstack gap-3 gap-md-4 mt-n3 overflow-y-auto pe-3" data-simplebar data-simplebar-auto-hide="false" style={{maxWidth: "100%", maxHeight: "650px"}}>
                       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                         {products.map((product, i) => (
+                          // console.log(product['price'], product['discount_info']),
+                          // console.log(product),
                           <div className="col" key={i}>
                             <ProductSummary product={product} />
                           </div>
