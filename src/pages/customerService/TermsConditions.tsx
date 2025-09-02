@@ -104,6 +104,11 @@
 
 
 // v2
+
+import { lazy } from "react";
+
+const FooterMini = lazy(() => import("../../components/shared/FooterMini"));
+
 const TermsConditions = () => {
   const LAST_UPDATED = new Date('2025-09-01');
   // Then use: {LAST_UPDATED.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -112,7 +117,7 @@ const TermsConditions = () => {
       <main className="content-wrapper">
         <div className="container py-5 mb-2 mt-n2 mt-sm-1 my-md-3 my-lg-4 mb-xl-5">
           <div className="row justify-content-center">
-            <div className="col-lg-11 col-xl-10 col-xxl-9">
+            <div className="col-lg-12 col-xl-12 col-xxl-12">
               <h1 className="h2 pb-2 pb-sm-3 pb-lg-4">Terms and Conditions</h1>
               <hr className="mt-0" />
               <div className="h6 pt-2 pt-lg-3">
@@ -235,9 +240,12 @@ const TermsConditions = () => {
             </div>
           </div>
         </div>
+        <FooterMini />
       </main>
     </>
   )
 }
 
 export default TermsConditions
+
+

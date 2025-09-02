@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBootstrapPopovers } from '../../hooks/useBootstrapPopovers';
-import Footer from '../../components/shared/Footer';
+// import Footer from '../../components/shared/Footer';
 import FooterMini from '../../components/shared/FooterMini';
 
 const ContactUs = () => {
