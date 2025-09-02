@@ -68,7 +68,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   const displayTotal = context === 'basket' ? estimatedTotal : total;
   const displayShipping = context === 'basket' 
     ? (qualifiesForFreeShipping ? 'Free' : 'Calculated at checkout')
-    : (deliveryFee > 0 ? formatCurrency(deliveryFee) : 'Free');
+    : (deliveryFee > 0 ? formatCurrency(deliveryFee, 'NGN', { short: true }) : 'Free');
 
   return (
     <aside className={`${context === 'checkout' ? 'col-lg-4 offset-xl-1 mb-4' : 'col-lg-4'}`} 
