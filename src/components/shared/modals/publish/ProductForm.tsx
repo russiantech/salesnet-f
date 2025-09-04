@@ -3703,7 +3703,7 @@ const MediaTabContent = () => (
     return (
       <div className="position-relative" ref={containerRef}>
         <div
-          className={`form-control ${error ? 'is-invalid' : ''}`}
+          className={`form-control form-control-lg ${error ? 'is-invalid' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             setIsOpen(!isOpen);
@@ -3732,7 +3732,7 @@ const MediaTabContent = () => (
             <div className="card-body p-2">
               <input
                 type="text"
-                className="form-control mb-2"
+                className="form-control form-control-lg mb-2"
                 placeholder="Search categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
