@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Footer from '../../components/shared/Footer';
 import { appConfig } from '../../config/appConfig';
 
@@ -179,7 +179,7 @@ const AboutUs = () => {
             </div>
             <div className="col-lg-6 order-1 order-lg-2">
               <img 
-                src="/assets/img/us/about/team.jpg" 
+                src="/assets/img/us/pages/delivery_walk.jpg" 
                 alt={`${appConfig.app_name} Team`} 
                 className="img-fluid rounded-3 shadow" 
               />
@@ -226,31 +226,31 @@ const AboutUs = () => {
                 Have questions or feedback? We'd love to hear from you.
               </p>
               <div className="d-flex flex-wrap justify-content-center gap-3 mb-4">
-                <a href={`mailto:${appConfig.app_email}`} className="btn btn-outline-dark">
+                <Link to={`mailto:${appConfig.app_email}`} className="btn btn-outline-dark">
                   <i className="ci-mail me-2"></i> {appConfig.app_email}
-                </a>
-                <a href={`tel:${appConfig.phone_number.replace(/\s/g, '')}`} className="btn btn-outline-dark">
+                </Link>
+                <Link to={`tel:${appConfig.phone_number.replace(/\s/g, '')}`} className="btn btn-outline-dark">
                   <i className="ci-phone me-2"></i> {appConfig.phone_number}
-                </a>
+                </Link>
               </div>
               
               {/* Social Links */}
               <div className="d-flex justify-content-center gap-3 mt-4">
-                <a href={appConfig.x_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
-                  <i className="ci-twitter"></i>
-                </a>
-                <a href={appConfig.fb_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
+                <Link to={appConfig.x_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
+                  <i className="ci-x"></i>
+                </Link>
+                <Link to={appConfig.fb_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
                   <i className="ci-facebook"></i>
-                </a>
-                <a href={appConfig.instagram_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
+                </Link>
+                <Link to={appConfig.instagram_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
                   <i className="ci-instagram"></i>
-                </a>
-                <a href={appConfig.whatsapp_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
+                </Link>
+                <Link to={appConfig.whatsapp_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
                   <i className="ci-whatsapp"></i>
-                </a>
-                <a href={appConfig.linkedin_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
+                </Link>
+                <Link to={appConfig.linkedin_link} target="_blank" rel="noopener noreferrer" className="btn btn-icon btn-lg btn-outline-dark rounded-circle">
                   <i className="ci-linkedin"></i>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

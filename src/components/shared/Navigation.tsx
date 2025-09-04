@@ -896,7 +896,8 @@ const TopNav = () => {
     const renderProfileButton = () => (
         <NavLink
             to={isProfileRoute ? '#' : getDashboardLink()}
-            className="btn btn-icon btn-lg text-white position-relative rounded-circle animate-shake ms-2"
+            // className="btn btn-icon btn-lg text-white position-relative rounded-circle animate-shake border ms-2"
+            className="btn btn-icon border position-relative rounded-circle ms-2 text-white"
             {...(isProfileRoute && {
                 'data-bs-toggle': 'offcanvas',
                 'data-bs-target': '#accountSidebar',
@@ -905,8 +906,8 @@ const TopNav = () => {
             data-bs-theme="light"
             aria-label="Account menu"
         >
-            <span className="position-absolute top-0 start-0 d-flex bg-success align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
-                <i className="ci-user animate-target fs-4 m-1"/>
+            <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                <i className="ci-user animate-target fs-4"/>
             </span>
         </NavLink>
     );
@@ -925,7 +926,7 @@ const TopNav = () => {
                 to="#" 
                 data-bs-toggle="modal" 
                 data-bs-target="#PublishPage"
-                className={`btn btn-icon btn-lg btn-secondary position-relative rounded-circle ${extraClasses}`}
+                className={`btn btn-icon border position-relative rounded-circle ${extraClasses}`}
                 style={{ cursor: 'pointer' }}
             >
                 <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
@@ -951,7 +952,7 @@ const TopNav = () => {
                     borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
                 }}
             >
-                <div className="container d-block py-1 py-lg-3 d-lg-none d-md-none1" data-bs-theme="dark">
+                <div className="container d-block py-1 py-lg-3 d-lg-none d-md-none" data-bs-theme="dark">
                     <div className="navbar-stuck-hide pt-1" />
                     <div className="row flex-nowrap align-items-center g-0">
                         <div className="col col-lg-3 d-flex align-items-center">
@@ -967,7 +968,8 @@ const TopNav = () => {
 
                             <NavLink 
                                 to="#" 
-                                className="btn btn-icon btn-lg btn-outline-success position-relative rounded-circle animate-shake ms-2" 
+                                // className="btn btn-icon border position-relative rounded-circle animate-shake ms-2" 
+                                className="btn btn-icon border position-relative rounded-circle animate-shake ms-2 text-white"
                                 data-bs-toggle="offcanvas" 
                                 data-bs-target="#searchBox" 
                                 aria-controls="searchBox" 
@@ -978,7 +980,7 @@ const TopNav = () => {
                                         {basketCount}
                                     </span>
                                 )}
-                                <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
+                                <span className="position-absolute text-white top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-scale fs-lg">
                                     <i className="ci-search animate-target" />
                                 </span>
                             </NavLink>
@@ -1067,7 +1069,8 @@ const TopNav = () => {
                                             </li>
                                         </ul>
                                         <hr className="d-lg-none my-3" />
-                                        <ul className="navbar-nav ms-auto position-relative">
+                                        {/* For Desktop */}
+                                        <ul className="navbar-nav ms-auto position-relative align-items-center">
                                             <li className="nav-item">
                                                 {renderPublishButton("ms-2")}
                                             </li>
@@ -1075,7 +1078,8 @@ const TopNav = () => {
                                                 <NavLink 
                                                     to={'#'}
                                                     type="button" 
-                                                    className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" 
+                                                    // className="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" 
+                                                    className="btn btn-icon border position-relative rounded-circle animate-shake ms-2 text-white"
                                                     data-bs-toggle="offcanvas" 
                                                     data-bs-target="#searchBox" 
                                                     aria-controls="searchBox" 
