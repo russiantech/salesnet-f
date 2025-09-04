@@ -5,7 +5,7 @@ export const appConfig = {
   app_desc: 'Premier internet marketplace using technology and AI to enhance and secure the buying and selling experience.',
   app_desc_long: 'Elite software engineering team with special interest in artificial intelligence, data and hacking. We empower people and businesses to stay relevant with technologies and advancements.',
   app_location: 'Global (Headquarters: Graceland Estate, Lekki, Lagos, Nigeria)',
-  app_email: 'info@salesnet.ng',
+  app_email: 'hi@salesnet.ng',
   app_logo: '/assets/img/us/logos/favicon.ico',
   site_logo: '/assets/img/us/logos/favicon.ico',
   site_link: 'https://salesnet.ng',
