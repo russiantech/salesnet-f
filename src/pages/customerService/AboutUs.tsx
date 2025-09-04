@@ -179,7 +179,7 @@ const AboutUs = () => {
             </div>
             <div className="col-lg-6 order-1 order-lg-2">
               <img 
-                src="/assets/img/us/pages/delivery_walk.jpg" 
+                src="/assets/img/us/pages/delivery_walk.jpg"
                 alt={`${appConfig.app_name} Team`} 
                 className="img-fluid rounded-3 shadow" 
               />
