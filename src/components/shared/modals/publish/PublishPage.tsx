@@ -1116,8 +1116,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
             <div className="tab-content">
               {/* Basic Info Tab */}
               <div className={`tab-pane fade ${activeTab === 'home' ? 'show active' : ''}`}>
-                <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 w-100">
+                <section className="position-relative bg-body rounded p-2 m-2">
+                  <div className="position-relative z-1">
                     <h2 className="h4 mb-3 mb-sm-4">Basic Information</h2>
                     <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 mb-3 mb-md-4">
                       <div className="col">
@@ -1227,8 +1227,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
               {/* Listing Type Tab */}
               <div className={`tab-pane fade ${activeTab === 'listing-type' ? 'show active' : ''}`}>
-                <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 p-1 m-1 w-100">
+                <section className="position-relative bg-body rounded p-2 m-2">
+                  <div className="position-relative z-1 p-2 m-2">
                     <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
                     <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto">
                       {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
@@ -1324,8 +1324,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
               {/* Media Tab */}
               <div className={`tab-pane fade ${activeTab === 'images' ? 'show active' : ''}`}>
-                <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 p-1 m-1 w-100">
+                <section className="position-relative bg-body rounded p-2 m-2">
+                  <div className="position-relative z-1 p-2 m-2">
                     <div className="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4">
                       <h2 className="h4 mb-2 mb-sm-0 me-3">Photos & Videos</h2>
                       <div className="position-relative d-flex">
@@ -1426,8 +1426,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
               {/* Contact Tab */}
               <div className={`tab-pane fade ${activeTab === 'contact' ? 'show active' : ''}`}>
-                <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 p-1 m-1 w-100">
+                <section className="position-relative bg-body rounded p-2 m-2">
+                  <div className="position-relative z-1 p-2 m-2">
                     <h2 className="h4 mb-3 mb-sm-4">Contact Information</h2>
                     <div className="nav nav-pills flex-wrap gap-3">
                       <div>
@@ -1518,8 +1518,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
 
               {/* Location Tab */}
               <div className={`tab-pane fade ${activeTab === 'location' ? 'show active' : ''}`}>
-                <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 p-1 m-1 w-100">
+                <section className="position-relative bg-body rounded p-2 m-2">
+                  <div className="position-relative z-1 p-2 m-2">
                     <h2 className="h4 mb-3 mb-sm-4">Location Details</h2>
 
                     <div className="col-12">
@@ -1635,10 +1635,10 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
               <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`}>
                 
                 <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 p-1 m-1 w-100">
+                  <div className="position-relative z-1 p-2 m-2 w-100">
                     <h2 className="h4 mb-3 mb-sm-4">Boost Your Listing Visibility</h2>
                     
-                    <div className="col-12 mb-2 w-100">
+                    <div className="col-12 mb-2">
                       <small className="fs-sm text-warning me-2">You can still publish for a free basic visibility.</small>
                       <button
                         type="button"
