@@ -1634,8 +1634,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
               {/* Promote Tab */}
               <div className={`tab-pane fade ${activeTab === 'promote' ? 'show active' : ''}`}>
                 
-                <section className="position-relative bg-body rounded p-2 m-2 w-100">
-                  <div className="position-relative z-1 p-2 m-2 w-100">
+                <section className="position-relative bg-body rounded p-2 m-2">
+                  <div className="position-relative z-1 p-2 m-2">
                     <h2 className="h4 mb-3 mb-sm-4">Boost Your Listing Visibility</h2>
                     
                     <div className="col-12 mb-2">
