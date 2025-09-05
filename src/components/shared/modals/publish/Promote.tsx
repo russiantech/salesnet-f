@@ -1,5 +1,5 @@
-// v4
-// Quick fix version - simplified button disable logic
+// v4 - Mobile Responsive Version
+// Fully responsive design with mobile-first approach
 import React, { useEffect, useState, useMemo } from 'react';
 import { useBootstrapPopovers } from '../../../../hooks/useBootstrapPopovers';
 import { useNavigate } from 'react-router-dom';
@@ -93,13 +93,11 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
   const fetchUserData = async () => {
     try {
       const response = await AxiosService.json.get('/users/current');
-      // console.log(`user respo in pay ${JSON.stringify(response.data)}`);
       if (response.data.success) {
         setUser(response.data);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
-      // Don't show error for user data - might not be logged in
     }
   };
 
@@ -143,15 +141,13 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
       throw new Error('Paystack payment system not available');
     }
 
-      // Generate a unique transaction reference if not provided
-  const generateTxRef = () => {
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000);
-    return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
-  };
+    const generateTxRef = () => {
+      const timestamp = Date.now();
+      const random = Math.floor(Math.random() * 1000);
+      return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
+    };
 
-  // Use existing payment_reference or generate a new one
-  const txRef = subscription.payment_reference || generateTxRef();
+    const txRef = subscription.payment_reference || generateTxRef();
 
     return new Promise<void>((resolve, reject) => {
       const callback = (response: any) => {
@@ -163,13 +159,6 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
               paymentReference: subscription.payment_reference || txRef,
               subscriptionId: subscription.id
             });
-
-            // const verificationResult = await verifyPayment({
-            //   paymentMethod: 'paystack',
-            //   transactionId: response.reference,
-            //   paymentReference: order.payment_reference,
-            //   orderId: order.id
-            // });
 
             if (verificationResult?.success) {
               onSubscriptionSuccess?.(verificationResult?.subscription);
@@ -212,175 +201,92 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
     });
   };
 
+  const processFlutterwavePayment = async (
+    subscription: any, 
+    amount: number, 
+    customerEmail: string, 
+    customerPhone: string
+  ) => {
+    if (!scriptsLoaded.flutterwave) {
+      throw new Error('Flutterwave payment system not available');
+    }
 
-//   const processFlutterwavePayment = async (
-//   subscription: any, 
-//   amount: number, 
-//   customerEmail: string, 
-//   customerPhone: string
-// ) => {
-//   if (!scriptsLoaded.flutterwave) {
-//     throw new Error('Flutterwave payment system not available');
-//   }
+    const generateTxRef = () => {
+      const timestamp = Date.now();
+      const random = Math.floor(Math.random() * 1000);
+      return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
+    };
 
-//   // Generate a unique transaction reference if not provided
-//   const generateTxRef = () => {
-//     const timestamp = Date.now();
-//     const random = Math.floor(Math.random() * 1000);
-//     return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
-//   };
+    const txRef = subscription.payment_reference || generateTxRef();
 
-//   // Use existing payment_reference or generate a new one
-//   const txRef = subscription.payment_reference || generateTxRef();
+    console.log('Transaction Reference:', txRef);
+    console.log('Subscription object:', subscription);
 
-//   // Debug log to check the reference
-//   console.log('Transaction Reference:', txRef);
-//   console.log('Subscription object:', subscription);
+    return new Promise<void>((resolve, reject) => {
+      let paymentHandled = false;
 
-//   return new Promise<void>((resolve, reject) => {
-//     (window as any).FlutterwaveCheckout({
-//       public_key: paymentConfig?.flutterwave?.publicKey,
-//       tx_ref: txRef, // Use the generated or existing reference
-      
-//       amount,
-//       currency: 'NGN',
-//       customer: {
-//         email: customerEmail,
-//         phone_number: customerPhone,
-//         name: user?.username || 'Customer'
-//       },
-//       customizations: {
-//         title: 'Subscription Payment - 3D Payment Security.',
-//         description: `Payment for ${subscription.plan_name} subscription`,
-//         logo: '/assets/img/us/logos/favicon.ico'
-//       },
-//       metadata: {
-//         merchant_reference: txRef, // Use the same reference
-//         subscription_id: subscription.id,
-//         entity_type: entityType,
-//         entity_id: entityId,
-//         customer_email: customerEmail
-//       },
-      
-//       callback: async (response: any) => {
-//         try {
-//           const verificationResult = await verifyPayment({
-//             paymentMethod: 'flutterwave',
-//             transactionId: response.transaction_id,
-//             paymentReference: txRef, // Use the same reference for verification
-//             subscriptionId: subscription.id
-//           });
+      (window as any).FlutterwaveCheckout({
+        public_key: paymentConfig?.flutterwave?.publicKey,
+        tx_ref: txRef,
+        amount,
+        currency: 'NGN',
+        customer: {
+          email: customerEmail,
+          phone_number: customerPhone,
+          name: user?.username || 'Customer'
+        },
+        customizations: {
+          title: 'Subscription Payment - 3D Payment Security.',
+          description: `Payment for ${subscription.plan_name} subscription`,
+          logo: '/assets/img/us/logos/favicon.ico'
+        },
+        metadata: {
+          merchant_reference: txRef,
+          subscription_id: subscription.id,
+          entity_type: entityType,
+          entity_id: entityId,
+          customer_email: customerEmail
+        },
 
-//           if (verificationResult.success || verificationResult.data.success) {
-//             onSubscriptionSuccess?.(verificationResult.subscription || verificationResult.data.subscription);
-//             resolve();
-//           } else {
-//             throw new Error(verificationResult.data.message || 'Payment verification failed');
-//           }
-//         } catch (error) {
-//           console.error('Flutterwave verification error:', error);
-//           NotificationService.showDialog(
-//             error instanceof Error ? error.message : 'Payment verification failed'
-//           );
-//           reject(error);
-//         }
-//       },
-      
-//       onclose: () => {
-//         setIsProcessing(false);
-//         NotificationService.showDialog('Payment cancelled', 'info');
-//         reject(new Error('Payment cancelled by user'));
-//       },
-//     });
-//   });
-// };
-// Now fix payment cancellled error upon successful payment when success modal is closed(x) using `paymentHandled`
-const processFlutterwavePayment = async (
-  subscription: any, 
-  amount: number, 
-  customerEmail: string, 
-  customerPhone: string
-) => {
-  if (!scriptsLoaded.flutterwave) {
-    throw new Error('Flutterwave payment system not available');
-  }
+        callback: async (response: any) => {
+          try {
+            const verificationResult = await verifyPayment({
+              paymentMethod: 'flutterwave',
+              transactionId: response.transaction_id,
+              paymentReference: txRef,
+              subscriptionId: subscription.id
+            });
 
-  const generateTxRef = () => {
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000);
-    return `SUB_${subscription.id || 'UNKNOWN'}_${timestamp}_${random}`;
-  };
+            console.log(`verificationResult ${JSON.stringify(verificationResult)}`);
 
-  const txRef = subscription.payment_reference || generateTxRef();
-
-  console.log('Transaction Reference:', txRef);
-  console.log('Subscription object:', subscription);
-
-  return new Promise<void>((resolve, reject) => {
-    let paymentHandled = false; // Track whether callback succeeded
-
-    (window as any).FlutterwaveCheckout({
-      public_key: paymentConfig?.flutterwave?.publicKey,
-      tx_ref: txRef,
-      amount,
-      currency: 'NGN',
-      customer: {
-        email: customerEmail,
-        phone_number: customerPhone,
-        name: user?.username || 'Customer'
-      },
-      customizations: {
-        title: 'Subscription Payment - 3D Payment Security.',
-        description: `Payment for ${subscription.plan_name} subscription`,
-        logo: '/assets/img/us/logos/favicon.ico'
-      },
-      metadata: {
-        merchant_reference: txRef,
-        subscription_id: subscription.id,
-        entity_type: entityType,
-        entity_id: entityId,
-        customer_email: customerEmail
-      },
-
-      callback: async (response: any) => {
-        try {
-          const verificationResult = await verifyPayment({
-            paymentMethod: 'flutterwave',
-            transactionId: response.transaction_id,
-            paymentReference: txRef,
-            subscriptionId: subscription.id
-          });
-
-          console.log(`verificationResult ${JSON.stringify(verificationResult)}`);
-
-          if (verificationResult?.success || verificationResult.data?.success) {
-            paymentHandled = true; //  Mark as handled
-            onSubscriptionSuccess?.(
-              verificationResult?.subscription || verificationResult?.data?.subscription
+            if (verificationResult?.success || verificationResult.data?.success) {
+              paymentHandled = true;
+              onSubscriptionSuccess?.(
+                verificationResult?.subscription || verificationResult?.data?.subscription
+              );
+              resolve();
+            } else {
+              throw new Error(verificationResult?.data?.message || 'Payment verification failed');
+            }
+          } catch (error) {
+            console.error('Flutterwave verification error:', error);
+            NotificationService.showDialog(
+              error instanceof Error ? error?.message : 'Payment verification failed'
             );
-            resolve();
-          } else {
-            throw new Error(verificationResult?.data?.message || 'Payment verification failed');
+            reject(error);
           }
-        } catch (error) {
-          console.error('Flutterwave verification error:', error);
-          NotificationService.showDialog(
-            error instanceof Error ? error?.message : 'Payment verification failed'
-          );
-          reject(error);
-        }
-      },
+        },
 
-      onclose: () => {
-        setIsProcessing(false);
-        if (!paymentHandled) { //  Only show cancel if no success
-          NotificationService.showDialog('Payment cancelled', 'warning');
-          reject(new Error('Payment cancelled by user'));
-        }
-      },
+        onclose: () => {
+          setIsProcessing(false);
+          if (!paymentHandled) {
+            NotificationService.showDialog('Payment cancelled', 'warning');
+            reject(new Error('Payment cancelled by user'));
+          }
+        },
+      });
     });
-  });
-};
+  };
 
   const processPaypalPayment = async (
     subscription: any, 
@@ -492,7 +398,6 @@ const processFlutterwavePayment = async (
   const handleSubscribe = async (plan: SubscriptionPlan) => {
     if (isProcessing) return;
 
-    // Simple user check - only require email
     if (!user?.email) {
       NotificationService.showDialog('Please log in to subscribe', 'error');
       return;
@@ -502,16 +407,13 @@ const processFlutterwavePayment = async (
       setIsProcessing(true);
       setSelectedPlan(plan);
 
-      // Create subscription record
       const subscription = await createSubscription(plan);
       
-      // Get user details
       const amount = subscription.total_amount || subscription.amount;
       const customerEmail = subscription.customer_email || user?.email;
       const customerPhone = user?.phone;
       const customerName = user?.full_name || user?.name || 'Customer';
 
-      // Process payment based on method
       switch (paymentMethod) {
         case 'paystack':
           await processPaystackPayment(subscription, amount, customerEmail, customerName);
@@ -560,7 +462,6 @@ const processFlutterwavePayment = async (
     }
   };
 
-  // Simplified button disabled logic - only essential checks
   const isButtonDisabled = (_plan: SubscriptionPlan) => {
     return isProcessing || !user?.email;
   };
@@ -569,131 +470,185 @@ const processFlutterwavePayment = async (
     return (
       <div className="d-flex justify-content-center py-5">
         <LoadingSpinner size='sm' />
-          <span className="visually-hidden">Loading plans...</span>
+        <span className="visually-hidden">Loading plans...</span>
       </div>
     );
   }
 
   return (
     <div className="subscription-plans">
-      {/* Payment Method Selection */}
-      <div className="row mb-4">
-        <div className="col-12">
-          <div className="card">
-            <div className="card-body">
-              <h6 className="card-title mb-3">Select Payment Method</h6>
-              <div className="row g-2">
-                {(['paystack', 'flutterwave', 'opay', 'paypal'] as const).map((method) => (
-                  <div className="col-6 col-md-3" key={method}>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="paymentMethod"
-                        id={`payment-${method}`}
-                        disabled={scriptLoadError[method]}
-                        value={method}
-                        checked={paymentMethod === method}
-                        onChange={(e) => setPaymentMethod(e.target.value as any)}
-                      />
-                      <label className="form-check-label text-capitalize" htmlFor={`payment-${method}`}>
-                        {method}
-                        {scriptsLoaded[method] && (
-                          <small className="text-success ms-1">✓</small>
-                        )}
-                        {isScriptLoading(method) && (
-                          <small className="text-muted ms-1">(Loading...)</small>
-                        )}
-                        {scriptLoadError[method] && (
-                          <small className="text-danger ms-1">(Failed)</small>
-                        )}
-                      </label>
-                    </div>
+      {/* Mobile-Optimized Payment Method Selection */}
+      <div className="mb-4">
+        <div className="card">
+          <div className="card-body">
+            <h6 className="card-title mb-3">
+              <i className="ci-card me-2"></i>
+              Select Payment Method
+            </h6>
+            
+            {/* Mobile-first stacked layout */}
+            <div className="row g-2">
+              {(['paystack', 'flutterwave', 'opay', 'paypal'] as const).map((method) => (
+                <div className="col-12 col-sm-6 col-md-3" key={method}>
+                  <div className="form-check p-3 border rounded position-relative">
+                    <input
+                      className="form-check-input position-absolute top-50 end-0 translate-middle-y me-3"
+                      type="radio"
+                      name="paymentMethod"
+                      id={`payment-${method}`}
+                      disabled={scriptLoadError[method]}
+                      value={method}
+                      checked={paymentMethod === method}
+                      onChange={(e) => setPaymentMethod(e.target.value as any)}
+                    />
+                    <label 
+                      className="form-check-label d-block cursor-pointer w-100" 
+                      htmlFor={`payment-${method}`}
+                    >
+                      <div className="d-flex align-items-center">
+                        <div className="me-3">
+                          <div className={`bg-primary-subtle rounded-circle p-2 d-inline-flex align-items-center justify-content-center`} style={{width: '40px', height: '40px'}}>
+                            <i className={`ci-${method === 'paypal' ? 'paypal' : 'card'} text-primary`}></i>
+                          </div>
+                        </div>
+                        <div className="flex-grow-1">
+                          <div className="fw-medium text-capitalize">{method}</div>
+                          <div className="small">
+                            {scriptsLoaded[method] && (
+                              <span className="text-success">
+                                <i className="ci-check me-1"></i>Ready
+                              </span>
+                            )}
+                            {isScriptLoading(method) && (
+                              <span className="text-muted">
+                                <span className="spinner-border spinner-border-sm me-1"></span>
+                                Loading...
+                              </span>
+                            )}
+                            {scriptLoadError[method] && (
+                              <span className="text-danger">
+                                <i className="ci-close me-1"></i>Failed
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </label>
                   </div>
-                ))}
-              </div>
-              {!user?.email && (
-                <div className="alert alert-warning mt-3 mb-0">
-                  <i className="ci-info me-2"></i>
-                  Please log in to subscribe to a plan.
                 </div>
-              )}
+              ))}
             </div>
+            
+            {!user?.email && (
+              <div className="alert alert-warning mt-3 mb-0">
+                <div className="d-flex align-items-center">
+                  <i className="ci-info me-2 flex-shrink-0"></i>
+                  <div className="flex-grow-1">
+                    <strong>Login Required</strong>
+                    <div className="small mt-1">Please log in to subscribe to a plan.</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Subscription Plans */}
-      <div className="row g-4 pt-2">
+      {/* Mobile-Responsive Subscription Plans */}
+      <div className="row g-3 g-md-4">
         {plans.map((plan: SubscriptionPlan) => (
-          <div className="col-12 col-md-4" key={plan.id}>
-            <div className="card h-100 position-relative">
+          <div className="col-12 col-lg-4" key={plan.id}>
+            <div className="card h-100 position-relative shadow-sm">
               {plan.badge && (
-                <div className="position-absolute top-0 start-50 translate-middle">
-                  <span className={`badge bg-${plan.badge_color} rounded-pill px-3`}>
+                <div className="position-absolute top-0 start-50 translate-middle z-2">
+                  <span className={`badge bg-${plan.badge_color} rounded-pill px-3 py-1 shadow-sm`}>
                     {plan.badge}
                   </span>
                 </div>
               )}
               
-              <div className="card-body pb-3 pt-4">
+              <div className="card-body pb-0 pt-4">
+                {/* Mobile-optimized header */}
                 <div className="d-flex align-items-start justify-content-between mb-4">
-                  <div className={`bg-${plan.badge_color}-subtle rounded-pill p-2`}>
-                    <i className={`ci-${plan.icon} fs-4 text-${plan.badge_color}`}></i>
+                  <div className={`bg-${plan.badge_color}-subtle rounded-3 p-3 flex-shrink-0`}>
+                    <i className={`ci-${plan.icon} fs-3 text-${plan.badge_color}`}></i>
                   </div>
                   <span 
-                    className={`bg-${plan.badge_color}-subtle rounded-pill p-2 cursor-pointer`}
+                    className={`bg-warning-subtle rounded-circle p-2 cursor-pointer flex-shrink-0 ms-2`}
                     id={`features-popover-${plan.slug}`}
                     data-bs-toggle="popover"
-                    data-bs-trigger="hover"
+                    data-bs-trigger="hover focus"
                     data-bs-custom-class="popover-sm"
                     data-bs-content={formatFeaturesForTooltip(plan.features)}
+                    role="button"
+                    tabIndex={0}
                   >
-                    <i className="ci-info fs-base text-warning"></i>
+                    <i className="ci-info fs-6 text-warning"></i>
                   </span>
                 </div>
 
+                {/* Mobile-optimized pricing section */}
                 <div className="text-center mb-4">
-                  <h5 className="mb-2">{plan.name}</h5>
-                  <div className="text-success fs-2 fw-bold mb-1">{plan.formatted_price}</div>
-                  <small className="text-muted">{plan.duration_text}</small>
+                  <h5 className="mb-2 fw-bold">{plan.name}</h5>
+                  <div className="mb-2">
+                    <span className="text-success fs-1 fw-bold">{plan.formatted_price}</span>
+                  </div>
+                  <div className="small text-muted fw-medium">{plan.duration_text}</div>
                 </div>
 
-                <p className="text-muted text-center mb-4">{plan.description}</p>
+                {/* Mobile-optimized description */}
+                <div className="text-center mb-4">
+                  <p className="text-muted small mb-0 lh-base px-2">{plan.description}</p>
+                </div>
 
-                {/* Features List */}
-                <ul className="list-unstyled mb-4">
-                  {plan.features.slice(0, 4).map((feature: { text: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }, index: Key | null | undefined) => (
-                    <li key={index} className="d-flex align-items-start mb-2">
-                      <i className={`ci-check text-${plan.badge_color} me-2 mt-1`}></i>
-                      <span className="small">{feature.text}</span>
-                    </li>
-                  ))}
-                  {plan.features.length > 4 && (
-                    <li className="text-muted small">
-                      +{plan.features.length - 4} more features
-                    </li>
-                  )}
-                </ul>
+                {/* Mobile-optimized features list */}
+                <div className="mb-4">
+                  <ul className="list-unstyled mb-0">
+                    {plan.features.slice(0, 4).map((feature: { text: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }, index: Key | null | undefined) => (
+                      <li key={index} className="d-flex align-items-start mb-2">
+                        <i className={`ci-check text-${plan.badge_color} me-2 mt-1 flex-shrink-0`}></i>
+                        <span className="small lh-base">{feature.text}</span>
+                      </li>
+                    ))}
+                    {plan.features.length > 4 && (
+                      <li className="text-muted small text-center">
+                        <i className="ci-more-horizontal me-1"></i>
+                        +{plan.features.length - 4} more features
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </div>
 
-              <div className="card-footer bg-transparent border-0 pt-0 pb-4">
+              {/* Mobile-optimized footer */}
+              <div className="card-footer bg-transparent border-0 pt-0 pb-4 mt-auto">
                 <div className="d-grid gap-2">
                   <button
                     type="button"
-                    className={`btn btn-${plan.badge_color} rounded-pill`}
+                    className={`btn btn-${plan.badge_color} rounded-pill py-3 fw-medium position-relative`}
                     onClick={() => handleSubscribe(plan)}
                     disabled={isButtonDisabled(plan)}
                   >
                     {isProcessing && selectedPlan?.id === plan.id && (
-                      <LoadingZoom size='sm'/>
+                      <span className="position-absolute start-0 top-50 translate-middle-y ms-3">
+                        <LoadingZoom size='sm'/>
+                      </span>
                     )}
                     <i className={`ci-${plan.icon} me-2`}></i>
                     {getActionButtonText(plan)}
                   </button>
-                  <small className="text-center text-muted">
-                    {plan.duration_text} • Up to {plan.max_boost_count} boosts
-                  </small>
+                  
+                  {/* Mobile-friendly plan details */}
+                  <div className="text-center">
+                    <small className="text-muted d-block">
+                      <i className="ci-time me-1"></i>
+                      {plan.duration_text}
+                    </small>
+                    <small className="text-muted d-block">
+                      <i className="ci-rocket me-1"></i>
+                      Up to {plan.max_boost_count} boosts
+                    </small>
+                  </div>
                 </div>
               </div>
             </div>
@@ -701,11 +656,16 @@ const processFlutterwavePayment = async (
         ))}
       </div>
 
+      {/* Mobile-optimized empty state */}
       {plans.length === 0 && !loading && (
         <div className="text-center py-5">
-          <i className="ci-package fs-1 text-muted mb-3"></i>
-          <h5 className="text-muted">No subscription plans available</h5>
-          <p className="text-muted">Please check back later for available plans.</p>
+          <div className="mb-4">
+            <div className="bg-light rounded-circle p-4 d-inline-flex align-items-center justify-content-center" style={{width: '80px', height: '80px'}}>
+              <i className="ci-package fs-1 text-muted"></i>
+            </div>
+          </div>
+          <h5 className="text-muted mb-2">No subscription plans available</h5>
+          <p className="text-muted mb-0 px-3">Please check back later for available plans.</p>
         </div>
       )}
     </div>
