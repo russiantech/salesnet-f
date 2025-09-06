@@ -251,8 +251,8 @@ const EditProductPage = () => {
   }
 
   return (
-    <div className="container py-4 py-lg-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+    <div className="container py-4 py-lg-5 mb-4">
+      <div className="d-flex justify-content-between align-items-center">
         <h1 className="h2 mb-0 mt-2 text-truncate">
           <i className="ci-edit-3 me-2"></i>
           Editing {productData?.name}
@@ -267,7 +267,7 @@ const EditProductPage = () => {
       </div>
       
       <div className="card border-0 shadow-sm">
-        <div className="card-body p-4">
+        <div className="card-body p-2">
           
           <ProductForm 
             productSlug={slug}

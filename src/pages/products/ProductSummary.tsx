@@ -974,7 +974,7 @@ const MediaDisplay = ({ product, className = "" }) => {
   return (
     <div className={`position-relative w-100 ${className}`} style={{ paddingBottom: '100%' }}>
       <img 
-        src={firstMediaUrl || '/assets/img/placeholder.jpg'}
+        src={firstMediaUrl || '/assets/img/placeholder.png'}
         alt={product.name}
         className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
         onError={(e) => {
@@ -1039,7 +1039,9 @@ export const ProductSummary = ({
             </div>
           </div>
         ) : (
-          <span className="fw-medium rounded-pill"> {formatCurrency(product.price, 'NGN', { short: true })} </span>
+          <span className="fw-medium rounded-pill">
+             {formatCurrency(product.price, 'NGN', { short: true })}
+          </span>
         )}
       </div>
     );

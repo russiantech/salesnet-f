@@ -26,8 +26,8 @@ const Footer = () => {
 
   const customerPages = [
     { label: 'Money back guarantee', path: '/money-back-guarantee', is_disabled: true },
-    { label: 'Product returns', path: '/product-returns', is_disabled: false },
-    { label: 'Support center', path: '/customer-service/support-center', is_disabled: false },
+    { label: 'Product returns', path: '/product-returns', is_disabled: true },
+    { label: 'Support center', path: '/customer-service/support-center', is_disabled: true },
     { label: 'Shipping', path: '/customer-service/shipping', is_disabled: true },
     { label: 'Terms & conditions', path: '/customer-service/terms-conditions', is_disabled: false }
   ];
