@@ -161,7 +161,7 @@ const Signup = () => {
                     <div className="form-check">
                         <input type="checkbox" defaultChecked className="form-check-input" id="privacy" required />
                         <label htmlFor="privacy" className="form-check-label">
-                            I have read and accept the <NavLink className="text-dark-emphasis" to="#!"> Privacy Policy</NavLink></label>
+                            I have read and accept the <NavLink className="text-dark-emphasis" to="/customer-service/terms"> Privacy Policy</NavLink></label>
                     </div>
                 </div>
                 
@@ -171,8 +171,8 @@ const Signup = () => {
                     {isLoading ? (
                         // <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         <div className="spinner-grow spinner-grow-sm" role="status">
-  <span className="visually-hidden">Loading...</span>
-</div>
+                        <span className="visually-hidden">Loading...</span>
+                        </div>
 
                     ) : (
                         'Sign up Now.'

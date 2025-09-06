@@ -38,44 +38,6 @@ const Signin = () => {
         }
     }, [isAuthenticated, navigate, from])
     
-    // const onSubmitForm = (evt) => {
-    //     evt.preventDefault();
-    //     setIsLoading(true);
-
-    //     NotificationService.showDialog("Submitting form...", "primary");
-
-    //     if (!formData.username || !formData.password) {
-    //         NotificationService.showDialog("Must provide both username and password.", "danger");
-    //         setIsLoading(false);
-    //         return;
-    //     }
-
-    //     UsersAxiosService.signin(formData).then(res => {
-
-    //         const message = res.data.data.full_messages && res.data.data.full_messages.length > 0
-    //             ? res.data.data.full_messages[0]
-    //             : res.data.data.message || res.data.data.error;
-
-    //         if (res.data.data.&& res.data.data.success) {
-              
-    //             // res.data.data.user.access_token = res.data.data.access_token;
-    //             // res.data.data.user.refresh_token = res.data.data.refresh_token;
-
-    //             UsersService.authenticate(res.data.data.user);
-
-    //             NotificationService.showDialog(message || 'Successfully logged in', 'success');
-    //             // navigate('/users/personal'); 
-    //         } else {
-    //             NotificationService.showDialog(message || 'Unknown error occurred', 'error');
-    //         }
-    //     }).catch(err => {
-    //         const errorMessage = err.response?.data?.error || err.message || 'An unknown error occurred';
-    //         NotificationService.showDialog(errorMessage, 'error');
-    //     }).finally(() => {
-    //         setIsLoading(false);
-    //     });
-    // };
-
     const onSubmitForm = (evt) => {
       evt.preventDefault();
       setIsLoading(true);
@@ -236,7 +198,7 @@ const Signin = () => {
             <footer className="mt-auto">
               <p className="fs-xs mb-0">
                 © All rights reserved. <span className="animate-underline">
-                  <NavLink className="animate-target text-dark-emphasis text-decoration-none" to="https://techa.onrender.com" target="_blank" rel="noreferrer">Techa - Russian Developers.</NavLink></span>
+                  <NavLink className="animate-target text-dark-emphasis text-decoration-none" to="https://techa.salesnet.ng" target="_blank" rel="noreferrer">Techa - Russian Developers.</NavLink></span>
               </p>
             </footer>
           </div>
