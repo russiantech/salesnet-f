@@ -61,6 +61,30 @@ export const UsersAxiosService = {
     return AxiosService.json.post('/users/signup', user);
   },
 
+  // Social Authentication
+  // Add these methods to your UsersAxiosService
+//   async initiateSocialAuth(provider: string) {
+//     return AxiosService.json.get(`/users/authorize/${provider.toLowerCase()}`);
+// },
+
+  async initiateSocialAuth(provider: string, headers: Record<string, string> = {}) {
+    return AxiosService.json.get(`/users/authorize/${provider.toLowerCase()}`, {
+      headers: {
+        // 'Content-Type': 'application/json',
+        ...headers,
+      },
+    });
+},
+
+  async getLinkedAccounts() {
+    return AxiosService.json.get(`/users/linked-accounts`);
+  },
+
+  async unlinkSocialAccount(provider: string) {
+    return AxiosService.json.delete(`/users/linked-accounts/${provider.toLowerCase()}`);
+  },
+// 
+
   /**
    * Get current user profile
    */

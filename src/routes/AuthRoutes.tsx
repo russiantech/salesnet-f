@@ -14,10 +14,10 @@
 
 // export default AuthRoutes;
 
-// 
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import SeoConfig from "../utils/SeoManager";
+import OAuthCallbackHandler from "../components/auth/OAuthCallbackHandler";
 
 // Lazy load auth-related pages
 const Signin = lazy(() => import("../pages/auth/Signin"));
@@ -39,6 +39,13 @@ const AuthRoutes = () => (
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/recover-password" element={<RecoverPassword />} />
+
+      {/*  */}
+      {/* OAuth callback route - handles all provider callbacks */}
+        <Route path="/oauth/callback" element={<OAuthCallbackHandler />} />
+        {/* You can also add specific provider callback routes if needed */}
+        <Route path="/oauth/callback/:provider" element={<OAuthCallbackHandler />} />
+
     </Routes>
   </>
   </Suspense>

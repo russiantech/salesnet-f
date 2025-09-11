@@ -45,9 +45,8 @@ const App = () => {
       <BasketCanvas />
       <AuthCanvas />
       <GlobalNotifications />
-
       <ManualInstallButton />
-      
+
       {/* Suspense handles all lazy components */}
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
