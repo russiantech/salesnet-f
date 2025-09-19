@@ -1,6 +1,7 @@
 // src/services/net/UsersAxiosService.tsx
 // This file contains the UsersAxiosService which handles user-related API calls
 
+import { CompletePasswordResetFormData, RecoverPasswordFormData, VerifyRecoveryCodeFormData } from '../../types/auth.types';
 import { UsersService } from '../local/UsersService';
 import { AxiosService } from "./base/AxiosService";
 
@@ -61,6 +62,24 @@ export const UsersAxiosService = {
     return AxiosService.json.post('/users/signup', user);
   },
 
+  // Recover password
+ async recoverPassword(data: RecoverPasswordFormData) {
+   const requestData = {
+          ...data,
+          callback_url: `${window.location.origin}/auth/verify-recovery`
+      };
+    return await AxiosService.json.post('/users/recover-password', requestData);
+},
+//
+
+async verifyRecoveryCode(data: VerifyRecoveryCodeFormData) {
+  return await AxiosService.json.post('/users/verify-recovery-code', data);
+},
+
+async completePasswordReset(data: CompletePasswordResetFormData) {
+  return await AxiosService.json.post('/users/complete-password-reset', data);
+},
+
   // Social Authentication
   // Add these methods to your UsersAxiosService
 //   async initiateSocialAuth(provider: string) {
@@ -95,7 +114,7 @@ export const UsersAxiosService = {
   /**
    * Update user profile (supports file uploads)
    */
-  updateProfile(data: ProfileUpdateData) {
+  updateUser(data: ProfileUpdateData, _formData: FormData) {
     return AxiosService.multipart.put('/users', data);
   },
 

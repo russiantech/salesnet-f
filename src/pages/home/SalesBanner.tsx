@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { OffersAxiosService } from '../../services/net/OffersAxiosService';
 import { formatCurrency } from '../../utils/currencyUtils';
+import { ADVERTISING_BANNERS } from './datas/advertisingBanners';
 
 interface BannerOffer {
   id: number;
@@ -23,7 +24,7 @@ interface BannerOffer {
 }
 
 const PLACEHOLDER_BANNERS = [
-  '/assets/img/home/hero-slider/1.png',
+  '/assets/img/home/banner/camera.png',
   '/assets/img/home/hero-slider/2.png',
   '/assets/img/home/hero-slider/3.png',
 ];
@@ -34,21 +35,8 @@ const SalesBanner = () => {
   const [banners, setBanners] = useState<BannerOffer[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadBanners = async () => {
-      try {
-        setLoading(true);
-        const response = await OffersAxiosService.getPromotionalBanners(10);
-        
-        const enhancedBanners = response.data.banners.map((banner: BannerOffer, index: number) => ({
-          ...banner,
-          effectiveImage: banner.image || PLACEHOLDER_BANNERS[index % PLACEHOLDER_BANNERS.length],
-          effectiveGradient: banner.gradient || DEFAULT_GRADIENT
-        }));
-        
-        setBanners(enhancedBanners);
-      } catch (err) {
-        setBanners(PLACEHOLDER_BANNERS.map((img, index) => ({
+  /*
+  const defaultBanners = PLACEHOLDER_BANNERS.map((img, index) => ({
           id: index,
           name: `Special Offer ${index + 1}`,
           discount: '20',
@@ -59,7 +47,191 @@ const SalesBanner = () => {
           link: '/offers',
           effectiveImage: img,
           effectiveGradient: DEFAULT_GRADIENT
-        })));
+        }));
+      
+  const ADVERTISING_BANNERS: BannerOffer[] = [
+  {
+    id: 1001,
+    name: "Be Part of Something Big – Join Salesnet Today!",
+    discount: "0",
+    is_percentage: false,
+    currency_symbol: '',
+    promo_code: "Cheap",
+    image: "/assets/img/home/banner/camera.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/camera.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1001,
+    name: "Be Part of Something Big – Join Salesnet Today!",
+    discount: "0",
+    is_percentage: false,
+    currency_symbol: '',
+    promo_code: "Cheap",
+    image: "/assets/img/home/banner/ekusi_soup.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/ekusi_soup.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1003,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/furniture.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/furniture.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1003,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/furniture0.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/furniture0.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1004,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/fall_season.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/fall_season.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+    {
+    id: 1002,
+    name: "Discover & Sell on Nigeria’s Newest E-commerce Platform 🚀",
+    discount: "1",
+    is_percentage: false,
+    promo_code: "Faster",
+    image: "/assets/img/home/banner/sneakers.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/sneakers.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+    {
+    id: 1005,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/knitted_bag.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/knitted_bag.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1005,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/jollof.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/jollof.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1005,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/jollof_and_fried.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/jollof_and_fried.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1005,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/jollof_sweet.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/jollof_sweet.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1005,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/afang_soup.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/afang_soup.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+  {
+    id: 1005,
+    name: "Grow with Us – Buyers & Sellers Welcome 🛒",
+    discount: "2",
+    is_percentage: false,
+    promo_code: "Secured",
+    image: "/assets/img/home/banner/okufe_goat_meat.png",
+    gradient: DEFAULT_GRADIENT,
+    link: "https://salesnet.ng",
+    effectiveImage: "/assets/img/home/banner/okufe_goat_meat.png",
+    effectiveGradient: DEFAULT_GRADIENT,
+  },
+
+
+];
+
+
+  useEffect(() => {
+    const loadBanners = async () => {
+      try {
+
+        setLoading(true);
+        const response = await OffersAxiosService.getPromotionalBanners(10);
+        
+        const enhancedBanners = response.data.banners.map((banner: BannerOffer, index: number) => ({
+          ...banner,
+          effectiveImage: banner.image || PLACEHOLDER_BANNERS[index % PLACEHOLDER_BANNERS.length],
+          effectiveGradient: banner.gradient || DEFAULT_GRADIENT
+        }));
+
+        // alert(JSON.stringify(defaultBanners));
+        // console.log(`Enhanced: ${enhancedBanners}`);
+        
+        // if(enhancedBanners){
+        //   setBanners(enhancedBanners);
+        // }else{
+        //   // show default
+        //   setBanners(defaultBanners);
+        // }
+
+      // setBanners(enhancedBanners.length > 0 ? enhancedBanners : defaultBanners);
+      // If promos exist, show them; otherwise show advertising slides
+      setBanners(enhancedBanners.length > 0 ? enhancedBanners : ADVERTISING_BANNERS);
+
+      } catch (err) {
+
+        setBanners(defaultBanners );
+        
       } finally {
         setLoading(false);
       }
@@ -67,6 +239,35 @@ const SalesBanner = () => {
 
     loadBanners();
   }, []);
+  */
+
+  useEffect(() => {
+  const loadBanners = async () => {
+    try {
+      setLoading(true);
+      const response = await OffersAxiosService.getPromotionalBanners(10);
+
+      const enhancedBanners = (response?.data?.banners || []).map(
+        (banner: BannerOffer, index: number) => ({
+          ...banner,
+          effectiveImage:
+            banner.image || PLACEHOLDER_BANNERS[index % PLACEHOLDER_BANNERS.length],
+          effectiveGradient: banner.gradient || DEFAULT_GRADIENT,
+        })
+      );
+
+      // If promos exist, show them; otherwise show advertising slides
+      setBanners(enhancedBanners.length > 0 ? enhancedBanners : ADVERTISING_BANNERS);
+    } catch (err) {
+      // On API failure, still show advertising
+      setBanners(ADVERTISING_BANNERS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadBanners();
+}, []);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, index: number) => {
     const target = e.target as HTMLImageElement;
@@ -77,7 +278,10 @@ const SalesBanner = () => {
   if (loading) {
     return (
       <section className="container pt-2 mt-2">
-        <LoadingSpinner /> 
+        <div className="d-flex justify-content-center align-items-center">
+        <LoadingSpinner size='sm' />
+        <span className="ms-2">Getting promos ready...</span>
+      </div>
       </section>
     );
   }
@@ -115,8 +319,7 @@ const SalesBanner = () => {
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={banner.id}>
-            <Link 
-              to={banner.link} 
+            <Link to={banner.link} 
               className="text-decoration-none banner-link"
               aria-label={`View ${banner.name} promotion`}
             >
@@ -147,6 +350,7 @@ const SalesBanner = () => {
                       ) : (
                         <>
                           {/* {banner.currency_symbol || '$'}{Math.round(parseFloat(banner.discount))} */}
+                          {/* {banner.currency_symbol || formatCurrency(banner.discount, 'NGN', { short: true }) } */}
                           {banner.currency_symbol || formatCurrency(banner.discount, 'NGN', { short: true }) }
                           <span className="d-inline-block ms-n2">
                             <span className="d-block fs-5">OFF</span>
@@ -171,13 +375,27 @@ const SalesBanner = () => {
                       <div className="col-md-6 mb-3 mb-md-0 banner-text">
                         <div className="text-center text-md-start py-md-5 px-4 ps-md-5 pe-md-0 me-md-n5">
                           <h3 className="text-uppercase fw-bold ps-xxl-3 pb-2 mb-1">{banner.name}</h3>
-                          {banner.promo_code && (
+                          {/* {banner.promo_code && (
                             <p className="text-body-emphasis ps-xxl-3 mb-0">
                               Use code <span className="d-inline-block fw-semibold bg-white text-dark rounded-pill py-1 px-2">
                                 {banner.promo_code}
                               </span>
                             </p>
-                          )}
+                          )} */}
+                          {banner.promo_code ? (
+                          <p className="text-body-emphasis ps-xxl-3 mb-0">
+                            Use code{" "}
+                            <span className="d-inline-block fw-semibold bg-white text-dark rounded-pill py-1 px-2">
+                              {banner.promo_code}
+                            </span>
+                          </p>
+                        ) : (
+                          <p className="text-body-emphasis ps-xxl-3 mb-0">
+                            {banner.link.includes("salesnet.ng")
+                              ? "Join us today - the internet of sales."
+                              : ""}
+                          </p>
+                        )}
                         </div>
                       </div>
                       <div className="col-md-6 d-flex justify-content-center justify-content-md-end pb-5 pb-md-0 banner-image-container">

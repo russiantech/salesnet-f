@@ -1085,7 +1085,8 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
         <div className="modal-content">
           {/* Navigation tabs */}
           <div className="modal-header">
-            <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap overflow-y-auto pe-1" role="tablist">
+            <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto w-100 pe-2" data-simplebar data-simplebar-auto-hide="true">
+            <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap" role="tablist">
               {['home', 'listing-type', 'images', 'contact', 'location', 'promote'].map((tab) => (
                 <li className="nav-item" role="presentation" key={tab}>
                   <button
@@ -1103,6 +1104,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                 </li>
               ))}
             </ul>
+            </div>
             <button 
               className="btn-close fs-4" 
               type="button" 
@@ -1230,7 +1232,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                 <section className="position-relative bg-body rounded p-2 m-2">
                   <div className="position-relative z-1 p-2 m-2">
                     <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
-                    <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto">
+                    <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto" data-simplebar data-simplebar-auto-hide="true">
                       {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
                         <Fragment key={type}>
                           <input
@@ -1242,7 +1244,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                             checked={formData.basic_info.listing_type === type}
                             onChange={handleInputChange}
                           />
-                          <label htmlFor={`listing-${type}`} className="btn btn-outline-dark rounded-pill">
+                          <label htmlFor={`listing-${type}`} className="btn btn-sm btn-outline-dark rounded-pill me-1">
                             <div className="d-flex flex-column flex-xxl-row align-items-center m-1">
                               <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle">
                                 <i className={`fi-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
@@ -1446,7 +1448,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
                         </label>
                       </div>
                       <div>
-                        <input
+                        <input 
                           type="radio"
                           className="btn-check"
                           id="pickup"

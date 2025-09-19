@@ -1,32 +1,9 @@
-// // ProductRoutes.js
-// import { Route, Routes } from "react-router-dom";
-// import Products from "../pages/products/Products";
-// import ProductDetails from "../pages/products/ProductDetails";
-// import ProductsByCategories from "../pages/products/ProductsByCategories";
-// import PublishPage from "../components/shared/modals/publish/PublishPage";
 
-// const ProductRoutes = () => {
-//   return (
-//     <>
-//     {/* <ProductReviewForm /> */}
-//     <Routes>
-//       <Route path="/" element={<Products />} />
-//       <Route path="/:slug" element={<ProductDetails />} />
-//       <Route path="/edit/:slug" element={<PublishPage productSlug="big-medical-show-main-can-a-measure" />} />
-//       <Route path="/by-categories" element={<ProductsByCategories />} />
-//     </Routes>
-//     </>
-//   );
-// };
-
-// export default ProductRoutes;
-
-// 
-// ProductRoutes.js
 import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import TrendingProducts from "../pages/products/TrendingProducts";
 import SeoConfig from "../utils/SeoManager";
+import LoadingSpinner from "../components/shared/LoadingSpinner";
 // import TrendingProducts from "../pages/home/TrendingProducts";
 
 // Lazy-loaded components
@@ -46,7 +23,7 @@ const ProductRoutes = () => {
         // image={offer?.banner_image}
         canonical={`/products`}
     />
-    <Suspense fallback={<div className="loading-spinner"><div className="spinner"></div></div>}>
+    <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="/" element={<Products />} />
         <Route path="/:slug" element={<ProductDetails />} />

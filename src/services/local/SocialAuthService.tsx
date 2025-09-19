@@ -5,7 +5,7 @@ import { UsersAxiosService } from '../net/UsersAxiosService';
 import { UsersService } from './UsersService';
 import { NotificationService } from './NotificationService';
 
-type ProviderKey = 'google' | 'facebook' | 'apple';
+type ProviderKey = 'google' | 'facebook' | 'apple' | 'salesnet';
 
 interface ProviderConfig {
     name: string;
@@ -30,19 +30,26 @@ export const SocialAuthService = {
             name: 'Google',
             icon: 'ci-google',
             enabled: true,
-            color: 'btn-outline-secondary'
+            color: 'btn-outline-warning'
         },
         facebook: {
             name: 'Facebook', 
             icon: 'ci-facebook',
             enabled: true,
-            color: 'btn-outline-secondary'
+            color: 'btn-outline-info'
         },
         apple: {
             name: 'Apple',
             icon: 'ci-apple', 
             enabled: false,
             color: 'btn-outline-secondary'
+        },
+
+        salesnet: {
+            name: 'Salesnet',
+            icon: 'ci-apple', 
+            enabled: false,
+            color: 'btn-outline-danger'
         }
     } as Record<ProviderKey, ProviderConfig>,
     
@@ -60,6 +67,17 @@ export const SocialAuthService = {
             if (!this.providers[provider] || !this.providers[provider].enabled) {
                 throw new Error(`${provider} authentication is currently unavailable.`);
             }
+
+            /* if (provider === 'salesnet') {
+                const navigate = (window as any).navigate;
+                if (typeof navigate === 'function') {
+                    navigate('/auth/signin');
+                } else {
+                    window.history.pushState({}, '', '/auth/signin');
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                }
+                return;
+            } */
 
             NotificationService.showDialog(`Authenticating with ${this.providers[provider].name}...`, 'warning');
 

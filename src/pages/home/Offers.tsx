@@ -122,10 +122,13 @@ const Offers = () => {
     return stars;
   };
 
-  if (loading) {
+ if (loading) {
     return (
-      <section className="container pt-5 mt-2 mt-sm-3 mt-lg-4">
-       <LoadingSpinner />
+      <section className="container pt-2 mt-2">
+        <div className="d-flex justify-content-center align-items-center">
+        <LoadingSpinner size='sm' />
+        <span className="ms-2">Hold a sec, lemme get amazing offer deals for you!...</span>
+      </div>
       </section>
     );
   }

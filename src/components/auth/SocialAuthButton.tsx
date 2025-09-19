@@ -3,11 +3,12 @@
 
 import { useState } from 'react';
 import { SocialAuthService } from '../../services/local/SocialAuthService';
+import { LoadingZoom } from '../shared/LoadingSpinner';
 
 const SocialAuthButton = ({
     provider, 
-    className = '', 
-    size = 'lg',
+    className = 'rounded-pill', 
+    size = 'md',
     disabled = false,
     children 
 }) => {
@@ -44,6 +45,7 @@ const SocialAuthButton = ({
         providerConfig.color,
         'w-100',
         'px-2',
+        'flex-fill',
         className,
         isLoading && 'disabled',
         !isEnabled && 'disabled'
@@ -59,9 +61,7 @@ const SocialAuthButton = ({
         >
             {isLoading ? (
                 <>
-                    <div className="spinner-grow spinner-grow-sm me-2" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
+                    <LoadingZoom size="sm" />
                     Connecting...
                 </>
             ) : (

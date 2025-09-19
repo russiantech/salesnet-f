@@ -102,6 +102,28 @@ export const OrdersAxiosService = {
   },
 
   /**
+   * Get orders for authenticaticated user with optional filters and pagination
+   * @param filters Filter parameters for fetching orders
+   * @returns Promise with paginated orders
+   */
+  getMyOrders: async (filters: {
+    status?: OrderStatusValue;
+    timeframe?: Timeframe;
+    page?: number;
+    limit?: number;
+    [key: string]: any;
+  } = {}): Promise<PaginatedOrders> => {
+    const defaultParams = {
+      page: 1,
+      limit: 10,
+      ...filters
+    };
+    
+    const response = await AxiosService.json.get('/orders/me', { params: defaultParams });
+    return response.data;
+  },
+
+  /**
    * Get a specific order by ID
    * @param orderId The ID of the order
    * @returns Promise with order details

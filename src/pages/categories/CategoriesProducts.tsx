@@ -3,7 +3,7 @@ import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { Link } from 'react-router-dom';
 import LoadingCard from '../../components/shared/LoadingCard';
 import { NotificationService } from '../../services/local/NotificationService';
-import ProductSummary from '../products/ProductSummary_0';
+import ProductSummary from '../products/ProductSummary';
 
 const CategoriesProducts = () => {
     const [categories, setCategories] = useState([]);

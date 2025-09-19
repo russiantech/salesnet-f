@@ -162,14 +162,12 @@ const Aside = () => {
             <nav className="list-group list-group-borderless">
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"
-                to="/users/help"
-              >
+                to="/customer-service/terms-conditions">
                 <i className="ci-help-circle fs-base opacity-75 me-2" />
                 Help center
               </NavLink>
-              <NavLink
-                className="list-group-item list-group-item-action d-flex align-items-center"
-                to="/users/terms"
+              <NavLink className="list-group-item list-group-item-action d-flex align-items-center"
+                to="/customer-service/terms-conditions"
               >
                 <i className="ci-info fs-base opacity-75 me-2" />
                 Terms and conditions
@@ -177,11 +175,9 @@ const Aside = () => {
             </nav>
             
             <nav className="list-group list-group-borderless pt-3">
-              <button
-                className="list-group-item list-group-item-action d-flex align-items-center"
+              <button className="list-group-item list-group-item-action d-flex align-items-center"
                 onClick={handleLogout}
-                style={{ cursor: 'pointer' }}
-              >
+                style={{ cursor: 'pointer' }} >
                 <i className="ci-log-out fs-base opacity-75 me-2" />
                 Log out
               </button>

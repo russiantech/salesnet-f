@@ -28,91 +28,93 @@ const Categories: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [expandedCategory, setExpandedCategory] = useState<string | number | null>(null);
 
-  useEffect(() => {
-    const fetchCategories = async (): Promise<void> => {
-      try {
-        const params: GetCategoriesParams = {
-          include_products: false
-        };
-        const response: CategoriesResponse = await CategoriesAxiosService.getCategories(params);
-        setCategories(response.data.categories);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch categories';
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchCategories = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      setError(null);
+      const params: GetCategoriesParams = {
+        include_products: false
+      };
+      const response: CategoriesResponse = await CategoriesAxiosService.getCategories(params);
+      setCategories(response.data.categories);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch categories';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCategories();
   }, []);
 
-  // Enhanced icon mapping with fallback
-  const getCategoryIcon = (categoryName: string): string => {
-    const icons: Record<string, string> = {
-      'Services': 'ci-computer',
-      'Home & Garden': 'ci-home',
-      'Entertainment': 'ci-game',
-      'Fashion & Accessories': 'ci-apparel',
-      'Family': 'ci-heart',
-      'Electronics': 'ci-powerbank',
-      'Hobbies': 'ci-puzzle',
-      'Classifieds': 'ci-tag',
-      'Vehicles': 'ci-car',
-      'Property': 'ci-building',
-      'Apparrel': 'ci-apparel',
-      'Office Supplies': 'ci-briefcase',
-      'Free Stuffs': 'ci-gift',
-      'IT': 'ci-server',
-      'Automotive': 'ci-car',
-      'Building & Trading': 'ci-hammer',
-      'Childcare & Education': 'ci-book',
-      'Classes & Courses': 'ci-notebook',
-      'Recruitment': 'ci-users',
-      'Fitness & Personal Training': 'ci-dumbbell',
-      'Health & Beauty': 'ci-mirror',
-      'Tax & Financial': 'ci-calculator',
-      'Legal': 'ci-scale',
-      'Landscaping & Gardening': 'ci-flower',
-      'Manufacturing': 'ci-factory',
-      'Weddings & Venues': 'ci-ring',
-      'Printing': 'ci-printer',
-      'Travel & Tours': 'ci-plane',
-      'Rental': 'ci-home',
-      'Repairs': 'ci-settings',
-      'Tools': 'ci-tool',
-      'Furniture': 'ci-sofa',
-      'Household': 'ci-basket',
-      'Garden': 'ci-grass',
-      'Appliances': 'ci-fridge',
-      'Video Games': 'ci-gamepad',
-      'Books': 'ci-book',
-      'Movies & Music': 'ci-music',
-      'Bags & Luggage': 'ci-bag',
-      'Women\'s Clothing & Shoes': 'ci-dress',
-      'Men\'s Clothing & Shoes': 'ci-tshirt',
-      'Jewelry & Accessories': 'ci-jewelry',
-      'Home Goods': 'ci-lamp',
-      'Pets Supply': 'ci-paw',
-      'Baby & Kids': 'ci-baby-carriage',
-      'Toys & Games': 'ci-toy',
-      'Electronics & Computers': 'ci-laptop',
-      'Mobile Phones': 'ci-mobile',
-      'Softwares': 'ci-software',
-      'Power Supply': 'ci-bolt',
-      'Bicycles': 'ci-bike',
-      'Arts & Crafts': 'ci-palette',
-      'Sports & Outdoors': 'ci-ball',
-      'Auto parts': 'ci-car',
-      'Musical Instruments': 'ci-mic',
-      'Antiques & Collections': 'ci-collection',
-      'Garage Sale': 'ci-tag',
-      'Miscellaneous': 'ci-layers',
-      'Industrial Cleaning': 'ci-clean',
-      'Interior & Home Cleaning': 'ci-broom'
+  // Enhanced icon mapping with various colors
+  const getCategoryIcon = (categoryName: string): { icon: string; color: string } => {
+    const iconMap: Record<string, { icon: string; color: string }> = {
+      'Services': { icon: 'ci-computer', color: 'text-primary' },
+      'Home & Garden': { icon: 'ci-home', color: 'text-success' },
+      'Entertainment': { icon: 'ci-game', color: 'text-warning' },
+      'Fashion & Accessories': { icon: 'ci-apparel', color: 'text-danger' },
+      'Family': { icon: 'ci-heart', color: 'text-pink' },
+      'Electronics': { icon: 'ci-powerbank', color: 'text-info' },
+      'Hobbies': { icon: 'ci-puzzle', color: 'text-purple' },
+      'Classifieds': { icon: 'ci-tag', color: 'text-dark' },
+      'Vehicles': { icon: 'ci-car', color: 'text-secondary' },
+      'Property': { icon: 'ci-building', color: 'text-primary' },
+      'Apparrel': { icon: 'ci-apparel', color: 'text-danger' },
+      'Office Supplies': { icon: 'ci-briefcase', color: 'text-dark' },
+      'Free Stuffs': { icon: 'ci-gift', color: 'text-success' },
+      'IT': { icon: 'ci-server', color: 'text-info' },
+      'Automotive': { icon: 'ci-car', color: 'text-secondary' },
+      'Building & Trading': { icon: 'ci-hammer', color: 'text-warning' },
+      'Childcare & Education': { icon: 'ci-book', color: 'text-primary' },
+      'Classes & Courses': { icon: 'ci-notebook', color: 'text-success' },
+      'Recruitment': { icon: 'ci-users', color: 'text-info' },
+      'Fitness & Personal Training': { icon: 'ci-dumbbell', color: 'text-danger' },
+      'Health & Beauty': { icon: 'ci-mirror', color: 'text-pink' },
+      'Tax & Financial': { icon: 'ci-calculator', color: 'text-success' },
+      'Legal': { icon: 'ci-scale', color: 'text-dark' },
+      'Landscaping & Gardening': { icon: 'ci-flower', color: 'text-success' },
+      'Manufacturing': { icon: 'ci-factory', color: 'text-secondary' },
+      'Weddings & Venues': { icon: 'ci-ring', color: 'text-pink' },
+      'Printing': { icon: 'ci-printer', color: 'text-dark' },
+      'Travel & Tours': { icon: 'ci-plane', color: 'text-info' },
+      'Rental': { icon: 'ci-home', color: 'text-warning' },
+      'Repairs': { icon: 'ci-settings', color: 'text-secondary' },
+      'Tools': { icon: 'ci-tool', color: 'text-warning' },
+      'Furniture': { icon: 'ci-sofa', color: 'text-primary' },
+      'Household': { icon: 'ci-basket', color: 'text-success' },
+      'Garden': { icon: 'ci-grass', color: 'text-success' },
+      'Appliances': { icon: 'ci-fridge', color: 'text-info' },
+      'Video Games': { icon: 'ci-gamepad', color: 'text-warning' },
+      'Books': { icon: 'ci-book', color: 'text-primary' },
+      'Movies & Music': { icon: 'ci-music', color: 'text-danger' },
+      'Bags & Luggage': { icon: 'ci-bag', color: 'text-secondary' },
+      'Women\'s Clothing & Shoes': { icon: 'ci-dress', color: 'text-pink' },
+      'Men\'s Clothing & Shoes': { icon: 'ci-tshirt', color: 'text-info' },
+      'Jewelry & Accessories': { icon: 'ci-jewelry', color: 'text-warning' },
+      'Home Goods': { icon: 'ci-lamp', color: 'text-primary' },
+      'Pets Supply': { icon: 'ci-paw', color: 'text-success' },
+      'Baby & Kids': { icon: 'ci-baby-carriage', color: 'text-pink' },
+      'Toys & Games': { icon: 'ci-toy', color: 'text-warning' },
+      'Electronics & Computers': { icon: 'ci-laptop', color: 'text-info' },
+      'Mobile Phones': { icon: 'ci-mobile', color: 'text-secondary' },
+      'Softwares': { icon: 'ci-software', color: 'text-primary' },
+      'Power Supply': { icon: 'ci-bolt', color: 'text-warning' },
+      'Bicycles': { icon: 'ci-bike', color: 'text-success' },
+      'Arts & Crafts': { icon: 'ci-palette', color: 'text-danger' },
+      'Sports & Outdoors': { icon: 'ci-ball', color: 'text-success' },
+      'Auto parts': { icon: 'ci-car', color: 'text-secondary' },
+      'Musical Instruments': { icon: 'ci-mic', color: 'text-danger' },
+      'Antiques & Collections': { icon: 'ci-collection', color: 'text-dark' },
+      'Garage Sale': { icon: 'ci-tag', color: 'text-warning' },
+      'Miscellaneous': { icon: 'ci-layers', color: 'text-secondary' },
+      'Industrial Cleaning': { icon: 'ci-clean', color: 'text-info' },
+      'Interior & Home Cleaning': { icon: 'ci-broom', color: 'text-success' }
     };
     
-    return icons[categoryName] || 'ci-layers';
+    return iconMap[categoryName] || { icon: 'ci-layers', color: 'text-secondary' };
   };
 
   const toggleCategory = (categoryId: string | number): void => {
@@ -120,7 +122,7 @@ const Categories: React.FC = () => {
   };
 
   const handleRetry = (): void => {
-    window.location.reload();
+    fetchCategories();
   };
 
   const renderSubcategories = (children: Category[]): JSX.Element => (
@@ -150,11 +152,15 @@ const Categories: React.FC = () => {
           />
         </div>
         <div className="offcanvas-body d-flex justify-content-center align-items-center">
-          <LoadingSpinner />
+          <div className="d-flex justify-content-center align-items-center">
+          <LoadingSpinner size='sm' />
+          <span className="ms-2">Getting top categories ready...</span>
+        </div>
         </div>
       </div>
     );
   }
+  
 
   if (error) {
     return (
@@ -177,8 +183,16 @@ const Categories: React.FC = () => {
               className="btn btn-outline-primary"
               onClick={handleRetry}
               type="button"
+              disabled={loading}
             >
-              Try Again
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Retrying...
+                </>
+              ) : (
+                'Try Again'
+              )}
             </button>
           </div>
         </div>
@@ -203,6 +217,7 @@ const Categories: React.FC = () => {
           {categories.map((category) => {
             const hasChildren = category.children && category.children.length > 0;
             const isExpanded = expandedCategory === category.id;
+            const categoryIcon = getCategoryIcon(category.name);
             
             return (
               <div key={category.id} className="category-item border-bottom">
@@ -212,7 +227,7 @@ const Categories: React.FC = () => {
                       className="d-flex align-items-center text-decoration-none text-dark flex-grow-1"
                       to={`/categories/${category.slug}`}
                     >
-                      <i className={`${getCategoryIcon(category.name)} fs-4 text-primary me-3`} />
+                      <i className={`${categoryIcon.icon} fs-4 ${categoryIcon.color} me-3`} />
                       <span className="fw-medium">{category.name}</span>
                     </Link>
                     
@@ -278,7 +293,7 @@ const Categories: React.FC = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style jsx="true">{`
         .category-item:hover .category-main {
           background-color: #f8f9fa;
         }
@@ -330,6 +345,15 @@ const Categories: React.FC = () => {
         
         .offcanvas-body::-webkit-scrollbar-thumb:hover {
           background: #a8a8a8;
+        }
+        
+        /* Additional color classes */
+        .text-pink {
+          color: #e91e63 !important;
+        }
+        
+        .text-purple {
+          color: #9c27b0 !important;
         }
         
         @media (max-width: 575.98px) {

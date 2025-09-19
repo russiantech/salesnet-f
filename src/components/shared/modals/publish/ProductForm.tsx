@@ -421,68 +421,6 @@ const ProductForm = ({ productSlug, editProductData, onSuccess, mode = 'create' 
     }
   };
 
-  /*
-  useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      if (!isPasteAllowed || !uploadAreaRef.current) return;
-
-      const items = e.clipboardData?.items;
-      if (!items) return;
-
-      const files: File[] = [];
-
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        if (item.kind === 'file') {
-          const file = item.getAsFile();
-          if (file &&
-            (file.type.startsWith('image/') || file.type.startsWith('video/')) &&
-            file.size <= 8 * 1024 * 1024
-          ) {
-            files.push(file);
-          }
-        }
-      }
-
-      if (files.length > 0) {
-        e.preventDefault();
-        handleFileChange({ target: { files } } as React.ChangeEvent<HTMLInputElement>);
-      }
-    };
-
-    document.addEventListener('paste', handlePaste);
-    return () => document.removeEventListener('paste', handlePaste);
-  }, [isPasteAllowed]);
-
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files);
-      handleFileChange({ target: { files } } as React.ChangeEvent<HTMLInputElement>);
-    }
-  };
-*/
-
 //* ================== */
 // 1. Add these additional state variables to your component:
 const [pasteIndicator, setPasteIndicator] = useState(false);
@@ -1821,7 +1759,6 @@ const MediaTabContent = () => (
         throw new Error(response.data.error || 'Submission failed');
       }
     } catch (error: any) {
-      console.error('Submission error:', error);
       NotificationService.showDialog(
         error?.response?.data?.message || error?.response?.data?.error || 'Failed to publish product. Please try again.',
         'warning'
@@ -1830,9 +1767,6 @@ const MediaTabContent = () => (
       setIsSubmitting(false);
     }
   };
-
-  // console.log(`submissionData: ${JSON.stringify(submissionData)}, & submissionData: ${JSON.stringify(submissionData)}`);
-  console.log(`formData: ${JSON.stringify(formData)}`);
 
   const handleNext = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -1891,8 +1825,8 @@ const MediaTabContent = () => (
   
   return (
     <div className="product-form-container">
-      <div className="tabs-header">
-        <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap overflow-y-auto pe-1" role="tablist">
+      <div className="tabs-header" data-simplebar data-simplebar-auto-hide="true">
+        <ul className="nav nav-pills flex-nowrap gap-2 text-nowrap pe-1" role="tablist">
           {['home', 'listing-type', 'images', 'contact', 'location', 'promote'].map((tab) => (
             <li className="nav-item" role="presentation" key={tab}>
               <button
@@ -1900,12 +1834,12 @@ const MediaTabContent = () => (
                 className={`nav-link ${activeTab === tab ? 'active' : ''}`}
                 onClick={() => setActiveTab(tab)}
               >
-                {tab === 'home' && <><i className="fi-home me-2 ms-n1" />Basic Info</>}
-                {tab === 'listing-type' && <><i className="fi-list me-2 ms-n1" />Type</>}
-                {tab === 'images' && <><i className="fi-image me-2 ms-n1" />Media</>}
-                {tab === 'contact' && <><i className="fi-user me-2 ms-n1" />Contact</>}
-                {tab === 'location' && <><i className="fi-map-pin me-2 ms-n1" />Location</>}
-                {tab === 'promote' && <><i className="fi-award me-2 ms-n1" />Promote</>}
+                {tab === 'home' && <><i className="ci-home me-2 ms-n1" />Basic Info</>}
+                {tab === 'listing-type' && <><i className="ci-list me-2 ms-n1" />Type</>}
+                {tab === 'images' && <><i className="ci-image me-2 ms-n1" />Media</>}
+                {tab === 'contact' && <><i className="ci-user me-2 ms-n1" />Contact</>}
+                {tab === 'location' && <><i className="ci-map-pin me-2 ms-n1" />Location</>}
+                {tab === 'promote' && <><i className="ci-award me-2 ms-n1" />Promote</>}
               </button>
             </li>
           ))}
@@ -2025,11 +1959,12 @@ const MediaTabContent = () => (
         </div>
 
         {/* Listing Type Tab */}
-        <div className={`tab-pane fade ${activeTab === 'listing-type' ? 'show active' : ''}`}>
+        <div className={`tab-pane fade ${activeTab === 'listing-type' ? 'show active' : 'd-none'}`}>
           <section className="position-relative bg-body rounded p-2 m-2">
             <div className="position-relative z-1 p-2 m-2">
               <h4 className="h4 mb-3 mb-sm-4">Select a listing type</h4>
-              <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto">
+              {/* <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto"> */}
+              <div className="nav flex-nowrap gap-2 text-nowrap overflow-auto" data-simplebar data-simplebar-auto-hide="true">
                 {['product', 'service', 'property', 'rental', 'vehicle'].map((type) => (
                   <Fragment key={type}>
                     <input
@@ -2041,10 +1976,10 @@ const MediaTabContent = () => (
                       checked={formData.basic_info.listing_type === type}
                       onChange={handleInputChange}
                     />
-                    <label htmlFor={`listing-${type}`} className="btn btn-outline-dark rounded-pill">
+                    <label htmlFor={`listing-${type}`} className="btn btn-sm btn-outline-dark rounded-pill me-1">
                       <div className="d-flex flex-column flex-xxl-row align-items-center m-1">
                         <div className="d-flex text-dark-emphasis bg-body-tertiary rounded-circle">
-                          <i className={`fi-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'car'} fs-2 m-xxl-1`} />
+                          <i className={`ci-${type === 'product' ? 'shopping-bag' : type === 'service' ? 'settings' : type === 'property' ? 'home' : 'bycycle'} m-xxl-1`} />
                         </div>
                         <div className="text-center">
                           {type === 'product' && 'Sell item'}
@@ -2058,6 +1993,7 @@ const MediaTabContent = () => (
                   </Fragment>
                 ))}
               </div>
+              
             </div>
           </section>
 
@@ -2098,7 +2034,7 @@ const MediaTabContent = () => (
                         <td  className='align-items-center'>
                           <button
                             type="button"
-                            className="btn btn-sm btn-danger form-control rounded-pill"
+                            className="btn btn-sm btn-outline-danger rounded-pill"
                             onClick={() => removeAttribute(index)}
                             disabled={attributes.length <= 1}
                           >
@@ -2472,7 +2408,7 @@ const MediaTabContent = () => (
                   {draftError}
                   <div className="mt-2">
                     <button 
-                      className="btn btn-sm btn-danger"
+                      className="btn btn-sm btn-danger rounded-pill"
                       onClick={saveProductAsDraft}
                     >
                       Retry Saving Draft

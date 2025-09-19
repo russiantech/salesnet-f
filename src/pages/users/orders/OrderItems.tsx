@@ -467,7 +467,7 @@ const OrderItems: React.FC<OrderItemsProps> = ({ selectedOrder }) => {
                                                 {item.name}
                                             </Link>
                                         </h5>
-                                        <div className="h6 mb-2">{formatCurrency(item.price)}</div>
+                                        <div className="h6 mb-2">{formatCurrency(item.price, 'NGN', {short:true}) }</div>
                                         <div className="fs-xs">Qty: {item.quantity}</div>
                                     </div>
                                 </div>
@@ -506,19 +506,20 @@ const OrderItems: React.FC<OrderItemsProps> = ({ selectedOrder }) => {
                                 <li className="d-flex justify-content-between mb-1">
                                     Payment method:
                                     <span className="text-body-emphasis fw-medium text-end ms-2">
-                                        {orderDetails.payment?.method || "N/A"}
+                                        {orderDetails?.payment?.method || "N/A1"}
                                     </span>
                                 </li>
                                 <li className="d-flex justify-content-between mb-1">
                                     Tax collected:
                                     <span className="text-body-emphasis fw-medium text-end ms-2">
-                                        {formatCurrency(orderDetails.tax_amount)}
+                                        {/* {formatCurrency(orderDetails.tax_amount)} */}
+                                        {formatCurrency(orderDetails.tax_amount, 'NGN', {short:true}) }
                                     </span>
                                 </li>
                                 <li className="d-flex justify-content-between">
                                     Shipping:
                                     <span className="text-body-emphasis fw-medium text-end ms-2">
-                                        {formatCurrency(orderDetails.shipping_cost)}
+                                        {formatCurrency(orderDetails.shipping_cost, 'NGN', {short:true})}
                                     </span>
                                 </li>
                             </ul>
@@ -527,8 +528,8 @@ const OrderItems: React.FC<OrderItemsProps> = ({ selectedOrder }) => {
                         {/* Total */}
                         <div className="d-flex align-items-center justify-content-between fs-sm border-top pt-4">
                             Estimated total:
-                            <span className="h5 text-end ms-2 mb-0">
-                                {formatCurrency(orderDetails.total_amount)}
+                            <span className="h5 text-end ms-2 mb-0 text-danger">
+                                {formatCurrency(orderDetails.total_amount, 'NGN', {short:true})}
                             </span>
                         </div>
                     </div>

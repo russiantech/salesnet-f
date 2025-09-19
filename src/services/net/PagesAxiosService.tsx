@@ -65,7 +65,7 @@ export const PagesAxiosService = {
     },
 
     // Update business profile
-    updateProfile: (businessId: string, businessType: 'user' | 'page', data: FormData) => {
+    updatePage: (businessId: string, businessType: 'user' | 'page', data: FormData) => {
         const endpoint = businessType === 'user' 
             ? `/users/${businessId}/profile`
             : `/pages/${businessId}/profile`;

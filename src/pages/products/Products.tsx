@@ -1,19 +1,16 @@
 import { useEffect, useState, useCallback } from 'react';
-// import ProductSummary from "./ProductSummary_0";
 import { ProductAxiosService } from '../../services/net/ProductAxiosService';
 import { NotificationService } from "../../services/local/NotificationService";
 import { Link } from 'react-router-dom';
 import './Products.css'; // Import custom CSS for loading animation
 import LoadingCard from '../../components/shared/LoadingCard';
 import Breadcrumb from '../../components/shared/Breadcrumb';
-// import { ProductSummary } from './ProductSummary_0';
 import { ProductSummary } from './ProductSummary';
 import { Key } from 'react';
 import { BasketButton } from './interactions/BasketButton';
 import { ChatButton } from './interactions/ChatButton';
 import { FavoriteButton } from './interactions/FavoriteButton';
 import { ShareButton } from './interactions/ShareButton';
-// import ProductSummary from './ProductSummary';
 
 const Products = () => {
     const [products, setProducts] = useState([]);

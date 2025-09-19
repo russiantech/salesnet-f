@@ -8,39 +8,11 @@ export const ProductAxiosService = {
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
 
-    // Fetch a paginated list of products
-    // getByOwner: (query = {}, username: string) => {
-    //     const finalQuery = { location: `/products/${username}/users`, page: 1, page_size: 5, username, ...query };
-    //     return AxiosService.json.get(finalQuery.location, finalQuery);
-    // },
-
-    // Fetch a paginated list of products by owner
-
-    //     getByOwner: (query = {}, username: string) => {
-    //     const location = `/products/${username}/users`;
-    //     const finalQuery = { location, page: 1, page_size: 5, ...query };
-    //     return AxiosService.json.get(location, finalQuery);
-    // },
-
     getByOwner: (query = {}, username: string) => {
         const location = `/products/${username}/users`;
         const finalQuery = { page: 1, page_size: 5, ...query };
         return AxiosService.json.get(location, { params: finalQuery });
     },
-
-
-        // Get products by owner (user or page)
-    // getByOwner: (ownerId: string, ownerType: 'user' | 'page', query = {}) => {
-    //     const finalQuery = { 
-    //         location: `/products/by-owner/${ownerId}`, 
-    //         page: 1, 
-    //         page_size: 12,
-    //         owner_type: ownerType,
-    //         ...query 
-    //     };
-    //     return AxiosService.fetchPage(finalQuery.location, finalQuery);
-    // },
-
 
     // Fetch a paginated list of recommended products 
     getRecommended: (query = {}, username: string) => {
@@ -53,15 +25,6 @@ export const ProductAxiosService = {
         const finalQuery = { location: '/products/new-arrivals', page: 1, page_size: 8, username, ...query };
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
-
-    // Fetch a product by its slug
-    // getBySlug: (slug: string) => {
-    //     if (typeof slug !== "string") {
-    //         throw new Error("Slug must be a string");
-    //     }
-    //     return AxiosService.json.get(`/products/${slug}?include_user=true&include_page=true&include_reviews=true`);
-    //     // return AxiosService.json.get(`/products/${slug}`);
-    // },
 
     // Fetch a product by its slug
     getBySlug: (slug: string, query = {}) => {
@@ -80,12 +43,23 @@ export const ProductAxiosService = {
     },
 
     // Fetch all categories
-    // fetchCategories: () => AxiosService.json.get('/categories?page_size=100'),
 
-    fetchCategories: (query = {}, username: string) => {
+    /* fetchCategories1: (query = {}, username: string) => {
         const finalQuery = { location: '/categories', page: 1, page_size: 90, username, ...query };
         return AxiosService.fetchPage(finalQuery.location, finalQuery);
     },
+ */
+    fetchCategories: (query: Record<string, any> = {}, username?: string) => {
+        const finalQuery = { 
+            location: '/categories', 
+            page: 1, 
+            page_size: 90, 
+            ...(username && { username }),  // only add username if provided
+            ...query 
+        };
+        return AxiosService.fetchPage(finalQuery.location, finalQuery);
+    },
+
 
     // fetchProductsByCategories: () => AxiosService.json.get('/by-categories'),
     fetchProductsByCategories: () => AxiosService.fetchPage('/by-categories-all'),

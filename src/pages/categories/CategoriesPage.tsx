@@ -8,10 +8,8 @@ import { BasketButton } from '../products/interactions/BasketButton';
 import { ChatButton } from '../products/interactions/ChatButton';
 import { FavoriteButton } from '../products/interactions/FavoriteButton';
 import { ShareButton } from '../products/interactions/ShareButton';
-// import ProductsByCategories from './CategoriesProducts';
-// import ProductsByCategories from '../products/ProductsByCategories';
 
-const Products = () => {
+const Products = () => { 
     const [products, setProducts] = useState([]);
     const [pageMeta, setPageMeta] = useState({});
     const [loading, setLoading] = useState(true);

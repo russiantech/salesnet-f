@@ -1,18 +1,3 @@
-// // AuthRoutes.tsx
-// import { Route, Routes } from "react-router-dom";
-// import Signin from "../pages/auth/Signin";
-// import Signup from "../pages/auth/Signup";
-// import RecoverPassword from "../pages/auth/RecoverPassword";
-
-// const AuthRoutes = () => (
-//   <Routes>
-//     <Route path="/signin" element={<Signin />} />
-//     <Route path="/signup" element={<Signup />} />
-//     <Route path="/recover-password" element={<RecoverPassword />} />
-//   </Routes>
-// );
-
-// export default AuthRoutes;
 
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -23,6 +8,7 @@ import OAuthCallbackHandler from "../components/auth/OAuthCallbackHandler";
 const Signin = lazy(() => import("../pages/auth/Signin"));
 const Signup = lazy(() => import("../pages/auth/Signup"));
 const RecoverPassword = lazy(() => import("../pages/auth/RecoverPassword"));
+const VerifyRecoveryCode = lazy(() => import("../components/auth/VerifyRecoveryCode"));
 
 const AuthRoutes = () => (
   <Suspense fallback={null}>
@@ -39,6 +25,9 @@ const AuthRoutes = () => (
       <Route path="/signin" element={<Signin />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/recover-password" element={<RecoverPassword />} />
+      
+      {/* New recovery verification route */}
+      <Route path="/verify-recovery" element={<VerifyRecoveryCode />} />
 
       {/*  */}
       {/* OAuth callback route - handles all provider callbacks */}

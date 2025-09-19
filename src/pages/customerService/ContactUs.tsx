@@ -113,7 +113,7 @@ const ContactUs = () => {
           className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover rtl-flip" 
           alt="Background image" 
         />
-        <div className="container position-relative z-2 py-4 py-md-5 my-lg-3 my-xl-4 my-xxl-5">
+        <div className="container position-relative z-2 py-4 py-md-5 my-lg-3 my-xl-4 my-xxl-5a">
           <div className="row pt-lg-2 pb-2 pb-sm-3 pb-lg-4">
             <div className="col-9 col-md-8 col-lg-6 bg-info-subtle rounded-3 p-2">
               <h1 className="display-4 mb-lg-4">Contact us</h1>
@@ -311,7 +311,7 @@ const ContactUs = () => {
           </div>
           
           {/* Responsive height adjustments */}
-          <style jsx>{`
+          <style jsx="true">{`
             @media (max-width: 1399.98px) {
               iframe {
                 height: 500px !important;

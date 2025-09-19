@@ -72,7 +72,7 @@ const OrderListItem = ({ order, onOrderClick }) => {
                 </span>
             </td>
             <td className="fw-medium py-3 d-none d-md-table-cell">
-                {formatCurrency(order.total_amount)}
+                {formatCurrency(order.total_amount, "NGN", {short:true})}
                 <span className="total d-none">{parseFloat(order.total_amount) * 100}</span>
             </td>
             <td className="py-3 pe-0">
@@ -109,7 +109,7 @@ const OrderListItem = ({ order, onOrderClick }) => {
                                 : null}
                         </span>
                     )} */}
-                    {console.log(`order.items in orderListItem`, order)}
+                    {/* {console.log(`order.items in orderListItem`, order)} */}
                     {order.items && (
                         <span className="fw-medium me-1">
                             {order.items.length > 3 ? `+${order.items.length - 3}` : null}

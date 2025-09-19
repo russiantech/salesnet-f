@@ -1,4 +1,4 @@
-.cover-image {
+/* .cover-image {
   width: 100%;
   height: 250px;
   object-fit: cover;
@@ -38,4 +38,251 @@
 .profile-nav .nav-link {
   border-radius: 50px !important;
   white-space: nowrap;
+}
+ */
+
+
+ /* v2 */
+
+ /* SalesPages.css - Professional styling for enhanced sales pages */
+
+/* Cover image container */
+.cover-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.cover-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+}
+
+/* Profile navigation tabs */
+.profile-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.profile-nav .nav-link {
+  color: #6c757d;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.profile-nav .nav-link:hover {
+  color: #495057;
+  background-color: #f8f9fa;
+}
+
+.profile-nav .nav-link.active {
+  color: #fff;
+  background-color: rgb(47 110 213);
+  border-color: rgb(47 110 213);
+}
+
+/* Image upload hover effects */
+.cover-container .btn {
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.cover-container .btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-2px);
+}
+
+/* Avatar upload button */
+.position-relative .btn-primary {
+  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+  transition: all 0.3s ease;
+}
+
+.position-relative .btn-primary:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+}
+
+/* Modal enhancements */
+.modal-content {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  border-bottom: 1px solid #e9ecef;
+  padding: 1.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 1rem 1.5rem;
+}
+
+/* Drag and drop area */
+.border-dashed {
+  border-style: dashed !important;
+  transition: all 0.3s ease;
+}
+
+.border-dashed:hover {
+  border-color: #0d6efd !important;
+  background-color: #f8f9ff !important;
+}
+
+/* Share button hover effects */
+.btn-outline-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading states */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Business stats enhancements */
+.business-profile-page .card {
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.business-profile-page .card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Badge enhancements */
+.badge {
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  transform: translateY(-1px);
+}
+
+/* Button enhancements */
+.btn-outline-dark:hover,
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Breadcrumb styling */
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline !important;
+}
+
+/* Profile header card */
+.business-profile-page .bg-white.shadow {
+  border-radius: 15px;
+  border: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 1rem;
+  }
+  
+  .cover-container {
+    height: 200px !important;
+  }
+  
+  .profile-nav {
+    position: static;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .btn-group-sm .btn {
+    font-size: 0.875rem;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Custom scrollbar for products area */
+.vstack[data-simplebar] {
+  scrollbar-width: thin;
+  scrollbar-color: #dee2e6 transparent;
+}
+
+.vstack[data-simplebar]::-webkit-scrollbar {
+  width: 6px;
+}
+
+.vstack[data-simplebar]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vstack[data-simplebar]::-webkit-scrollbar-thumb {
+  background-color: #dee2e6;
+  border-radius: 3px;
+}
+
+.vstack[data-simplebar]::-webkit-scrollbar-thumb:hover {
+  background-color: #adb5bd;
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+.form-control:focus {
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+/* Loading card animation */
+.loading-card {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
