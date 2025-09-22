@@ -138,6 +138,8 @@ export const AxiosService = {
       jsonInstance.put(url, data, config),
     delete: (url: string, config?: AxiosRequestConfig) => 
       jsonInstance.delete(url, config),
+    patch: (url: string, config?: AxiosRequestConfig) => 
+      jsonInstance.patch(url, config),
   },
 
   multipart: {

@@ -99,7 +99,7 @@ const Aside = () => {
                 to="/users/orders"
               >
                 <i className="ci-shopping-bag fs-base opacity-75 me-2" />
-                Orders
+                Orders & Sales
                 <span className="badge bg-primary rounded-pill ms-auto">1</span>
               </NavLink>
               <NavLink

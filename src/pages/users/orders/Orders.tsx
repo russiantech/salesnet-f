@@ -1,298 +1,206 @@
 
-// // VERSION 02
-// import { useState, useEffect } from 'react';
-// import Aside from "../shared/Aside";
-// import OrderItems from "./OrderItems";
-// // import { Pagination } from 'swiper/modules';
-// import { OrdersAxiosService } from '../../../services/net/OrdersAxiosService';
-// import OrderListItem from './OrderListItem';
-// import Pagination from '../../../components/shared/Pagination';
-// import LoadingSpinner from '../../../components/shared/LoadingSpinner';
-// // import  OrdersAxiosService.from '../../services/OrderService';
-
-// const Orders = () => {
-//     const [orders, setOrders] = useState([]);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
-//     const [statusFilter, setStatusFilter] = useState('');
-//     const [timeframeFilter, setTimeframeFilter] = useState('all-time');
-//     const [currentPage, setCurrentPage] = useState(1);
-//     const [totalPages, setTotalPages] = useState(1);
-//     const [selectedOrder, setSelectedOrder] = useState(null);
-
-//     // Fetch orders based on current filters
-//     const fetchOrders = async () => {
-//         try {
-//             setLoading(true);
-//             const response = await  OrdersAxiosService.getMyOrders({
-//                 status: statusFilter,
-//                 timeframe: timeframeFilter,
-//                 page: currentPage,
-//                 limit: 10
-//             });
-
-//            console.log(`response.data for orders:-`, response);
-//             setOrders(response?.orders || []);
-//             setTotalPages(response.page_meta?.total_pages_count || 1);
-//             setLoading(false);
-//         } catch (err) {
-//             setError('Failed to load orders. Please try again later.');
-//             setLoading(false);
-//         }
-//     };
-
-//     // Fetch order details for the offcanvas
-//     const fetchOrderDetails = async (orderId) => {
-//         try {
-//             const orderDetails = await  OrdersAxiosService.getOrderById(orderId);
-//             setSelectedOrder(orderDetails);
-//         } catch (err) {
-//             console.error('Failed to fetch order details:', err);
-//         }
-//     };
-
-//     // Handle changing status filter
-//     const handleStatusChange = (e) => {
-//         setStatusFilter(e.target.value);
-//         setCurrentPage(1); // Reset page when filter changes
-//     };
-
-//     // Handle changing timeframe filter
-//     const handleTimeframeChange = (e) => {
-//         setTimeframeFilter(e.target.value);
-//         setCurrentPage(1); // Reset page when filter changes
-//     };
-
-//     // Handle page change
-//     const handlePageChange = (page) => {
-//         setCurrentPage(page);
-//     };
-
-//     // Handle clicking on an order to view details
-//     const handleOrderClick = (orderId) => {
-//         fetchOrderDetails(orderId);
-//     };
-
-//     // Load orders when component mounts or filters change
-//     useEffect(() => {
-//         fetchOrders();
-//     }, [statusFilter, timeframeFilter, currentPage]);
-
-//     // Prepare status options for the select dropdown
-//     const statusOptions = [
-//         { value: '', id: '', label: 'Select status', placeholder: true },
-//         ... OrdersAxiosService.getStatusOptions().map(status => ({
-//             id: status.id,
-//             value: status.value,
-//             label: `<div class="d-flex align-items-center text-nowrap"><span class="bg-${status.color} rounded-circle p-1 me-2"></span>${status.label}</div>`
-//         }))
-//     ];
-
-//     // Get timeframe options from service
-//     const timeframeOptions =  OrdersAxiosService.getTimeframeOptions();
-
-//     return (
-//         <>
-//             <OrderItems selectedOrder={selectedOrder} />
-//             {/* Page content */}
-//             <main className="content-wrapper">
-//                 <div className="container py-5 mt-n2 mt-sm-0">
-//                     <div className="row pt-md-2 pt-lg-3 pb-sm-2 pb-md-3 pb-lg-4 pb-xl-5">
-
-//                         {/* Sidebar navigation */}
-//                         <Aside />
-
-//                         {/* Orders content */}
-//                         <div className="col-lg-9">
-//                             <div className="ps-lg-3 ps-xl-0">
-//                                 {/* Page title + Sorting selects */}
-//                                 <div className="row align-items-center pb-3 pb-md-4 mb-md-1 mb-lg-2">
-//                                     <div className="col-md-4 col-xl-6 mb-3 mb-md-0">
-//                                         <h1 className="h2 me-3 mb-0">Orders</h1>
-//                                     </div>
-//                                     <div className="col-md-8 col-xl-6">
-//                                         <div className="row row-cols-1 row-cols-sm-2 g-3 g-xxl-4">
-//                                             <div className="col">
-//                                                 <select 
-//                                                     className="form-select" 
-//                                                     aria-label="Status sorting"
-//                                                     value={statusFilter}
-//                                                     onChange={handleStatusChange}
-//                                                 >
-//                                                     {statusOptions.map((option, index) => (
-//                                                         <>
-//                                                         {/* {console.log(`index: ${index}, value: ${option.value}, option: ${option.label}`)} */}
-//                                                         <option key={index} value={option.id} dangerouslySetInnerHTML={{ __html: option.label }} />
-//                                                         {/* <option key={index} value={option.value} dangerouslySetInnerHTML={{ __html: option.label }} /> */}
-//                                                         </>
-//                                                     ))}
-//                                                 </select>
-//                                             </div>
-//                                             <div className="col">
-//                                                 <select 
-//                                                     className="form-select" 
-//                                                     aria-label="Timeframe sorting"
-//                                                     value={timeframeFilter}
-//                                                     onChange={handleTimeframeChange}
-//                                                 >
-//                                                     {timeframeOptions.map((option, index) => (
-//                                                         <option key={index} value={option.value}>{option.label}</option>
-//                                                     ))}
-//                                                 </select>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-                                
-//                                 {/* Show loading state, error, or orders table */}
-//                                 {loading ? (
-//                                     <div className="text-center py-5">
-//                                         <LoadingSpinner size="md" />
-//                                     </div>
-//                                 ) : error ? (
-//                                     <div className="alert alert-danger" role="alert">
-//                                         {error}
-//                                     </div>
-//                                 ) : (
-//                                     <>
-//                                         {/* Sortable orders table */}
-//                                         <div data-filter-list='{"listClass": "orders-list", "sortClass": "orders-sort", "valueNames": ["date", "total"]}'>
-//                                             <table className="table align-middle fs-sm text-nowrap">
-//                                                 <thead>
-//                                                     <tr>
-//                                                         <th scope="col" className="py-3 ps-0">
-//                                                             <span className="text-body fw-normal">Order <span className="d-none d-md-inline">#</span></span>
-//                                                         </th>
-//                                                         <th scope="col" className="py-3 d-none d-md-table-cell">
-//                                                             <button type="button" className="btn orders-sort fw-normal text-body p-0" data-sort="date">Order date</button>
-//                                                         </th>
-//                                                         <th scope="col" className="py-3 d-none d-md-table-cell">
-//                                                             <span className="text-body fw-normal">Status</span>
-//                                                         </th>
-//                                                         <th scope="col" className="py-3 d-none d-md-table-cell">
-//                                                             <button type="button" className="btn orders-sort fw-normal text-body p-0" data-sort="total">Total</button>
-//                                                         </th>
-//                                                         <th scope="col" className="py-3">&nbsp;</th>
-//                                                     </tr>
-//                                                 </thead>
-//                                                 <tbody className="text-body-emphasis orders-list">
-//                                                     {orders.length > 0 ? (
-//                                                         orders.map(order => (
-//                                                             <OrderListItem 
-//                                                                 key={order.id} 
-//                                                                 order={order} 
-//                                                                 onOrderClick={handleOrderClick} 
-//                                                             />
-//                                                         ))
-//                                                     ) : (
-//                                                         <tr>
-//                                                             <td colSpan="5" className="text-center py-4">
-//                                                                 No orders found matching your criteria.
-//                                                             </td>
-//                                                         </tr>
-//                                                     )}
-//                                                 </tbody>
-//                                             </table>
-//                                         </div>
-                                        
-//                                         {/* Pagination */}
-//                                         {totalPages > 1 && (
-//                                             <Pagination 
-//                                                 currentPage={currentPage} 
-//                                                 totalPages={totalPages} 
-//                                                 onPageChange={handlePageChange} 
-//                                             />
-//                                         )}
-//                                     </>
-//                                 )}
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </main>
-//         </>
-//     );
-// };
-
-// export default Orders;
-
-// v2
-import { useState, useEffect } from 'react';
+// v3
+import React, { useState, useEffect } from 'react';
 import Aside from "../shared/Aside";
 import OrderItems from "./OrderItems";
 import { OrdersAxiosService } from '../../../services/net/OrdersAxiosService';
+import { SalesAxiosService } from '../../../services/net/SalesAxiosService'; // New service for sales
 import OrderListItem from './OrderListItem';
 import Pagination from '../../../components/shared/Pagination';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
+// 
+import SalesListItem from '../sales/SalesListItem';
+import SalesItems from '../sales/SalesItems';
+
 const Orders = () => {
-  const [orders, setOrders] = useState<any[]>([]);
+  // Common states
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState('');
-  const [timeframeFilter, setTimeframeFilter] = useState('all-time');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [activeTab, setActiveTab] = useState('orders'); // 'orders' or 'sales'
+  
+  // Orders states
+  const [orders, setOrders] = useState<any[]>([]);
+  const [orderStatusFilter, setOrderStatusFilter] = useState('');
+  const [orderTimeframeFilter, setOrderTimeframeFilter] = useState('all-time');
+  const [orderCurrentPage, setOrderCurrentPage] = useState(1);
+  const [orderTotalPages, setOrderTotalPages] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
+  
+  // Sales states  
+  const [sales, setSales] = useState<any[]>([]);
+  const [salesStatusFilter, setSalesStatusFilter] = useState('');
+  const [salesTimeframeFilter, setSalesTimeframeFilter] = useState('all-time');
+  const [salesCurrentPage, setSalesCurrentPage] = useState(1);
+  const [salesTotalPages, setSalesTotalPages] = useState(1);
+  const [selectedSale, setSelectedSale] = useState<any | null>(null);
 
-  // Fetch orders based on current filters
+  // Fetch orders (customer's orders)
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      setError(null); // reset previous errors
+      setError(null);
       const response = await OrdersAxiosService.getMyOrders({
-        status: statusFilter,
-        timeframe: timeframeFilter,
-        page: currentPage,
+        status: orderStatusFilter,
+        timeframe: orderTimeframeFilter,
+        page: orderCurrentPage,
         limit: 10
       });
 
       setOrders(response?.orders || []);
-      setTotalPages(response.page_meta?.total_pages_count || 1);
+      // Handle different pagination field names for orders
+      setOrderTotalPages(
+        response.page_meta?.total_pages_count || 
+        response.page_meta?.total_pages || 1
+      );
+
     } catch (err) {
-      console.error("Orders fetch error:", err);
+      // Error fetching orders
       setError('Failed to load orders. Please try again later.');
-      setOrders([]); // clear old data on error
+      setOrders([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch order details for the offcanvas
+  // Fetch sales (incoming orders to user's store)
+  const fetchSales = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await SalesAxiosService.getMySales({
+        status: salesStatusFilter,
+        timeframe: salesTimeframeFilter,
+        page: salesCurrentPage,
+        limit: 10
+      });
+
+      setSales(response?.sales || []);
+      // Handle different pagination field names for sales
+      setSalesTotalPages(
+        response.page_meta?.total_pages || 
+        response.page_meta?.total_pages_count || 1
+      );
+    } catch (err) {
+      // Error fetching sales
+      setError('Failed to load sales. Please try again later.');
+      setSales([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch order details
   const fetchOrderDetails = async (orderId: number) => {
     try {
       const orderDetails = await OrdersAxiosService.getOrderById(orderId);
       setSelectedOrder(orderDetails);
     } catch (err) {
-      console.error('Failed to fetch order details:', err);
+      // Failed to fetch order details
     }
   };
 
-  // Event handlers
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setStatusFilter(e.target.value);
-    setCurrentPage(1); 
+  // Fetch sale details
+  const fetchSaleDetails = async (saleId: number) => {
+    try {
+      const saleDetails = await SalesAxiosService.getSaleById(saleId);
+      setSelectedSale(saleDetails);
+    } catch (err) {
+      // Failed to fetch sale details
+    }
   };
 
-  const handleTimeframeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTimeframeFilter(e.target.value);
-    setCurrentPage(1);
+  // Update sale status
+  const updateSaleStatus = async (saleId: number, newStatus: string) => {
+    try {
+      await SalesAxiosService.updateSaleStatus(saleId, newStatus);
+      // Refresh sales data
+      fetchSales();
+      // Update selected sale if it's the one being updated
+      if (selectedSale && selectedSale.id === saleId) {
+        fetchSaleDetails(saleId);
+      }
+    } catch (err) {
+      console.error('Failed to update sale status:', err);
+      setError('Failed to update sale status. Please try again.');
+    }
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  // Delete sale
+  const deleteSale = async (saleId: number) => {
+    if (window.confirm('Are you sure you want to delete this sale?')) {
+      try {
+        await SalesAxiosService.deleteSale(saleId);
+        fetchSales();
+        // Close offcanvas if this sale was selected
+        if (selectedSale && selectedSale.id === saleId) {
+          setSelectedSale(null);
+        }
+      } catch (err) {
+        console.error('Failed to delete sale:', err);
+        setError('Failed to delete sale. Please try again.');
+      }
+    }
+  };
+
+  // Event handlers for orders
+  const handleOrderStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setOrderStatusFilter(e.target.value);
+    setOrderCurrentPage(1);
+  };
+
+  const handleOrderTimeframeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setOrderTimeframeFilter(e.target.value);
+    setOrderCurrentPage(1);
+  };
+
+  const handleOrderPageChange = (page: number) => {
+    setOrderCurrentPage(page);
   };
 
   const handleOrderClick = (orderId: number) => {
     fetchOrderDetails(orderId);
   };
 
-  // Load orders on mount & filters change
-  useEffect(() => {
-    fetchOrders();
-  }, [statusFilter, timeframeFilter, currentPage]);
+  // Event handlers for sales
+  const handleSalesStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSalesStatusFilter(e.target.value);
+    setSalesCurrentPage(1);
+  };
 
-  // Status dropdown options
+  const handleSalesTimeframeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSalesTimeframeFilter(e.target.value);
+    setSalesCurrentPage(1);
+  };
+
+  const handleSalesPageChange = (page: number) => {
+    setSalesCurrentPage(page);
+  };
+
+  const handleSaleClick = (saleId: number) => {
+    fetchSaleDetails(saleId);
+  };
+
+  // Tab change handler
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    setError(null); // Clear any existing errors
+  };
+
+  // Load data based on active tab
+  useEffect(() => {
+    if (activeTab === 'orders') {
+      fetchOrders();
+    } else {
+      fetchSales();
+    }
+  }, [
+    activeTab,
+    orderStatusFilter, orderTimeframeFilter, orderCurrentPage,
+    salesStatusFilter, salesTimeframeFilter, salesCurrentPage
+  ]);
+
+  // Options for dropdowns
   const statusOptions = [
     { value: '', label: 'Select status', color: 'secondary' },
     ...OrdersAxiosService.getStatusOptions()
@@ -300,9 +208,24 @@ const Orders = () => {
 
   const timeframeOptions = OrdersAxiosService.getTimeframeOptions();
 
+  // Get current filters and pagination based on active tab
+  const currentFilters = activeTab === 'orders' 
+    ? { status: orderStatusFilter, timeframe: orderTimeframeFilter }
+    : { status: salesStatusFilter, timeframe: salesTimeframeFilter };
+    
+  const currentPage = activeTab === 'orders' ? orderCurrentPage : salesCurrentPage;
+  const totalPages = activeTab === 'orders' ? orderTotalPages : salesTotalPages;
+  const currentData = activeTab === 'orders' ? orders : sales;
+
   return (
     <>
+      {/* Offcanvas components */}
       <OrderItems selectedOrder={selectedOrder} />
+      <SalesItems 
+        selectedSale={selectedSale} 
+        onStatusUpdate={updateSaleStatus}
+        onDelete={deleteSale}
+      />
 
       <main className="content-wrapper">
         <div className="container py-5 mt-n2 mt-sm-0">
@@ -311,23 +234,61 @@ const Orders = () => {
             {/* Sidebar navigation */}
             <Aside />
 
-            {/* Orders content */}
+            {/* Orders/Sales content */}
             <div className="col-lg-9">
               <div className="ps-lg-3 ps-xl-0">
 
-                {/* Title + Filters */}
+                {/* Title + Tabs */}
                 <div className="row align-items-center pb-3 pb-md-4 mb-md-1 mb-lg-2">
-                  <div className="col-md-4 col-xl-6 mb-3 mb-md-0">
-                    <h1 className="h2 me-3 mb-0">Orders</h1>
+                  <div className="col-12 mb-3">
+                    <h1 className="h2 me-3 mb-3">Order Management</h1>
+                    
+                    {/* Navigation Tabs */}
+                    <ul className="nav nav-pills nav-fill gap-2" role="tablist">
+                      <li className="nav-item" role="presentation">
+                        <button
+                          className={`nav-link ${activeTab === 'orders' ? 'active' : ''}`}
+                          onClick={() => handleTabChange('orders')}
+                          type="button"
+                          role="tab"
+                        >
+                          <i className="ci-shopping-bag me-2"></i>
+                          My Orders
+                          {orders.length > 0 && (
+                            <span className="badge bg-primary rounded-pill ms-2">
+                              {orders.length}
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                      <li className="nav-item" role="presentation">
+                        <button
+                          className={`nav-link ${activeTab === 'sales' ? 'active' : ''}`}
+                          onClick={() => handleTabChange('sales')}
+                          type="button"
+                          role="tab"
+                        >
+                          <i className="ci-store me-2"></i>
+                          Sales & Orders
+                          {sales.length > 0 && (
+                            <span className="badge bg-success rounded-pill ms-2">
+                              {sales.length}
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    </ul>
                   </div>
-                  <div className="col-md-8 col-xl-6">
-                    <div className="row row-cols-1 row-cols-sm-2 g-3 g-xxl-4">
+
+                  {/* Filters */}
+                  <div className="col-12">
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
                       <div className="col">
                         <select
                           className="form-select"
                           aria-label="Status filter"
-                          value={statusFilter}
-                          onChange={handleStatusChange}
+                          value={currentFilters.status}
+                          onChange={activeTab === 'orders' ? handleOrderStatusChange : handleSalesStatusChange}
                         >
                           {statusOptions.map((option, index) => (
                             <option 
@@ -343,8 +304,8 @@ const Orders = () => {
                         <select
                           className="form-select"
                           aria-label="Timeframe filter"
-                          value={timeframeFilter}
-                          onChange={handleTimeframeChange}
+                          value={currentFilters.timeframe}
+                          onChange={activeTab === 'orders' ? handleOrderTimeframeChange : handleSalesTimeframeChange}
                         >
                           {timeframeOptions.map((option, index) => (
                             <option 
@@ -356,6 +317,43 @@ const Orders = () => {
                           ))}
                         </select>
                       </div>
+                      <div className="col">
+                        <button
+                          className="btn btn-outline-primary w-100"
+                          onClick={() => activeTab === 'orders' ? fetchOrders() : fetchSales()}
+                        >
+                          <i className="ci-refresh-cw me-2"></i>
+                          Refresh
+                        </button>
+                      </div>
+                      {activeTab === 'sales' && (
+                        <div className="col">
+                          <div className="dropdown w-100">
+                            <button 
+                              className="btn btn-outline-secondary dropdown-toggle w-100" 
+                              type="button" 
+                              data-bs-toggle="dropdown"
+                            >
+                              <i className="ci-settings me-2"></i>
+                              Actions
+                            </button>
+                            <ul className="dropdown-menu">
+                              <li>
+                                <a className="dropdown-item" href="#" onClick={() => fetchSales()}>
+                                  <i className="ci-download me-2"></i>
+                                  Export Sales
+                                </a>
+                              </li>
+                              <li>
+                                <a className="dropdown-item" href="#">
+                                  <i className="ci-bell me-2"></i>
+                                  Notification Settings
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -364,48 +362,98 @@ const Orders = () => {
                 {loading ? (
                   <div className="text-center py-5">
                     <LoadingSpinner size="md" />
+                    <p className="mt-3 text-muted">
+                      Loading {activeTab === 'orders' ? 'orders' : 'sales'}...
+                    </p>
                   </div>
                 ) : error ? (
-                  <div className="alert alert-danger" role="alert">
+                  <div className="alert alert-danger d-flex align-items-center" role="alert">
+                    <i className="ci-exclamation-triangle me-2"></i>
                     {error}
+                    <button 
+                      className="btn btn-sm btn-outline-danger ms-auto"
+                      onClick={() => activeTab === 'orders' ? fetchOrders() : fetchSales()}
+                    >
+                      Try Again
+                    </button>
                   </div>
-                ) : orders.length === 0 ? (
-                  <div className="alert alert-info text-center py-4">
-                    No orders found matching your criteria.
+                ) : currentData.length === 0 ? (
+                  <div className="text-center py-5">
+                    <div className="mb-4">
+                      <i className={`ci-${activeTab === 'orders' ? 'shopping-bag' : 'store'} fs-1 text-muted`}></i>
+                    </div>
+                    <h3 className="h4 mb-2">
+                      No {activeTab === 'orders' ? 'orders' : 'sales'} found
+                    </h3>
+                    <p className="text-muted mb-4">
+                      {activeTab === 'orders' 
+                        ? 'You haven\'t placed any orders yet matching your criteria.'
+                        : 'No sales have been made to your store yet matching your criteria.'
+                      }
+                    </p>
+                    {activeTab === 'orders' ? (
+                      <a href="/products" className="btn btn-primary">
+                        <i className="ci-shopping-cart me-2"></i>
+                        Start Shopping
+                      </a>
+                    ) : (
+                      <a href="/dashboard/products" className="btn btn-success">
+                        <i className="ci-plus me-2"></i>
+                        Add Products
+                      </a>
+                    )}
                   </div>
                 ) : (
                   <>
-                    {/* Orders table */}
-                    <div>
+                    {/* Data table */}
+                    <div className="table-responsive">
+                {/* <div className="table-responsive overflow-x-auto" data-simplebar data-simplebar-auto-hide="false"> */}
                       <table className="table align-middle fs-sm text-nowrap">
                         <thead>
                           <tr>
-                            <th className="py-3 ps-0">Order #</th>
-                            <th className="py-3 d-none d-md-table-cell">Order date</th>
+                            <th className="py-3 ps-0">
+                              {activeTab === 'orders' ? 'Order' : 'Sale'} #
+                            </th>
+                            <th className="py-3 d-none d-md-table-cell">Date</th>
                             <th className="py-3 d-none d-md-table-cell">Status</th>
+                            {activeTab === 'sales' && (
+                              <th className="py-3 d-none d-lg-table-cell">Customer</th>
+                            )}
                             <th className="py-3 d-none d-md-table-cell">Total</th>
-                            <th className="py-3">&nbsp;</th>
+                            <th className="py-3">Actions</th>
                           </tr>
                         </thead>
-                        <tbody className="text-body-emphasis orders-list">
-                          {orders.map(order => (
-                            <OrderListItem
-                              key={order.id}
-                              order={order}
-                              onOrderClick={handleOrderClick}
-                            />
-                          ))}
+                        <tbody className="text-body-emphasis">
+                          {currentData.map(item => 
+                            activeTab === 'orders' ? (
+                              <OrderListItem
+                                key={item.id}
+                                order={item}
+                                onOrderClick={handleOrderClick}
+                              />
+                            ) : (
+                              <SalesListItem
+                                key={item.id}
+                                sale={item}
+                                onSaleClick={handleSaleClick}
+                                onStatusUpdate={updateSaleStatus}
+                                onDelete={deleteSale}
+                              />
+                            )
+                          )}
                         </tbody>
                       </table>
                     </div>
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                      <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                      />
+                      <div className="d-flex justify-content-center mt-4">
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={totalPages}
+                          onPageChange={activeTab === 'orders' ? handleOrderPageChange : handleSalesPageChange}
+                        />
+                      </div>
                     )}
                   </>
                 )}
