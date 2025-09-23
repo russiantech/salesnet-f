@@ -389,7 +389,7 @@ const Orders = () => {
                     <p className="text-muted mb-4">
                       {activeTab === 'orders' 
                         ? 'You haven\'t placed any orders yet matching your criteria.'
-                        : 'No sales have been made to your store yet matching your criteria.'
+                        : 'No sales have been made to your sales page yet matching your criteria.'
                       }
                     </p>
                     {/* {activeTab === 'orders' ? (
