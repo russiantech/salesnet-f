@@ -12,6 +12,7 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 // 
 import SalesListItem from '../sales/SalesListItem';
 import SalesItems from '../sales/SalesItems';
+import { Link } from 'react-router-dom';
 
 const Orders = () => {
   // Common states
@@ -391,17 +392,49 @@ const Orders = () => {
                         : 'No sales have been made to your store yet matching your criteria.'
                       }
                     </p>
-                    {activeTab === 'orders' ? (
+                    {/* {activeTab === 'orders' ? (
                       <a href="/products" className="btn btn-primary">
                         <i className="ci-shopping-cart me-2"></i>
                         Start Shopping
                       </a>
                     ) : (
-                      <a href="/dashboard/products" className="btn btn-success">
+                      <>
+                      <button className="btn btn-success">
                         <i className="ci-plus me-2"></i>
                         Add Products
-                      </a>
-                    )}
+                      </button>
+
+                      <button data-bs-toggle="modal" data-bs-target="#PublishPage" aria-current="page" className="btn btn-icon border position-relative rounded-circle ms-2 active" data-discover="true" 
+                      style="cursor: pointer;">
+                        <span className="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+                          <i className="ci-click animate-target text-white"></i></span></button>
+
+                      </>
+                    )} */}
+                    {activeTab === 'orders' ? (
+                <a href="/products" className="btn btn-primary">
+                  <i className="ci-shopping-cart me-2"></i>
+                  Start Shopping
+                </a>
+              ) : (
+                <>
+                  <Link to="/products" className="btn btn-secondary rounded-pill">
+                    <i className="ci-eye me-2"></i>
+                    Explore Intereststs
+                  </Link>
+
+                  <Link
+                    to="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#PublishPage"
+                    className="btn btn-primary ms-2 rounded-pill"
+                  >
+                    <i className="ci-click me-2"></i>
+                    Add Product
+                  </Link>
+                </>
+              )}
+
                   </div>
                 ) : (
                   <>
