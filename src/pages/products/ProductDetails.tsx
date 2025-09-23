@@ -1,4 +1,5 @@
-// v3 - Enhanced with proper mobile fullscreen media experience
+
+// v3
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Navigation, Thumbs, Controller } from 'swiper/modules';
@@ -73,24 +74,9 @@ const ProductDetails = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperCore | null>(null);
   const [lightboxInstance, setLightboxInstance] = useState<any>(null);
   const [shouldAutoOpenLightbox, setShouldAutoOpenLightbox] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
   const mainSwiperRef = useRef<SwiperCore | null>(null);
   const lightboxRef = useRef<any>(null);
   const hasAutoOpenedRef = useRef(false);
-  const mediaContainerRef = useRef<HTMLDivElement>(null);
-
-  // Detect mobile devices
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -141,7 +127,7 @@ const ProductDetails = () => {
 
   useBootstrapPopovers(product);
 
-  // Enhanced GLightbox initialization with mobile fullscreen support
+  // Initialize GLightbox with enhanced configuration
   useEffect(() => {
     if (product?.image_urls?.length > 0) {
       // Cleanup previous instance
@@ -149,78 +135,52 @@ const ProductDetails = () => {
         lightboxRef.current.destroy();
       }
 
-      // Enhanced gallery items configuration
+      // Prepare gallery items for GLightbox
       const galleryItems = product.image_urls.map((url, index) => {
         const urlType = getUrlType(url);
-        const isVideo = urlType !== 'image';
-        
         return {
           href: url,
-          type: isVideo ? 'video' : 'image',
-          source: urlType === 'youtube' ? 'youtube' : urlType === 'vimeo' ? 'vimeo' : 'local',
-          title: `${product.name} - ${isVideo ? 'Video' : 'Image'} ${index + 1}`,
-          description: isVideo ? 'Click play to view video' : 'Click to view full image'
+          type: urlType === 'image' ? 'image' : 'video',
+          source: urlType === 'youtube' ? 'youtube' : urlType === 'vimeo' ? 'vimeo' : 'local'
         };
       });
 
-      // Mobile-optimized lightbox configuration
-      const lightboxConfig = {
+      // Create new instance with proper gallery configuration
+      const lightbox = GLightbox({
         elements: galleryItems,
         touchNavigation: true,
         loop: true,
-        openEffect: isMobile ? 'none' : 'zoom',
-        closeEffect: isMobile ? 'none' : 'fade',
-        slideEffect: isMobile ? 'slide' : 'slide',
+        openEffect: 'zoom',
+        closeEffect: 'fade',
+        videosWidth: '90vw',
+        videosHeight: '90vh',
+        autoplayVideos: false,
+        moreText: 'View more',
+        moreLength: 60,
         closeOnOutsideClick: true,
         startAt: 0,
+        slideEffect: 'slide',
         skin: 'clean',
         descPosition: 'bottom',
-        
-        // Mobile-specific optimizations
-        mobile: {
-          fullscreen: true,
-          preload: true,
-          touchNavigation: true,
-          touchFollowAxis: true
-        },
-        
-        // Responsive sizing
-        width: isMobile ? '100vw' : '90vw',
-        height: isMobile ? '100vh' : '90vh',
-        
-        // Video configuration
-        videosWidth: isMobile ? '100%' : '90vw',
-        videosHeight: isMobile ? '70%' : '90vh',
-        autoplayVideos: false,
-        
-        // Event handlers for enhanced mobile experience
         onOpen: () => {
-          console.log('Lightbox opened in', isMobile ? 'mobile mode' : 'desktop mode');
-          document.body.style.overflow = 'hidden'; // Prevent background scrolling
-          
-          // Add mobile-specific classes
-          if (isMobile) {
-            document.body.classList.add('lightbox-mobile-open');
-          }
+          console.log('Lightbox opened');
         },
         onClose: () => {
           console.log('Lightbox closed');
-          document.body.style.overflow = '';
-          document.body.classList.remove('lightbox-mobile-open');
           setShouldAutoOpenLightbox(false);
         },
         beforeSlideChange: (prev, current) => {
+          // Sync main swiper when lightbox slide changes
           if (mainSwiperRef.current && current?.index !== undefined) {
             mainSwiperRef.current.slideTo(current.index);
           }
         },
         onSlideChange: (current) => {
+          // Additional sync when slide actually changes
           if (mainSwiperRef.current && current?.index !== undefined) {
             mainSwiperRef.current.slideTo(current.index);
           }
         },
-        
-        // Enhanced Plyr configuration for videos
         plyr: {
           css: 'https://cdn.plyr.io/3.7.8/plyr.css',
           js: 'https://cdn.plyr.io/3.7.8/plyr.js',
@@ -228,21 +188,7 @@ const ProductDetails = () => {
             ratio: '16:9',
             autoplay: false,
             muted: true,
-            fullscreen: {
-              enabled: true,
-              fallback: true,
-              iosNative: true // Critical for iOS fullscreen
-            },
-            controls: [
-              'play-large', 
-              'play', 
-              'progress', 
-              'current-time', 
-              'mute', 
-              'volume', 
-              'fullscreen'
-            ],
-            hideControls: true,
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
             youtube: {
               noCookie: true,
               rel: 0,
@@ -253,44 +199,34 @@ const ProductDetails = () => {
             vimeo: {
               byline: false,
               portrait: false,
-              title: false,
-              transparent: false
+              title: false
             }
           }
         }
-      };
+      });
 
-      const lightbox = GLightbox(lightboxConfig);
       lightboxRef.current = lightbox;
       setLightboxInstance(lightbox);
 
-      // Enhanced auto-open with mobile considerations
+      // Auto-open lightbox after a short delay to ensure proper initialization
       if (shouldAutoOpenLightbox && !hasAutoOpenedRef.current) {
         hasAutoOpenedRef.current = true;
-        
-        // Slightly longer delay for mobile to ensure proper initialization
-        const openDelay = isMobile ? 1000 : 800;
-        
         setTimeout(() => {
           try {
-            lightbox.openAt(0);
+            lightbox.openAt(0); // Open at first slide
           } catch (error) {
             console.warn('Failed to auto-open lightbox:', error);
-            // Fallback: manual open trigger
-            setTimeout(() => lightbox.openAt(0), 500);
           }
-        }, openDelay);
+        }, 800); // Slightly longer delay for better initialization
       }
 
       return () => {
         if (lightbox) {
           lightbox.destroy();
-          document.body.style.overflow = '';
-          document.body.classList.remove('lightbox-mobile-open');
         }
       };
     }
-  }, [product, shouldAutoOpenLightbox, isMobile]);
+  }, [product, shouldAutoOpenLightbox]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -306,101 +242,91 @@ const ProductDetails = () => {
     if (videoExtensions.includes(extension)) return 'video';
     if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
     if (url.includes('vimeo.com')) return 'vimeo';
-    if (url.includes('dailymotion.com')) return 'dailymotion';
+    if (url.includes('dailymotion.com')) return 'video';
     
     return 'image';
   };
 
-  // Enhanced video thumbnail generation
+  // Get video thumbnail for YouTube/Vimeo
   const getVideoThumbnail = (url: string): string => {
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
       const videoId = url.includes('youtube.com') 
-        ? new URL(url).searchParams.get('v') || url.split('v=')[1]?.split('&')[0]
+        ? url.split('v=')[1]?.split('&')[0]
         : url.split('/').pop()?.split('?')[0];
-      return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/assets/img/us/video-placeholder.png';
+      return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/assets/img/us/placeholder.png';
     }
     
     if (url.includes('vimeo.com')) {
-      const videoId = url.split('/').pop();
-      return videoId ? `https://vumbnail.com/${videoId}.jpg` : '/assets/img/us/video-placeholder.png';
+      return '/assets/img/us/video-placeholder.png';
     }
     
     return '/assets/img/us/video-placeholder.png';
   };
 
-  // Enhanced media click handler with mobile optimizations
+  // Handle manual lightbox opening
   const handleMediaClick = (index: number) => {
     if (lightboxInstance) {
-      // Add mobile-specific preparation
-      if (isMobile) {
-        // Force landscape orientation hint for videos
-        const urlType = getUrlType(product?.image_urls[index] || '');
-        if (urlType !== 'image') {
-          console.log('Video detected - preparing for fullscreen playback');
-        }
-      }
-      
       lightboxInstance.openAt(index);
     }
   };
 
-  // Enhanced fullscreen trigger for mobile
-  const triggerMobileFullscreen = (index: number) => {
-    if (!lightboxInstance) return;
-    
-    if (isMobile) {
-      // Special handling for mobile fullscreen
-      const element = document.querySelector('.glightbox-container');
-      if (element && element.requestFullscreen) {
-        element.requestFullscreen().catch(err => {
-          console.log('Fullscreen request failed:', err);
-          // Fallback to regular lightbox
-          lightboxInstance.openAt(index);
-        });
-      } else {
-        lightboxInstance.openAt(index);
-      }
-    } else {
-      lightboxInstance.openAt(index);
-    }
-  };
-
-  // Enhanced media preview component with mobile optimizations
+  // Create media preview component
   const MediaPreview = ({ url, index, isThumb = false }: { url: string; index: number; isThumb?: boolean }) => {
     const urlType = getUrlType(url);
-    const isVideo = urlType !== 'image';
     
     return (
-      <div className={`ratio ${isThumb ? 'ratio-1x1' : 'ratio-4x3'} position-relative`}>
+      <div className="ratio" style={{ paddingBottom: '100%' }}>
         <div className="position-absolute top-0 start-0 w-100 h-100">
           {urlType === 'image' ? (
             <img 
               src={url}
-              alt={`${product?.name || 'Product'} ${isThumb ? 'thumbnail' : 'image'} ${index + 1}`}
+              alt={`${isThumb ? 'Thumbnail' : 'Preview'} ${index + 1}`}
               className="object-fit-cover w-100 h-100"
-              loading="lazy"
               onError={(e) => {
                 e.currentTarget.src = '/assets/img/us/placeholder.png';
-                e.currentTarget.className = 'object-fit-contain w-100 h-100 bg-light';
               }}
             />
-          ) : isVideo ? (
-            <div className="position-relative w-100 h-100">
-              {/* Video thumbnail */}
+          ) : urlType === 'video' ? (
+            <>
+              <video 
+                src={url}
+                className="object-fit-cover w-100 h-100"
+                muted
+                preload="metadata"
+                onError={(e) => {
+                  const img = document.createElement('img');
+                  img.src = '/assets/img/us/video-placeholder.png';
+                  img.className = 'object-fit-cover w-100 h-100';
+                  img.alt = `Video preview ${index + 1}`;
+                  e.currentTarget.parentNode?.replaceChild(img, e.currentTarget);
+                }}
+              />
+              
+              <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
+              
+              <div className="position-absolute top-0 end-0 m-2">
+                <span className="badge rounded-pill bg-info text-white fs-xs px-1">
+                  <i className="ci-video"></i>
+                </span>
+              </div>
+              
+              <div className="position-absolute bottom-0 start-0 m-1">
+                <i className={`ci-play-filled border rounded-pill text-primary ${isThumb ? 'fs-xs' : 'fs-sm'}`}></i>
+              </div>
+            </>
+          ) : (
+            <>
               <img 
                 src={getVideoThumbnail(url)}
-                alt={`${product?.name || 'Product'} video preview ${index + 1}`}
+                alt={`${urlType} preview ${index + 1}`}
                 className="object-fit-cover w-100 h-100"
-                loading="lazy"
                 onError={(e) => {
                   e.currentTarget.src = '/assets/img/us/video-placeholder.png';
                 }}
               />
               
-              {/* Video overlay */}
               <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
               
-              {/* Video type badge */}
               <div className="position-absolute top-0 end-0 m-2">
                 <span className="badge bg-dark bg-opacity-75 text-white fs-xs px-2 py-1">
                   <i className="ci-video me-1"></i>
@@ -408,28 +334,14 @@ const ProductDetails = () => {
                 </span>
               </div>
               
-              {/* Play button */}
-              <div className="position-absolute top-50 start-50 translate-middle">
-                <div className={`btn btn-light ${isThumb ? 'btn-xs' : 'btn-lg'} rounded-circle shadow-lg`}
-                     style={{ 
-                       width: isThumb ? '2rem' : '4rem', 
-                       height: isThumb ? '2rem' : '4rem' 
-                     }}>
-                  <i className={`ci-play-filled ${isThumb ? 'fs-xs' : 'fs-4'} text-primary`}></i>
+              <div className="position-absolute bottom-0 start-0 m-2">
+                <div className="btn btn-light btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                     style={{ width: isThumb ? '24px' : '40px', height: isThumb ? '24px' : '40px' }}>
+                  <i className={`ci-play-filled ${isThumb ? 'fs-xs' : 'fs-sm'}`}></i>
                 </div>
               </div>
-              
-              {/* Duration indicator for non-embedded videos */}
-              {urlType === 'video' && (
-                <div className="position-absolute bottom-0 start-0 m-2">
-                  <span className="badge bg-dark bg-opacity-50 text-white fs-xs">
-                    <i className="ci-time me-1"></i>
-                    Play
-                  </span>
-                </div>
-              )}
-            </div>
-          ) : null}
+            </>
+          )}
         </div>
       </div>
     );
@@ -469,66 +381,6 @@ const ProductDetails = () => {
         keywords={`${product?.name}, products, quality, discount, deals`}
         canonical={`/products`}
       />
-      
-      {/* Mobile-specific CSS injection */}
-      <style>
-        {`
-          @media (max-width: 768px) {
-            .lightbox-mobile-open .glightbox-container {
-              position: fixed !important;
-              top: 0 !important;
-              left: 0 !important;
-              width: 100vw !important;
-              height: 100vh !important;
-              z-index: 99999 !important;
-            }
-            
-            .glightbox-mobile .gslide-image {
-              max-width: 100vw !important;
-              max-height: 100vh !important;
-            }
-            
-            .glightbox-mobile .gslide-video {
-              width: 100% !important;
-              height: 70vh !important;
-            }
-            
-            .glightbox-mobile .gclose {
-              top: 20px !important;
-              right: 20px !important;
-              background: rgba(0,0,0,0.7) !important;
-              border-radius: 50% !important;
-              width: 44px !important;
-              height: 44px !important;
-            }
-          }
-          
-          .gallery-item {
-            transition: transform 0.3s ease;
-          }
-          
-          .gallery-item:hover {
-            transform: scale(1.02);
-          }
-          
-          .mobile-fullscreen-trigger {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-          }
-        `}
-      </style>
       
       <main className="content-wrapper">
         <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
@@ -593,16 +445,12 @@ const ProductDetails = () => {
 
           <div className="row pb-5 pt-4">
             {/* Gallery Column */}
-            <div className="col-lg-7 col-xl-8" ref={mediaContainerRef}>
-              {/* Enhanced mobile fullscreen guidance */}
-              {isMobile && (
-                <div className="alert alert-info d-flex align-items-center mb-3" role="alert">
-                  <i className="ci-smartphone fs-lg me-2"></i>
-                  <small>
-                    <strong>Mobile Optimized:</strong> Media opens in full-screen mode. Videos play in native player for best experience.
-                  </small>
-                </div>
-              )}
+            <div className="col-lg-7 col-xl-8">
+              {/* Full-screen gallery hint */}
+              <div className="alert alert-info d-flex align-items-center mb-3" role="alert">
+                <i className="ci-expand fs-lg me-2"></i>
+                <small>Gallery opened in full-screen mode for better viewing. Click anywhere to browse all media.</small>
+              </div>
 
               <div className="position-relative mb-3">
                 <Swiper
@@ -615,6 +463,7 @@ const ProductDetails = () => {
                   thumbs={{ swiper: thumbsSwiper }}
                   onSwiper={(swiper) => (mainSwiperRef.current = swiper)}
                   onSlideChange={(swiper) => {
+                    // Sync lightbox with swiper when manually navigated
                     if (lightboxInstance && !hasAutoOpenedRef.current) {
                       try {
                         lightboxInstance.goToSlide(swiper.activeIndex);
@@ -629,24 +478,16 @@ const ProductDetails = () => {
                   {product.image_urls?.map((url: string, index: Key | null | undefined) => {
                     const urlType = getUrlType(url);
                     const numIndex = Number(index);
-                    const isVideo = urlType !== 'image';
-                    
                     return (
                       <SwiperSlide key={index} className="d-flex justify-content-center">
                         <div
-                          onClick={() => triggerMobileFullscreen(numIndex)}
+                          onClick={() => handleMediaClick(numIndex)}
                           className="d-block w-100 h-100 position-relative gallery-item cursor-pointer"
                           style={{ cursor: 'pointer' }}
                         >
                           <MediaPreview url={url} index={numIndex} />
-                          
-                          {/* Enhanced overlay for better UX */}
-                          <div className="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center opacity-0 hover-opacity-100 transition-opacity">
-                            <div className="text-center text-white">
-                              <i className="ci-zoom-in display-4 mb-2"></i>
-                              <div className="fs-sm">Tap to {isVideo ? 'play video' : 'view fullscreen'}</div>
-                            </div>
-                          </div>
+                          <div className="gallery-overlay"></div>
+                          <i className="ci-zoom-in gallery-zoom-icon"></i>
                           
                           {/* Media counter overlay */}
                           <div className="position-absolute top-0 start-0 m-3">
@@ -655,23 +496,13 @@ const ProductDetails = () => {
                             </span>
                           </div>
                           
-                          {/* Enhanced full screen hint */}
+                          {/* Full screen hint */}
                           <div className="position-absolute bottom-0 end-0 m-3">
                             <span className="badge bg-primary bg-opacity-90 text-white fs-xs px-2 py-1 rounded-pill">
-                              <i className={`ci-${isVideo ? 'play' : 'expand'} me-1`}></i>
-                              {isVideo ? 'Play Video' : 'Full Screen'}
+                              <i className="ci-expand me-1"></i>
+                              Click to expand
                             </span>
                           </div>
-                          
-                          {/* Video duration indicator */}
-                          {isVideo && urlType === 'video' && (
-                            <div className="position-absolute bottom-0 start-0 m-3">
-                              <span className="badge bg-dark bg-opacity-75 text-white fs-xs px-2 py-1 rounded-pill">
-                                <i className="ci-time me-1"></i>
-                                Tap to play
-                              </span>
-                            </div>
-                          )}
                         </div>
                       </SwiperSlide>
                     );
@@ -713,27 +544,24 @@ const ProductDetails = () => {
                 >
                   {product.image_urls?.map((url, index) => {
                     const urlType = getUrlType(url);
-                    const isVideo = urlType !== 'image';
-                    
                     return (
                       <SwiperSlide key={index} className="swiper-thumb">
                         <div
                           onClick={() => {
                             mainSwiperRef.current?.slideTo(index);
-                            triggerMobileFullscreen(index);
+                            handleMediaClick(index);
                           }}
                           className="d-block w-100 h-100 position-relative gallery-item rounded-2 cursor-pointer"
                           style={{ cursor: 'pointer' }}
                         >
                           <MediaPreview url={url} index={index} isThumb={true} />
-                          
-                          {/* Thumbnail overlay */}
-                          <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-0 hover-bg-opacity-25 transition-all rounded-2"></div>
+                          <div className="gallery-overlay"></div>
+                          <i className="ci-zoom-in gallery-zoom-icon"></i>
                           
                           {/* Thumbnail number indicator */}
                           <div className="position-absolute top-0 start-0 m-1">
-                            <span className={`badge ${isVideo ? 'bg-warning' : 'bg-dark'} bg-opacity-75 text-white rounded-pill`} style={{ fontSize: '10px' }}>
-                              {isVideo ? '▶' : index + 1}
+                            <span className="badge bg-dark bg-opacity-60 text-white rounded-pill" style={{ fontSize: '10px' }}>
+                              {index + 1}
                             </span>
                           </div>
                         </div>
@@ -743,27 +571,19 @@ const ProductDetails = () => {
                 </Swiper>
               </div>
 
-              {/* Enhanced manual full-screen toggle */}
+              {/* Manual full-screen toggle button */}
               <div className="text-center mt-3">
                 <button 
-                  onClick={() => triggerMobileFullscreen(0)}
-                  className={`btn ${isMobile ? 'btn-primary' : 'btn-outline-primary'} rounded-pill`}
+                  onClick={() => handleMediaClick(0)}
+                  className="btn btn-outline-primary rounded-pill"
                 >
-                  <i className={`ci-${isMobile ? 'smartphone' : 'expand'} me-2`}></i>
-                  {isMobile ? 'Open Media Gallery' : 'View in Full Screen'}
+                  <i className="ci-expand me-2"></i>
+                  View in Full Screen
                 </button>
-                
-                {isMobile && (
-                  <div className="mt-2">
-                    <small className="text-muted">
-                      Optimized for mobile viewing with full-screen media playback
-                    </small>
-                  </div>
-                )}
               </div>
             </div>
             
-            {/* Tabs Column */}
+            {/* Tabs Column - Side by side on large screens */}
             <div className="col-lg-5 col-xl-4 mt-2 mt-lg-0">
               <div className="">
                 <section className="pt-2 pt-lg-0 mt-2 mt-sm-3 mt-lg-0">
@@ -1028,7 +848,7 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* Tags Section */}
+          {/* Tags Section - Below both columns */}
           <div className="row">
             <div className="col-12">
               <h2 className="h4 pt-5 mt-md-2 mb-lg-4">Tags</h2>
