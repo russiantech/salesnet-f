@@ -407,7 +407,7 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { OrdersAxiosService } from '../../../services/net/OrdersAxiosService';
 import { SalesAxiosService } from '../../../services/net/SalesAxiosService';
 import { formatCurrency } from '../../../utils/currencyUtils';
-import { formatDate, formatRelativeTime } from '../../../utils/dateUtils';
+import { formatRelativeTime } from '../../../utils/dateUtils';
 
 interface SalesItemsProps {
   selectedSale: any;
@@ -714,6 +714,7 @@ const SalesItems: React.FC<SalesItemsProps> = ({
                   <span className="text-body-emphasis fw-medium text-end ms-2">
                     {saleDetails?.payment?.method || "Not specified"}
                   </span>
+                  {/* <span>{JSON.stringify(saleDetails.payment)}</span> */}
                 </li>
                 <li className="d-flex justify-content-between mb-2">
                   <span>Tax collected:</span>

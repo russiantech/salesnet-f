@@ -1816,7 +1816,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { SearchAxiosService } from '../../services/net/SearchAxiosService';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductSummary from '../../pages/products/ProductSummary_0';
+import ProductSummary from '../../pages/products/ProductSummary';
 import LoadingCard from './LoadingCard';
 // import { FiX, FiSearch } from 'react-icons/fi';
 

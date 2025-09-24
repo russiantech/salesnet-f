@@ -1,102 +1,3 @@
-// CheckoutSuccess.tsx
-// import React, { useEffect } from 'react';
-// import { useLocation, useNavigate } from 'react-router-dom';
-// import { NotificationService } from '../../../services/local/NotificationService';
-// // import { NotificationService } from '../../services/local/NotificationService';
-
-// const CheckoutSuccess = () => {
-//   const { state } = useLocation();
-//   const navigate = useNavigate();
-  
-//   // Handle missing state
-//   useEffect(() => {
-//     if (!state?.order) {
-//       NotificationService.showDialog('Invalid order details', 'error');
-//       navigate('/');
-//     }
-//   }, [state, navigate]);
-
-//   if (!state?.order) return null;
-
-//   const { order, paymentData, message } = state;
-//   const isPaid = order.paymentStatus === 'completed';
-//   const isPending = order.paymentStatus === 'pending';
-
-//   return (
-//     <div className="container py-5">
-//       <div className="card shadow">
-//         <div className="card-body text-center p-5">
-//           <div className="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-4">
-//             <i className="ci-check text-success display-4"></i>
-//           </div>
-          
-//           <h1 className="h2 mb-4">
-//             {isPaid ? 'Payment Successful!' : 'Order Received'}
-//           </h1>
-          
-//           {message ? (
-//             <p className="lead mb-4">{message}</p>
-//           ) : (
-//             <p className="lead mb-4">
-//               Thank you for your order! {isPending && 'Your payment will be completed on delivery.'}
-//             </p>
-//           )}
-          
-//           <div className="border rounded-3 p-4 mb-4">
-//             <h2 className="h5 mb-4">Order Details</h2>
-//             <div className="d-flex justify-content-between mb-2">
-//               <span>Tracking Number:</span>
-//               <strong>#{order.tracking_number}</strong>
-//             </div>
-//             <div className="d-flex justify-content-between mb-2">
-//               <span>Order Number:</span>
-//               <strong>#{order.id}</strong>
-//             </div>
-//             <div className="d-flex justify-content-between mb-2">
-//               <span>Payment Reference:</span>
-//               <strong>{order.payment_reference}</strong>
-//             </div>
-//             <div className="d-flex justify-content-between mb-2">
-//               <span>Total Amount:</span>
-//               <strong>${order.total_amount.toFixed(2)}</strong>
-//             </div>
-//             <div className="d-flex justify-content-between">
-//               <span>Status:</span>
-//               <strong className={isPaid ? 'text-success' : 'text-warning'}>
-//                 {isPaid ? 'Paid' : 'Pending Payment'}
-//               </strong>
-//             </div>
-//           </div>
-
-//           {paymentData?.gateway_reference && (
-//             <div className="alert alert-info mb-4">
-//               <strong>Transaction ID:</strong> {paymentData.gateway_reference}
-//             </div>
-//           )}
-
-//           <div className="d-flex justify-content-center gap-3">
-//             <button 
-//               className="btn btn-primary"
-//               onClick={() => navigate('/users/orders')}
-//             >
-//               View Orders
-//             </button>
-//             <button 
-//               className="btn btn-outline-secondary"
-//               onClick={() => navigate('/products')}
-//             >
-//               Continue Shopping
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CheckoutSuccess;
-
-// 
 
 // CheckoutSuccess.tsx
 import React, { useEffect, useState } from 'react';
@@ -104,7 +5,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { NotificationService } from '../../../services/local/NotificationService';
 import { AxiosService } from '../../../services/net/base/AxiosService';
 import { formatCurrency } from '../../../utils/currencyUtils';
-import ProductSummary from '../../products/ProductSummary_0';
+import ProductSummary from '../../products/ProductSummary';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
 interface OrderItem {
