@@ -687,7 +687,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
                 {/* <div className="d-flex flex-row flex-sm-row gap-3 mb-4 overflow-auto pe-2">  */} 
                 {/* Remove `overflow-auto` for opening tag below so it won't have the scroll bar which is fine with up 4 oauth buttons */}
-                <div className="d-flex flex-row flex-sm-row gap-3 mb-4 pe-2">
+                <div className="d-flex flex-row flex-sm-row gap-3 mb-4 pe-2 overflow-auto">
                     <SocialAuthButton provider="google" disabled={isLoading}>Google</SocialAuthButton>
                     <SocialAuthButton provider="facebook" disabled={isLoading}>Facebook</SocialAuthButton>
                     <SocialAuthButton provider="apple" disabled={isLoading}>Apple</SocialAuthButton>

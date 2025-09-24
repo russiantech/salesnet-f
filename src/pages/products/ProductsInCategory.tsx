@@ -14,6 +14,7 @@ import { BasketButton } from './interactions/BasketButton';
 import { ChatButton } from './interactions/ChatButton';
 import { FavoriteButton } from './interactions/FavoriteButton';
 import { ShareButton } from './interactions/ShareButton';
+import SeoConfig from '../../utils/SeoManager';
 
 interface Category {
   id: number;
@@ -139,6 +140,14 @@ const ProductsInCategory = () => {
 
   if (loading && products.length === 0) {
     return (
+      <>
+      <SeoConfig
+        title={category?.name || slug || 'Loading category'}
+        description={
+          category?.description ||
+          (slug ? `Products in ${slug} category` : 'Loading category details')
+        }
+      />
       <main className="content-wrapper">
         <section className="container py-5">
           <Breadcrumb 
@@ -149,31 +158,40 @@ const ProductsInCategory = () => {
             ]} 
           />
           <div className="row">
+            
             {Array.from({ length: 12 }).map((_, i) => (
               <div key={i} className="col-6 col-md-4 col-lg-3 mb-4">
                 <LoadingCard />
               </div>
             ))}
+
           </div>
         </section>
       </main>
+      </>
     );
   }
 
 if (!category && !loading && products.length === 0) {
     return (
+      <>
+      <SeoConfig title={category?.name || slug} />
       <main className="content-wrapper">
         <section className="container py-5 text-center">
-          <h2>Category not found</h2>
-          <Link to="/categories" className="btn btn-primary mt-3">
+          <h2>Oh, couldn't fetch products for <em className="text-primary fw-bold">{category?.name || slug}</em> right now!</h2>
+          <Link to="/categories" className="btn btn-lg btn-primary mt-3 rounded-pill">
             Browse Categories
           </Link>
         </section>
       </main>
+      </>
     );
   }
 
   return (
+    <>
+    <SeoConfig title={category?.name || slug} description={category?.description || `Products in ${category?.name || slug} category`} />
+
     <main className="content-wrapper">
       <section className="container pb-5">
 
@@ -259,7 +277,8 @@ if (!category && !loading && products.length === 0) {
         </div>
       </section>
     </main>
-
+    
+    </>
   );
 };
 
