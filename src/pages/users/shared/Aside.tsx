@@ -100,7 +100,7 @@ const Aside = () => {
               >
                 <i className="ci-shopping-bag fs-base opacity-75 me-2" />
                 Orders & Sales
-                <span className="badge bg-primary rounded-pill ms-auto">1</span>
+                <span className="badge bg-primary rounded-pill ms-auto">.1</span>
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"

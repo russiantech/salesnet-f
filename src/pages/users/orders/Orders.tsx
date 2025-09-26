@@ -286,7 +286,7 @@ const Orders = () => {
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
                       <div className="col">
                         <select
-                          className="form-select"
+                          className="form-select rounded-pill"
                           aria-label="Status filter"
                           value={currentFilters.status}
                           onChange={activeTab === 'orders' ? handleOrderStatusChange : handleSalesStatusChange}
@@ -303,7 +303,7 @@ const Orders = () => {
                       </div>
                       <div className="col">
                         <select
-                          className="form-select"
+                          className="form-select rounded-pill"
                           aria-label="Timeframe filter"
                           value={currentFilters.timeframe}
                           onChange={activeTab === 'orders' ? handleOrderTimeframeChange : handleSalesTimeframeChange}
@@ -320,7 +320,7 @@ const Orders = () => {
                       </div>
                       <div className="col">
                         <button
-                          className="btn btn-outline-primary w-100"
+                          className="btn btn-outline-primary w-100 rounded-pill"
                           onClick={() => activeTab === 'orders' ? fetchOrders() : fetchSales()}
                         >
                           <i className="ci-refresh-cw me-2"></i>
@@ -331,7 +331,7 @@ const Orders = () => {
                         <div className="col">
                           <div className="dropdown w-100">
                             <button 
-                              className="btn btn-outline-secondary dropdown-toggle w-100" 
+                              className="btn btn-outline-secondary dropdown-toggle w-100 rounded-pill" 
                               type="button" 
                               data-bs-toggle="dropdown"
                             >
