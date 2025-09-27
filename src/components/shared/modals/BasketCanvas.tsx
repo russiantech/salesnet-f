@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { UsersService } from "../../../services/local/UsersService";
 import { BasketAxiosService } from "../../../services/net/BasketAxiosService";
-// import { NotificationService } from "../../../services/NotificationService"; // Add this import
 import LoadingSpinner, { LoadingZoom } from "../LoadingSpinner";
 import { NotificationService } from "../../../services/local/NotificationService";
+import { formatCurrency } from "../../../utils/currencyUtils";
+import { tr } from "framer-motion/client";
 
 interface BasketItem {
   id: string | number;
@@ -254,6 +255,7 @@ const BasketCanvas: React.FC = () => {
             src={item.image || "/assets/img/placeholder.jpg"} 
             width="110" 
             height="110"
+            style={{ objectFit: 'cover', maxWidth: '110px', maxHeight: '110px' }}
             alt={item.name}
             className="img-thumbnail"
             onError={(e) => {
@@ -274,7 +276,7 @@ const BasketCanvas: React.FC = () => {
               {item.name}
             </Link>
           </h5>
-          <div className="h6 pb-1 mb-2">{formatPrice(item.price)}</div>
+          <div className="h6 pb-1 mb-2">{formatCurrency(item.price, 'NGN', {short:true})}</div>
           <div className="d-flex align-items-center justify-content-between">
             <div className="count-input rounded-2 position-relative">
               {isItemLoading && (
@@ -431,7 +433,7 @@ const BasketCanvas: React.FC = () => {
       <div className="offcanvas-header flex-column align-items-start">
         <div className="d-flex align-items-center justify-content-between w-100 mb-2">
           <span className="text-light-emphasis">Subtotal:</span>
-          <span className="h6 mb-0">{formatPrice(basketState.subtotal)}</span>
+          <span className="h6 mb-0">{formatCurrency(basketState.subtotal, 'NGN', { short: false })}</span>
         </div>
         
         {qualifiesForFreeShipping && (
@@ -456,7 +458,7 @@ const BasketCanvas: React.FC = () => {
         </div> */}
          <div className="d-flex w-100 gap-3 mb-3">
     <NavLink 
-      className="btn btn-lg btn-secondary w-100"
+      className="btn btn-lg btn-secondary w-100 rounded-pill"
       to="/users/basket"
       onClick={async (e) => {
         e.preventDefault();
@@ -468,7 +470,7 @@ const BasketCanvas: React.FC = () => {
       View cart
     </NavLink>
     <Link 
-      className="btn btn-lg btn-primary w-100"
+      className="btn btn-lg btn-primary w-100 rounded-pill"
       to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
       onClick={async (e) => {
         e.preventDefault();
@@ -480,13 +482,21 @@ const BasketCanvas: React.FC = () => {
     >
       Checkout
     </Link>
-  </div>
 
-        <button type="button" className="btn btn-outline-danger btn-sm w-100"
+    {/*  */}
+    <button type="button" className="btn btn-outline-danger w-100 rounded-pill"
           onClick={handleClearBasket} disabled={basketState.isLoading}
           aria-label="Clear all items from basket">
           Clear Basket
         </button>
+
+  </div>
+
+        {/* <button type="button" className="btn btn-outline-danger btn-sm w-100"
+          onClick={handleClearBasket} disabled={basketState.isLoading}
+          aria-label="Clear all items from basket">
+          Clear Basket
+        </button> */}
       </div>
     </div>
   );
