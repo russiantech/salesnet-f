@@ -167,13 +167,16 @@ const Search = () => {
   const style = {
     off_canvas: {
       overflow: 'hidden !important',
-      maxHeight: '100vh',
-      height: '100vh',
+    //   maxHeight: '100vh',
+      height: '90vh',
     },
   };
   
   return (
-    <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex={-1} style={style.off_canvas} aria-labelledby="searchBoxLabel">
+    // Note: Changed data-bs-backdrop to true to allow closing on outside click
+    // <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="static" tabIndex={-1} style={style.off_canvas} aria-labelledby="searchBoxLabel">
+    <div className="offcanvas offcanvas-top" id="searchBox" data-bs-backdrop="true" data-bs-keyboard="true" tabIndex={-1} style={style.off_canvas} aria-labelledby="searchBoxLabel">
+
       <div className="offcanvas-header border-bottom p-0 py-lg-1">
         <form className="container d-flex align-items-center" onSubmit={handleSubmit}>
           <div className="position-relative w-100">
@@ -282,6 +285,7 @@ const Search = () => {
           </div>
         )}
       </div>
+      
     </div>
   );
 };

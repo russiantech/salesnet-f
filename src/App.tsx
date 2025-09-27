@@ -26,7 +26,6 @@ const PagesRoutes = lazy(() => import("./routes/PagesRoutes"));
 const CustomerServiceRoutes = lazy(() => import("./routes/CustomerServiceRoutes"));
 
 const BasketCanvas = lazy(() => import("./components/shared/modals/BasketCanvas"));
-// const PublishPage = lazy(() => import("./components/shared/modals/publish/Publish"));
 const PublishPage = lazy(() => import("./components/shared/modals/publish/PublishPage"));
 const Search = lazy(() => import("./components/shared/modals/Search/Search"));
 const SearchPage = lazy(() => import("./components/shared/SearchPage"));
