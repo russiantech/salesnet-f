@@ -245,17 +245,20 @@ const NotImplimentedPage = () => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Comming Soon</h5>
+            <h5 className="modal-title">Coming Soon: Chatme</h5>
             <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <p className='fw-bold'> 
-              This page/feature is currently under active development. 
-              Stay tuned — we're working hard to bring you an improved experience on SalesNet.
+            <p className='text-body-secondary mb-4'> 
+              {/* This page/feature is currently under active development. 
+              Stay tuned — we're working hard to bring you an improved experience on SalesNet. */}
+              
+            We're building a new real-time chat feature to help buyers and sellers connect, share, and close deals more easily. Stay tuned!
+
             </p>
           </div>
           <div className="modal-footer flex-column flex-sm-row align-items-stretch">
-            <button className="btn btn-outline-warning" type="button" data-bs-dismiss="modal">Close</button>
+            <button className="btn btn-outline-danger rounded-pill" type="button" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
