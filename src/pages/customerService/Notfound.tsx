@@ -196,13 +196,13 @@ const NotFoundPage = () => {
           <div className="row row-cols-1 row-cols-md-3 g-3 g-lg-4">
             <div className="col">
               <div className="nav flex-column position-relative h-100 border rounded-5 p-4 pt-3">
-                <a
+                <Link
                   className="nav-link animate-underline stretched-link text-body-emphasis fw-semibold px-0 mb-1"
-                  href="/"
+                  to="/"
                 >
                   <span className="animate-target">Go to homepage</span>
                   <i className="ci-chevron-right fs-base ms-1" />
-                </a>
+                </Link>
                 <span className="fs-sm">Continue shopping from the homepage</span>
               </div>
             </div>
@@ -237,38 +237,6 @@ const NotFoundPage = () => {
     </>
   )
 }
-
-// const NotImplimentedPage = () => {
-//   return (
-
-//     <div className="modal fade" id="NotImplimentedPage" tabIndex={-1} aria-modal="true" role="dialog">
-//       <div className="modal-dialog modal-dialog-centered" role="document">
-//         <div className="modal-content">
-//           <div className="modal-header">
-//             <h5 className="modal-title">Coming Soon: Chatme</h5>
-//             <button className="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-//           </div>
-//           <div className="modal-body">
-//             <p className='text-body-secondary mb-4'> 
-//               {/* This page/feature is currently under active development. 
-//               Stay tuned — we're working hard to bring you an improved experience on SalesNet. */}
-              
-//             We're building a new real-time chat feature to help buyers and sellers connect, share, and close deals more easily. Stay tuned!
-
-//             </p>
-//           </div>
-//           <div className="modal-footer flex-column flex-sm-row align-items-stretch">
-//             <button className="btn btn-outline-danger rounded-pill" type="button" data-bs-dismiss="modal">Close</button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-
-//   );
-// };
-
-// export { NotFoundPage, NotImplimentedPage };
-
 
 const NotImplimentedPage = () => {
   return (
