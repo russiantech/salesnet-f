@@ -1,9 +1,10 @@
 
 // components/shared/modals/AuthCanvas.tsx
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthForm from "../../auth/AuthForm";
 import { UsersService } from "../../../services/local/UsersService";
 import { useEffect, useState } from "react";
+import { NotificationService } from "../../../services/users/NotificationService";
 
 const AuthCanvas = () => {
     return (
@@ -15,7 +16,10 @@ const AuthCanvas = () => {
 };
 
 const QuickSignup = () => {
+
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const navigate = useNavigate();
 
     // Monitor authentication status
     useEffect(() => {
@@ -69,7 +73,7 @@ const QuickSignup = () => {
                             style={{ width: '32px', height: '32px' }} 
                         />
                         <h4 className="offcanvas-title" id="signupLabel">
-                            Quick sign up to continue
+                            Create Account
                         </h4>
                     </NavLink>
                     <button 
@@ -87,7 +91,11 @@ const QuickSignup = () => {
                     formType="signup"
                     showSocialAuth={true}
                     showLogo={false}
-                    onSuccess={(data) => {
+                    // onSuccess={(data) => {
+                        
+                    // }}
+                    onSuccess={(data: any) => {
+
                         // Close canvas on successful signup
                         const canvas = document.getElementById('quickSignupCanvas');
                         if (canvas && (window as any).bootstrap) {
@@ -95,8 +103,73 @@ const QuickSignup = () => {
                             offcanvas?.hide();
                         }
                         // Don't redirect here, just close the modal
+
+                        // console.log("Signup Success Data:", data);
+                        
+                        const token = data?.token;   
+                        const email = data?.email;   
+                        const phone = data?.phone;   
+
+                        //  Require token + at least one contact method
+                        if (token && (email || phone)) {
+                            navigate('/auth/verify-signup', {
+                                state: { 
+                                    token, 
+                                    email: email || null,  // Pass null if not provided
+                                    phone: phone || null   // Pass null if not provided
+                                } 
+                            });
+                        } else {
+                            console.error("Missing verification data. Need token and at least one contact:", { 
+                                token, 
+                                email, 
+                                phone 
+                            });
+                            NotificationService.showDialog(
+                                "Verification setup failed. Please try again.",
+                                "error"
+                            );
+                        }
                     }}
+                    
                 />
+
+                {/* <AuthForm 
+                    variant="canvas"
+                    formType="signup"
+                    showSocialAuth={true}
+                    showLogo={true}
+                    showBenefits={true}
+                    onSuccess={(data: any) => {
+                        console.log("Signup Success Data:", data);
+                        
+                        const token = data?.token;   
+                        const email = data?.email;   
+                        const phone = data?.phone;   
+
+                        //  Require token + at least one contact method
+                        if (token && (email || phone)) {
+                            navigate('/auth/verify-signup', {
+                                state: { 
+                                    token, 
+                                    email: email || null,  // Pass null if not provided
+                                    phone: phone || null   // Pass null if not provided
+                                } 
+                            });
+                        } else {
+                            console.error("Missing verification data. Need token and at least one contact:", { 
+                                token, 
+                                email, 
+                                phone 
+                            });
+                            NotificationService.showDialog(
+                                "Verification setup failed. Please try again.",
+                                "error"
+                            );
+                        }
+                    }}
+                /> */}
+
             </div>
         </div>
     );
@@ -155,7 +228,7 @@ const QuickSignin = () => {
                             style={{ width: '32px', height: '32px' }} 
                         />
                         <h4 className="offcanvas-title" id="signinLabel">
-                            Quick Sign-in to Continue
+                            Login to Continue
                         </h4>
                     </NavLink>
                     <button 
@@ -173,6 +246,7 @@ const QuickSignin = () => {
                     formType="signin"
                     showSocialAuth={true}
                     showLogo={false}
+
                     onSuccess={(data) => {
                         // Close canvas on successful signin
                         const canvas = document.getElementById('quickSigninCanvas');

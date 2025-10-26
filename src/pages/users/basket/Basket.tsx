@@ -55,7 +55,7 @@ const Basket: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [itemLoadingStates, setItemLoadingStates] = useState<Record<string | number, boolean>>({});
   const [promoCode, setPromoCode] = useState<string>('');
-  const [promoCodeLoading, setPromoCodeLoading] = useState<boolean>(false);
+  const [_promoCodeLoading, setPromoCodeLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const handleAuthChange = () => {
@@ -66,7 +66,6 @@ const Basket: React.FC = () => {
     handleAuthChange();
     
     // Subscribe to auth changes
-    const unsubscribeAuth = UsersService.subscribe(handleAuthChange);
     
     // Subscribe to basket changes
     const unsubscribeBasket = BasketAxiosService.subscribe((basketData) => {

@@ -762,7 +762,7 @@ const Products = () => {
                                                                 Create Product
                                                             </button> */}
 
-                                                            <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PublishPage" aria-current="page">
+                                                            <button className="btn btn-primary btn-lg rounded-pill" data-bs-toggle="modal" data-bs-target="#PublishPage" aria-current="page">
                                                                  <i className="ci-click  me-1 animate-target text-white"></i>
                                                                 Create Product
                                                             </button>
@@ -774,6 +774,7 @@ const Products = () => {
                                                 </tr>
                                             ) : (
                                                 filteredProducts.map((product) => (
+                                                    
                                                     <tr key={product.id}>
                                                         <td className="py-3 ps-0">
                                                             <div className="form-check">
@@ -787,14 +788,25 @@ const Products = () => {
                                                         </td>
                                                         <td className="py-3 ps-0">
                                                             <div className="d-flex align-items-start align-items-md-center hover-effect-scale position-relative py-1">
-                                                                <div className="ratio bg-body-secondary rounded overflow-hidden flex-shrink-sm-0" style={{"--cz-aspect-ratio": 'calc(110 / 142 * 100%)', maxWidth: '142px'}}>
+                                                                
+                                                                {/* <div className="ratio bg-body-secondary rounded overflow-hidden flex-shrink-sm-0" style={{"--cz-aspect-ratio": 'calc(110 / 142 * 100%)', maxWidth: '142px'}}>
                                                                     <img src={product.image_urls?.[0] || product.image_url || '/assets/img/placeholder.jpg'} 
                                                                         className="hover-effect-target" 
                                                                         alt={product.name}
                                                                         onError={(e) => {
                                                                             e.currentTarget.src = '/assets/img/placeholder.jpg';
                                                                         }}
+                                                                    /> */}
+
+                                                                    <div className="ratio bg-body-secondary rounded overflow-hidden flex-shrink-0" style={{"--cz-aspect-ratio": 'calc(3 / 4 * 100%)', width: '80px', minWidth: '80px'}}>
+                                                                    <img src={product.image_urls?.[0] || product.image_url || '/assets/img/placeholder.jpg'} 
+                                                                        className="hover-effect-target object-fit-cover w-100 h-100" 
+                                                                        alt={product.name}
+                                                                        onError={(e) => {
+                                                                            e.currentTarget.src = '/assets/img/placeholder.jpg';
+                                                                        }}
                                                                     />
+
                                                                     {product.is_promoted && (
                                                                         <div className="position-absolute top-0 start-0 m-2">
                                                                             <span className="badge bg-warning text-dark">
@@ -804,6 +816,7 @@ const Products = () => {
                                                                         </div>
                                                                     )}
                                                                 </div>
+
                                                                 <div className="ps-2 ps-sm-3 ms-1">
                                                                     <span className={`badge fs-xs ${getStatusBadgeClass(product.status)} rounded-pill d-md-none mb-1`}>
                                                                         {product.status}

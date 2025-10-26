@@ -6,25 +6,47 @@ import Bonuses from './Bonuses'
 import { NotificationService } from '../../../services/local/NotificationService'
 import { UsersService } from '../../../services/local/UsersService'
 import { formatCurrency } from '../../../utils/currencyUtils'
+import { OrderEventService } from '../../../services/local/OrderEventService'
 
 const Aside = () => {
   const navigate = useNavigate()
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
+  const [unattendedOrdersCount, setUnattendedOrdersCount] = useState(0);
+
+    /* useEffect(() => {
+      // Subscribe to user state changes
+      const handleUserChange = (userData) => {
+        setUser(userData)
+      }
+
+      UsersService.subscribe(handleUserChange)
+
+      // Cleanup subscription on unmount
+      return () => {
+        UsersService.unsubscribe(handleUserChange)
+      }
+    }, []) */
+
+  // Subscribe to user updatess and order badge updates
   useEffect(() => {
-    // Subscribe to user state changes
-    const handleUserChange = (userData) => {
-      setUser(userData)
-    }
+    // Subscribe to user updates
+    const handleUserChange = (userData: any) => setUser(userData);
+    UsersService.subscribe(handleUserChange);
 
-    UsersService.subscribe(handleUserChange)
+    // Subscribe to order badge updates
+    const unsubscribeOrders = OrderEventService.subscribe(({ unattendedCount }) => {
+      setUnattendedOrdersCount(unattendedCount);
+    });
 
-    // Cleanup subscription on unmount
+    // Cleanup subscriptions on unmount
     return () => {
-      UsersService.unsubscribe(handleUserChange)
-    }
-  }, [])
+      UsersService.unsubscribe(handleUserChange);
+      unsubscribeOrders();
+    };
+  }, []);
 
+  // 
   const handleLogout = () => {
     UsersService.signout()
     NotificationService.showDialog('You have been logged out', 'success')
@@ -94,13 +116,18 @@ const Aside = () => {
           {/* Body (Navigation) */}
           <div className="offcanvas-body d-block pt-2 pt-lg-4 pb-lg-0">
             <nav className="list-group list-group-borderless">
-              <NavLink
-                className="list-group-item list-group-item-action d-flex align-items-center"
-                to="/users/orders"
-              >
+              
+              <NavLink className="list-group-item list-group-item-action d-flex align-items-center"
+                to="/users/dashboard">
+                <i className="ci-bar-chart-2 fs-base opacity-75 me-2" />
+                Dashboard
+                {/* <span className="badge bg-primary rounded-pill ms-auto">.1</span> */}
+              </NavLink>
+
+              <NavLink className="list-group-item list-group-item-action d-flex align-items-center" to="/users/orders">
                 <i className="ci-shopping-bag fs-base opacity-75 me-2" />
                 Orders & Sales
-                <span className="badge bg-primary rounded-pill ms-auto">.1</span>
+                <span className="badge bg-primary rounded-pill ms-auto">{unattendedOrdersCount}</span>
               </NavLink>
               <NavLink
                 className="list-group-item list-group-item-action d-flex align-items-center"

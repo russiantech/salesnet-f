@@ -1,359 +1,108 @@
-// import { useState, useEffect } from "react";
-// import { Link, NavLink, useNavigate } from "react-router-dom";
-// import { UsersService } from "../../services/local/UsersService";
-// import { UsersAxiosService } from "../../services/net/UsersAxiosService";
-// import { NotificationService } from "../../services/local/NotificationService";
-// import ResponseModal from "../../components/shared/modals/ResponseModal";
-// import SocialAuthButton from "../../components/auth/SocialAuthButton";
-// import useSocialAuth from "../../hooks/useSocialAuth";
 
-// const Signup = () => {
-//     const navigate = useNavigate();
-
-//     const [formData, setFormData] = useState({
-//         username: '',
-//         email: '',
-//         phone: '',
-//         password: '',
-//     });
-
-//     const [modalState, setModalState] = useState({ show: false, message: '', type: '' });
-//     const [isLoading, setIsLoading] = useState(false);
-
-//     // Use social auth hook
-//     useSocialAuth();
-    
-//     useEffect(() => {
-//         const observer = (data) => {
-//             setModalState(data);
-//         };
-
-//         NotificationService.subscribe(observer);
-//         return () => {
-//             NotificationService.unsubscribe(observer);
-//         };
-//     }, []);
-
-//     const onSubmitForm = (evt) => {
-//         evt.preventDefault();
-//         setIsLoading(true);
-
-//         NotificationService.showDialog("Creating account...", "primary");
-
-//         if (!formData.username || !formData.phone || !formData.email || !formData.password) {
-//             NotificationService.showDialog("All fields are required: username, phone, email, and password", "danger");
-//             setIsLoading(false);
-//             return;
-//         }
-
-//         UsersAxiosService.signup(formData)
-//             .then(res => {
-//                 const message = res.data.full_messages?.[0] || res.data.message || res.data.error;
-
-//                 if (res.data && res.data.success) {
-//                     NotificationService.showDialog(message || 'Account created successfully! Please check your email for verification.', 'success');
-//                     navigate('/auth/signin');
-//                 } else {
-//                     NotificationService.showDialog(message || 'Failed to create account', 'error');
-//                 }
-//             })
-//             .catch(err => {
-//                 const errorMessage = err.response?.data?.error || err.message || 'An unknown error occurred';
-//                 NotificationService.showDialog(errorMessage, 'error');
-//             })
-//             .finally(() => {
-//                 setIsLoading(false);
-//             });
-//     };
-
-//     const onInputChange = (key, evt) => {
-//         setFormData({ ...formData, [key]: evt.target.value });
-//     };
-
-//     return (
-//         <>
-//             <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{ maxWidth: "1920px" }}>
-//                 <div className="d-lg-flex">
-//                     {/* Signup form + Footer */}
-//                     <div className="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style={{ maxWidth: '416px' }}>
-//                         {/* Logo */}
-//                         <header className="navbar px-0 pb-4 mt-n2 mt-sm-0 mb-2 mb-md-3 mb-lg-4">
-//                             <NavLink className="navbar-brand pt-0" to="/">
-//                                 <span className="d-flex flex-shrink-0 text-primary rtl-flip me-2">
-//                                     <div className="flex-shrink-0" style={{ width: '32px' }}>
-//                                         <div className="ratio ratio-1x1 overflow-hidden">
-//                                             <img src="/assets/img/us/logos/favicon.svg" alt="Avatar" />
-//                                         </div>
-//                                     </div>
-//                                 </span>
-//                                 Salesnet
-//                             </NavLink>
-//                         </header>
-
-//                         <h1 className="h2 mt-1">Create an account</h1>
-//                         {/* <div className="nav fs-sm mb-3 mb-lg-4">
-//                             I already have an account
-//                             <NavLink className="nav-link badge text-decoration-none rounded-pill p-1 ml-1 text-bg-info" to="/auth/signin">Sign in</NavLink>
-//                         </div> */}
-                        
-//                         <div className="nav fs-sm mb-4 d-lg-none">
-//                             <span className="me-2">Uncertain about creating an account?</span>
-//                             <NavLink className="text-decoration-none rounded-pill text-bg-info" to="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Benefits</NavLink>
-//                         </div>
-                        
-//                         {/* Social signup first */}
-//                         <div className="d-flex flex-row flex-sm-row gap-3 mb-4 overflow-auto pe-2" style={{maxHeight: "500px", "scrollbar-width": "thin", "scrollbar-color": "rgb(222, 226, 230) transparent"}}>
-//                             <SocialAuthButton provider="google" children={undefined} />
-//                             <SocialAuthButton provider="facebook" children={undefined} />
-//                             <SocialAuthButton provider="apple" children={undefined} />
-//                             <SocialAuthButton provider="salesnet" children={undefined} />
-//                             <Link to="/auth/signin" className="btn btn-md btn-outline-danger w-100 px-2 flex-fill rounded-pill" 
-//                              title="Salesnet authentication">
-//                                 <i className="ci-apple ms-1 me-1"></i>
-//                                 Salesnet</Link>
-
-//                         </div>
-//                         {/* Divider */}
-//                         <div className="d-flex align-items-center my-1">
-//                             <hr className="w-100 m-0" />
-//                             <span className="text-body-emphasis fw-medium text-nowrap mx-4">or sign up with</span>
-//                             <hr className="w-100 m-0" />
-//                         </div>
-                        
-//                         {/* Form */}
-//                         {/* <div class="overflow-auto pe-2" data-simplebar data-simplebar-auto-hide="false" style={{maxHeight: "400px", "scrollbar-width": "thin", "scrollbar-color": "rgb(222, 226, 230) transparent;"}}> */}
-//                         {/* <div class="overflow-auto pe-2" style={{maxHeight: "400px", "scrollbar-width": "thin", "scrollbar-color": "rgb(222, 226, 230) transparent;"}}> */}
-//                         {/* <div className=" gap-3 gap-md-4 mt-n3 - overflow-y-auto pe-2" data-simplebar data-simplebar-auto-hide="false" style={{maxHeight: "400px", "scrollbar-width": "thin", "scrollbar-color": "rgb(222, 226, 230) transparent;"}}> */}
-// <div className="overflow-y-auto pe-2 simplebar-scrollable-y" data-simplebar data-simplebar-auto-hide="true" style={{maxHeight: "400px"}}> 
-//                         <form className="needs-validation" id="signup_form" onSubmit={onSubmitForm} noValidate>
-//                             <div className="position-relative mb-4">
-//                                 <label htmlFor="username" className="form-label">Username</label>
-//                                 <input type="text"
-//                                     name="username"
-//                                     value={formData.username}
-//                                     onChange={(evt) => onInputChange('username', evt)}
-//                                     placeholder="enter/choose your username"
-//                                     className="form-control form-control-lg"
-//                                     id="username"
-//                                     required 
-//                                 />
-//                                 <div className="invalid-tooltip bg-transparent py-0">Must enter/choose your username!</div>
-//                             </div>
-                            
-//                             <div className="position-relative mb-4">
-//                                 <label htmlFor="email" className="form-label">Email</label>
-//                                 <input 
-//                                     type="email"
-//                                     name="email"
-//                                     value={formData.email}
-//                                     onChange={(evt) => onInputChange('email', evt)}
-//                                     placeholder="valid email address"
-//                                     className="form-control form-control-lg"
-//                                     id="email"
-//                                     required 
-//                                 />
-//                                 <div className="invalid-tooltip bg-transparent py-0">Enter a valid email address!</div>
-//                             </div>
-                            
-//                             <div className="position-relative mb-4">
-//                                 <label htmlFor="phone" className="form-label">Phone</label>
-//                                 <input 
-//                                     type="tel"
-//                                     name="phone"
-//                                     value={formData.phone}
-//                                     onChange={(evt) => onInputChange('phone', evt)}
-//                                     placeholder="active phone number"
-//                                     className="form-control form-control-lg"
-//                                     id="phone"
-//                                     required 
-//                                 />
-//                                 <div className="invalid-tooltip bg-transparent py-0">Enter a valid phone number!</div>
-//                             </div>
-                            
-//                             <div className="mb-4">
-//                                 <label htmlFor="password" className="form-label">Password</label>
-//                                 <div className="password-toggle">
-//                                     <input 
-//                                         type="password"
-//                                         name="password"
-//                                         value={formData.password}
-//                                         onChange={(evt) => onInputChange('password', evt)}
-//                                         className="form-control form-control-lg"
-//                                         id="password"
-//                                         minLength={4}
-//                                         placeholder="Minimum 4 characters"
-//                                         required 
-//                                     />
-//                                     <div className="invalid-tooltip bg-transparent py-0">Password does not meet the required criteria!</div>
-//                                     <label className="password-toggle-button fs-lg" aria-label="Show/hide password">
-//                                         <input type="checkbox" className="btn-check" />
-//                                     </label>
-//                                 </div>
-//                             </div>
-                            
-//                             <div className="d-flex flex-column gap-2 mb-4">
-//                                 <div className="form-check">
-//                                     <input type="checkbox" defaultChecked className="form-check-input" id="privacy" required />
-//                                     <label htmlFor="privacy" className="form-check-label">
-//                                         I have read and accept the <NavLink className="text-dark-emphasis" to="/customer-service/terms">Privacy Policy</NavLink>
-//                                     </label>
-//                                 </div>
-//                             </div>
-                            
-//                             <ResponseModal show={modalState.show} message={modalState.message} type={modalState.type} />
-
-//                             <button 
-//                                 type="submit" 
-//                                 className={`btn btn-lg bg-dark text-white w-100 ${isLoading ? 'disabled' : ''}`} 
-//                                 disabled={isLoading}
-//                             >
-//                                 {isLoading ? (
-//                                     <div className="spinner-grow spinner-grow-sm" role="status">
-//                                         <span className="visually-hidden">Loading...</span>
-//                                     </div>
-//                                 ) : (
-//                                     'Sign up Now'
-//                                 )}
-//                             </button>
-//                         </form>
-
-//                         </div>
-//                     </div>
-                    
-//                     {/* Benefits section that turns into offcanvas on screens < 992px wide (lg breakpoint) */}
-//                     <div className="offcanvas-lg offcanvas-end w-100 py-lg-4 ms-auto" id="benefits" style={{ maxWidth: '1034px' }}>
-//                         <div className="offcanvas-header justify-content-end position-relative z-2 p-3">
-//                             <button type="button" className="btn btn-icon btn-outline-danger text-danger border-dark bg-transparent rounded-circle d-none-danger" data-bs-dismiss="offcanvas" data-bs-target="#benefits" aria-label="Close">
-//                                 <i className="ci-close fs-lg" />
-//                             </button>
-//                             <button type="button" className="btn btn-icon btn-outline-dark text-light border-light bg-transparent rounded-circle d-none d-inline-flex-dark" data-bs-dismiss="offcanvas" data-bs-target="#benefits" aria-label="Close">
-//                                 <i className="ci-close fs-lg" />
-//                             </button>
-//                         </div>
-//                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-info-subtle d-lg-none" />
-//                         <div className="offcanvas-body position-relative z-2 d-lg-flex flex-column align-items-center justify-content-center h-100 pt-2 px-3 p-lg-0">
-//                             <span className="position-absolute top-0 start-0 w-100 h-100 bg-info-subtle rounded-5 d-none d-lg-block" />
-//                             <div className="position-relative z-2 w-100 text-center px-md-2 p-lg-5">
-//                                 <h2 className="h4 pb-3">Salesnet account benefits</h2>
-//                                 <div className="mx-auto" style={{ maxWidth: '790px' }}>
-//                                     <div className="row row-cols-1 row-cols-sm-2 g-3 g-md-4 g-lg-3 g-xl-4">
-//                                         <div className="col">
-//                                             <div className="card h-100 bg-transparent border-0">
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border border-white border-opacity-75 rounded-4 d-none-dark" style={{ aspectRatio: '.3' }} />
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border rounded-4 d-none d-block-dark" style={{ aspectRatio: '.05' }} />
-//                                                 <div className="card-body position-relative z-2">
-//                                                     <div className="d-inline-flex position-relative text-info p-3">
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-white rounded-pill d-none-dark" />
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
-//                                                         <i className="fi-mail position-relative z-2 fs-4 m-1" />
-//                                                     </div>
-//                                                     <h3 className="h6 pt-2 my-2">Get discount updates</h3>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                         <div className="col">
-//                                             <div className="card h-100 bg-transparent border-0">
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border border-white border-opacity-75 rounded-4 d-none-dark" style={{ aspectRatio: '.3' }} />
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border rounded-4 d-none d-block-dark" style={{ aspectRatio: '.05' }} />
-//                                                 <div className="card-body position-relative z-2">
-//                                                     <div className="d-inline-flex position-relative text-info p-3">
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-white rounded-pill d-none-dark" />
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
-//                                                         <i className="fi-settings position-relative z-2 fs-4 m-1" />
-//                                                     </div>
-//                                                     <h3 className="h6 pt-2 my-2">Promotional activities</h3>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                         <div className="col">
-//                                             <div className="card h-100 bg-transparent border-0">
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border border-white border-opacity-75 rounded-4 d-none-dark" style={{ aspectRatio: '.3' }} />
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border rounded-4 d-none d-block-dark" style={{ aspectRatio: '.05' }} />
-//                                                 <div className="card-body position-relative z-2">
-//                                                     <div className="d-inline-flex position-relative text-info p-3">
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-white rounded-pill d-none-dark" />
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
-//                                                         <i className="fi-gift position-relative z-2 fs-4 m-1" />
-//                                                     </div>
-//                                                     <h3 className="h6 pt-2 my-2">Subscribe to a service on the go</h3>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                         <div className="col">
-//                                             <div className="card h-100 bg-transparent border-0">
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border border-white border-opacity-75 rounded-4 d-none-dark" style={{ aspectRatio: '.3' }} />
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border rounded-4 d-none d-block-dark" style={{ aspectRatio: '.05' }} />
-//                                                 <div className="card-body position-relative z-2">
-//                                                     <div className="d-inline-flex position-relative text-info p-3">
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-white rounded-pill d-none-dark" />
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
-//                                                         <i className="fi-percent position-relative z-2 fs-4 m-1" />
-//                                                     </div>
-//                                                     <h3 className="h6 pt-2 my-2">Sales statistics</h3>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                         <div className="col">
-//                                             <div className="card h-100 bg-transparent border-0">
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border border-white border-opacity-75 rounded-4 d-none-dark" style={{ aspectRatio: '.3' }} />
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border rounded-4 d-none d-block-dark" style={{ aspectRatio: '.05' }} />
-//                                                 <div className="card-body position-relative z-2">
-//                                                     <div className="d-inline-flex position-relative text-info p-3">
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-white rounded-pill d-none-dark" />
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
-//                                                         <i className="fi-heart position-relative z-2 fs-4 m-1" />
-//                                                     </div>
-//                                                     <h3 className="h6 pt-2 my-2">Get support as soon as possible</h3>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                         <div className="col">
-//                                             <div className="card h-100 bg-transparent border-0">
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border border-white border-opacity-75 rounded-4 d-none-dark" style={{ aspectRatio: '.3' }} />
-//                                                 <span className="position-absolute top-0 start-0 w-100 h-100 bg-white border rounded-4 d-none d-block-dark" style={{ aspectRatio: '.05' }} />
-//                                                 <div className="card-body position-relative z-2">
-//                                                     <div className="d-inline-flex position-relative text-info p-3">
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-white rounded-pill d-none-dark" />
-//                                                         <span className="position-absolute top-0 start-0 w-100 h-100 bg-body-secondary rounded-pill d-none d-block-dark" />
-//                                                         <i className="fi-pie-chart position-relative z-2 fs-4 m-1" />
-//                                                     </div>
-//                                                     <h3 className="h6 pt-2 my-2">Easy access to services</h3>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </main>
-//         </>
-//     );
-// }
-
-// export default Signup;
-
-// 
 // Updated Signup.tsx
 import AuthForm from "../../components/auth/AuthForm";
 import useSocialAuth from "../../hooks/useSocialAuth";
+import { useNavigate } from "react-router-dom";
+import { NotificationService } from "../../services/users/NotificationService";
 
 const Signup = () => {
     
     useSocialAuth();
+    const navigate = useNavigate();
     
     return (
         <main className="content-wrapper w-100 px-3 ps-lg-5 pe-lg-4 mx-auto" style={{ maxWidth: "1920px" }}>
             <div className="d-lg-flex">
                 <div className="d-flex flex-column min-vh-100 w-100 py-4 mx-auto me-lg-5" style={{ maxWidth: '416px' }}>
-                    <AuthForm 
+                   {/*  <AuthForm 
                         variant="page"
                         formType="signup"
                         showSocialAuth={true}
                         showLogo={true}
                         showBenefits={true}
-                    />
+                    /> */}
+
+                   {/*  <AuthForm 
+                        variant="page"
+                        formType="signup"
+                        showSocialAuth={true}
+                        showLogo={true}
+                        showBenefits={true}
+                        onSuccess={(data: any) => {
+                            console.log("Signup Success Data:", data);
+                            const token = data?.data?.token;
+                            const email = data?.data?.email;
+                            const phone = data?.data?.phone;
+
+                            if (token && email && phone) {
+                                navigate('/auth/verify-signup', {
+                                    state: { token, email, phone } 
+                                });
+                            }
+                        }}
+                    /> */}
+
+                    {/* <AuthForm 
+                    variant="page"
+                    formType="signup"
+                    showSocialAuth={true}
+                    showLogo={true}
+                    showBenefits={true}
+                    onSuccess={(data: any) => {
+                        console.log("Signup Success Data:", data);
+                        
+                        // Read from root level instead, not data.data
+                        const token = data?.token;   
+                        const email = data?.email;   
+                        const phone = data?.phone;   
+
+                        if (token && email && phone) {
+                            navigate('/auth/verify-signup', {
+                                state: { token, email, phone } 
+                            });
+                        } else {
+                            console.error("Missing verification data:", { token, email, phone });
+                        }
+                    }}
+                /> */}
+
+                {/* Atleast one of email/phone must be  */}
+                <AuthForm 
+                    variant="page"
+                    formType="signup"
+                    showSocialAuth={true}
+                    showLogo={true}
+                    showBenefits={true}
+                    onSuccess={(data: any) => {
+                        console.log("Signup Success Data:", data);
+                        
+                        const token = data?.token;   
+                        const email = data?.email;   
+                        const phone = data?.phone;   
+
+                        //  Require token + at least one contact method
+                        if (token && (email || phone)) {
+                            navigate('/auth/verify-signup', {
+                                state: { 
+                                    token, 
+                                    email: email || null,  // Pass null if not provided
+                                    phone: phone || null   // Pass null if not provided
+                                } 
+                            });
+                        } else {
+                            console.error("Missing verification data. Need token and at least one contact:", { 
+                                token, 
+                                email, 
+                                phone 
+                            });
+                            NotificationService.showDialog(
+                                "Verification setup failed. Please try again.",
+                                "error"
+                            );
+                        }
+                    }}
+                />
+
                 </div>
                 
                 {/* Benefits section - keep existing implementation */}

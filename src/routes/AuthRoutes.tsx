@@ -9,6 +9,7 @@ const Signin = lazy(() => import("../pages/auth/Signin"));
 const Signup = lazy(() => import("../pages/auth/Signup"));
 const RecoverPassword = lazy(() => import("../pages/auth/RecoverPassword"));
 const VerifyRecoveryCode = lazy(() => import("../components/auth/VerifyRecoveryCode"));
+const VerifySignup = lazy(() => import("../pages/auth/VerifySignup"));
 
 const AuthRoutes = () => (
   <Suspense fallback={null}>
@@ -34,6 +35,9 @@ const AuthRoutes = () => (
         <Route path="/oauth/callback" element={<OAuthCallbackHandler />} />
         {/* You can also add specific provider callback routes if needed */}
         <Route path="/oauth/callback/:provider" element={<OAuthCallbackHandler />} />
+
+        {/* New signup verification route */}
+      <Route path="/verify-signup" element={<VerifySignup />} />
 
     </Routes>
   </>

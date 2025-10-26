@@ -130,6 +130,7 @@ setupResponseInterceptor(jsonInstance);
 setupResponseInterceptor(multipartInstance);
 
 export const AxiosService = {
+
   json: {
     get: (url: string, config?: AxiosRequestConfig) => jsonInstance.get(url, config),
     post: (url: string, data?: unknown, config?: AxiosRequestConfig) => 

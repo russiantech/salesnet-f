@@ -3381,9 +3381,13 @@ const SalesPages = () => {
                       <i className="ci-bag fs-1 text-muted mb-3"></i>
                       <p>No products available yet</p>
                       {business.is_own_profile && (
-                        <Link to="/dashboard/products/create" className="btn btn-primary rounded-pill">
-                          Add Your First Product
-                        </Link>
+                        // <Link to="/dashboard/products/create" className="btn btn-primary rounded-pill">
+                        //   Add Your First Product
+                        // </Link>
+                        <button className="btn btn-primary btn-lg rounded-pill" data-bs-toggle="modal" data-bs-target="#PublishPage" aria-current="page">
+                            <i className="ci-click  me-1 animate-target text-white"></i>
+                          Create Product
+                      </button>
                       )}
                     </div>
                   )}

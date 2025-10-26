@@ -1,7 +1,8 @@
 // src/services/net/UsersAxiosService.tsx
 // This file contains the UsersAxiosService which handles user-related API calls
 
-import { CompletePasswordResetFormData, RecoverPasswordFormData, VerifyRecoveryCodeFormData } from '../../types/auth.types';
+import axios from 'axios';
+import { CompletePasswordResetFormData, RecoverPasswordFormData, SignupFormData, VerifyRecoveryCodeFormData } from '../../types/auth.types';
 import { UsersService } from '../local/UsersService';
 import { AxiosService } from "./base/AxiosService";
 
@@ -58,9 +59,48 @@ export const UsersAxiosService = {
   /**
    * Register new user account
    */
-  signup(user: SignupUser) {
-    return AxiosService.json.post('/users/signup', user);
+  //
+  /**
+   * Step 1: Initiate signup with verification codes
+   */
+  async initiateSignup(data: SignupUser) {
+    const req = AxiosService.json.post('/users/initiate-signup', data);
+    // console.log("Initiate Signup Request:", req);
+    return req;
   },
+
+  /**
+   * Step 2: Verify codes and complete signup
+   */
+  async verifySignup(data: {
+    token: string;
+    email_code: string;
+    phone_code: string;
+  }) {
+    return AxiosService.json.post('/users/verify-signup', data);
+  },
+
+  /**
+   * Resend verification code
+   */
+  async resendVerificationCode(data: {
+    token: string;
+    type: 'email' | 'phone';
+  }) {
+    return AxiosService.json.post('/users/resend-verification', data);
+  },
+
+  // Update existing signup to use new flow
+  async signup(data: SignupFormData) {
+    // This now calls initiate-signup instead of direct signup
+    return this.initiateSignup(data);
+  },
+  
+  // 
+
+  // signup(user: SignupUser) {
+  //   return AxiosService.json.post('/users/signup', user);
+  // },
 
   // Recover password
  async recoverPassword(data: RecoverPasswordFormData) {

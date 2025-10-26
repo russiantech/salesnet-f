@@ -13,6 +13,7 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import SalesListItem from '../sales/SalesListItem';
 import SalesItems from '../sales/SalesItems';
 import { Link } from 'react-router-dom';
+import { OrderEventService } from '../../../services/local/OrderEventService';
 
 const Orders = () => {
   // Common states
@@ -77,6 +78,12 @@ const Orders = () => {
       });
 
       setSales(response?.sales || []);
+
+      // Count unattended sales
+      const unattendedCount = response?.sales?.filter((s: any) => s.status === 'pending').length || 0;
+      // 🔔 Notify the global event service
+      OrderEventService.publish({ unattendedCount });
+
       // Handle different pagination field names for sales
       setSalesTotalPages(
         response.page_meta?.total_pages || 

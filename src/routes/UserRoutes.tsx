@@ -21,6 +21,7 @@ const Payments = lazy(() => import('../pages/users/payments/Payments'));
 const Reviews = lazy(() => import('../pages/users/reviews/Reviews'));
 const Basket = lazy(() => import('../pages/users/basket/Basket'));
 const Checkout = lazy(() => import('../pages/users/checkout/Checkout'));
+const Dashboard = lazy(() => import('../pages/users/dashboard/Dashboard'));
 
 // Lazy load SalesPages
 const SalesPages = lazy(() => import('../pages/salespages/SalesPages'));
@@ -44,6 +45,7 @@ const UserRoutes = () => (
                 
                 {/* Protected routes */}
                 <Route element={<ProtectedLayout />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/personal" element={<Personal />} />
                     <Route path="/products" element={<Products />} />
 

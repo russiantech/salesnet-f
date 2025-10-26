@@ -190,7 +190,7 @@ export const useAuthForm = ({
   const handleInputChange = useCallback(
     (key: string, evt: React.ChangeEvent<HTMLInputElement>) => {
       const value = evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
-      setFormData((prev) => ({ ...prev, [key]: value }));
+      setFormData((prev: any) => ({ ...prev, [key]: value }));
     },
     []
   );
