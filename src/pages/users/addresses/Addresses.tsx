@@ -726,7 +726,7 @@ const Addresses: React.FC = () => {
                           <h3 className="h5">No addresses found</h3>
                           <p className="mb-0">You haven't added any shipping addresses yet</p>
                           <button 
-                            className="btn btn-primary mt-3"
+                            className="btn btn-primary btn-lg rounded-pill mt-3"
                             onClick={() => setIsAddingNew(true)}
                             disabled={settingPrimary !== null || deletingAddress !== null}
                           >
