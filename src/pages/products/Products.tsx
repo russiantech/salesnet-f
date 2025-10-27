@@ -58,10 +58,11 @@ const Products = () => {
 
     return (
         <>
-
-              <SeoConfig 
+            <SeoConfig 
                 title={`Salesnet:Internet Of Sales`}
-                description="Internet of Sales. Premier internet marketplace using technology and AI to enhance and secure the buying and selling experience.Discover quality products at unbeatable prices."
+                description="Internet of Sales. 
+                Premier internet marketplace using technology and AI to enhance and secure the buying and selling experience.
+                Discover quality products at unbeatable prices."
                 keywords={`sales, internet, marketplace, vendors, sellers, products, quality, discount, deals`}
                 canonical={`/products`}
             />
