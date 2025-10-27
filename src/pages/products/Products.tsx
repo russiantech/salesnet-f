@@ -11,6 +11,7 @@ import { BasketButton } from './interactions/BasketButton';
 import { ChatButton } from './interactions/ChatButton';
 import { FavoriteButton } from './interactions/FavoriteButton';
 import { ShareButton } from './interactions/ShareButton';
+import SeoConfig from '../../utils/SeoManager';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -57,6 +58,14 @@ const Products = () => {
 
     return (
         <>
+
+              <SeoConfig 
+                title={`Salesnet:Internet Of Sales`}
+                description="Internet of Sales. Premier internet marketplace using technology and AI to enhance and secure the buying and selling experience.Discover quality products at unbeatable prices."
+                keywords={`sales, internet, marketplace, vendors, sellers, products, quality, discount, deals`}
+                canonical={`/products`}
+            />
+
             <main className="content-wrapper">
 
                 <section className="container pb-2 pb-sm-3 pb-md-4 pb-lg-5 mb-xxl-3">
