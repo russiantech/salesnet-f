@@ -169,7 +169,7 @@ export const useAuthForm = ({
         } else {
           NotificationService.showDialog(
             response.data.message || response.data.error || "Operation failed", 
-            "error"
+            "danger"
           );
         }
       } catch (err: any) {
@@ -179,7 +179,7 @@ export const useAuthForm = ({
           err.response?.data?.error ||
           err.message ||
           "An unexpected error occurred";
-        NotificationService.showDialog(errorMessage, "error");
+        NotificationService.showDialog(errorMessage, "danger");
       } finally {
         setIsLoading(false);
       }

@@ -156,6 +156,101 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
   };
 
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
+/*
+  const resetForm = () => {
+  // Reset all form data to initial state
+  setFormData(initialFormData);
+  
+  // Reset media
+  setMediaFiles([]);
+  setPreviews([]);
+  setRemovedMediaIds([]);
+  setRemovedNewFiles([]);
+  
+  // Reset attributes
+  setAttributes([{ key: '', value: '' }]);
+  
+  // Reset categories
+  setSelectedCategoryIds(new Set());
+  
+  // Reset states
+  setProductId(null);
+  setPublishedProductId(null);
+  setPublishedProductSlug(null);
+  setErrors({});
+  setIsEditMode(false);
+  setUploadProgress(0);
+  
+  // Go back to first tab
+  setActiveTab('home');
+  
+  // Clear file input
+  if (fileInputRef.current) {
+    fileInputRef.current.value = '';
+  }
+  
+  // Show success message
+  NotificationService.showDialog('Form reset! Ready to create a new listing.', 'success');
+};
+*/
+
+// v2 - adds confirmation to reset to prevents accidental clicks:
+const resetForm = () => {
+  // Show confirmation if user has entered data
+  const hasData = 
+    formData.basic_info.name || 
+    formData.basic_info.description || 
+    mediaFiles.length > 0;
+
+  if (hasData && !window.confirm('Are you sure you want to create a new listing? Current data will be cleared.')) {
+    return;
+  }
+
+  // Reset all form data to initial state
+  setFormData({
+    ...initialFormData,
+    basic_info: {
+      ...initialFormData.basic_info,
+      status: 'draft' // Reset to draft for new listing
+    }
+  });
+  
+  // Reset media
+  setMediaFiles([]);
+  setPreviews([]);
+  setRemovedMediaIds([]);
+  setRemovedNewFiles([]);
+  
+  // Reset attributes
+  setAttributes([{ key: '', value: '' }]);
+  
+  // Reset categories
+  setSelectedCategoryIds(new Set());
+  
+  // Reset states
+  setProductId(null);
+  setPublishedProductId(null);
+  setPublishedProductSlug(null);
+  setErrors({});
+  setIsEditMode(false);
+  setUploadProgress(0);
+  setIsSubmitting(false);
+  setIsSavingDraft(false);
+  setIsPublishing(false);
+  setShowPostPublishModal(false);
+  
+  // Go back to first tab
+  setActiveTab('home');
+  
+  // Clear file input
+  if (fileInputRef.current) {
+    fileInputRef.current.value = '';
+  }
+  
+  // Show success message
+  NotificationService.showDialog('Form reset! Ready to create a new listing.', 'success');
+};
+
 
   useEffect(() => {
     if (productSlug || editProductData) {
@@ -1713,7 +1808,7 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
             />
           </div>
 
-          <footer className="sticky-bottom modal-footer">
+          {/* <footer className="sticky-bottom modal-footer">
             <button
               type="button"
               className="btn btn-outline-dark"
@@ -1744,12 +1839,67 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
               )}
             </button>
           </footer>
+           */}
+
+           <footer className="sticky-bottom modal-footer">
+  <button
+    type="button"
+    className="btn btn-outline-dark"
+    onClick={handleBack}
+    disabled={activeTab === 'home' || isSubmitting || isPublishing}
+  >
+    <i className="fi-arrow-left me-2" />
+    Back
+  </button>
+  
+  {/* Show reset button after successful publish */}
+  {formData.basic_info.status === 'published' && productId && (
+    <button
+      type="button"
+      className="btn btn-outline-success"
+      onClick={resetForm}
+      title="Create a new listing"
+    >
+      <i className="ci-add-circle me-2"></i>
+      New Listing
+    </button>
+  )}
+  
+  <button
+    type="button"
+    className="btn btn-dark ms-auto"
+    onClick={handleNext}
+    disabled={isSubmitting || isSavingDraft || isPublishing || formData.basic_info.status === 'published'}
+  >
+    {isSubmitting || isPublishing ? (
+      <>
+        <LoadingZoom size='sm' />
+        {uploadProgress > 0 ? 'Uploading...' : 'Processing...'}
+      </>
+    ) : activeTab === 'promote' ? (
+      formData.basic_info.status === 'published' ? (
+        <>
+          <i className="ci-check me-2"></i>
+          Published
+        </>
+      ) : (
+        'Publish Listing'
+      )
+    ) : (
+      <>
+        Next <i className="fi-arrow-right ms-2" />
+      </>
+    )}
+  </button>
+</footer>
+
+
         </div>
 
       </div>
 
       {/* Post Publish Modal */}
-      {showPostPublishModal && publishedProductSlug && (
+      {/* {showPostPublishModal && publishedProductSlug && (
           <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
@@ -1800,7 +1950,95 @@ const PublishPage = ({ productSlug, editProductData }: PublishPageProps) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
+      
+      
+{/* // Update the Post Publish Modal section (replace the existing modal code): */}
+
+{/* Post Publish Modal */}
+{showPostPublishModal && publishedProductSlug && (
+  <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-header border-0">
+          <h5 className="modal-title">
+            <i className="ci-check-circle text-success me-2"></i>
+            Listing Published!
+          </h5>
+          <button 
+            type="button" 
+            className="btn-close" 
+            onClick={() => {
+              setShowPostPublishModal(false);
+              handleViewListing();
+            }}
+          />
+        </div>
+        <div className="modal-body">
+          <div className="text-center py-3">
+            <div className="mb-3">
+              <div className="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle" 
+                   style={{ width: '80px', height: '80px' }}>
+                <i className="ci-check text-success" style={{ fontSize: '2.5rem' }}></i>
+              </div>
+            </div>
+            <h4 className="mb-2">Congratulations!</h4>
+            <p className="text-muted mb-0">Your listing is now live and visible to buyers.</p>
+          </div>
+
+          <div className="d-grid gap-2">
+            <button 
+              className="btn btn-primary"
+              onClick={handleViewListing}
+            >
+              <i className="ci-eye me-2"></i>
+              View Listing
+            </button>
+            
+            <div className="row g-2">
+              <div className="col-6">
+                <button
+                  className="btn btn-outline-secondary w-100"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/products/${publishedProductSlug}`);
+                    NotificationService.showDialog('Link copied to clipboard!', 'success');
+                  }}
+                >
+                  <i className="ci-share me-1"></i>
+                  Share
+                </button>
+              </div>
+              <div className="col-6">
+                <button
+                  className="btn btn-outline-warning w-100"
+                  onClick={() => {
+                    setActiveTab('promote');
+                    setShowPostPublishModal(false);
+                  }}
+                >
+                  <i className="ci-award me-1"></i>
+                  Promote
+                </button>
+              </div>
+            </div>
+
+            <button
+              className="btn btn-success"
+              onClick={() => {
+                setShowPostPublishModal(false);
+                resetForm();
+              }}
+            >
+              <i className="ci-add-circle me-2"></i>
+              Create Another Listing
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
     </section>
   );

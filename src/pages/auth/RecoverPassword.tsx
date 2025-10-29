@@ -22,7 +22,7 @@ const RecoverPassword = () => {
                     const token = data?.data?.token;
                     const recoveryLink = data?.data?.recovery_link;
                     const message = data?.message;
-
+                    // console.log(message);
                     if (!token || !recoveryLink) {
                         console.error("Recovery data missing:", data);
                         // Optionally show an error alert here
