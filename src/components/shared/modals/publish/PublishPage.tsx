@@ -320,7 +320,7 @@ const resetForm = () => {
 
     try {
       const submissionData = prepareSubmissionData();
-      submissionData.append('status', 'draft');
+      // submissionData.append('status', 'draft');
 
       const response = isEditMode && productSlug
         ? await ProductAxiosService.updateProduct(productSlug, submissionData)
@@ -1072,7 +1072,7 @@ const resetForm = () => {
   };
 
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setIsSubmitting(true);
 

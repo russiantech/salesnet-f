@@ -497,12 +497,12 @@ const ProductDetails = () => {
                           </div>
                           
                           {/* Full screen hint */}
-                          <div className="position-absolute bottom-0 end-0 m-3">
+                          {/* <div className="position-absolute bottom-0 end-0 m-3">
                             <span className="badge bg-primary bg-opacity-90 text-white fs-xs px-2 py-1 rounded-pill">
                               <i className="ci-expand me-1"></i>
                               Click to expand
                             </span>
-                          </div>
+                          </div> */}
                         </div>
                       </SwiperSlide>
                     );
@@ -572,7 +572,7 @@ const ProductDetails = () => {
               </div>
 
               {/* Manual full-screen toggle button */}
-              <div className="text-center mt-3">
+              {/* <div className="text-center mt-3">
                 <button 
                   onClick={() => handleMediaClick(0)}
                   className="btn btn-outline-primary rounded-pill"
@@ -580,7 +580,8 @@ const ProductDetails = () => {
                   <i className="ci-expand me-2"></i>
                   View in Full Screen
                 </button>
-              </div>
+              </div> */}
+
             </div>
             
             {/* Tabs Column - Side by side on large screens */}
