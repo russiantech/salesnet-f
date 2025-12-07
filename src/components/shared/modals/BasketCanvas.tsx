@@ -492,6 +492,50 @@ const BasketCanvas: React.FC = () => {
 
   </div>
 
+  <div className="d-flex w-100 gap-3 mb-3">
+
+  <NavLink 
+    className="btn btn-lg btn-secondary flex-fill rounded-pill"
+    to="/users/basket"
+    onClick={async (e) => {
+      e.preventDefault();
+      await closeOffcanvas();
+      navigate('/users/basket');
+    }}
+    aria-label="View cart"
+  >
+    View cart
+  </NavLink>
+
+  <Link 
+    className="btn btn-lg btn-primary flex-fill rounded-pill"
+    to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
+    onClick={async (e) => {
+      e.preventDefault();
+      const targetPath = isAuthenticated
+        ? "/users/checkout"
+        : "/login?redirect=checkout";
+      await closeOffcanvas();
+      navigate(targetPath);
+    }}
+    aria-label="Proceed to checkout"
+  >
+    Checkout
+  </Link>
+
+  <button
+    type="button"
+    className="btn btn-outline-danger btn-lg flex-fill rounded-pill"
+    onClick={handleClearBasket}
+    disabled={basketState.isLoading}
+    aria-label="Clear all items from basket"
+  >
+    Clear Basket
+  </button>
+
+</div>
+
+
         {/* <button type="button" className="btn btn-outline-danger btn-sm w-100"
           onClick={handleClearBasket} disabled={basketState.isLoading}
           aria-label="Clear all items from basket">

@@ -25,7 +25,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         isLoading,
         handleSubmit,
         handleInputChange,
-    } = useAuthForm({ 
+    } = useAuthForm({
         formType, 
         onSuccess, 
         redirectPath, 
