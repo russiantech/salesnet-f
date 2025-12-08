@@ -261,15 +261,16 @@ const Basket: React.FC = () => {
               />
             </Link>
             <div className="w-100 min-w-0 ps-2 ps-xl-3">
-              <h5 className="d-flex animate-underline mb-2">
-                <Link
-                  className="d-block fs-sm fw-medium text-truncate animate-target text-truncate"
-                  to={productUrl}
-                  title={item.name}
-                >
-                  {item.name}
-                </Link>
-              </h5>
+             <h5 className="mb-2">
+              <Link
+                className="d-block fs-sm fw-medium animate-target text-truncate"
+                style={{ maxWidth: "100%" }}
+                to={productUrl}
+                title={item.name}
+              >
+                {item.name}
+              </Link>
+            </h5>
               <ul className="list-unstyled gap-1 fs-xs mb-0">
                 {item.color && (
                   <li>

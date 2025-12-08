@@ -213,13 +213,13 @@ const BasketCanvas: React.FC = () => {
         </h4>
         <button 
           type="button" 
-          className="btn-close" 
+          className="btn-close fs-4" 
           data-bs-dismiss="offcanvas" 
           aria-label="Close"
         />
       </div>
       <div className="offcanvas-body text-center animate-scale">
-        <i className="ci-shopping-cart fs-2 m-1 mx-auto mb-4 animate-target"></i>
+        <i className="ci-shopping-cart fs-1 fw-bold m-1 mx-auto mb-4 animate-target"></i>
 
         <h6 className="mb-2">Your shopping basket is currently empty!</h6>
         <p className="fs-sm mb-4">
@@ -230,7 +230,7 @@ const BasketCanvas: React.FC = () => {
         </p>
         <button
           type="button"
-          className="btn btn-dark rounded-pill"
+          className="btn btn-dark rounded-pill btn-lg"
           data-bs-dismiss="offcanvas"
           aria-label="Continue shopping"
         >
@@ -443,104 +443,66 @@ const BasketCanvas: React.FC = () => {
           </div>
         )}
 
-        {/* <div className="d-flex w-100 gap-3 mb-3">
-          <NavLink data-bs-dismiss="offcanvas" className="btn btn-lg btn-secondary w-100" to="/users/basket">
-            View cart
-          </NavLink>
-          <Link 
-            className="btn btn-lg btn-primary w-100" 
-            to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
-            data-bs-dismiss="offcanvas"
-            aria-label="Proceed to checkout"
-          >
-            Checkout
-          </Link>
-        </div> */}
-         <div className="d-flex w-100 gap-3 mb-3">
-    <NavLink 
-      className="btn btn-lg btn-secondary w-100 rounded-pill"
-      to="/users/basket"
-      onClick={async (e) => {
-        e.preventDefault();
-        await closeOffcanvas();
-        navigate('/users/basket');
-      }}
-      aria-label="View cart"
-    >
-      View cart
-    </NavLink>
-    <Link 
-      className="btn btn-lg btn-primary w-100 rounded-pill"
-      to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
-      onClick={async (e) => {
-        e.preventDefault();
-        const targetPath = isAuthenticated ? "/users/checkout" : "/login?redirect=checkout";
-        await closeOffcanvas();
-        navigate(targetPath);
-      }}
-      aria-label="Proceed to checkout"
-    >
-      Checkout
-    </Link>
+      <div className="d-flex flex-nowrap flex-row flex-sm-row overflow-auto w-100 gap-3 pe-2 mb-3">
 
-    {/*  */}
-    <button type="button" className="btn btn-outline-danger w-100 rounded-pill"
-          onClick={handleClearBasket} disabled={basketState.isLoading}
-          aria-label="Clear all items from basket">
-          Clear Basket
+        {/* View Cart */}
+        <NavLink
+          className="btn btn-lg btn-secondary flex-fill rounded-pill text-nowrap"
+          to="/users/basket"
+          onClick={async (e) => {
+            e.preventDefault();
+            await closeOffcanvas();
+            navigate("/users/basket");
+          }}
+          aria-label="View cart"
+        >
+          
+          {/* Mobile icon */}
+          <i className="ci-shopping-cart animate-target d-inline d-sm-none fs-5"></i>
+
+          {/* Desktop text */}
+          <span className="d-none d-sm-inline">
+            View Cart
+          </span>
+        </NavLink>
+
+        {/* Checkout */}
+        <Link
+          className="btn btn-lg btn-primary flex-fill rounded-pill text-nowrap"
+          to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
+          onClick={async (e) => {
+            e.preventDefault();
+            const targetPath = isAuthenticated
+              ? "/users/checkout"
+              : "/login?redirect=checkout";
+            await closeOffcanvas();
+            navigate(targetPath);
+          }}
+          aria-label="Proceed to checkout"
+        >
+          <i className="ci ci-credit-card d-inline d-sm-none fs-5 me-1"></i>
+          <span className="d-sm-inline">
+            Buy
+          </span>
+        </Link>
+
+        {/* Clear Basket */}
+        <button
+          type="button"
+          className="btn btn-outline-danger btn-lg flex-fill rounded-pill text-nowrap"
+          onClick={handleClearBasket}
+          disabled={basketState.isLoading}
+          aria-label="Clear basket"
+        >
+          <i className="ci ci-trash d-inline d-sm-none fs-5"></i>
+          
+          <span className="d-none d-sm-inline">
+            Clear Basket
+          </span>
         </button>
 
-  </div>
+      </div>
 
-  <div className="d-flex w-100 gap-3 mb-3">
-
-  <NavLink 
-    className="btn btn-lg btn-secondary flex-fill rounded-pill"
-    to="/users/basket"
-    onClick={async (e) => {
-      e.preventDefault();
-      await closeOffcanvas();
-      navigate('/users/basket');
-    }}
-    aria-label="View cart"
-  >
-    View cart
-  </NavLink>
-
-  <Link 
-    className="btn btn-lg btn-primary flex-fill rounded-pill"
-    to={isAuthenticated ? "/users/checkout" : "/login?redirect=checkout"}
-    onClick={async (e) => {
-      e.preventDefault();
-      const targetPath = isAuthenticated
-        ? "/users/checkout"
-        : "/login?redirect=checkout";
-      await closeOffcanvas();
-      navigate(targetPath);
-    }}
-    aria-label="Proceed to checkout"
-  >
-    Checkout
-  </Link>
-
-  <button
-    type="button"
-    className="btn btn-outline-danger btn-lg flex-fill rounded-pill"
-    onClick={handleClearBasket}
-    disabled={basketState.isLoading}
-    aria-label="Clear all items from basket"
-  >
-    Clear Basket
-  </button>
-
-</div>
-
-
-        {/* <button type="button" className="btn btn-outline-danger btn-sm w-100"
-          onClick={handleClearBasket} disabled={basketState.isLoading}
-          aria-label="Clear all items from basket">
-          Clear Basket
-        </button> */}
       </div>
     </div>
   );

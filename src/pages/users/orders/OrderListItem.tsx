@@ -1,6 +1,7 @@
 // import { formatCurrency } from '../../utils/formatters';
 // import  OrdersAxiosService.from '../../services/OrderService';
 
+import { Link } from "react-router-dom";
 import { OrdersAxiosService } from "../../../services/net/OrdersAxiosService";
 import { formatCurrency } from "../../../utils/currencyUtils";
 import { formatDate } from "../../../utils/dateUtils";
@@ -42,23 +43,23 @@ const OrderListItem = ({ order, onOrderClick }) => {
     return (
         <tr>
             <td className="fw-medium pt-2 pb-3 py-md-2 ps-0">
-                <a 
+                <Link 
                     className="d-inline-block animate-underline text-body-emphasis text-decoration-none py-2" 
-                    href="#orderDetails" 
+                    to="#orderDetails" 
                     data-bs-toggle="offcanvas" 
                     aria-controls="orderDetails" 
                     aria-label="Show order details"
                     onClick={handleClick}
                 >
                     <span className="animate-target">{order.tracking_number}</span>
-                </a>
+                </Link>
                 <ul className="list-unstyled fw-normal text-body m-0 d-md-none">
                     <li>{formatDate(order.created_at)}</li>
                     <li className="d-flex align-items-center">
                         <span className={`bg-${getStatusColor(order.status)} rounded-circle p-1 me-2`} />
                         {getStatusLabel(order.status)}
                     </li>
-                    <li className="fw-medium text-body-emphasis">{formatCurrency(order.total_amount)}</li>
+                    <li className="fw-medium text-body-emphasis">{formatCurrency(order.total_amount, 'NGN')}</li>
                 </ul>
             </td>
             <td className="fw-medium py-3 d-none d-md-table-cell">
@@ -116,15 +117,16 @@ const OrderListItem = ({ order, onOrderClick }) => {
                         </span>
                     )}
 
-                    <a className="btn btn-icon btn-ghost btn-secondary stretched-link border-0" 
-                        href="#orderDetails" 
+                    <Link className="btn btn-icon btn-ghost btn-secondary stretched-link border-0" 
+                        to="#orderDetails" 
                         data-bs-toggle="offcanvas" 
                         aria-controls="orderDetails" 
                         aria-label="Show order details"
                         onClick={handleClick}
                     >
                         <i className="ci-chevron-right fs-lg" />
-                    </a>
+                    </Link>
+                    
                 </span>
             </td>
         </tr>
