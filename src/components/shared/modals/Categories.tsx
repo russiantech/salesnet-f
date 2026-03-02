@@ -38,7 +38,7 @@ const Categories: React.FC = () => {
       const response: CategoriesResponse = await CategoriesAxiosService.getCategories(params);
       setCategories(response.data.categories);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch categories';
+      const errorMessage = err instanceof Error ? err.message : 'Refresh to fetch categories';
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -124,20 +124,6 @@ const Categories: React.FC = () => {
   const handleRetry = (): void => {
     fetchCategories();
   };
-
-  const renderSubcategories = (children: Category[]): JSX.Element => (
-    <div className="subcategories mt-2 ms-4">
-      {children.map((child) => (
-        <Link 
-          key={child.id}
-          className="d-block py-2 px-3 text-decoration-none text-muted hover-bg-light rounded"
-          to={`/categories/${child.slug || child.id}`}
-        >
-          <small>{child.name}</small>
-        </Link>
-      ))}
-    </div>
-  );
 
   if (loading) {
     return (

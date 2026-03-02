@@ -197,6 +197,7 @@ const EditProductPage = () => {
 
       setError(errorMessage);
       NotificationService.showDialog(errorMessage, 'danger');
+      
     } finally {
       setLoading(false);
     }

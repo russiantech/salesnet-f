@@ -3,42 +3,84 @@ import { Link } from 'react-router-dom'
 import { useBootstrapPopovers } from '../../hooks/useBootstrapPopovers';
 
 // Define reusable social link groups at the top
+// export const socialLinks = [
+//   { 
+//     label: 'Facebook', 
+//     url: 'https://web.facebook.com/salesnet8/', 
+//     info: 'Follow us on Facebook for updates.' 
+//   },
+
+//     { 
+//     label: 'Instagram', 
+//     url: 'https://www.instagram.com/salesnet88/', 
+//     info: 'Check out our latest photos and stories on.' 
+//   },
+
+//   // { 
+//   //   label: 'X', 
+//   //   url: 'https://twitter.com/salesnet', 
+//   //   info: 'Stay connected with our latest tweets.' 
+//   // },
+
+//   // { 
+//   //   label: 'LinkedIn', 
+//   //   url: 'https://linkedin.com/company/salesnet', 
+//   //   info: 'Connect with us professionally on LinkedIn.' 
+//   // },
+
+//   { 
+//     label: 'YouTube', 
+//     url: 'https://youtube.com/@salesnet', 
+//     info: 'Watch our videos and tutorials.' 
+//   },
+
+//   { 
+//     label: 'Pinterest', 
+//     url: 'https://pinterest.com/salesnet', 
+//     info: 'Explore our boards for inspiration.' 
+//   }
+// ];
+
+
 export const socialLinks = [
   { 
     label: 'Facebook', 
-    url: 'https://facebook.com/salesnet.net', 
-    info: 'Follow us on Facebook for updates.' 
+    url: 'https://web.facebook.com/salesnet8/', 
+    info: 'Follow us on Facebook for updates.',
+    enabled: true
   },
-
-    { 
-    label: 'Instagram', 
-    url: 'https://instagram.com/yourhandle', 
-    info: 'Check out our latest photos and stories.' 
-  },
-
   { 
+    label: 'Instagram', 
+    url: 'https://www.instagram.com/salesnet88/', 
+    info: 'Check out our latest photos and stories.',
+    enabled: true
+  },
+  { 
+    label: 'YouTube', 
+    url: 'https://youtube.com/@salesnet', 
+    info: 'Watch our videos and tutorials.',
+    enabled: false   // disabled
+  },
+  { 
+    label: 'Pinterest', 
+    url: 'https://pinterest.com/salesnet', 
+    info: 'Explore our boards for inspiration.',
+    enabled: false
+  },
+    { 
     label: 'X', 
     url: 'https://twitter.com/salesnet', 
-    info: 'Stay connected with our latest tweets.' 
+    info: 'Stay connected with our latest tweets.' ,
+    enabled: false
   },
 
   { 
     label: 'LinkedIn', 
     url: 'https://linkedin.com/company/salesnet', 
-    info: 'Connect with us professionally on LinkedIn.' 
+    info: 'Connect with us professionally on LinkedIn.',
+    enabled: false
   },
 
-  { 
-    label: 'YouTube', 
-    url: 'https://youtube.com/@salesnet', 
-    info: 'Watch our videos and tutorials.' 
-  },
-
-  { 
-    label: 'Pinterest', 
-    url: 'https://pinterest.com/salesnet', 
-    info: 'Explore our boards for inspiration.' 
-  }
 ];
 
 const FooterMini = () => {
@@ -122,21 +164,25 @@ const FooterMini = () => {
 
     <section className="container py-4">
     <div className="d-flex justify-content-center justify-content-lg-start gap-2 mt-n2 mt-md-0">
-
-        {socialLinks.map(({ label, url, info }) => (
-        <Link
-            key={label}
-            className="btn btn-icon fs-base btn-outline-secondary border-0"
-            to={url}
-            data-bs-toggle="popover"
-            data-bs-trigger="hover"
-            data-bs-custom-class="popover-sm"
-            data-bs-content={info}
-            aria-label={`Follow us on ${label}`}
+      {socialLinks.map(({ label, url, info, enabled }) => (
+        <a key={label}
+          href={enabled ? url : "#!"}
+          onClick={!enabled ? (e) => e.preventDefault() : undefined}
+          className={`btn btn-icon fs-base btn-outline-secondary border-0 ${
+            !enabled ? "disabled opacity-50 cursor-not-allowed" : ""
+          }`}
+          aria-disabled={!enabled}
+          tabIndex={!enabled ? -1 : 0}
+          data-bs-toggle={enabled ? "popover" : undefined}
+          data-bs-trigger="hover"
+          data-bs-custom-class="popover-sm"
+          data-bs-content={enabled ? info : "Coming soon"}
+          aria-label={`Follow us on ${label}`}
         >
-            <i className={`ci-${label.toLowerCase()}`} />
-        </Link>
-        ))}
+          <i className={`ci-${label.toLowerCase()}`} />
+        </a>
+      ))}
+
     </div>
     </section>
 
