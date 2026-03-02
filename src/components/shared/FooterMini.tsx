@@ -57,7 +57,7 @@ export const socialLinks = [
   },
   { 
     label: 'YouTube', 
-    url: 'https://youtube.com/@salesnet', 
+    url: 'https://www.youtube.com/@salesnet8',
     info: 'Watch our videos and tutorials.',
     enabled: false   // disabled
   },
